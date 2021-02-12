@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pool enabled="True">
+  <tileset>
+    <default>
+		tile_graphics Tilecity
+		overlay_graphics Overlayscity
+		background_graphics bg2
+		foreground_graphics fg1
+		fx_shader distortionparticles
+		palette 1
+		music [danse_intro.ogg, danse_loop.ogg]
+		ambience rain.ogg
+		global_particle_1 fgrain
+		global_particle_2 bgrain
+		global_particle_3 distortrain
+	</default>
+    <need>
+		tile_particle_1 drip
+		tile_particle_2 splash
+		decoration_1 Decoration0
+		decoration_2 Decoration1
+		decoration_3 inst10
+	</need>
+  </tileset>
+  <level>
+    <name>1-2</name>
+  </level>
+  <level>
+    <name>1-3</name>
+  </level>
+  <level>
+    <name>1-4</name>
+  </level>
+  <level>
+    <name>1-5</name>
+  </level>
+  <level>
+    <name>1-6</name>
+  </level>
+  <level>
+    <name>1-7</name>
+  </level>
+  <level>
+    <name>1-8</name>
+  </level>
+  <level>
+    <name>1-9</name>
+  </level>
+  <level>
+    <name>1-10</name>
+  </level>
+  <level>
+    <name>1-11</name>
+  </level>
+  <level>
+    <name>1-12</name>
+  </level>
+  <level>
+    <name>1-13</name>
+  </level>
+  <level>
+    <name>1-14</name>
+  </level>
+  <level>
+    <name>1-15</name>
+  </level>
+  <level>
+    <name>1-16</name>
+  </level>
+  <level>
+    <name>1-17</name>
+  </level>
+  <level>
+    <name>1-18</name>
+  </level>
+  <level>
+    <name>1-19</name>
+  </level>
+  <level>
+    <name>1-20</name>
+  </level>
+</pool>

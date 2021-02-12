@@ -1,0 +1,178 @@
+<root>
+	<tile_graphics>
+		Tilecity
+		Tilefield
+		Tilecaves
+		Tiletox
+		Tiletox2
+		Tilehell
+		Tileairship
+		Tilecomplex
+		theglow
+		TileEnd
+		Tileretro
+		TileGlitch
+		Tilesewers
+	</tile_graphics>
+	<overlay_graphics>
+		Overlayscity
+		Overlaysfield
+		Overlayscaves
+		Overlaystox
+		Overlaystox2
+		Overlayshell
+		Overlaysairship
+		Overlayscomplex
+		Overlaystheglow
+		Overlaysend
+		Overlaysretro
+		TileOverlays
+	</overlay_graphics>
+	<background_graphics>
+		<retro>
+			bgretro
+			bgretrox
+			bgretro2
+			None
+			bgsolid
+			neverbg
+		</retro>
+		
+	</background_graphics>
+	<particles>
+		fgrain
+		bgrain
+		embers
+		wind
+		wind2
+		cloudwind
+		cloudwind2
+		cloudwind_light
+		fallout2
+		lightning
+		rocks
+		cold
+		mist2
+		rocks
+	</particles>
+	<shaders>
+		<shader content="fx_shader_mid heatwave2  midfx_graphics SolidBox"/>
+		<shader content="fx_shader_mid lighting  midfx_graphics ShadeBox  midfx_layer 2  shader_param 0.1"/>
+		<shader content="fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2"/>
+		<shader content="fx_shader_mid heatwave  midfx_graphics SolidBox"/>
+		<shader content="fx_shader_mid sludgeglow2  midfx_graphics SolidBox  midfx_layer 2"/>
+	</shaders>
+	<music>
+		[1812_intro.ogg, 1812_loop.ogg]
+		[1812_intro_dark.ogg, 1812_loop_dark.ogg]
+		[bumblebee_intro.ogg, bumblebee_loop.ogg]
+		[danse_intro.ogg, danse_loop.ogg]
+		[danse_intro_dark.ogg, danse_loop_dark.ogg]
+		[dante_intro.ogg, dante_loop.ogg]
+		[fields_intro.ogg, fields_loop.ogg]
+		[gnossiennes_intro.ogg, gnossiennes_loop.ogg]
+		[hell_intro.ogg, hell_loop.ogg]
+		[hungarian_rhapsody_intro.ogg, hungarian_rhapsody_loop.ogg]
+		[mountainking_intro.ogg, mountainking_loop.ogg]
+		[newworld2_intro.ogg, newworld2_loop.ogg]
+		[newworld_intro.ogg, newworld_loop.ogg]
+		[newworld_intro_dark.ogg, newworld_loop_dark.ogg]
+		[requiem_intro.ogg, requiem_loop.ogg]
+		[slave_intro.ogg, slave_loop.ogg]
+		[valkyries_intro.ogg, valkyries_loop.ogg]
+	</music>
+	<palette>
+		1
+	</palette>
+	<clips>
+		<particle>
+			ToxicParticle
+			ToxicParticle2
+			TestParticle
+			TestParticle2
+			soliddrip
+			spark
+			spark2
+			Rock
+			Rock2
+			Light
+			Lightning
+			Leaf
+			Leaf2
+			goo1
+			goo2
+			Gibs
+			Gibs2
+			DistortionParticle
+			DistortionParticle2
+			WindCloud
+			cloud
+			blackpart
+		</particle>
+		<small>
+			eyebullet
+			bullet
+			Key
+			DeathGhost
+			CreepEye
+			Fish
+			MiniDrone
+			MiniFish
+			MiniFishWhite
+			MiniFly
+			MiniWisp
+			ThwampGear
+			ThwampEye
+			ThwampGearRetro
+			ThwampEyeRetro
+			Coin
+			bulletretro
+		</small>
+		<npcs>
+			NPCB4
+			NPCG1
+			NPCG2
+			NPCG3
+			NPCG4
+			NPCG5
+			NPCG6
+			NPCG7
+			NPCD1
+			NPCD2
+			NPCD3
+			NPCD4
+			NPCD5
+			NPCD6
+			NPCD7
+		</npcs>
+		<midsize>
+			Cartridge
+			cart2
+			cart3
+			TheHead
+			TheHeart
+			EscapeEnd
+			cartend
+		</midsize>
+		<enemies>
+			pacman
+			cannonballretro
+			cannonballfireretro
+			Floater
+			Fireball
+			Cannonball
+			SkullCrow
+			SkullCrowretro
+			Floaterretro
+			Floater2
+			FloaterGlitch
+			Bouncerretro
+			Mask
+			CreepingMass
+			ChainChomp
+			Sentry
+			Fish
+			Bouncer
+		</enemies>
+	</clips>
+</root>

@@ -1,0 +1,17 @@
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\bin\Debug\EndModLoader.exe.config
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\bin\Debug\EndModLoader.exe
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\bin\Debug\EndModLoader.pdb
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\Debug\MainWindow.g.cs
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\Debug\App.g.cs
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\Debug\EndModLoader_MarkupCompile.cache
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\Debug\EndModLoader_MarkupCompile.lref
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\Debug\App.baml
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\Debug\MainWindow.baml
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\Debug\EndModLoader.g.resources
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\Debug\EndModLoader.Properties.Resources.resources
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\Debug\EndModLoader.csproj.GenerateResource.cache
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\Debug\EndModLoader.csproj.CoreCompileInputs.cache
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\Debug\EndModLoader.exe
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\Debug\EndModLoader.pdb
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\Debug\EndModLoader.csprojAssemblyReference.cache

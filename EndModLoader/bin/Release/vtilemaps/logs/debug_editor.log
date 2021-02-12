@@ -1,0 +1,41 @@
+DEBUG LOG [02/09/2021 18:57:51]
+Editor:
+  Version 1.0.13
+  Build: Release
+  Architecture: x64
+Initialization:
+  Initialized SDL2 Library
+  Initialized FreeType2 Library
+  Platform: Windows
+  Displays:
+    (0) Dell S2719DGF(Displayport) 2560x1440 144Hz
+    (1) Generic PnP Monitor 1024x768 60Hz
+  Drivers:
+    (0) windows
+    (1) dummy
+  Loaded Editor GPAK
+  Created Window WINMAIN
+  Created Window WINPREFERENCES
+  Created Window WINCOLOR
+  Created Window WINNEW
+  Created Window WINRESIZE
+  Created Window WINABOUT
+  Created Window WINUNPACK
+  Created Window WINPACK
+  Created Window WINPATH
+  Created Window WINUPDATE
+  Initialized OpenGL Renderer
+  OpenGL:
+    Version 4.6.0 NVIDIA 461.40
+    GLSL Version 4.60 NVIDIA
+    Renderer: GeForce RTX 2070 SUPER/PCIe/SSE2
+    Vendor: NVIDIA Corporation
+    Max Texture Size: 32768
+    Max Texture Units: 32
+  Loaded Editor Settings
+  Loaded Editor Cursors
+  Loaded Editor Key Bindings
+  Loaded Editor Resources
+  Checking for new releases...
+  No New Releases
+quit_application()

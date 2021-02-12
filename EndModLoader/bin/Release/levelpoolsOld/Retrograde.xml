@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pool enabled="True">
+  <tileset>
+    <default>
+		tile_graphics Tilefield
+		overlay_graphics Overlaysfield
+		background_graphics field2bg
+		foreground_graphics None
+		fx_shader reflectionripples
+		fx_shader_mid radiation
+		midfx_graphics SolidBox
+		palette 5
+		midfx_layer 2
+		global_particle_1 rocks
+		global_particle_2 none
+		global_particle_3 none
+		music [fields_intro.ogg, fields_loop.ogg]
+		ambience flesh.ogg
+	</default>
+    <need>
+		decoration_1 inst11
+	</need>
+    <art>[AimSpitter,eyeshooter][Bullet,eyebullet][MiniFrog, MiniFlea]</art>
+  </tileset>
+  <level>
+    <name>v4b-1</name>
+  </level>
+  <level>
+    <name>v4b-10</name>
+  </level>
+  <level>
+    <name>v4b-11</name>
+  </level>
+  <level>
+    <name>v4b-12</name>
+  </level>
+  <level>
+    <name>v4b-13</name>
+  </level>
+  <level>
+    <name>v4b-14</name>
+  </level>
+  <level>
+    <name>v4b-15</name>
+  </level>
+  <level>
+    <name>v4b-2</name>
+  </level>
+  <level>
+    <name>v4b-3</name>
+  </level>
+  <level>
+    <name>v4b-4</name>
+  </level>
+  <level>
+    <name>v4b-5</name>
+  </level>
+  <level>
+    <name>v4b-6</name>
+  </level>
+  <level>
+    <name>v4b-7</name>
+  </level>
+  <level>
+    <name>v4b-8</name>
+  </level>
+  <level>
+    <name>v4b-9</name>
+  </level>
+</pool>

@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pool enabled="True">
+  <tileset>
+    <default>
+		tile_graphics Tiletox
+		overlay_graphics Overlaystox
+		background_graphics ch4abg
+		foreground_graphics None
+		fx_shader ripples
+		palette 4
+		global_particle_1 wind2
+		global_particle_2 wind
+		global_particle_3 cloudwind
+		music [hungarian_rhapsody_intro.ogg, hungarian_rhapsody_loop.ogg]
+		ambience wind.ogg
+	</default>
+    <need>
+		#fx_shader_mid cloudripples
+		#midfx_graphics None
+		#midfx_layer 2
+	</need>
+    <art>[Floater, Ghost]</art>
+  </tileset>
+  <level>
+    <name>v4a-10</name>
+  </level>
+  <level>
+    <name>v4a-11</name>
+  </level>
+  <level>
+    <name>v4a-12</name>
+  </level>
+  <level>
+    <name>v4a-13</name>
+  </level>
+  <level>
+    <name>v4a-14</name>
+  </level>
+  <level>
+    <name>v4a-15</name>
+  </level>
+  <level>
+    <name>v4a-2</name>
+  </level>
+  <level>
+    <name>v4a-3</name>
+  </level>
+  <level>
+    <name>v4a-4</name>
+  </level>
+  <level>
+    <name>v4a-5</name>
+  </level>
+  <level>
+    <name>v4a-6</name>
+  </level>
+  <level>
+    <name>v4a-7</name>
+  </level>
+  <level>
+    <name>v4a-8</name>
+  </level>
+  <level>
+    <name>v4a-9</name>
+  </level>
+</pool>

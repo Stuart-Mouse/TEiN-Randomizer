@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pool enabled="True">
+  <tileset>
+    <default>
+		tile_graphics Tileairship
+		overlay_graphics Overlaysairship
+		background_graphics airshipbg
+		foreground_graphics None
+		fx_shader reflectionripples
+		palette 8
+		music [slave_intro.ogg, slave_loop.ogg]
+		ambience caves.ogg
+		do_wobble true
+		global_particle_1 none
+		global_particle_2 none
+		global_particle_3 none
+	</default>
+    <need>
+		tile_particle_1 smoke
+		tile_particle_2 smoke2
+		decoration_1 Deco10
+		decoration_2 Deco11
+		decoration_3 none
+	</need>
+  </tileset>
+  <level>
+    <name>5a-1</name>
+  </level>
+  <level>
+    <name>5a-2</name>
+  </level>
+  <level>
+    <name>5a-3</name>
+    <tileset>
+      <default>
+		global_particle_1 cloudwind_heavy
+	  </default>
+    </tileset>
+  </level>
+  <level>
+    <name>5a-4</name>
+  </level>
+  <level>
+    <name>5a-5</name>
+    <tileset>
+      <default>
+		global_particle_1 cloudwind_heavy
+	  </default>
+    </tileset>
+  </level>
+  <level>
+    <name>5a-6</name>
+    <tileset>
+      <default>
+		global_particle_1 cloudwind_heavy
+	  </default>
+    </tileset>
+  </level>
+  <level>
+    <name>5a-7</name>
+  </level>
+  <level>
+    <name>5a-8</name>
+  </level>
+  <level>
+    <name>5a-9</name>
+  </level>
+  <level>
+    <name>5a-10</name>
+  </level>
+  <level>
+    <name>5a-11</name>
+  </level>
+  <level>
+    <name>5a-12</name>
+    <tileset>
+      <default>
+		global_particle_1 cloudwind_heavy
+	  </default>
+    </tileset>
+  </level>
+  <level>
+    <name>5a-13</name>
+    <tileset>
+      <default>
+		global_particle_1 cloudwind_heavy
+	  </default>
+    </tileset>
+  </level>
+  <level>
+    <name>5a-14</name>
+  </level>
+  <level>
+    <name>5a-15</name>
+    <tileset>
+      <default>
+		global_particle_1 cloudwind_heavy
+	  </default>
+    </tileset>
+  </level>
+  <level>
+    <name>5a-16</name>
+  </level>
+  <level>
+    <name>5a-17</name>
+  </level>
+  <level>
+    <name>5a-18</name>
+  </level>
+  <level>
+    <name>5a-19</name>
+    <tileset>
+      <default>
+		global_particle_1 cloudwind_heavy
+	  </default>
+    </tileset>
+  </level>
+  <level>
+    <name>5a-21</name>
+    <tileset>
+      <default>
+		global_particle_1 cloudwind_heavy
+	  </default>
+    </tileset>
+  </level>
+</pool>

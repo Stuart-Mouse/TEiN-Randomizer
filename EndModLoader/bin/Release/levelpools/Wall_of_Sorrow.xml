@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pool enabled="True">
+  <tileset>
+    <default>
+		tile_graphics Tiletox
+		overlay_graphics Overlaystox
+		background_graphics ch4abg
+		foreground_graphics None
+		fx_shader ripples
+		palette 4
+		global_particle_1 wind2
+		global_particle_2 wind
+		global_particle_3 cloudwind
+		music [hungarian_rhapsody_intro.ogg, hungarian_rhapsody_loop.ogg]
+		ambience wind.ogg
+	</default>
+    <art>[Floater, Ghost]</art>
+  </tileset>
+  <level>
+    <name>4a-2</name>
+  </level>
+  <level>
+    <name>4a-3</name>
+  </level>
+  <level>
+    <name>4a-4</name>
+  </level>
+  <level>
+    <name>4a-5</name>
+  </level>
+  <level>
+    <name>4a-6</name>
+  </level>
+  <level>
+    <name>4a-7</name>
+  </level>
+  <level>
+    <name>4a-8</name>
+  </level>
+  <level>
+    <name>4a-9</name>
+  </level>
+  <level>
+    <name>4a-10</name>
+  </level>
+  <level>
+    <name>4a-11</name>
+  </level>
+  <level>
+    <name>4a-12</name>
+    <tileset>
+      <need>
+		fx_shader_mid cloudripples
+		midfx_graphics None
+		midfx_layer 2
+	  </need>
+    </tileset>
+  </level>
+  <level>
+    <name>4a-13</name>
+    <tileset>
+      <need>
+		fx_shader_mid cloudripples
+		midfx_graphics None
+		midfx_layer 2
+	  </need>
+    </tileset>
+  </level>
+  <level>
+    <name>4a-14</name>
+    <tileset>
+      <need>
+		fx_shader_mid cloudripples
+		midfx_graphics None
+		midfx_layer 2
+	  </need>
+    </tileset>
+  </level>
+  <level>
+    <name>4a-15</name>
+    <tileset>
+      <need>
+		fx_shader_mid cloudripples
+		midfx_graphics None
+		midfx_layer 2
+	  </need>
+    </tileset>
+  </level>
+</pool>

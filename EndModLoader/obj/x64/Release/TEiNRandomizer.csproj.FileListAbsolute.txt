@@ -1,0 +1,17 @@
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\bin\x64\Release\TEiNRandomizer.exe.config
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\bin\x64\Release\TEiNRandomizer.exe
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\bin\x64\Release\TEiNRandomizer.pdb
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\x64\Release\MainWindow.g.cs
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\x64\Release\App.g.cs
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\x64\Release\GeneratedInternalTypeHelper.g.cs
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\x64\Release\TEiNRandomizer_MarkupCompile.cache
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\x64\Release\TEiNRandomizer_MarkupCompile.lref
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\x64\Release\App.baml
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\x64\Release\MainWindow.baml
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\x64\Release\TEiNRandomizer.g.resources
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\x64\Release\TEiNRandomizer.Properties.Resources.resources
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\x64\Release\TEiNRandomizer.csproj.GenerateResource.cache
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\x64\Release\TEiNRandomizer.csproj.CoreCompileInputs.cache
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\x64\Release\TEiNRandomizer.exe
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\x64\Release\TEiNRandomizer.pdb
+C:\Users\Noah\source\repos\EndModLoader-master\EndModLoader\obj\x64\Release\TEiNRandomizer.csprojAssemblyReference.cache

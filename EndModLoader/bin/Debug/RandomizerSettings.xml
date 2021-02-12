@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <default>
+    <NumLevels>1</NumLevels>
+    <NumAreas>30</NumAreas>
+    <UseDefaultMusic>false</UseDefaultMusic>
+    <UseDefaultPalettes>false</UseDefaultPalettes>
+    <MusicPerLevel>false</MusicPerLevel>
+    <PalettePerLevel>true</PalettePerLevel>
+    <DoShaders>true</DoShaders>
+    <DoParticles>true</DoParticles>
+    <DoOverlays>true</DoOverlays>
+    <DoTileGraphics>true</DoTileGraphics>
+    <DoNevermoreTilt>true</DoNevermoreTilt>
+    <DoExodusWobble>true</DoExodusWobble>
+    <DoNPCs>false</DoNPCs>
+    <UseCommonTileset>true</UseCommonTileset>
+    <CacheRuns>5</CacheRuns>
+    <NumShuffles>0</NumShuffles>
+    <AreaType>0</AreaType>
+    <RepeatTolerance>0</RepeatTolerance>
+    <AltLevel>1</AltLevel>
+  </default>
+</root>

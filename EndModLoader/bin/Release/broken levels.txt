@@ -1,0 +1,60 @@
+
+v1 {
+    area_name "TEiN Randomizer"
+    area_label_frame 0
+    background_graphics neverbg
+    area_type normal
+
+    tile_graphics Tilecity
+
+    overlay_graphics Overlaysairship
+
+    global_particle_1 mist2
+
+    fx_shader_mid lighting  midfx_graphics ShadeBox  midfx_layer 2  shader_param 0.1
+
+    palette 230
+
+    music [requiem_intro.ogg, requiem_loop.ogg]
+
+art_alts[[Player,PlayerRetro][Frog,FrogRetro][Floater,FloaterGlitch][Fireball,TheHeart][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasserretro][Splatter,Frog][CheepCheep,CheepCheep][Bullet,eyebullet][SpitterX,SpitterX][SpitterY,SpitterY][AimSpitter,eyeshooter][Cannonball,cannonballretro][Hopper,hopperretro][SkullSlug,SkullSlugretro][SkullCrow,SkullCrow][ChainChomp,ChainChomp][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,Ghost][ElectroBall,RetroElectroBall][OrbSmall,OrbSmall][OrbLarge,OrbLarge][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitchRetro][ThwampEye,ThwampEye][MiniFrog,MiniFlea][MiniFly,MiniGhost][MiniRat,MiniRatWhite][MiniFish,MiniFishWhite][MiniWorm,NPCG3]]
+
+7 {
+    
+tile_graphics Tilecaves
+overlay_graphics Overlayscaves
+background_graphics ch3bg
+foreground_graphics None
+fx_shader reflectionripples
+fx_shader_mid distortionparticles
+palette 12
+midfx_layer 1
+music [1812_intro_dark.ogg, 1812_loop_dark.ogg]
+global_particle_1 none
+global_particle_2 none
+global_particle_3 none
+
+    tile_graphics Tilecity
+
+    overlay_graphics Overlaysairship
+
+    global_particle_1 mist2
+
+    fx_shader_mid lighting  midfx_graphics ShadeBox  midfx_layer 2  shader_param 0.1
+
+    palette 230
+
+    music [requiem_intro.ogg, requiem_loop.ogg]
+
+
+    
+tile_particle_1 waterfall
+tile_particle_2 waterfall_splash
+tile_particle_3 bubbles
+tile_particle_4 drip
+[OrbSmall, orbblob][ChainLink, None][ChainLink2, None]
+
+    }
+}
+
+===========================

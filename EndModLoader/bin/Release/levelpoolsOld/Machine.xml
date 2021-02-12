@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pool enabled="True">
+  <tileset>
+    <default>
+		tile_graphics Tilecomplex
+		overlay_graphics Overlayscomplex
+		background_graphics field2bg
+		foreground_graphics None
+		fx_shader gravripples
+		palette 9
+		fx_shader_mid cloudripples
+		midfx_layer 2
+		global_particle_1 rocks
+		global_particle_3 none
+		music [bumblebee_intro.ogg, bumblebee_loop.ogg]
+		ambience labloop.ogg
+	</default>
+    <need>
+		tile_particle_1 spark2
+		tile_particle_2 smoke
+		tile_graphics Tilecomplex
+	</need>
+  </tileset>
+  <level>
+    <name>v5b-12</name>
+  </level>
+  <level>
+    <name>v5b-13</name>
+  </level>
+  <level>
+    <name>v5b-15</name>
+  </level>
+  <level>
+    <name>v5b-16</name>
+  </level>
+  <level>
+    <name>v5b-20</name>
+  </level>
+  <level>
+    <name>v5b-21</name>
+  </level>
+  <level>
+    <name>v5b-22</name>
+  </level>
+  <level>
+    <name>v5bxd-5</name>
+  </level>
+  <level>
+    <name>v5bxd-6</name>
+  </level>
+  <level>
+    <name>v5bxd-7</name>
+  </level>
+  <level>
+    <name>v5bxd-8</name>
+  </level>
+  <level>
+    <name>v5bxu-10</name>
+  </level>
+  <level>
+    <name>v5bxu-2</name>
+  </level>
+  <level>
+    <name>v5bxu-4</name>
+  </level>
+  <level>
+    <name>v5bxu-6</name>
+  </level>
+  <level>
+    <name>v5bxu-9</name>
+  </level>
+</pool>

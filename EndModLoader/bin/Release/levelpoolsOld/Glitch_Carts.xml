@@ -1,0 +1,699 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pool enabled="False">
+  <tileset>
+    <default>
+		tile_graphics TileGlitch
+		overlay_graphics Overlaysretro
+		background_graphics bgretro
+		foreground_graphics none
+		global_particle_1 none
+		global_particle_2 none
+		global_particle_3 none
+	</default>
+    <art>[Player, PlayerRetro][Frog, Frogretro][Floater, FloaterGlitch][Slug, Slugretro][SkullFloater, SkullFloaterretro][Gasser, Gasserretro][Splatter, Splatterretro][CheepCheep, cheepretro][Bullet, bulletretro][SpitterX, SpitterXretro][SpitterY, SpitterYretro][AimSpitter, SpitterZretro][Cannonball, cannonballretro][Fireball, cannonballfireretro][Hopper, hopperretro][SkullSlug, SkullSlugretro][SkullCrow, SkullCrowretro][ChainChomp, ChainChompretro][ChainLink2, none][ChainLink, ChainLinkretro][Mask, Maskretro][Revolver, Revolverretro][GasCloud, GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,Bouncerretro][ChainHitch,ChainHitchRetro][OrbLarge, pacman]</art>
+  </tileset>
+  <level>
+    <name>vg0-1</name>
+    <tileset>
+      <default>
+				palette 43
+				music [glitch/homk_intro.ogg, glitch/homk_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg0-10</name>
+    <tileset>
+      <default>
+				palette 43
+				music [glitch/homk_intro.ogg, glitch/homk_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg0-2</name>
+    <tileset>
+      <default>
+				palette 43
+				music [glitch/homk_intro.ogg, glitch/homk_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg0-3</name>
+    <tileset>
+      <default>
+				palette 43
+				music [glitch/homk_intro.ogg, glitch/homk_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg0-4</name>
+    <tileset>
+      <default>
+				palette 43
+				music [glitch/homk_intro.ogg, glitch/homk_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg0-5</name>
+    <tileset>
+      <default>
+				palette 43
+				music [glitch/homk_intro.ogg, glitch/homk_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg0-6</name>
+    <tileset>
+      <default>
+				palette 43
+				music [glitch/homk_intro.ogg, glitch/homk_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg0-7</name>
+    <tileset>
+      <default>
+				palette 43
+				music [glitch/homk_intro.ogg, glitch/homk_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg0-8</name>
+    <tileset>
+      <default>
+				palette 43
+				music [glitch/homk_intro.ogg, glitch/homk_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg0-9</name>
+    <tileset>
+      <default>
+				palette 43
+				music [glitch/homk_intro.ogg, glitch/homk_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-1</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-1a</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-2</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-2a</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-3</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-3a</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-4</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-4a</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-5</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-6</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-6a</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-7</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-7a</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-8</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-8a</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-9</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg1-9a</name>
+    <tileset>
+      <default>
+				palette 27
+				music [glitch/dance_intro.ogg, glitch/dance_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg2-1</name>
+    <tileset>
+      <default>
+				palette 28
+				music [glitch/nobm_intro.ogg, glitch/nobm_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg2-10</name>
+    <tileset>
+      <default>
+				palette 28
+				music [glitch/nobm_intro.ogg, glitch/nobm_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg2-2</name>
+    <tileset>
+      <default>
+				palette 28
+				music [glitch/nobm_intro.ogg, glitch/nobm_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg2-3</name>
+    <tileset>
+      <default>
+				palette 28
+				music [glitch/nobm_intro.ogg, glitch/nobm_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg2-4</name>
+    <tileset>
+      <default>
+				palette 28
+				music [glitch/nobm_intro.ogg, glitch/nobm_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg2-5</name>
+    <tileset>
+      <default>
+				palette 28
+				music [glitch/nobm_intro.ogg, glitch/nobm_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg2-6</name>
+    <tileset>
+      <default>
+				palette 28
+				music [glitch/nobm_intro.ogg, glitch/nobm_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg2-7</name>
+    <tileset>
+      <default>
+				palette 28
+				music [glitch/nobm_intro.ogg, glitch/nobm_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg2-8</name>
+    <tileset>
+      <default>
+				palette 28
+				music [glitch/nobm_intro.ogg, glitch/nobm_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg2-9</name>
+    <tileset>
+      <default>
+				palette 28
+				music [glitch/nobm_intro.ogg, glitch/nobm_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg3-1</name>
+    <tileset>
+      <default>
+				palette 42
+				music [glitch/newworld_intro.ogg, glitch/newworld_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg3-10</name>
+    <tileset>
+      <default>
+				palette 42
+				music [glitch/newworld_intro.ogg, glitch/newworld_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg3-2</name>
+    <tileset>
+      <default>
+				palette 42
+				music [glitch/newworld_intro.ogg, glitch/newworld_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg3-3</name>
+    <tileset>
+      <default>
+				palette 42
+				music [glitch/newworld_intro.ogg, glitch/newworld_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg3-4</name>
+    <tileset>
+      <default>
+				palette 42
+				music [glitch/newworld_intro.ogg, glitch/newworld_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg3-5</name>
+    <tileset>
+      <default>
+				palette 42
+				music [glitch/newworld_intro.ogg, glitch/newworld_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg3-6</name>
+    <tileset>
+      <default>
+				palette 42
+				music [glitch/newworld_intro.ogg, glitch/newworld_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg3-7</name>
+    <tileset>
+      <default>
+				palette 42
+				music [glitch/newworld_intro.ogg, glitch/newworld_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg3-8</name>
+    <tileset>
+      <default>
+				palette 42
+				music [glitch/newworld_intro.ogg, glitch/newworld_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg3-9</name>
+    <tileset>
+      <default>
+				palette 42
+				music [glitch/newworld_intro.ogg, glitch/newworld_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg4-10</name>
+    <tileset>
+      <default>
+				palette 30
+				music [glitch/bumblebee_intro.ogg, glitch/bumblebee_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg4-2</name>
+    <tileset>
+      <default>
+				palette 30
+				music [glitch/bumblebee_intro.ogg, glitch/bumblebee_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg4-3</name>
+    <tileset>
+      <default>
+				palette 30
+				music [glitch/bumblebee_intro.ogg, glitch/bumblebee_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg4-4</name>
+    <tileset>
+      <default>
+				palette 30
+				music [glitch/bumblebee_intro.ogg, glitch/bumblebee_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg4-5</name>
+    <tileset>
+      <default>
+				palette 30
+				music [glitch/bumblebee_intro.ogg, glitch/bumblebee_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg4-6</name>
+    <tileset>
+      <default>
+				palette 30
+				music [glitch/bumblebee_intro.ogg, glitch/bumblebee_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg4-7</name>
+    <tileset>
+      <default>
+				palette 30
+				music [glitch/bumblebee_intro.ogg, glitch/bumblebee_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg4-8</name>
+    <tileset>
+      <default>
+				palette 30
+				music [glitch/bumblebee_intro.ogg, glitch/bumblebee_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg4-9</name>
+    <tileset>
+      <default>
+				palette 30
+				music [glitch/bumblebee_intro.ogg, glitch/bumblebee_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg5-1</name>
+    <tileset>
+      <default>
+				palette 50
+				music [glitch/dante_intro.ogg, glitch/dante_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg5-10</name>
+    <tileset>
+      <default>
+				palette 50
+				music [glitch/dante_intro.ogg, glitch/dante_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg5-2</name>
+    <tileset>
+      <default>
+				palette 50
+				music [glitch/dante_intro.ogg, glitch/dante_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg5-3</name>
+    <tileset>
+      <default>
+				palette 50
+				music [glitch/dante_intro.ogg, glitch/dante_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg5-4</name>
+    <tileset>
+      <default>
+				palette 50
+				music [glitch/dante_intro.ogg, glitch/dante_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg5-5</name>
+    <tileset>
+      <default>
+				palette 50
+				music [glitch/dante_intro.ogg, glitch/dante_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg5-6</name>
+    <tileset>
+      <default>
+				palette 50
+				music [glitch/dante_intro.ogg, glitch/dante_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg5-7</name>
+    <tileset>
+      <default>
+				palette 50
+				music [glitch/dante_intro.ogg, glitch/dante_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg5-8</name>
+    <tileset>
+      <default>
+				palette 50
+				music [glitch/dante_intro.ogg, glitch/dante_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg5-9</name>
+    <tileset>
+      <default>
+				palette 50
+				music [glitch/dante_intro.ogg, glitch/dante_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg9-0</name>
+    <tileset>
+      <default>
+				palette 14
+				music [glitch/turkish_intro.ogg, glitch/turkish_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg9-1</name>
+    <tileset>
+      <default>
+				palette 14
+				music [glitch/turkish_intro.ogg, glitch/turkish_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg9-2</name>
+    <tileset>
+      <default>
+				palette 14
+				music [glitch/turkish_intro.ogg, glitch/turkish_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg9-3</name>
+    <tileset>
+      <default>
+				palette 14
+				music [glitch/turkish_intro.ogg, glitch/turkish_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg9-4</name>
+    <tileset>
+      <default>
+				palette 14
+				music [glitch/turkish_intro.ogg, glitch/turkish_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg9-5</name>
+    <tileset>
+      <default>
+				palette 14
+				music [glitch/turkish_intro.ogg, glitch/turkish_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg9-6</name>
+    <tileset>
+      <default>
+				palette 14
+				music [glitch/turkish_intro.ogg, glitch/turkish_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg9-7</name>
+    <tileset>
+      <default>
+				palette 14
+				music [glitch/turkish_intro.ogg, glitch/turkish_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg9-8</name>
+    <tileset>
+      <default>
+				palette 14
+				music [glitch/turkish_intro.ogg, glitch/turkish_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+  <level>
+    <name>vg9-9</name>
+    <tileset>
+      <default>
+				palette 14
+				music [glitch/turkish_intro.ogg, glitch/turkish_loop.ogg]
+			</default>
+    </tileset>
+  </level>
+</pool>
