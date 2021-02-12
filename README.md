@@ -25,18 +25,18 @@
 
 Screenshots:
 <p align="center"> 
-    <img src="sc2.png">
-	<img src="sc3.png">
-	<img src="sc4.png">
-	<img src="sc5.png">
-	<img src="sc6.png">
-	<img src="sc7.png">
-	<img src="sc8.png">
-	<img src="sc9.png">
-	<img src="sc10.png">
-	<img src="sc11.png">
-	<img src="sc12.png">
-	<img src="sc13.png">
-	<img src="sc14.png">
-	<img src="sc15.png">
+    <img src="screenshots/sc2.png">
+	<img src="screenshots/sc3.png">
+	<img src="screenshots/sc4.png">
+	<img src="screenshots/sc5.png">
+	<img src="screenshots/sc6.png">
+	<img src="screenshots/sc7.png">
+	<img src="screenshots/sc8.png">
+	<img src="screenshots/sc9.png">
+	<img src="screenshots/sc10.png">
+	<img src="screenshots/sc11.png">
+	<img src="screenshots/sc12.png">
+	<img src="screenshots/sc13.png">
+	<img src="screenshots/sc14.png">
+	<img src="screenshots/sc15.png">
 </p>
