@@ -11,8 +11,8 @@
 EndModLoader/[Dd]ebug/
 EndModLoader/[Rr]elease/
 EndModLoader/[Bb]in/
-x64/
-[Oo]bj/
+EndModLoader/x64/
+EndModLoader/[Oo]bj/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
@@ -131,3 +131,6 @@ $RECYCLE.BIN/
 .DS_Store
 
 _NCrunch*
+
+# Other
+.vs/
