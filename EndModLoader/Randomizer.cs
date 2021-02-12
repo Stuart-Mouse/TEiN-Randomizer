@@ -252,7 +252,7 @@ namespace TEiNRandomizer
                 {
                     if (myRNG.CoinFlip())
                         areaname += adjective[myRNG.rand.Next(0, adjective.Length)] + " ";
-                    areaname += noun[myRNG.rand.Next(0, adjective.Length)] + " ";
+                    areaname += noun[myRNG.rand.Next(0, noun.Length)] + " ";
                     areaname += location[myRNG.rand.Next(0, location.Length)] + " ";
                 }
                 else
@@ -260,7 +260,7 @@ namespace TEiNRandomizer
                     areaname += location[myRNG.rand.Next(0, location.Length)] + " of ";
                     if (myRNG.CoinFlip())
                         areaname += adjective[myRNG.rand.Next(0, adjective.Length)] + " ";
-                    areaname += noun[myRNG.rand.Next(0, adjective.Length)] + " ";
+                    areaname += noun[myRNG.rand.Next(0, noun.Length)] + " ";
                 }
 
                 using (StreamWriter sw = File.AppendText(gameDir + "data/levelinfo.txt.append"))
