@@ -8,10 +8,10 @@
 
 # Build results
 
-[Dd]ebug/
-[Rr]elease/
+EndModLoader/[Dd]ebug/
+EndModLoader/[Rr]elease/
+EndModLoader/[Bb]in/
 x64/
-[Bb]in/
 [Oo]bj/
 
 # MSTest test Results
