@@ -252,7 +252,8 @@ namespace TEiNRandomizer
                 {
                     if (myRNG.CoinFlip())
                         areaname += adjective[myRNG.rand.Next(0, adjective.Length)] + " ";
-                    areaname += noun[myRNG.rand.Next(0, noun.Length)] + " ";
+                    if (myRNG.CoinFlip())
+                        areaname += noun[myRNG.rand.Next(0, noun.Length)] + " ";
                     areaname += location[myRNG.rand.Next(0, location.Length)] + " ";
                 }
                 else

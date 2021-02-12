@@ -134,3 +134,10 @@ _NCrunch*
 
 # Other
 .vs/
+*.baml
+*.baml
+EndModLoader/obj/Release/App.g.i.cs
+*.cache
+*.lref
+EndModLoader/obj/Release/App.g.cs
+EndModLoader/obj/Release/App.g.i.cs
