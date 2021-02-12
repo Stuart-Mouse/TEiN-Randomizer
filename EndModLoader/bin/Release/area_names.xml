@@ -12,7 +12,7 @@
 	Butcher
 	Stuart
 	Banana Man
-	Not Wendy
+	NotWendy
 	Zory
 	minichibi
 	Patchouli
@@ -33,10 +33,16 @@
 	fossil
 	JRob
 	eenox
+	Obama
+	Dr Fetus
+	Gish
+	Guppy
+	Crasseyon
+	Breadmund
+	Little Timmy
   </name>
   <noun>
 	Blight
-	Tetanus
 	Salt
 	Maggots
 	Worms
@@ -62,13 +68,67 @@
 	Blood
 	Gore
 	Bone
+	Conquest
+	Cog
+	Goo
+	Donut
+	Bagel
+	Doom
+	Pepper
+	Coal
+	Iron
+	Copper
+	Gold
+	Tar
+	Asbestos
+	Wheat
+	Madness
+	Insanity
+	Anger
+	Depression
+	Acceptance
+	Bargaining
+	Fantasy
+	Cat
+	Steam
+	Octane
+	Soul
+	Chaos
+	Nightmares
+	Dreams
+	Famine
+	Pestilence
+	Death
+	War
+	Energy
+	Adrenaline
+	Baby
+	Despair
+	Sadness
+	Sorrow
+	Affliction
+	Mushroom
+	Paint
+	Blessing
+	Reality
+	Fiction
+	Ascension
+	Depravity
+	Faith
+	Pondering
+	Dyslexia
+	Power
+	Redemption
+	Bondage
+	Sex
+	Gatorade
+	Doo Doo
+	Friendship
   </noun>
   <location>
     Snow Globe
-	Garden
 	Factory
 	Desert
-	Sanctuary
 	Lake
 	Ocean
 	Cave
@@ -79,8 +139,6 @@
 	Mansion
 	Pit
 	Maelstrom
-	Maze
-	Labrynth
 	Highlands
 	Emporium
 	Tomb
@@ -93,6 +151,82 @@
 	Dungeon
 	Rectum
 	Banquet
+	Bank
+	Farm Arrays
+	Depths
+	Outskirts
+	Wall
+	Complex
+	Butthole
+	Crypt
+	Citadel
+	Wastes
+	Canopy
+	Island
+	Archipelago
+	Problem
+	Mines
+	Quarry
+	Mausoleum
+	Heaven
+	Fortress
+	Prison
+	Jukebox
+	Conundrum
+	Wasteland
+	Hangar
+	House
+	River
+	Mountain
+	Peak
+	Hill
+	Junction
+	Zone
+	Workshop
+	Challenge
+	Moon
+	Space
+	Breach
+	Valley
+	Cove
+	Kingdom
+	Library
+	Castle
+	System
+	Jar
+	Galaxy
+	Nebula
+	Universe
+	Mistake
+	Resort
+	Error
+	Jail
+	Surprise
+	Path
+	Oasis
+	Place
+	Gallery
+	Field
+	Plains
+	Street
+	Alley
+	Playground
+	Battlefield
+	Cavern
+	Grotto
+	Hideout
+	Crackhouse
+	Brothel
+	Illusion
+	Woods
+	Plateau
+	Canyon
+	Forge
+	Tower
+	Chronicles
+	Land
+	Syndrome
+	Adventure
   </location>
   <adjective>
 	Little
@@ -105,16 +239,91 @@
 	Crispy
 	Mega
 	Super
-	Stained
-	Gratuitous
 	Rancid
 	Rotten
-	Nazi
 	Fiery
-	Bloody
 	Impossible
 	Anal
 	Intestinal
-	Smelly
+	Warm
+	Cold
+	Frozen
+	Dark
+	Final
+	Complete
+	Massive
+	Humongous
+	Tiny
+	Minuscule
+	Endless
+	Infinite
+	Blank
+	Beautiful
+	Ugly
+	Wondrous
+	Wet
+	Dry
+	Epic
+	Wild
+	Overloaded
+	Random
+	Spicy
+	Acrobatic
+	High 
+	Low
+	Bright
+	Funny
+	Silly
+	Blind
+	Deaf
+	Ironic
+	Gay
+	Special
+	Severed
+	Milky
+	Controversial
+	Convoluted
+	Hot
+	Scorching
+	Deep Fried
+	Searing
+	Sunburnt
+	Comfortable
+	Tasty
+	Strange
+	Weird
+	Mysterious
+	Foggy
+	Sunny
+	Rainy
+	Windy
+	Stormy
+	Thunderstruck
+	Lovestruck
+	Bloodstained
+	Soulbound
+	Negative
+	Positive
+	Neutral
+	Absolute
+	First
+	Second
+	Third
+	Last
+	Dusty
+	Moonlit
+	Patchwork
+	Industrial
+	Imaginary
+	Wrong
+	Illegal
+	Clockwork
+	Make Believe
+	Unacceptable
+	Forsaken
+	Necrotic
+	Forbidden
+	Secret
+	Bizarre
   </adjective>
 </root>

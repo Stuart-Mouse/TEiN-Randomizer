@@ -23,7 +23,7 @@
 - better integration with the game<br/>
 </p>
 
-Screenshots:
+<h2>Screenshots:</h2>
 <p align="center"> 
     <img src="screenshots/sc2.png">
 	<img src="screenshots/sc3.png">
