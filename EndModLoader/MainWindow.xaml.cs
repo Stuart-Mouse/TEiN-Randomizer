@@ -392,7 +392,7 @@ namespace TEiNRandomizer
             // 4294967295
             // run randomizer
             UInt32 reached = 0;
-            for (UInt32 i = 0; i < 10000; i++)
+            for (UInt32 i = 0; i < 1000; i++)
             {
                 //GameSeed = Randomizer.myRNG.GetSeed();
                 try

@@ -48,10 +48,13 @@
 		cloudwind
 		cloudwind2
 		cloudwind_light
+		cloudwind_heavy
+		fallout
 		fallout2
 		lightning
 		rocks
 		cold
+		mist
 		mist2
 		rocks
 	</particles>
@@ -84,95 +87,4 @@
 	<palette>
 		1
 	</palette>
-	<clips>
-		<particle>
-			ToxicParticle
-			ToxicParticle2
-			TestParticle
-			TestParticle2
-			soliddrip
-			spark
-			spark2
-			Rock
-			Rock2
-			Light
-			Lightning
-			Leaf
-			Leaf2
-			goo1
-			goo2
-			Gibs
-			Gibs2
-			DistortionParticle
-			DistortionParticle2
-			WindCloud
-			cloud
-			blackpart
-		</particle>
-		<small>
-			eyebullet
-			bullet
-			Key
-			DeathGhost
-			CreepEye
-			Fish
-			MiniDrone
-			MiniFish
-			MiniFishWhite
-			MiniFly
-			MiniWisp
-			ThwampGear
-			ThwampEye
-			ThwampGearRetro
-			ThwampEyeRetro
-			Coin
-			bulletretro
-		</small>
-		<npcs>
-			NPCB4
-			NPCG1
-			NPCG2
-			NPCG3
-			NPCG4
-			NPCG5
-			NPCG6
-			NPCG7
-			NPCD1
-			NPCD2
-			NPCD3
-			NPCD4
-			NPCD5
-			NPCD6
-			NPCD7
-		</npcs>
-		<midsize>
-			Cartridge
-			cart2
-			cart3
-			TheHead
-			TheHeart
-			EscapeEnd
-			cartend
-		</midsize>
-		<enemies>
-			pacman
-			cannonballretro
-			cannonballfireretro
-			Floater
-			Fireball
-			Cannonball
-			SkullCrow
-			SkullCrowretro
-			Floaterretro
-			Floater2
-			FloaterGlitch
-			Bouncerretro
-			Mask
-			CreepingMass
-			ChainChomp
-			Sentry
-			Fish
-			Bouncer
-		</enemies>
-	</clips>
 </root>

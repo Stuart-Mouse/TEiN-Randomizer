@@ -396,10 +396,10 @@ namespace TEiNRandomizer
                 try{
                     TileMaps();     // copy tilemaps to game folder
                 }
-                catch (Exception){MessageBox.Show("Error copying tilemaps.","Error",MessageBoxButton.OK,MessageBoxImage.Error); throw;}
+                catch (Exception) { MessageBox.Show("Error copying tilemaps.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
                 
             }
-            Tilesets();         // create tilesets.txt
+            Tilesets();             // create tilesets.txt
         }
     }
 }

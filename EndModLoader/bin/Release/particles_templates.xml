@@ -1,27 +1,27 @@
 <root>
-	<particle>
-		NAME {
+	<template>
+		testParticleDirection {
 			#system TestParticle
-			movieclip CLIP
+			movieclip MiniGhost
 			max_particles 400
-			layer 0
+			layer 4
 			livebounds [-10, 64, -10, 42]
 			prewarm [20,48]
 			batched true
-			
+					
 			#emitter properties
 			emit_rate 8
 			emit_amount 2
 			emit_direction [0, 1]
-			emit_spread 20
-			emit_box [54, 16]      #54 for "level width", 32 for "level height"    
-			emit_offset [27,0]   #27,16 for middle of the level. 0,0 for bottom left. 54,32 for upper right. this one sets it as a strip at the top 
-			
+			emit_spread 20        #0 - 90
+			emit_box [54, 1]      #[54, 1],[54, 1],[1, 32],[1, 32]  #54 for "level width", 32 for "level height"    
+			emit_offset [27,-1]   #[27,-1],[27,33],[-1,16],[55,16]  #27,16 for middle of the level. 0,0 for bottom left. 54,32 for upper right. this one sets it as a strip at the top 
+					
 			#particle animation properties
 			particle_lifetime 80
-			initial_speed [2, 4]
-			initial_rotation [0,360]
-			rotation_speed [-30, 30]
+			initial_speed [2, 10]
+			initial_rotation 0
+			rotation_speed 0
 			force 0
 			friction 1
 			size_start [.75,1.25]
@@ -33,11 +33,96 @@
 			inherit_speed 0
 			tags []
 		}
-	</particle>
-	<npc>
-	
-	</npc>
-	<enemy>
-	
-	</enemy>
+	</template>
+	<art>
+	  <particle>
+			ToxicParticle
+			ToxicParticle2
+			TestParticle
+			TestParticle2
+			soliddrip
+			spark
+			spark2
+			Rock
+			Rock2
+			Light
+			Lightning
+			Leaf
+			Leaf2
+			goo1
+			goo2
+			Gibs
+			Gibs2
+			DistortionParticle
+			DistortionParticle2
+			WindCloud
+			cloud
+			blackpart
+		</particle>
+		<small>
+			eyebullet
+			bullet
+			Key
+			DeathGhost
+			CreepEye
+			Fish
+			MiniDrone
+			MiniFish
+			MiniFishWhite
+			MiniFly
+			MiniWisp
+			ThwampGear
+			ThwampEye
+			ThwampGearRetro
+			ThwampEyeRetro
+			Coin
+			bulletretro
+		</small>
+		<npcs>
+			NPCB4
+			NPCG1
+			NPCG2
+			NPCG3
+			NPCG4
+			NPCG5
+			NPCG6
+			NPCG7
+			NPCD1
+			NPCD2
+			NPCD3
+			NPCD4
+			NPCD5
+			NPCD6
+			NPCD7
+		</npcs>
+		<midsize>
+			Cartridge
+			cart2
+			cart3
+			TheHead
+			TheHeart
+			EscapeEnd
+			cartend
+		</midsize>
+		<enemies>
+			pacman
+			cannonballretro
+			cannonballfireretro
+			Floater
+			Fireball
+			Cannonball
+			SkullCrow
+			SkullCrowretro
+			Floaterretro
+			Floater2
+			FloaterGlitch
+			Bouncerretro
+			Mask
+			CreepingMass
+			ChainChomp
+			Sentry
+			Fish
+			Bouncer
+		</enemies>
+	</art>
 </root>

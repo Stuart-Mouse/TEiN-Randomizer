@@ -2,7 +2,7 @@
     <img src="screenshots/menu.png">
 </p>
 
-<h1>The End is Nigh Randomizer is currently in BETA.</h1>
+<h1><img src="screenshots/icon.png"> The End is Nigh Randomizer is currently in BETA.</h1>
 
 <h2>Current Features:</h2>
 - randomized level order<br/>
