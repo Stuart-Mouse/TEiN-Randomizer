@@ -180,6 +180,7 @@ namespace TEiNRandomizer
                     sw.WriteLine("}");
                 }
             }
+            File.Copy(gameDir + "data/tilesets.txt.append", "debug/last_tilesets.txt", true);
         }
         static void CleanFolders()
         {
@@ -291,7 +292,7 @@ namespace TEiNRandomizer
         }
         static void WriteDebug()
         {
-            using (StreamWriter sw = File.CreateText("debug.txt"))
+            using (StreamWriter sw = File.CreateText("debug/last_levelnames.txt"))
             {
                 sw.WriteLine("Chosen Levels");
                 for (int j = 0; j < settings.NumAreas; j++)
