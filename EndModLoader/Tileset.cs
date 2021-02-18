@@ -30,7 +30,7 @@ namespace TEiNRandomizer
 
             try
             {
-                var doc = XDocument.Load("art_alts.xml");
+                var doc = XDocument.Load("data/art_alts.xml");
                 if (settings.AltLevel == AltLevels.Safe)
                 foreach (var item in Randomizer.ElementToArray(doc.Root.Element("safe")))
                 {
@@ -97,7 +97,7 @@ namespace TEiNRandomizer
             var palettePool = new string[] { };
             var musicPool = new string[] { };
 
-            var doc = XDocument.Load("tilesets_pools.xml");    // open levelpool file
+            var doc = XDocument.Load("data/tilesets_pools.xml");    // open levelpool file
             foreach (var element in doc.Root.Elements())
             {
                 if (element.Name == "tile_graphics")

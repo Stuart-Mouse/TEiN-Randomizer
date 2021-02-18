@@ -18,9 +18,9 @@ namespace TEiNRandomizer
         {
             try
             {
-                var doc = XDocument.Load($"levelpools/{Name}.xml");    // open levelpool file
+                var doc = XDocument.Load($"data/levelpools/{Name}.xml");    // open levelpool file
                 doc.Root.Attribute("enabled").Value = Active.ToString();
-                doc.Save($"levelpools/{Name}.xml");
+                doc.Save($"data/levelpools/{Name}.xml");
             }
             catch (Exception)
             {
@@ -45,7 +45,7 @@ namespace TEiNRandomizer
             string tileneed = null;
             string tileart = null;
 
-            var doc = XDocument.Load($"levelpools/{Name}.xml");    // open levelpool file
+            var doc = XDocument.Load($"data/levelpools/{Name}.xml");    // open levelpool file
             this.Active = Convert.ToBoolean(doc.Root.Attribute("enabled").Value == "True");
             foreach (var element in doc.Root.Elements())
             {
@@ -54,7 +54,7 @@ namespace TEiNRandomizer
                     var level = new Level { };
                     level.TSDefault += tiledefault;
                     level.TSNeed += tileneed;
-                    level.TSNeed += tileart;
+                    level.Art += tileart;
                     foreach (var element2 in element.Elements())
                     {
                         if (element2.Name == "name") level.Name = element2.Value;

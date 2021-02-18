@@ -51,14 +51,14 @@ namespace TEiNRandomizer
         {
             var recents = new List<string> { };
             var unCache = new List<XElement> { };
-            if (!File.Exists("cache.xml"))
+            if (!File.Exists("data/cache.xml"))
             {
                 var doc = new XDocument { };
                 doc.Add(new XElement("cache"));
-                doc.Save("cache.xml");
+                doc.Save("data/cache.xml");
             }
 
-            var cachedoc = XDocument.Load("cache.xml");    // open cache file
+            var cachedoc = XDocument.Load("data/cache.xml");    // open cache file
             foreach (var element in cachedoc.Root.Elements())
             {
                 var t_num = int.Parse(element.Attribute("num").Value.ToString());
@@ -76,7 +76,7 @@ namespace TEiNRandomizer
                         element.Remove();
                 }
             }
-            cachedoc.Save("cache.xml");
+            cachedoc.Save("data/cache.xml");
 
             // remove recently played levels
             var toRemove = new List<string> { };
@@ -116,13 +116,13 @@ namespace TEiNRandomizer
             }
             newelement.Value += "\n  ";
             cachedoc.Root.Add(newelement);
-            cachedoc.Save("cache.xml");
+            cachedoc.Save("data/cache.xml");
         }
         static void Tilesets()
         {
             using (StreamWriter sw = File.CreateText(gameDir + "data/tilesets.txt.append"))
             {
-                sw.WriteLine("v { area_name \"Void\" area_label_frame 0 tile_graphics Tilehell overlay_graphics Overlaysairship background_graphics neverbg foreground_graphics none palette 2 do_tilt true fx_shader ripples fx_shader_mid heatwave2 midfx_graphics SolidBox global_particle_1 bgrain global_particle_2 embers global_particle_3 leaves decoration_1 CreepingMass ambience flesh.ogg art_alts [[OrbSmall, OrbBlob2][OrbLarge, OrbLarge2][ChainLink, None][ChainLink2, None]]}");
+                sw.WriteLine("v { area_name \"Void\" area_label_frame 0 tile_graphics Tilehell overlay_graphics Overlaysairship background_graphics neverbg foreground_graphics none palette 0 do_tilt true fx_shader ripples fx_shader_mid heatwave2 midfx_graphics SolidBox global_particle_1 bgrain global_particle_2 embers global_particle_3 leaves decoration_1 CreepingMass decoration_2 OrbBlob2 decoration_3 OrbLarge2 ambience flesh.ogg art_alts[[OrbSmall, OrbBlob2][OrbLarge, OrbLarge2][ChainLink, None][ChainLink2, None]]}");
                 
                 for (int j = 0; j < settings.NumAreas; j++) // area loop
                 {
@@ -160,18 +160,16 @@ namespace TEiNRandomizer
                                 sw.WriteLine(tileset.Shader);
                             if (settings.DoParticles)
                                 sw.WriteLine(tileset.Particles);
-
-                            // Art alts
-                            sw.Write("art_alts[" + ChosenLevels[j][i].Art);
-                            if (settings.UseCommonTileset)
-                                sw.Write(areatileset.ArtAlts);
-                            else
-                                sw.Write(tileset.ArtAlts);
-                            sw.WriteLine("]");
-
                             sw.WriteLine(tileset.Extras);
                         }
                         else sw.WriteLine(areatileset.All);
+
+                        // Art alts
+                        sw.Write("art_alts[" + ChosenLevels[j][i].Art);
+                        sw.Write(tileset.ArtAlts);
+                        if (settings.UseCommonTileset)
+                            sw.Write(areatileset.ArtAlts);
+                        sw.WriteLine("]");
 
                         sw.WriteLine("    " + ChosenLevels[j][i].TSNeed);
                         sw.WriteLine(settings.AttachToTS);
@@ -180,7 +178,7 @@ namespace TEiNRandomizer
                     sw.WriteLine("}");
                 }
             }
-            File.Copy(gameDir + "data/tilesets.txt.append", "debug/last_tilesets.txt", true);
+            File.Copy(gameDir + "data/tilesets.txt.append", "data/debug/last_tilesets.txt", true);
         }
         static void CleanFolders()
         {
@@ -204,25 +202,25 @@ namespace TEiNRandomizer
             Directory.CreateDirectory(gameDir + "tilemaps");
             
             Directory.CreateDirectory(gameDir + "textures");
-            File.Copy("palette.png", gameDir + "textures/palette.png", true);
+            File.Copy("data/palette.png", gameDir + "textures/palette.png", true);
             Directory.CreateDirectory(gameDir + "shaders");
             Directory.CreateDirectory(gameDir + "swfs");        
-            File.Copy("endnigh.swf", gameDir + "swfs/endnigh.swf", true);    // copy swf
-            foreach (var file in Directory.GetFiles("shaders"))
+            File.Copy("data/endnigh.swf", gameDir + "swfs/endnigh.swf", true);    // copy swf
+            foreach (var file in Directory.GetFiles("data/shaders"))
             {
                 File.Copy(file, gameDir + $"shaders/{Path.GetFileName(file)}", true);
             }
         }
         static void MapCSV()
         {
-            System.IO.File.Copy("map_CLEAN.csv", gameDir + "data/map.csv", true);
+            System.IO.File.Copy("data/map_CLEAN.csv", gameDir + "data/map.csv", true);
             using (StreamWriter sw = File.AppendText(gameDir + "data/map.csv"))
             {
                 for (int j = 0; j < settings.NumAreas; j++)
                 {
                     for (int i = 0; i < settings.NumLevels; i++)
                     {
-                        sw.Write($"v{prevRuns + j + 1}-{i + 1}.lvl,");
+                        sw.Write($"v{j + 1}-{i + 1}.lvl,");
                     }
                 }
                 sw.Write("v-end.lvl");
@@ -238,7 +236,7 @@ namespace TEiNRandomizer
                 //NAME's ( ADJECTIVE ) LOCATION ( of ( ADJECTIVE ) NOUN )
                 //NAME's ( ADJECTIVE ) NOUN LOCATION
 
-                var doc = XDocument.Load("area_names.xml");
+                var doc = XDocument.Load("data/area_names.xml");
                 var name = Randomizer.ElementToArray(doc.Root.Element("name"));
                 var location = Randomizer.ElementToArray(doc.Root.Element("location"));
                 var adjective = Randomizer.ElementToArray(doc.Root.Element("adjective"));
@@ -276,23 +274,23 @@ namespace TEiNRandomizer
         }
         static void TileMaps()
         {
-            File.Copy("vtilemaps/1-1.lvl", gameDir + "tilemaps/1-1.lvl", true);
-            File.Copy("vtilemaps/1-1x.lvl", gameDir + "tilemaps/1-2.lvl", true);
-            File.Copy("vtilemaps/v-connect.lvl", gameDir + "tilemaps/v-connect.lvl", true);
-            File.Copy("vtilemaps/v-start.lvl", gameDir + "tilemaps/v-start.lvl", true);
-            File.Copy("vtilemaps/v-end.lvl", gameDir + "tilemaps/v-end.lvl", true);
+            File.Copy("data/vtilemaps/1-1.lvl", gameDir + "tilemaps/1-1.lvl", true);
+            File.Copy("data/vtilemaps/1-1x.lvl", gameDir + "tilemaps/1-2.lvl", true);
+            File.Copy("data/vtilemaps/v-connect.lvl", gameDir + "tilemaps/v-connect.lvl", true);
+            File.Copy("data/vtilemaps/v-start.lvl", gameDir + "tilemaps/v-start.lvl", true);
+            File.Copy("data/vtilemaps/v-end.lvl", gameDir + "tilemaps/v-end.lvl", true);
 
             for (int j = 0; j < settings.NumAreas; j++)
             {
                 for (int i = 0; i < settings.NumLevels; i++)
                 {
-                    File.Copy($"vtilemaps/{ChosenLevels[j][i].Name}.lvl", gameDir + $"tilemaps/v{j + 1}-{i + 1}.lvl", true);
+                    File.Copy($"data/vtilemaps/{ChosenLevels[j][i].Name}.lvl", gameDir + $"tilemaps/v{j + 1}-{i + 1}.lvl", true);
                 }
             }
         }
         static void WriteDebug()
         {
-            using (StreamWriter sw = File.CreateText("debug/last_levelnames.txt"))
+            using (StreamWriter sw = File.CreateText("data/debug/last_levelnames.txt"))
             {
                 sw.WriteLine("Chosen Levels");
                 for (int j = 0; j < settings.NumAreas; j++)

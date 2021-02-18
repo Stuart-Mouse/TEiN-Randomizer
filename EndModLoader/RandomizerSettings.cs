@@ -82,7 +82,7 @@ namespace TEiNRandomizer
 
         public void Save(string preset)
         {
-            var doc = XDocument.Load("RandomizerSettings.xml");    // open levelpool file
+            var doc = XDocument.Load("data/RandomizerSettings.xml");    // open levelpool file
             foreach (var element in doc.Root.Elements())
             {
                 if (element.Name == preset)
@@ -111,12 +111,12 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(AttachToTS), AttachToTS);
                 }
             }
-            doc.Save("RandomizerSettings.xml");
+            doc.Save("data/RandomizerSettings.xml");
         }
 
         public void Load(string preset)
         {
-            var doc = XDocument.Load("RandomizerSettings.xml");    // open levelpool file
+            var doc = XDocument.Load("data/RandomizerSettings.xml");    // open levelpool file
             foreach (var element in doc.Root.Elements())
             {
                 if (element.Name == preset)
@@ -144,7 +144,6 @@ namespace TEiNRandomizer
                     AttachToTS = (string)element.Element(nameof(AttachToTS));
                 }
             }
-            doc.Save("RandomizerSettings.xml");
         }
     }
 }
