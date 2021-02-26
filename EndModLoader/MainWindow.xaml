@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TEiNRandomizer"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="780" Width="525" MinHeight="300" MinWidth="520" MaxWidth="520"
+        Title="{Binding WindowTitle}" Height="900" Width="525" MinHeight="300" MinWidth="520" MaxWidth="520"
         Closing="Window_Closing" >
     <Grid Margin="10,10,10,10">
         <Grid.RowDefinitions>
@@ -35,18 +35,18 @@
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="Level Pools" Style="{StaticResource TitleText}" Width="70" VerticalAlignment="Top" TextAlignment="Center" FontSize="13" FontFamily="Segoe UI Semibold"/>
-                <ListBox Grid.Row="1" Name="PoolList" 
-                ItemTemplate="{StaticResource PoolListTemplate}" 
-                ItemsSource="{Binding Pools}"
+                <ListView Grid.Row="1" Name="PoolCatList"
+                ItemTemplate="{StaticResource PoolCatListTemplate}"
+                ItemsSource="{Binding PoolCats}"
                 Style="{StaticResource PoolListStyle}" />
-            </Grid>
+                </Grid>
             <Grid Grid.Column="1" Width="210" Height="Auto" HorizontalAlignment="Right">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
                     <RowDefinition MinHeight="120" />
                     <RowDefinition Height="30" />
-                    <RowDefinition Height="30" />
-                    <RowDefinition Height="Auto" />
+                    <!--<RowDefinition Height="30" />
+                    <RowDefinition Height="Auto" />-->
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="Settings" Style="{StaticResource TitleText}" Width="70" Height="auto" VerticalAlignment="Top" TextAlignment="Center" FontFamily="Segoe UI Semibold" FontSize="13"/>
                 <ListBox Grid.Row="1" Name="SettingsList" Padding="5" Style="{StaticResource FreezeSettings}">
@@ -100,7 +100,7 @@
                             </TextBox.Text>
                         </TextBox>
                     </Grid>
-                    
+                    <CheckBox Content="One Tileset Per Area" IsChecked="{Binding RSettings.UseCommonTileset}" />
                     <CheckBox Content="Use Default Music" IsChecked="{Binding RSettings.UseDefaultMusic}" />
                     <CheckBox Content="Use Default Palettes" IsChecked="{Binding RSettings.UseDefaultPalettes}" />
                     <CheckBox Content="Randomize Palette Per Level" IsChecked="{Binding RSettings.PalettePerLevel}" />
@@ -109,6 +109,7 @@
                     <CheckBox Content="Randomize Particles" IsChecked="{Binding RSettings.DoParticles}" />
                     <CheckBox Content="Randomize Overlays" IsChecked="{Binding RSettings.DoOverlays}" />
                     <CheckBox Content="Randomize Tile Graphics" IsChecked="{Binding RSettings.DoTileGraphics}" />
+                    <CheckBox Content="Randomize NPCs" IsChecked="{Binding RSettings.DoNPCs}" />
                     <TextBlock Text="Randomize Art Alts: " />
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -124,28 +125,26 @@
                         </TextBox>
                         <Button Grid.Column="2"  Name="AltUpButton" Padding="5,0" Content="+" Width="25" Click="AltLevelInc" Margin="0,0" />
                     </Grid>
-                    <CheckBox Content="Randomize NPCs" IsChecked="{Binding RSettings.DoNPCs}" />
                     <CheckBox Content="Can Apply Nevermore Tilt" IsChecked="{Binding RSettings.DoNevermoreTilt}" />
                     <CheckBox Content="Can Apply Exodus Wobble" IsChecked="{Binding RSettings.DoExodusWobble}" />
-                    <CheckBox Content="One Tileset Per Area" IsChecked="{Binding RSettings.UseCommonTileset}" />
                     <Separator Margin="0,5"/>
                     <TextBlock Grid.Column="0" Text="Tilesets Options: "/>
                     <TextBox Grid.Column="1" Name="TilesetBox" Height="auto" Width="160">
                         <TextBox.Text>
-                            <Binding Path="RSettings.AttachToTS" UpdateSourceTrigger="PropertyChanged"/>
+                            <Binding Path="RSettings.AttachToTS" UpdateSourceTrigger="PropertyChanged" />
                         </TextBox.Text>
                     </TextBox>
                     <Separator Margin="0,5"/>
                 </ListBox>
                 <Button Grid.Row="2" Name="SaveSettings" Padding="5,0" Content="Save Settings" Margin="10,5" Click="SaveSettings_Click" Height="20"/>
-                <Button Grid.Row="3" Name="AdvancedSettingsButton" Padding="5,0" Content="Advanced Settings" Margin="10,5" Click="AdvancedSettings_Click" Height="20"/>
+                <!--<Button Grid.Row="3" Name="AdvancedSettingsButton" Padding="5,0" Content="Advanced Settings" Margin="10,5" Click="AdvancedSettings_Click" Height="20"/>
                 <ListBox Grid.Row="4" Name="AdvancedSettingsList" Style="{StaticResource AdvancedSettings}" Padding="5">
-                    <!--<TextBlock Name="NumShufflesTextBlock" Text="Number of Shuffles: " PreviewMouseDown="NoClick" />
+                    --><!--<TextBlock Name="NumShufflesTextBlock" Text="Number of Shuffles: " PreviewMouseDown="NoClick" />
                     <TextBox Name="NumShufflesTextBox" Width="150" >
                         <TextBox.Text>
                             <Binding Path="RSettings.NumShuffles" UpdateSourceTrigger="PropertyChanged"/>
                         </TextBox.Text>
-                    </TextBox>-->
+                    </TextBox>--><!--
                     <TextBlock Name="CacheTextBlock" Text="Cache Previous Runs: "/>
                     <TextBlock Name="CacheTextBlock2" Text="(may reduce level repetition)"/>
                     <TextBox Name="CacheTextBox" Width="150" >
@@ -161,7 +160,7 @@
                     </TextBox>
                     <Button Name="ClearCacheButton" Padding="5,0" Content="Clear Level Cache" Click="ClearCache" Margin="0,0,0,0" Height="20" />
                     <Button Name="AnalysisButton" Padding="5,0" Content="Run Randomness Analysis" MouseRightButtonDown="AnalysisButton_Click" Margin="0,0,0,0" Height="20" />
-                </ListBox>
+                </ListBox>-->
             </Grid>
         </Grid>
         <Grid Grid.Row="3">

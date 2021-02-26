@@ -15,7 +15,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        
+
         <Style x:Key="TitleText" TargetType="TextBlock">
             <Setter Property="FontSize" Value="12" />
             <Setter Property="VerticalAlignment" Value="Bottom" />
@@ -185,5 +185,25 @@
                 <Separator Margin="2.5, 5, 2.5, 0"/>
             </StackPanel>
         </DataTemplate>
+        
+        <DataTemplate x:Key="PoolCatListTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20" />
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Canvas Grid.Row="0" Background="LightGray">
+                    <Canvas Margin="1" Background="LightGray" Height="18">
+                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="11" FontFamily="Segoe UI Semibold" HorizontalAlignment="Left" Margin="5,2,0,0"/>
+                    </Canvas>
+                </Canvas>
+                <ListBox Grid.Row="1" Name="PoolList"
+                ItemTemplate="{StaticResource PoolListTemplate}"
+                ItemsSource="{Binding Pools}"
+                Style="{StaticResource PoolListStyle}"
+                Visibility="{Binding Visible, Converter={StaticResource SettingsDisplayer}}" />
+            </Grid>
+        </DataTemplate>
+        
     </Application.Resources>
 </Application>

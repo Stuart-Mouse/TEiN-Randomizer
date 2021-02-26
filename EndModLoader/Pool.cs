@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml.Linq;
+using System.IO;
+using System.Linq;
 using System.Windows;
+using System.Xml.Linq;
+using System.Collections.ObjectModel;
 
 namespace TEiNRandomizer
 {
@@ -11,14 +14,17 @@ namespace TEiNRandomizer
         public List<Level> Levels { get; set; }
         public bool Active { get; set; }
         public string NumLevels { get; set; }
+        public short Order { get; set; }
+        public string Folder { get; set; }
+        public string Source { get; set; }
 
-        public int CompareTo(Pool other) => Name.CompareTo(other.Name);
+        public int CompareTo(Pool other) => Order.CompareTo(other.Order);
 
         public void Save()
         {
             try
             {
-                var doc = XDocument.Load($"data/levelpools/{Name}.xml");    // open levelpool file
+                var doc = XDocument.Load($"data/levelpools/{Source}/{Name}.xml");    // open levelpool file
                 doc.Root.Attribute("enabled").Value = Active.ToString();
                 doc.Save($"data/levelpools/{Name}.xml");
             }
@@ -37,16 +43,19 @@ namespace TEiNRandomizer
         }
 
 
-        public Pool(string fileName)
+        public Pool(string fileName, string folder)
         {
             this.Name = fileName;
+            this.Folder = folder;
             this.Levels = new List<Level>();
             string tiledefault = null;
             string tileneed = null;
             string tileart = null;
 
-            var doc = XDocument.Load($"data/levelpools/{Name}.xml");    // open levelpool file
+            var doc = XDocument.Load($"data/levelpools/{Folder}/{Name}.xml");    // open levelpool file
             this.Active = Convert.ToBoolean(doc.Root.Attribute("enabled").Value == "True");
+            this.Order = Convert.ToInt16(doc.Root.Attribute("order").Value);
+            this.Source = doc.Root.Attribute("source").Value;
             foreach (var element in doc.Root.Elements())
             {
                 if (element.Name == "lvl" || element.Name == "level")

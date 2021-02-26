@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
+using System.Collections.ObjectModel;
 
 namespace TEiNRandomizer
 {
@@ -39,13 +40,64 @@ namespace TEiNRandomizer
 
             return myArray;
         }
-        public static IEnumerable<Pool> PoolLoader(string path)
+        //public static IEnumerable<Pool> PoolLoader(string path)
+        //{
+        //    foreach (var file in Directory.GetFiles(path, "*.xml", SearchOption.TopDirectoryOnly))
+        //    {
+        //        var pool = new Pool(Path.GetFileNameWithoutExtension(file));    // pool creation done in Pool constructor
+        //        if (pool != null) yield return pool;
+        //    }
+        //}
+        //public static IEnumerable<PoolCategory> PoolLoader(string path)
+        //{
+        //    var poolCats = new ObservableCollection<PoolCategory>();
+        //    foreach (var file in Directory.GetFiles(path, "*.xml", SearchOption.TopDirectoryOnly))
+        //    {
+        //        var pool = new Pool(Path.GetFileNameWithoutExtension(file));    // pool creation done in Pool constructor
+        //        if (pool != null)
+        //        {
+        //            bool found = false;
+        //            foreach (var cat in poolCats)
+        //            {
+        //                if (pool.Source == cat.Name)
+        //                {
+        //                    found = true;
+        //                    cat.Pools.Add(pool);
+        //                }
+        //            }
+        //            if (!found)
+        //            {
+        //                var newcat = new PoolCategory() { Name = pool.Source };
+        //                newcat.Pools.Add(pool);
+        //                poolCats.Add(newcat);
+        //            }
+        //        }
+        //    }
+        //    // sort the cats
+        //    foreach (var cat in poolCats)
+        //    {
+
+        //    }
+        //    return poolCats;
+        //}
+        public static IEnumerable<PoolCategory> PoolLoader(string path)
         {
-            foreach (var file in Directory.GetFiles(path, "*.xml", SearchOption.TopDirectoryOnly))
+            var poolCats = new ObservableCollection<PoolCategory>();
+            foreach (var dir in Directory.GetDirectories(path, "*",SearchOption.TopDirectoryOnly))
             {
-                var pool = new Pool(Path.GetFileNameWithoutExtension(file));    // pool creation done in Pool constructor
-                if (pool != null) yield return pool;
+                var folder = Path.GetFileNameWithoutExtension(dir);
+                var cat = new PoolCategory() { Name = folder, Pools = new ObservableCollection<Pool>() { } };
+                foreach (var file in Directory.GetFiles($"{path}/{folder}", "*.xml", SearchOption.TopDirectoryOnly))
+                {
+                    var pool = new Pool(Path.GetFileNameWithoutExtension(file), folder);    // pool creation done in Pool constructor
+                    if (pool != null)
+                    {
+                        cat.Pools.Add(pool);
+                    }
+                }
+                poolCats.Add(cat);
             }
+            return poolCats;
         }
         static IEnumerable<string> LoadRecents()
         {
@@ -306,7 +358,7 @@ namespace TEiNRandomizer
         public static void Randomize(MainWindow mw, bool analyzeMe)
         {
             
-            var allpools = mw.Pools;            // get pools from main window
+            //var allpools = mw.Pools;            // get pools from main window
             gameDir = mw.EndIsNighPath;         // set game path
             settings = mw.RSettings;
             prevRuns = mw.PrevRuns;
@@ -314,16 +366,20 @@ namespace TEiNRandomizer
             var drawpool = new List<Level> { };     // make drawpool
             try
             {
-                foreach (var pool in allpools)          // push levels in all active level pools into drawpool vector
+                foreach (var cat in mw.PoolCats)
                 {
-                    if (pool.Active)
+                    foreach (var pool in cat.Pools) // push levels in all active level pools into drawpool vector
                     {
-                        foreach (var level in pool.Levels)
+                        if (pool.Active)
                         {
-                            drawpool.Add(level);
+                            foreach (var level in pool.Levels)
+                            {
+                                drawpool.Add(level);
+                            }
                         }
                     }
                 }
+                
             }
             catch (Exception){MessageBox.Show( "Error creating drawpool.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw;}
 

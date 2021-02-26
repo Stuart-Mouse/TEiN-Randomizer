@@ -139,11 +139,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Analysis.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="EXEIconDisplayer.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="MyRNG.cs" />
     <Compile Include="Pool.cs" />
+    <Compile Include="PoolCategory.cs" />
     <Compile Include="Randomizer.cs" />
     <Compile Include="RandomizerSettings.cs" />
     <Compile Include="StringManipulator.cs" />

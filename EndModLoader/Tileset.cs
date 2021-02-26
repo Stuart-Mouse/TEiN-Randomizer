@@ -127,10 +127,10 @@ namespace TEiNRandomizer
                         shaderPool.Add(element2.Attribute("content").Value);
                     }
                 }
-                else if (element.Name == "palette")
-                {
-                    palettePool = Randomizer.ElementToArray(element);
-                }
+                //else if (element.Name == "palette")
+                //{
+                //    palettePool = Randomizer.ElementToArray(element);
+                //}
                 else if (element.Name == "music")
                 {
                     musicPool = Randomizer.ElementToArray(element);
@@ -149,26 +149,19 @@ namespace TEiNRandomizer
             //    Randomizer.Shuffle(musicPool);
             //}
 
-            // set tile graphics
             Tile = ($"    tile_graphics { tile_graphicsPool[Randomizer.myRNG.rand.Next(0, tile_graphicsPool.Count())] }\n");
-            //set overlays
             Overlay = ($"    overlay_graphics { overlay_graphicsPool[Randomizer.myRNG.rand.Next(0, overlay_graphicsPool.Count())] }\n");
-            //set palette
             //Palette = ($"    palette { palettePool[Randomizer.myRNG.rand.Next(0, palettePool.Count())] }\n");
-            Palette = ($"    palette { Randomizer.myRNG.rand.Next(0, 464) }\n");
-            //set music
+            Palette = ($"    palette { Randomizer.myRNG.rand.Next(1, 464) }\n");
             Music = ($"    music { musicPool[Randomizer.myRNG.rand.Next(0, musicPool.Count())] }\n");
-
             //tileset += ($"    background_graphics { background_graphicsPool[rng.Next(0, tile_graphicsPool.Count())] }\n");
 
-            // set shader
-            if (Randomizer.myRNG.rand.Next(0, 2) == 0)
+            if (Randomizer.myRNG.rand.Next(0, 2) == 0)  // set shader
             {
                 Shader = ($"    { shaderPool[Randomizer.myRNG.rand.Next(0, shaderPool.Count())] }\n");
             }
 
-            // set particles
-            var loop = Randomizer.myRNG.rand.Next(1, 4);
+            var loop = Randomizer.myRNG.rand.Next(1, 4);    // set particles
             for (int i = 0; i < loop; i++)
             {
                 Particles += ("    global_particle_" + (i + 1).ToString() + $" { particlePool[Randomizer.myRNG.rand.Next(0, particlePool.Count())] }\n");
@@ -178,7 +171,7 @@ namespace TEiNRandomizer
             {
                 Extras += ($"    do_tilt true\n");
             }
-            if (settings.DoNevermoreTilt && Randomizer.myRNG.rand.Next(0, 6) == 0 && !(isMainTS && !settings.UseCommonTileset))
+            if (settings.DoExodusWobble && Randomizer.myRNG.rand.Next(0, 6) == 0 && !(isMainTS && !settings.UseCommonTileset))
             {
                 Extras += ($"    do_wobble true\n");
             }
