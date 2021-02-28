@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TEiNRandomizer"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="900" Width="525" MinHeight="300" MinWidth="520" MaxWidth="520"
+        Title="{Binding WindowTitle}" Height="700" Width="600" MinHeight="300" MinWidth="600" MaxWidth="600"
         Closing="Window_Closing" >
     <Grid Margin="10,10,10,10">
         <Grid.RowDefinitions>
@@ -28,7 +28,7 @@
                 <ColumnDefinition Width="5*"/>
                 <ColumnDefinition Width="4*"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" HorizontalAlignment="Left" Width="265">
+            <Grid Grid.Column="0" HorizontalAlignment="Left" Width="310">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
                     <RowDefinition MinHeight="100" />
@@ -38,9 +38,10 @@
                 <ListView Grid.Row="1" Name="PoolCatList"
                 ItemTemplate="{StaticResource PoolCatListTemplate}"
                 ItemsSource="{Binding PoolCats}"
-                Style="{StaticResource PoolListStyle}" />
+                ScrollViewer.CanContentScroll="False"
+                Style="{StaticResource PoolCatListStyle}" />
                 </Grid>
-            <Grid Grid.Column="1" Width="210" Height="Auto" HorizontalAlignment="Right">
+            <Grid Grid.Column="1" Width="250" Height="Auto" HorizontalAlignment="Right">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
                     <RowDefinition MinHeight="120" />
@@ -49,7 +50,7 @@
                     <RowDefinition Height="Auto" />-->
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="Settings" Style="{StaticResource TitleText}" Width="70" Height="auto" VerticalAlignment="Top" TextAlignment="Center" FontFamily="Segoe UI Semibold" FontSize="13"/>
-                <ListBox Grid.Row="1" Name="SettingsList" Padding="5" Style="{StaticResource FreezeSettings}">
+                <ListBox Grid.Row="1" Name="SettingsList" Padding="5" Style="{StaticResource FreezeSettings}" >
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40"/>
@@ -92,6 +93,8 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="60"/>
                             <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="20"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="0" Text="Area Type: "/>
                         <TextBox Grid.Column="1" Name="AreaTypeTextBox" Margin="0,0,0,0">
@@ -99,6 +102,8 @@
                                 <Binding Path="RSettings.AreaType" UpdateSourceTrigger="PropertyChanged"/>
                             </TextBox.Text>
                         </TextBox>
+                        <Button Grid.Column="2"  Name="AreaTypeDownButton" Content="-" Width="15" Click="AreaTypeDec" HorizontalAlignment="Right"/>
+                        <Button Grid.Column="3"  Name="AreaTypeUpButton" Content="+" Width="15" Click="AreaTypeInc" />
                     </Grid>
                     <CheckBox Content="One Tileset Per Area" IsChecked="{Binding RSettings.UseCommonTileset}" />
                     <CheckBox Content="Use Default Music" IsChecked="{Binding RSettings.UseDefaultMusic}" />
@@ -127,6 +132,7 @@
                     </Grid>
                     <CheckBox Content="Can Apply Nevermore Tilt" IsChecked="{Binding RSettings.DoNevermoreTilt}" />
                     <CheckBox Content="Can Apply Exodus Wobble" IsChecked="{Binding RSettings.DoExodusWobble}" />
+                    <CheckBox Content="Auto-Refresh Levels" IsChecked="{Binding RSettings.AutoRefresh}" />
                     <Separator Margin="0,5"/>
                     <TextBlock Grid.Column="0" Text="Tilesets Options: "/>
                     <TextBox Grid.Column="1" Name="TilesetBox" Height="auto" Width="160">

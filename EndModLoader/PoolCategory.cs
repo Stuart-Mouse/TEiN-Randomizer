@@ -17,8 +17,9 @@ namespace TEiNRandomizer
     public class PoolCategory : IComparable<PoolCategory>
     {
         public string Name { get; set; }
-        public bool Visible { get; set; } = true;
+        public string Author { get; set; }
+        public bool Enabled { get; set; } = true;
         public int CompareTo(PoolCategory other) => Name.CompareTo(other.Name);
-        public ObservableCollection<Pool> Pools { get; set; }
+        public IEnumerable<Pool> Pools { get; set; }
     }
 }

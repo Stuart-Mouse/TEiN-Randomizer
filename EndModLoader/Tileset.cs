@@ -160,6 +160,7 @@ namespace TEiNRandomizer
             {
                 Shader = ($"    { shaderPool[Randomizer.myRNG.rand.Next(0, shaderPool.Count())] }\n");
             }
+            Shader += "shader_param 0." + Randomizer.myRNG.rand.Next(0, 99);
 
             var loop = Randomizer.myRNG.rand.Next(1, 4);    // set particles
             for (int i = 0; i < loop; i++)
@@ -175,6 +176,10 @@ namespace TEiNRandomizer
             {
                 Extras += ($"    do_wobble true\n");
             }
+
+            // bgsolid for auto-refresh
+            if (settings.AutoRefresh)
+                Extras += "background_graphics bgsolid\n";
 
             // generate Art Alts
             if (settings.AltLevel != AltLevels.None)

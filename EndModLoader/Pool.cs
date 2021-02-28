@@ -16,6 +16,7 @@ namespace TEiNRandomizer
         public string NumLevels { get; set; }
         public short Order { get; set; }
         public string Folder { get; set; }
+        public string Author { get; set; }
         public string Source { get; set; }
 
         public int CompareTo(Pool other) => Order.CompareTo(other.Order);
@@ -24,9 +25,9 @@ namespace TEiNRandomizer
         {
             try
             {
-                var doc = XDocument.Load($"data/levelpools/{Source}/{Name}.xml");    // open levelpool file
+                var doc = XDocument.Load($"data/levelpools/{Folder}/{Name}.xml");    // open levelpool file
                 doc.Root.Attribute("enabled").Value = Active.ToString();
-                doc.Save($"data/levelpools/{Name}.xml");
+                doc.Save($"data/levelpools/{Folder}/{Name}.xml");
             }
             catch (Exception)
             {
@@ -55,12 +56,14 @@ namespace TEiNRandomizer
             var doc = XDocument.Load($"data/levelpools/{Folder}/{Name}.xml");    // open levelpool file
             this.Active = Convert.ToBoolean(doc.Root.Attribute("enabled").Value == "True");
             this.Order = Convert.ToInt16(doc.Root.Attribute("order").Value);
+            this.Author = (doc.Root.Attribute("author").Value);
             this.Source = doc.Root.Attribute("source").Value;
             foreach (var element in doc.Root.Elements())
             {
                 if (element.Name == "lvl" || element.Name == "level")
                 {
                     var level = new Level { };
+                    level.Folder = this.Folder;
                     level.TSDefault += tiledefault;
                     level.TSNeed += tileneed;
                     level.Art += tileart;
@@ -84,8 +87,8 @@ namespace TEiNRandomizer
                     foreach (var element2 in element.Elements())
                     {
                         if (element2.Name == "default") tiledefault = element2.Value.Replace("\t", null);
-                        else if (element2.Name == "need") tileneed += element2.Value.Replace("\t", null);
-                        else if (element2.Name == "art") tileart += element2.Value.Replace("\t", null);
+                        else if (element2.Name == "need") tileneed = element2.Value.Replace("\t", null);
+                        else if (element2.Name == "art") tileart = element2.Value.Replace("\t", null);
                     }
                 }
             }

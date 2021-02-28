@@ -40,46 +40,6 @@ namespace TEiNRandomizer
 
             return myArray;
         }
-        //public static IEnumerable<Pool> PoolLoader(string path)
-        //{
-        //    foreach (var file in Directory.GetFiles(path, "*.xml", SearchOption.TopDirectoryOnly))
-        //    {
-        //        var pool = new Pool(Path.GetFileNameWithoutExtension(file));    // pool creation done in Pool constructor
-        //        if (pool != null) yield return pool;
-        //    }
-        //}
-        //public static IEnumerable<PoolCategory> PoolLoader(string path)
-        //{
-        //    var poolCats = new ObservableCollection<PoolCategory>();
-        //    foreach (var file in Directory.GetFiles(path, "*.xml", SearchOption.TopDirectoryOnly))
-        //    {
-        //        var pool = new Pool(Path.GetFileNameWithoutExtension(file));    // pool creation done in Pool constructor
-        //        if (pool != null)
-        //        {
-        //            bool found = false;
-        //            foreach (var cat in poolCats)
-        //            {
-        //                if (pool.Source == cat.Name)
-        //                {
-        //                    found = true;
-        //                    cat.Pools.Add(pool);
-        //                }
-        //            }
-        //            if (!found)
-        //            {
-        //                var newcat = new PoolCategory() { Name = pool.Source };
-        //                newcat.Pools.Add(pool);
-        //                poolCats.Add(newcat);
-        //            }
-        //        }
-        //    }
-        //    // sort the cats
-        //    foreach (var cat in poolCats)
-        //    {
-
-        //    }
-        //    return poolCats;
-        //}
         public static IEnumerable<PoolCategory> PoolLoader(string path)
         {
             var poolCats = new ObservableCollection<PoolCategory>();
@@ -87,14 +47,29 @@ namespace TEiNRandomizer
             {
                 var folder = Path.GetFileNameWithoutExtension(dir);
                 var cat = new PoolCategory() { Name = folder, Pools = new ObservableCollection<Pool>() { } };
+                var tempList = new List<Pool>() { };
+                string author = null;
+                bool enabled = false;
                 foreach (var file in Directory.GetFiles($"{path}/{folder}", "*.xml", SearchOption.TopDirectoryOnly))
                 {
                     var pool = new Pool(Path.GetFileNameWithoutExtension(file), folder);    // pool creation done in Pool constructor
                     if (pool != null)
                     {
-                        cat.Pools.Add(pool);
+                        if (pool.Author != null)        // set category author
+                        {
+                            if (author == null)         // if author not already set, set it
+                                author = pool.Author;
+                            else if (author != pool.Author)  // if there is more than one pool author in the category, set to V.A.
+                                author = "V.A.";
+                        }
+                        if (pool.Active == true)
+                            enabled = true;
+                        tempList.Add(pool);
                     }
                 }
+                cat.Enabled = enabled;
+                cat.Author = author;
+                cat.Pools = tempList.OrderBy(p => p.Order);
                 poolCats.Add(cat);
             }
             return poolCats;
@@ -326,17 +301,17 @@ namespace TEiNRandomizer
         }
         static void TileMaps()
         {
-            File.Copy("data/vtilemaps/1-1.lvl", gameDir + "tilemaps/1-1.lvl", true);
-            File.Copy("data/vtilemaps/1-1x.lvl", gameDir + "tilemaps/1-2.lvl", true);
-            File.Copy("data/vtilemaps/v-connect.lvl", gameDir + "tilemaps/v-connect.lvl", true);
-            File.Copy("data/vtilemaps/v-start.lvl", gameDir + "tilemaps/v-start.lvl", true);
-            File.Copy("data/vtilemaps/v-end.lvl", gameDir + "tilemaps/v-end.lvl", true);
+            File.Copy("data/vtilemaps/The End is Nigh/1-1.lvl", gameDir + "tilemaps/1-1.lvl", true);
+            File.Copy("data/vtilemaps/The End is Nigh/1-1x.lvl", gameDir + "tilemaps/1-2.lvl", true);
+            File.Copy("data/vtilemaps/The End is Nigh/v-connect.lvl", gameDir + "tilemaps/v-connect.lvl", true);
+            File.Copy("data/vtilemaps/The End is Nigh/v-start.lvl", gameDir + "tilemaps/v-start.lvl", true);
+            File.Copy("data/vtilemaps/The End is Nigh/v-end.lvl", gameDir + "tilemaps/v-end.lvl", true);
 
             for (int j = 0; j < settings.NumAreas; j++)
             {
                 for (int i = 0; i < settings.NumLevels; i++)
                 {
-                    File.Copy($"data/vtilemaps/{ChosenLevels[j][i].Name}.lvl", gameDir + $"tilemaps/v{j + 1}-{i + 1}.lvl", true);
+                    File.Copy($"data/vtilemaps/{ChosenLevels[j][i].Folder}/{ChosenLevels[j][i].Name}.lvl", gameDir + $"tilemaps/v{j + 1}-{i + 1}.lvl", true);
                 }
             }
         }
@@ -368,18 +343,20 @@ namespace TEiNRandomizer
             {
                 foreach (var cat in mw.PoolCats)
                 {
-                    foreach (var pool in cat.Pools) // push levels in all active level pools into drawpool vector
+                    if (cat.Enabled)
                     {
-                        if (pool.Active)
+                        foreach (var pool in cat.Pools) // push levels in all active level pools into drawpool vector
                         {
-                            foreach (var level in pool.Levels)
+                            if (pool.Active)
                             {
-                                drawpool.Add(level);
+                                foreach (var level in pool.Levels)
+                                {
+                                    drawpool.Add(level);
+                                }
                             }
                         }
                     }
                 }
-                
             }
             catch (Exception){MessageBox.Show( "Error creating drawpool.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw;}
 

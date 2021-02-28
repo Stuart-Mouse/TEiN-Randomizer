@@ -28,6 +28,7 @@ namespace TEiNRandomizer
         public int RepeatTolerance { get; set; }
         public AltLevels AltLevel { get; set; }
         public string AttachToTS { get; set; }
+        public bool AutoRefresh { get; set; }
 
 
         public RandomizerSettings()
@@ -45,6 +46,7 @@ namespace TEiNRandomizer
             DoTileGraphics = true;
             DoNevermoreTilt = true;
             DoExodusWobble = true;
+            AutoRefresh = false;
             //DoArtAlts = false;
             DoNPCs = false;
             UseCommonTileset = false;
@@ -105,6 +107,7 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(UseCommonTileset), UseCommonTileset);
                     element.SetElementValue(nameof(CacheRuns), CacheRuns);
                     //element.SetElementValue(nameof(NumShuffles), NumShuffles);
+                    element.SetElementValue(nameof(AutoRefresh), AutoRefresh);
                     element.SetElementValue(nameof(AreaType), (int)AreaType);
                     element.SetElementValue(nameof(RepeatTolerance), RepeatTolerance);
                     element.SetElementValue(nameof(AltLevel), (int)AltLevel);
@@ -141,6 +144,7 @@ namespace TEiNRandomizer
                     AreaType = (AreaTypes)(int)element.Element(nameof(AreaType));
                     RepeatTolerance = (int)element.Element(nameof(RepeatTolerance));
                     AltLevel = (AltLevels)(int)element.Element(nameof(AltLevel));
+                    AutoRefresh = (bool)element.Element(nameof(AutoRefresh));
                     AttachToTS = (string)element.Element(nameof(AttachToTS));
                 }
             }

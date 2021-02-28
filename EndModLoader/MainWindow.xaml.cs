@@ -234,6 +234,8 @@ namespace TEiNRandomizer
 
                 Process.Start(Path.Combine(EndIsNighPath, ExeName));
 
+                if (RSettings.AutoRefresh)
+                    AutoRefresh();
                 await HookGameExit("TheEndIsNigh", (s, ev) =>
                 {
                     AppState = AppState.ReadyToPlay;
@@ -253,6 +255,17 @@ namespace TEiNRandomizer
             end.EnableRaisingEvents = true;
             end.Exited += hook;
         }
+        private async Task AutoRefresh()
+        {
+            while (AppState == AppState.InGame)
+            {
+                GameSeed ++;
+                Randomizer.myRNG.SeedMe((int)GameSeed);
+                SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                Randomizer.Randomize(this, false);
+                await Task.Delay(7000);
+            }
+        }
 
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
@@ -267,6 +280,12 @@ namespace TEiNRandomizer
             SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
         }
 
+        private void PoolCat_Click(object sender, RoutedEventArgs e)
+        {
+            (sender as PoolCategory).Enabled = !(sender as PoolCategory).Enabled;
+            //PoolCatList.GetBindingExpression(ListBox.VisibilityProperty).UpdateTarget();
+        }
+
         private void AltLevelInc(object sender, RoutedEventArgs e)
         {
             if (RSettings.AltLevel < AltLevels.Insane)
@@ -278,6 +297,19 @@ namespace TEiNRandomizer
             if (RSettings.AltLevel > AltLevels.None)
                 RSettings.AltLevel--;
             AltLevelTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+        }
+
+        private void AreaTypeInc(object sender, RoutedEventArgs e)
+        {
+            if (RSettings.AreaType < AreaTypes.glitch)
+                RSettings.AreaType++;
+            AreaTypeTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+        }
+        private void AreaTypeDec(object sender, RoutedEventArgs e)
+        {
+            if (RSettings.AreaType > AreaTypes.normal)
+                RSettings.AreaType--;
+            AreaTypeTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
         }
 
 
@@ -385,7 +417,9 @@ namespace TEiNRandomizer
         //    AdvancedSettingsList.GetBindingExpression(ListBox.VisibilityProperty).UpdateTarget();
         //}
 
-        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        
+
+    private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             //GameSeed = Randomizer.myRNG.GetUInt32();
             PrevRuns++;

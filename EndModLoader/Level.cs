@@ -6,5 +6,6 @@
         public string TSDefault;
         public string TSNeed;
         public string Art;
+        public string Folder;
     }
 }

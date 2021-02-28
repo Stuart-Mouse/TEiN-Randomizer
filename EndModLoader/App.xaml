@@ -90,9 +90,26 @@
         <Style x:Key="PoolListStyle" TargetType="ListBox">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"></Setter>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"></Setter>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InGame}">
                     <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Visibile}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PoolCatListStyle" TargetType="ListBox">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InGame}">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Visibile}" Value="False">
+                    <Setter Property="Visibility" Value="Collapsed" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -183,27 +200,37 @@
                     <CheckBox Grid.Column="2" Content="Enabled" IsChecked="{Binding Active}" HorizontalAlignment="Right"/>
                 </Grid>
                 <Separator Margin="2.5, 5, 2.5, 0"/>
+                <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->
             </StackPanel>
         </DataTemplate>
-        
-        <DataTemplate x:Key="PoolCatListTemplate">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="20" />
-                    <RowDefinition Height="auto"/>
-                </Grid.RowDefinitions>
-                <Canvas Grid.Row="0" Background="LightGray">
-                    <Canvas Margin="1" Background="LightGray" Height="18">
-                        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" FontSize="11" FontFamily="Segoe UI Semibold" HorizontalAlignment="Left" Margin="5,2,0,0"/>
+
+        <DataTemplate x:Key="PoolCatListTemplate" x:Name="PoolCatItem">
+            <StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20" />
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+                    <Canvas Grid.Row="0" Background="LightGray" MouseDown="NoClick" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" IsChecked="{Binding Enabled}" Margin="5,2,0,0"/>
+                            <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" FontSize="11" FontFamily="Segoe UI Semibold" HorizontalAlignment="Left" Margin="5,2,0,0"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Author}" Margin="10,0,0,0" Style="{StaticResource DescriptionText}"/>
+                        </Grid>
                     </Canvas>
-                </Canvas>
-                <ListBox Grid.Row="1" Name="PoolList"
+                    <ListBox Grid.Row="1" Name="PoolList" MouseDown="NoClick"
                 ItemTemplate="{StaticResource PoolListTemplate}"
                 ItemsSource="{Binding Pools}"
                 Style="{StaticResource PoolListStyle}"
-                Visibility="{Binding Visible, Converter={StaticResource SettingsDisplayer}}" />
-            </Grid>
+                Visibility="{Binding Enabled, Converter={StaticResource SettingsDisplayer}}" />
+                </Grid>
+            </StackPanel>
         </DataTemplate>
-        
+
     </Application.Resources>
 </Application>
