@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.WindowsAPICodePack.Dialogs;
+using System.Xml.Linq;
 using TEiNRandomizer.Properties;
 
 namespace TEiNRandomizer
@@ -23,6 +24,8 @@ namespace TEiNRandomizer
         private string PoolPath { get => "data/levelpools"; }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public List<Shader> ShadersList { get; set; } = Randomizer.GetShadersList();
 
         public UInt32 GameSeed { get; set; }
         public int PrevRuns { get; set; }
@@ -66,8 +69,9 @@ namespace TEiNRandomizer
             private set
             {
                 _endIsNighPath = value;
-                Settings.Default["EndIsNighPath"] = value;
+                RSettings.GameDirectory = value;
                 NotifyPropertyChanged(nameof(EndIsNighPath));
+                RSettings.Save("default");
             }
         }
 
@@ -77,7 +81,7 @@ namespace TEiNRandomizer
             DataContext = this;
             AppState = AppState.NoModSelected;
 
-            EndIsNighPath = Settings.Default[nameof(EndIsNighPath)] as string;
+            EndIsNighPath = RSettings.GameDirectory;
             if (string.IsNullOrWhiteSpace(EndIsNighPath))
             {
                 EndIsNighPath = FileSystem.DefaultGameDirectory();
@@ -315,7 +319,8 @@ namespace TEiNRandomizer
 
         private void SaveSettings_Click(object sender, RoutedEventArgs e)
         {
-            RSettings.Save("default"); 
+            RSettings.Save("default");
+            Randomizer.SaveShadersList(ShadersList);
             foreach (PoolCategory cat in PoolCatList.Items)
             foreach (Pool pool in cat.Pools)
             {
@@ -371,7 +376,7 @@ namespace TEiNRandomizer
             var result = dialog.ShowDialog();
             if (result == CommonFileDialogResult.Ok)
             {
-                EndIsNighPath = dialog.FileName;
+                EndIsNighPath = dialog.FileName + "/";
                 Mods.Clear();
             }
 

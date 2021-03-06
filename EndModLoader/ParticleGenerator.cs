@@ -1,0 +1,277 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Windows;
+using System.Xml.Linq;
+using System.Collections.ObjectModel;
+
+namespace TEiNRandomizer
+{
+    public static class ParticleGenerator
+    {
+        public static string GetParticle(RandomizerSettings settings)
+        {
+            string particle_name = "";
+            switch (Randomizer.myRNG.rand.Next(0, 2))
+            {
+                case 0:
+                    particle_name = DirectionParticle(settings);
+                    break;
+                case 1:
+                    particle_name = MistParticle(settings);
+                    break;
+            }
+            return particle_name;
+        }
+        public static string MistParticle(RandomizerSettings settings)
+        {
+            string particle_name = "MistParticle" + Randomizer.myRNG.GetUInt32().ToString();
+
+            int layer = 4;
+            int base_speed = 3;
+
+            // can be anything
+            double alpha_start = 1;
+            double alpha_end = 0;
+            string movieclip;
+            int max_particles = settings.MaxParticles;
+            int emit_spread = 0;
+            string rotation_speed = "0";
+            double particle_lifetime = Randomizer.myRNG.rand.Next(1, 5);
+            string size_start;
+            int size_end = Randomizer.myRNG.rand.Next(50, 101);
+
+            string emit_direction = $"[{Randomizer.myRNG.rand.Next(-10, 11) / 10},{Randomizer.myRNG.rand.Next(-10, 11) / 10}]";
+            if (emit_direction == "[0,0]")
+                emit_direction = "[0,-1]";
+            //string emit_box = "";
+            //string emit_offset = "";
+
+            string force = "0";
+            int emit_rate;
+            int emit_amount;
+            double initial_speed = Randomizer.myRNG.rand.Next(0, 20);
+            double friction = 1;
+
+            // select particle from pool
+            var doc = XDocument.Load($"data/particles_templates.xml");    // open particle file
+            string template = doc.Root.Element("templates").Element("MistParticle").Value;
+            var particles = doc.Root.Element("particles").Elements();
+            var chosen = particles.ElementAt(Randomizer.myRNG.rand.Next(0, particles.Count()));
+            movieclip = chosen.Attribute("name").Value;
+            string face_moving_direction = chosen.Attribute("face_moving_direction").Value;
+            alpha_start = Convert.ToDouble(chosen.Attribute("alpha").Value);
+            double size = Convert.ToDouble(chosen.Attribute("size").Value) * .03;
+            size_start = $"[{size - size * .25},{size + size * .25}]";
+            layer = Convert.ToInt32(chosen.Attribute("layer").Value);
+            double density = Convert.ToDouble(chosen.Attribute("density").Value);
+            double speed_scale = Convert.ToDouble(chosen.Attribute("speed_scale").Value);
+
+            int emit_density = (int)(64 * density);
+            emit_rate = Randomizer.myRNG.rand.Next(1, emit_density);
+            emit_amount = emit_density / emit_rate;
+            if (Randomizer.myRNG.CoinFlip())
+                emit_spread = Randomizer.myRNG.rand.Next(0, 46);
+            if (Randomizer.myRNG.rand.Next(0, 10) == 0)
+                emit_spread = 360;
+
+            if (!Convert.ToBoolean(face_moving_direction))
+            {
+                int temp = Randomizer.myRNG.rand.Next(0, 251);
+                rotation_speed = $"[{temp},{temp * 1.5}]";
+            }
+
+            template = template.Replace("PARTICLE_NAME", particle_name);
+            template = template.Replace("LAYER", layer.ToString());
+            template = template.Replace("MOVIECLIP", movieclip);
+            template = template.Replace("MAX_PARTICLES", max_particles.ToString());
+            template = template.Replace("EMIT_RATE", emit_rate.ToString());
+            template = template.Replace("EMIT_AMOUNT", emit_amount.ToString());
+            template = template.Replace("EMIT_DIRECTION", emit_direction);
+            template = template.Replace("EMIT_SPREAD", emit_spread.ToString());
+            //template = template.Replace("EMIT_BOX", emit_box);
+            //template = template.Replace("EMIT_OFFSET", emit_offset);
+            template = template.Replace("PARTICLE_LIFETIME", particle_lifetime.ToString());
+            template = template.Replace("INITIAL_SPEED", $"[{initial_speed},{initial_speed * 2}]");
+            template = template.Replace("INITIAL_ROTATION", "0");
+            template = template.Replace("ROTATION_SPEED", rotation_speed.ToString());
+            template = template.Replace("FORCE", force);
+            template = template.Replace("FRICTION", friction.ToString());
+            template = template.Replace("ALPHA_START", alpha_start.ToString());
+            template = template.Replace("ALPHA_END", alpha_end.ToString());
+            template = template.Replace("SIZE_START", size_start);
+            template = template.Replace("SIZE_END", size_end.ToString());
+            template = template.Replace("FACE_MOVING_DIRECTION", face_moving_direction);
+            template = template.Replace("SPEED_SCALE", speed_scale.ToString());
+
+            using (StreamWriter sw = File.AppendText(settings.GameDirectory + "data/particles.txt.append"))
+            {
+                sw.WriteLine(template);
+            }
+            return particle_name;
+        }
+
+        public static string DirectionParticle(RandomizerSettings settings)
+        {
+            string particle_name = "DirectionParticle" + Randomizer.myRNG.GetUInt32().ToString();
+
+            int layer = 4;
+            double base_speed = 3;
+            double base_force = 1;
+
+            // can be anything
+            double alpha_start = 1;
+            double alpha_end = 1;
+            string movieclip;
+            int max_particles = settings.MaxParticles;
+            int emit_spread = 0;
+            string rotation_speed = "0";
+            double particle_lifetime = 80;
+            string size_start;
+
+            // establish direction
+            string emit_direction = "";
+            string emit_box = "";
+            string emit_offset = "";
+
+            // dependent on eachother
+            int emit_rate;
+            int emit_amount;
+            double initial_speed;
+            double friction = 1;
+            string force;
+
+            // select particle from pool
+            var doc = XDocument.Load($"data/particles_templates.xml");    // open particle file
+            string template = doc.Root.Element("templates").Element("DirectionParticle").Value;
+            var particles = doc.Root.Element("particles").Elements();
+            var chosen = particles.ElementAt(Randomizer.myRNG.rand.Next(0, particles.Count()));
+            movieclip = chosen.Attribute("name").Value;
+            string face_moving_direction = chosen.Attribute("face_moving_direction").Value;
+            alpha_start = Convert.ToDouble(chosen.Attribute("alpha").Value);
+            double size = Convert.ToDouble(chosen.Attribute("size").Value);
+            size_start = $"[{size - size * .25},{size + size * .25}]";
+            layer = Convert.ToInt32(chosen.Attribute("layer").Value);
+            double density = Convert.ToDouble(chosen.Attribute("density").Value);
+            double speed_scale = Convert.ToDouble(chosen.Attribute("speed_scale").Value);
+
+            speed_scale += Randomizer.myRNG.rand.Next(-2, 3) / 10;
+
+            int speed_scalar = 1, force_scalar = 1;
+            // set moving direction
+            int direction = Randomizer.myRNG.rand.Next(0, 4);
+            switch (direction)
+            {
+                case 0:
+                    emit_direction = $"[{Randomizer.myRNG.rand.Next(-3, 4) / 10},1]";
+                    emit_box = "[54,1]";
+                    emit_offset = "[27,-3]";
+                    break;
+                case 1:
+                    emit_direction = $"[{Randomizer.myRNG.rand.Next(-3, 4) / 10},-1]";
+                    emit_box = "[54,1]";
+                    emit_offset = "[27,35]";
+                    break;
+                case 2:
+                    emit_direction = $"[1,{Randomizer.myRNG.rand.Next(-3, 4) / 10}]";
+                    emit_box = "[1,32]";
+                    emit_offset = "[-3,16]";
+                    base_speed *= 1.2;
+                    base_force *= .8;
+                    break;
+                case 3:
+                    emit_direction = $"[-1,{Randomizer.myRNG.rand.Next(-3, 4) / 10}]";
+                    emit_box = "[1,32]";
+                    emit_offset = "[57,16]";
+                    base_speed *= 1.2;
+                    base_force *= .8;
+                    break;
+            }
+
+            //int particle_density = 100;
+
+            int emit_density = (int)(Randomizer.myRNG.rand.Next(5, 16) * density);
+            speed_scalar = Randomizer.myRNG.rand.Next(1, 5);
+
+            if (Randomizer.myRNG.CoinFlip())   // decide whether to accelerate, slow down, or no force
+            {
+                if (Randomizer.myRNG.CoinFlip())   // accelerate
+                {
+                    force_scalar = speed_scalar * speed_scalar;
+                    emit_density *= speed_scalar;
+                }
+                else    // gravity
+                {
+                    force_scalar = -speed_scalar * speed_scalar;
+                    emit_density *= Math.Max(speed_scalar / 2, 1);
+                }
+            }
+            else
+            {
+                force_scalar = 0;
+                emit_density *= speed_scalar;
+            }
+
+
+            initial_speed = base_speed * speed_scalar;          // set initial speed
+            double parallel_force = base_force * force_scalar;     // set force
+            double perpendicular_force = base_force * force_scalar * Randomizer.myRNG.rand.Next(0, 10) / 10;
+            //perpendicular_force = 0;
+
+            if (Randomizer.myRNG.rand.Next(0, 3) == 0)   // decide if particle fades out
+            {
+                alpha_end = 0;
+                particle_lifetime = (float)Randomizer.myRNG.rand.Next(2, 4) * (float)base_speed / (float)speed_scalar;
+            }
+
+            if (direction > 1)  // if direction is up or down
+            {
+                force = $"[{parallel_force},{perpendicular_force}]";
+                particle_lifetime *= 2;
+            }
+            else force = $"[{perpendicular_force},{parallel_force}]";
+
+            emit_rate = Randomizer.myRNG.rand.Next(1, emit_density);
+            emit_amount = emit_density / emit_rate;
+            if (Randomizer.myRNG.CoinFlip())
+                emit_spread = Randomizer.myRNG.rand.Next(0, 46);
+
+            if (!Convert.ToBoolean(face_moving_direction))
+            {
+                int temp = Randomizer.myRNG.rand.Next(0, 251);
+                rotation_speed = $"[{temp},{temp * 1.5}]";
+            }
+
+            // write all values to template
+            template = template.Replace("PARTICLE_NAME", particle_name);
+            template = template.Replace("LAYER", layer.ToString());
+            template = template.Replace("MOVIECLIP", movieclip);
+            template = template.Replace("MAX_PARTICLES", max_particles.ToString());
+            template = template.Replace("EMIT_RATE", emit_rate.ToString());
+            template = template.Replace("EMIT_AMOUNT", emit_amount.ToString());
+            template = template.Replace("EMIT_DIRECTION", emit_direction);
+            template = template.Replace("EMIT_SPREAD", emit_spread.ToString());
+            template = template.Replace("EMIT_BOX", emit_box);
+            template = template.Replace("EMIT_OFFSET", emit_offset);
+            template = template.Replace("PARTICLE_LIFETIME", particle_lifetime.ToString());
+            template = template.Replace("INITIAL_SPEED", $"[{initial_speed},{initial_speed * 2}]");
+            template = template.Replace("INITIAL_ROTATION", "0");
+            template = template.Replace("ROTATION_SPEED", rotation_speed.ToString());
+            template = template.Replace("FORCE", force);
+            template = template.Replace("FRICTION", friction.ToString());
+            template = template.Replace("ALPHA_START", alpha_start.ToString());
+            template = template.Replace("ALPHA_END", alpha_end.ToString());
+            template = template.Replace("SIZE_START", size_start);
+            //template = template.Replace("SIZE_END", size_end.ToString());
+            template = template.Replace("FACE_MOVING_DIRECTION", face_moving_direction);
+            template = template.Replace("SPEED_SCALE", speed_scale.ToString());
+
+            using (StreamWriter sw = File.AppendText(settings.GameDirectory + "data/particles.txt.append"))
+            {
+                sw.WriteLine(template);
+            }
+            return particle_name;
+        }
+    }
+}

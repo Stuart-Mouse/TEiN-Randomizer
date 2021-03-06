@@ -144,10 +144,12 @@
     <Compile Include="EXEIconDisplayer.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="MyRNG.cs" />
+    <Compile Include="ParticleGenerator.cs" />
     <Compile Include="Pool.cs" />
     <Compile Include="PoolCategory.cs" />
     <Compile Include="Randomizer.cs" />
     <Compile Include="RandomizerSettings.cs" />
+    <Compile Include="Shader.cs" />
     <Compile Include="StringManipulator.cs" />
     <Compile Include="Tileset.cs" />
     <Page Include="MainWindow.xaml">

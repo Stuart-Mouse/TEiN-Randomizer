@@ -86,7 +86,6 @@ namespace TEiNRandomizer
             return;
         }
 
-
         public Tileset(RandomizerSettings settings, bool isMainTS)
         {
             var tile_graphicsPool = new string[] { };
@@ -120,13 +119,14 @@ namespace TEiNRandomizer
                 {
                     particlePool = Randomizer.ElementToArray(element);
                 }
-                else if (element.Name == "shaders")
-                {
-                    foreach (var element2 in element.Elements())
-                    {
-                        shaderPool.Add(element2.Attribute("content").Value);
-                    }
-                }
+                //else if (element.Name == "shaders")
+                //{
+                //    foreach (var element2 in element.Elements())
+                //    {
+                //        if (Convert.ToBoolean(element2.Attribute("enabled").Value) == true)
+                //            shaderPool.Add(element2.Attribute("content").Value);
+                //    }
+                //}
                 //else if (element.Name == "palette")
                 //{
                 //    palettePool = Randomizer.ElementToArray(element);
@@ -136,6 +136,13 @@ namespace TEiNRandomizer
                     musicPool = Randomizer.ElementToArray(element);
                 }
             }
+            foreach (var shader in Randomizer.ShadersList)
+            {
+                if (shader.Enabled)
+                    shaderPool.Add(shader.Content);
+            }
+
+
 
             // shuffle pools
             //for (int i = 0; i < settings.NumShuffles; i++)
@@ -160,12 +167,16 @@ namespace TEiNRandomizer
             {
                 Shader = ($"    { shaderPool[Randomizer.myRNG.rand.Next(0, shaderPool.Count())] }\n");
             }
-            Shader += "shader_param 0." + Randomizer.myRNG.rand.Next(0, 99);
+            Shader += "shader_param " + Randomizer.myRNG.rand.NextDouble();
 
             var loop = Randomizer.myRNG.rand.Next(1, 4);    // set particles
             for (int i = 0; i < loop; i++)
             {
-                Particles += ("    global_particle_" + (i + 1).ToString() + $" { particlePool[Randomizer.myRNG.rand.Next(0, particlePool.Count())] }\n");
+                if (settings.GenerateCustomParticles)
+                {
+                    Particles += ("    global_particle_" + (i + 1).ToString() + $" { ParticleGenerator.GetParticle(settings) }\n");
+                }
+                else Particles += ("    global_particle_" + (i + 1).ToString() + $" { particlePool[Randomizer.myRNG.rand.Next(0, particlePool.Count())] }\n");
             }
 
             if (settings.DoNevermoreTilt && Randomizer.myRNG.rand.Next(0, 6) == 0 && !(isMainTS && !settings.UseCommonTileset))

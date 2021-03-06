@@ -204,6 +204,10 @@
             </StackPanel>
         </DataTemplate>
 
+        <DataTemplate x:Key="ShadersListTemplate">
+            <CheckBox Content="{Binding Name}" IsChecked="{Binding Enabled}"/>
+        </DataTemplate>
+        
         <DataTemplate x:Key="PoolCatListTemplate" x:Name="PoolCatItem">
             <StackPanel>
                 <Grid>

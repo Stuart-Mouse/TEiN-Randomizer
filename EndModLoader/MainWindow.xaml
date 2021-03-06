@@ -50,7 +50,7 @@
                     <RowDefinition Height="Auto" />-->
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="Settings" Style="{StaticResource TitleText}" Width="70" Height="auto" VerticalAlignment="Top" TextAlignment="Center" FontFamily="Segoe UI Semibold" FontSize="13"/>
-                <ListBox Grid.Row="1" Name="SettingsList" Padding="5" Style="{StaticResource FreezeSettings}" >
+                <ListBox Grid.Row="1" Name="SettingsList" Padding="5" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="40"/>
@@ -108,10 +108,20 @@
                     <CheckBox Content="One Tileset Per Area" IsChecked="{Binding RSettings.UseCommonTileset}" />
                     <CheckBox Content="Use Default Music" IsChecked="{Binding RSettings.UseDefaultMusic}" />
                     <CheckBox Content="Use Default Palettes" IsChecked="{Binding RSettings.UseDefaultPalettes}" />
-                    <CheckBox Content="Randomize Palette Per Level" IsChecked="{Binding RSettings.PalettePerLevel}" />
-                    <CheckBox Content="Randomize Music Per Level" IsChecked="{Binding RSettings.MusicPerLevel}" />
+                    <!--<CheckBox Content="Randomize Palette Per Level" IsChecked="{Binding RSettings.PalettePerLevel}" />
+                    <CheckBox Content="Randomize Music Per Level" IsChecked="{Binding RSettings.MusicPerLevel}" />-->
                     <CheckBox Content="Randomize Shaders" IsChecked="{Binding RSettings.DoShaders}" />
+                    <ListBox
+                        Name="ShadersListBox"
+                        ItemsSource="{Binding ShadersList}"
+                        ScrollViewer.CanContentScroll="False"
+                        Visibility="{Binding RSettings.DoShaders, Converter={StaticResource SettingsDisplayer}}"
+                        ItemTemplate="{StaticResource ShadersListTemplate}"
+                        Width="200"
+                        MinHeight="40">
+                    </ListBox>
                     <CheckBox Content="Randomize Particles" IsChecked="{Binding RSettings.DoParticles}" />
+                    <CheckBox Content="Generate Custom Particles" IsChecked="{Binding RSettings.GenerateCustomParticles}" />
                     <CheckBox Content="Randomize Overlays" IsChecked="{Binding RSettings.DoOverlays}" />
                     <CheckBox Content="Randomize Tile Graphics" IsChecked="{Binding RSettings.DoTileGraphics}" />
                     <CheckBox Content="Randomize NPCs" IsChecked="{Binding RSettings.DoNPCs}" />
