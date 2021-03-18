@@ -49,7 +49,6 @@ namespace TEiNRandomizer
                 doc.Save($"data/tilesets_pools.xml");
             }
         }
-
         public static void Shuffle<T>(this IList<T> list)
         {
             int n = list.Count;
@@ -214,7 +213,11 @@ namespace TEiNRandomizer
                         if (settings.DoShaders)
                             sw.WriteLine(tileset.Shader);
                         if (settings.DoParticles)
+                        {
+                            sw.WriteLine("global_particle_1 None\nglobal_particle_2 None\nglobal_particle_3 None\n");
                             sw.WriteLine(tileset.Particles);
+                        }
+                            
                         sw.WriteLine(tileset.Extras);
 
                         // Art alts

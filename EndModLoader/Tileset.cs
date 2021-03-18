@@ -169,15 +169,23 @@ namespace TEiNRandomizer
             }
             Shader += "shader_param " + Randomizer.myRNG.rand.NextDouble();
 
-            var loop = Randomizer.myRNG.rand.Next(1, 4);    // set particles
-            for (int i = 0; i < loop; i++)
+            // set particles
+            var loop = Randomizer.myRNG.rand.Next(0, settings.MaxParticleEffects);
+            if (settings.GenerateCustomParticles)
             {
-                if (settings.GenerateCustomParticles)
+                for (int i = 0; i < loop; i++)
                 {
                     Particles += ("    global_particle_" + (i + 1).ToString() + $" { ParticleGenerator.GetParticle(settings) }\n");
                 }
-                else Particles += ("    global_particle_" + (i + 1).ToString() + $" { particlePool[Randomizer.myRNG.rand.Next(0, particlePool.Count())] }\n");
             }
+            else
+            {
+                for (int i = 0; i < loop; i++)
+                {
+                    Particles += ("    global_particle_" + (i + 1).ToString() + $" { particlePool[Randomizer.myRNG.rand.Next(0, particlePool.Count())] }\n");
+                }
+            }
+            
 
             if (settings.DoNevermoreTilt && Randomizer.myRNG.rand.Next(0, 6) == 0 && !(isMainTS && !settings.UseCommonTileset))
             {

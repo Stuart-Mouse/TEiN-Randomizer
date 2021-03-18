@@ -23,5 +23,4 @@ namespace TEiNRandomizer
         Crazy,
         Insane
     }
-
 }

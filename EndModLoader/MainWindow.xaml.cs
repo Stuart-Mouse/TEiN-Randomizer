@@ -273,6 +273,7 @@ namespace TEiNRandomizer
 
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
+            ParticleRanger();
             Randomizer.myRNG.SeedMe((int)GameSeed);
             await PlayRandomizer();
         }
@@ -319,6 +320,7 @@ namespace TEiNRandomizer
 
         private void SaveSettings_Click(object sender, RoutedEventArgs e)
         {
+            ParticleRanger();
             RSettings.Save("default");
             Randomizer.SaveShadersList(ShadersList);
             foreach (PoolCategory cat in PoolCatList.Items)
@@ -413,8 +415,13 @@ namespace TEiNRandomizer
             }
             return TSCounter;
         }
-
         
+        private void ParticleRanger()
+        {
+            if (RSettings.MaxParticleEffects < 0) RSettings.MaxParticleEffects = 0;
+            else if (RSettings.MaxParticleEffects > 3) RSettings.MaxParticleEffects = 3;
+            MaxParticleEffectsTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+        }
 
         //private void AdvancedSettings_Click(object sender, RoutedEventArgs e)
         //{
@@ -422,9 +429,9 @@ namespace TEiNRandomizer
         //    AdvancedSettingsList.GetBindingExpression(ListBox.VisibilityProperty).UpdateTarget();
         //}
 
-        
 
-    private void RefreshButton_Click(object sender, RoutedEventArgs e)
+
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             //GameSeed = Randomizer.myRNG.GetUInt32();
             PrevRuns++;

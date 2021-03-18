@@ -119,6 +119,7 @@ namespace TEiNRandomizer
             int layer = 4;
             double base_speed = 3;
             double base_force = 1;
+            string notes = "#";
 
             // can be anything
             double alpha_start = 1;
@@ -160,32 +161,35 @@ namespace TEiNRandomizer
 
             int speed_scalar = 1, force_scalar = 1;
             // set moving direction
+            bool force_neg = false;
             int direction = Randomizer.myRNG.rand.Next(0, 4);
             switch (direction)
             {
-                case 0:
+                case 0: // up
                     emit_direction = $"[{Randomizer.myRNG.rand.Next(-3, 4) / 10},1]";
                     emit_box = "[54,1]";
                     emit_offset = "[27,-3]";
                     break;
-                case 1:
+                case 1: // down
                     emit_direction = $"[{Randomizer.myRNG.rand.Next(-3, 4) / 10},-1]";
                     emit_box = "[54,1]";
                     emit_offset = "[27,35]";
+                    force_neg = true;
                     break;
-                case 2:
+                case 2: // right
                     emit_direction = $"[1,{Randomizer.myRNG.rand.Next(-3, 4) / 10}]";
                     emit_box = "[1,32]";
                     emit_offset = "[-3,16]";
                     base_speed *= 1.2;
                     base_force *= .8;
                     break;
-                case 3:
+                case 3: // left
                     emit_direction = $"[-1,{Randomizer.myRNG.rand.Next(-3, 4) / 10}]";
                     emit_box = "[1,32]";
                     emit_offset = "[57,16]";
                     base_speed *= 1.2;
                     base_force *= .8;
+                    force_neg = true;
                     break;
             }
 
@@ -196,15 +200,19 @@ namespace TEiNRandomizer
 
             if (Randomizer.myRNG.CoinFlip())   // decide whether to accelerate, slow down, or no force
             {
-                if (Randomizer.myRNG.CoinFlip())   // accelerate
+                force_scalar = speed_scalar * speed_scalar;
+                if (Randomizer.myRNG.CoinFlip() && direction < 2)   // gravity
                 {
-                    force_scalar = speed_scalar * speed_scalar;
-                    emit_density *= speed_scalar;
-                }
-                else    // gravity
-                {
-                    force_scalar = -speed_scalar * speed_scalar;
+                    //force_scalar = speed_scalar * speed_scalar;
+                    force_neg = !force_neg;
                     emit_density *= Math.Max(speed_scalar / 2, 1);
+                    notes += "gravity, ";
+                }
+                else    // accelerate
+                {
+                    //force_scalar = speed_scalar * speed_scalar;
+                    emit_density *= speed_scalar;
+                    notes += "accelerate, ";
                 }
             }
             else
@@ -213,10 +221,11 @@ namespace TEiNRandomizer
                 emit_density *= speed_scalar;
             }
 
+            notes += $"force scalar: {force_scalar}, speed scalar: {speed_scalar}, ";
 
-            initial_speed = base_speed * speed_scalar;          // set initial speed
-            double parallel_force = base_force * force_scalar;     // set force
-            double perpendicular_force = base_force * force_scalar * Randomizer.myRNG.rand.Next(0, 10) / 10;
+            initial_speed = base_speed * speed_scalar;  // set initial speed
+            double parallel_force = base_force * force_scalar * -(Convert.ToInt32(force_neg));  // set force
+            double perpendicular_force = base_force * force_scalar * Randomizer.myRNG.rand.Next(-10, 11) / 10;
             //perpendicular_force = 0;
 
             if (Randomizer.myRNG.rand.Next(0, 3) == 0)   // decide if particle fades out
@@ -225,7 +234,7 @@ namespace TEiNRandomizer
                 particle_lifetime = (float)Randomizer.myRNG.rand.Next(2, 4) * (float)base_speed / (float)speed_scalar;
             }
 
-            if (direction > 1)  // if direction is up or down
+            if (direction > 1)  // if right or left
             {
                 force = $"[{parallel_force},{perpendicular_force}]";
                 particle_lifetime *= 2;
@@ -266,6 +275,7 @@ namespace TEiNRandomizer
             //template = template.Replace("SIZE_END", size_end.ToString());
             template = template.Replace("FACE_MOVING_DIRECTION", face_moving_direction);
             template = template.Replace("SPEED_SCALE", speed_scale.ToString());
+            template += notes;
 
             using (StreamWriter sw = File.AppendText(settings.GameDirectory + "data/particles.txt.append"))
             {

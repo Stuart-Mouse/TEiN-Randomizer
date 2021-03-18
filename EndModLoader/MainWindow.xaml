@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TEiNRandomizer"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="700" Width="600" MinHeight="300" MinWidth="600" MaxWidth="600"
+        Title="{Binding WindowTitle}" Height="700" Width="840" MinHeight="300" MinWidth="840" MaxWidth="840"
         Closing="Window_Closing" >
     <Grid Margin="10,10,10,10">
         <Grid.RowDefinitions>
@@ -25,10 +25,11 @@
         </Grid>
         <Grid Grid.Row="2" VerticalAlignment="Top" Margin="0,10,0,5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="5*"/>
-                <ColumnDefinition Width="4*"/>
+                <ColumnDefinition Width="320"/>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="230"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0" HorizontalAlignment="Left" Width="310">
+            <Grid Grid.Column="0" Width="316" HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
                     <RowDefinition MinHeight="100" />
@@ -40,8 +41,8 @@
                 ItemsSource="{Binding PoolCats}"
                 ScrollViewer.CanContentScroll="False"
                 Style="{StaticResource PoolCatListStyle}" />
-                </Grid>
-            <Grid Grid.Column="1" Width="250" Height="Auto" HorizontalAlignment="Right">
+            </Grid>
+            <Grid Grid.Column="1" Height="Auto" HorizontalAlignment="Center" Width="246">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20" />
                     <RowDefinition MinHeight="120" />
@@ -111,17 +112,8 @@
                     <!--<CheckBox Content="Randomize Palette Per Level" IsChecked="{Binding RSettings.PalettePerLevel}" />
                     <CheckBox Content="Randomize Music Per Level" IsChecked="{Binding RSettings.MusicPerLevel}" />-->
                     <CheckBox Content="Randomize Shaders" IsChecked="{Binding RSettings.DoShaders}" />
-                    <ListBox
-                        Name="ShadersListBox"
-                        ItemsSource="{Binding ShadersList}"
-                        ScrollViewer.CanContentScroll="False"
-                        Visibility="{Binding RSettings.DoShaders, Converter={StaticResource SettingsDisplayer}}"
-                        ItemTemplate="{StaticResource ShadersListTemplate}"
-                        Width="200"
-                        MinHeight="40">
-                    </ListBox>
+
                     <CheckBox Content="Randomize Particles" IsChecked="{Binding RSettings.DoParticles}" />
-                    <CheckBox Content="Generate Custom Particles" IsChecked="{Binding RSettings.GenerateCustomParticles}" />
                     <CheckBox Content="Randomize Overlays" IsChecked="{Binding RSettings.DoOverlays}" />
                     <CheckBox Content="Randomize Tile Graphics" IsChecked="{Binding RSettings.DoTileGraphics}" />
                     <CheckBox Content="Randomize NPCs" IsChecked="{Binding RSettings.DoNPCs}" />
@@ -177,6 +169,60 @@
                     <Button Name="ClearCacheButton" Padding="5,0" Content="Clear Level Cache" Click="ClearCache" Margin="0,0,0,0" Height="20" />
                     <Button Name="AnalysisButton" Padding="5,0" Content="Run Randomness Analysis" MouseRightButtonDown="AnalysisButton_Click" Margin="0,0,0,0" Height="20" />
                 </ListBox>-->
+            </Grid>
+            <Grid Grid.Column="2" Width="226" HorizontalAlignment="Center">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20" />
+                    <RowDefinition MinHeight="100" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="Settings++" Style="{StaticResource TitleText}" Width="70" VerticalAlignment="Top" TextAlignment="Center" FontSize="13" FontFamily="Segoe UI Semibold"/>
+                <ListBox Grid.Row="1" Name="SettingsList2" Padding="5" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False">
+                    <TextBlock Text="Shader Settings:" Visibility="{Binding RSettings.DoShaders, Converter={StaticResource SettingsDisplayer}}"/>
+                    <ListBox
+                        Name="ShadersListBox"
+                        ItemsSource="{Binding ShadersList}"
+                        ScrollViewer.CanContentScroll="False"
+                        Visibility="{Binding RSettings.DoShaders, Converter={StaticResource SettingsDisplayer}}"
+                        ItemTemplate="{StaticResource ShadersListTemplate}"
+                        Width="186"
+                        MinHeight="40">
+                    </ListBox>
+                    <TextBlock Text="Particle Settings:" Visibility="{Binding RSettings.DoParticles, Converter={StaticResource SettingsDisplayer}}"/>
+                    <ListBox
+                        Name="ParticlesListBox"
+                        ScrollViewer.CanContentScroll="False"
+                        Visibility="{Binding RSettings.DoParticles, Converter={StaticResource SettingsDisplayer}}"
+                        Width="186"
+                        MinHeight="40">
+                        <CheckBox Content="Generate Custom Particles" IsChecked="{Binding RSettings.GenerateCustomParticles}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="80"/>
+                                <ColumnDefinition Width="80"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Max Particles: "/>
+                            <TextBox Grid.Column="1" Name="MaxParticlesTextBox" Margin="0,0,0,0">
+                                <TextBox.Text>
+                                    <Binding Path="RSettings.MaxParticles" UpdateSourceTrigger="PropertyChanged"/>
+                                </TextBox.Text>
+                            </TextBox>
+                        </Grid>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="110"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Max Particle Effects: "/>
+                            <TextBox Grid.Column="1" Name="MaxParticleEffectsTextBox" Margin="0,0,0,0">
+                                <TextBox.Text>
+                                    <Binding Path="RSettings.MaxParticleEffects" UpdateSourceTrigger="PropertyChanged"/>
+                                </TextBox.Text>
+                            </TextBox>
+                        </Grid>
+                    </ListBox>
+                            
+                </ListBox>
+                
             </Grid>
         </Grid>
         <Grid Grid.Row="3">
