@@ -33,6 +33,7 @@ namespace TEiNRandomizer
         public int MaxParticles { get; set; }
         public string GameDirectory { get; set; }
         public int MaxParticleEffects { get; set; }
+        public bool ManualLoad { get; set; }
 
         public RandomizerSettings()
         {
@@ -62,6 +63,7 @@ namespace TEiNRandomizer
             GenerateCustomParticles = false;
             MaxParticles = 1000;
             MaxParticleEffects = 2;
+            ManualLoad = false;
             GameDirectory = "C:/Program Files(x86)/Steam/steamapps/common/theendisnigh/";
 
             try
@@ -123,6 +125,7 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(GenerateCustomParticles), GenerateCustomParticles);
                     element.SetElementValue(nameof(GameDirectory), GameDirectory);
                     element.SetElementValue(nameof(MaxParticleEffects), MaxParticleEffects);
+                    element.SetElementValue(nameof(ManualLoad), ManualLoad);
                 }
             }
             doc.Save("data/RandomizerSettings.xml");
@@ -161,6 +164,7 @@ namespace TEiNRandomizer
                     MaxParticles = (int)element.Element(nameof(MaxParticles));
                     GameDirectory = (string)element.Element(nameof(GameDirectory));
                     MaxParticleEffects = (int)element.Element(nameof(MaxParticleEffects));
+                    ManualLoad = (bool)element.Element(nameof(ManualLoad));
                 }
             }
         }

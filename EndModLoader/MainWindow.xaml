@@ -142,6 +142,7 @@
                             <Binding Path="RSettings.AttachToTS" UpdateSourceTrigger="PropertyChanged" />
                         </TextBox.Text>
                     </TextBox>
+                    <CheckBox Content="Manual Load" IsChecked="{Binding RSettings.ManualLoad}" />
                     <Separator Margin="0,5"/>
                 </ListBox>
                 <Button Grid.Row="2" Name="SaveSettings" Padding="5,0" Content="Save Settings" Margin="10,5" Click="SaveSettings_Click" Height="20"/>
@@ -227,9 +228,11 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120"/>
                 <ColumnDefinition Width="120"/>
+                <ColumnDefinition Width="120"/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Name="PlayButton" Style="{StaticResource PlayModButton}" Click="PlayButton_Click" Margin="0,0,0,0" />
             <Button Grid.Column="1" Name="RefreshButton" Content="Refresh" Style="{StaticResource RefreshButton}" Click="RefreshButton_Click" Margin="0,0,0,0" />
+            <Button Grid.Column="2" Name="UnloadButton" Content="Unload" Style="{StaticResource UnloadButton}" Click="UnloadButton_Click" Margin="0,0,0,0" />
         </Grid>
         
     </Grid>

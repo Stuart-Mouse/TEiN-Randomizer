@@ -186,6 +186,30 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="UnloadButton" TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Margin" Value="0,10,0,0" />
+            <Setter Property="Width" Value="110" />
+            <Setter Property="Visibility" Value="{Binding RSettings.ManualLoad, Converter={StaticResource SettingsDisplayer}}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.IncorrectPath}">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.NoModsFound}">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.NoModSelected}">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.ReadyToPlay}">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InGame}">
+                    <Setter Property="IsEnabled" Value="True" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <DataTemplate x:Key="PoolListTemplate">
             <StackPanel Margin="0.2,5,0.2,5" Orientation="Vertical">
                 <Grid>

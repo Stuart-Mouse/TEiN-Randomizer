@@ -236,15 +236,20 @@ namespace TEiNRandomizer
                 AppState = AppState.InGame;
                 Randomizer.Randomize(this, false);
 
-                Process.Start(Path.Combine(EndIsNighPath, ExeName));
-
                 if (RSettings.AutoRefresh)
                     AutoRefresh();
-                await HookGameExit("TheEndIsNigh", (s, ev) =>
+
+                if (!RSettings.ManualLoad)
                 {
-                    AppState = AppState.ReadyToPlay;
-                    FileSystem.UnloadAll(EndIsNighPath);
-                });
+                    Process.Start(Path.Combine(EndIsNighPath, ExeName));
+
+                    await HookGameExit("TheEndIsNigh", (s, ev) =>
+                    {
+                        AppState = AppState.ReadyToPlay;
+                        FileSystem.UnloadAll(EndIsNighPath);
+                    });
+                }
+                else await WaitForUnload();
             }
         }
 
@@ -263,12 +268,26 @@ namespace TEiNRandomizer
         {
             while (AppState == AppState.InGame)
             {
-                GameSeed ++;
+                GameSeed++;
                 Randomizer.myRNG.SeedMe((int)GameSeed);
                 SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                 Randomizer.Randomize(this, false);
                 await Task.Delay(7000);
             }
+        }
+        private async Task WaitForUnload()
+        {
+            while (AppState == AppState.InGame)
+            {
+                await Task.Delay(1000);
+            }
+            FileSystem.UnloadAll(EndIsNighPath);
+            AppState = AppState.ReadyToPlay;
+        }
+
+        private void UnloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            AppState = AppState.NoModsFound;
         }
 
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
