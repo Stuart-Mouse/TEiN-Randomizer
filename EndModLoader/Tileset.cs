@@ -32,14 +32,11 @@ namespace TEiNRandomizer
             {
                 var doc = XDocument.Load("data/art_alts.xml");
                 if (settings.AltLevel == AltLevels.Safe)
-                foreach (var item in Randomizer.ElementToArray(doc.Root.Element("safe")))
                 {
                     foreach (var art in doc.Root.Element("safe").Elements())
                     {
                         var alts = Randomizer.ElementToArray(art);
-
                         ArtAlts += "[" + art.Name + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
-                        
                     }
                 }
                 else if (settings.AltLevel == AltLevels.Extended)
@@ -47,7 +44,6 @@ namespace TEiNRandomizer
                     foreach (var art in doc.Root.Element("extended").Elements())
                     {
                         var alts = Randomizer.ElementToArray(art);
-
                         ArtAlts += "[" + art.Name + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
                     }
                 }
@@ -93,75 +89,45 @@ namespace TEiNRandomizer
             var background_graphicsPool = new string[] { };
             var particlePool = new string[] { };
             var shaderPool = new List<string> { };
-            var palettePool = new string[] { };
+            int numPalettes = 464;
             var musicPool = new string[] { };
 
             var doc = XDocument.Load("data/tilesets_pools.xml");    // open levelpool file
-            foreach (var element in doc.Root.Elements())
-            {
-                if (element.Name == "tile_graphics")
-                {
-                    tile_graphicsPool = Randomizer.ElementToArray(element);
-                }
-                else if (element.Name == "overlay_graphics")
-                {
-                    overlay_graphicsPool = Randomizer.ElementToArray(element);
-                }
-                //else if (element.Name == "background_graphics")
-                //{
-                //    foreach (var element2 in element.Elements())
-                //    {
-                //        if (element.Name == bgType)
-                //            background_graphicsPool = ElementToArray(element);
-                //    }
-                //}
-                else if (element.Name == "particles")
-                {
-                    particlePool = Randomizer.ElementToArray(element);
-                }
-                //else if (element.Name == "shaders")
-                //{
-                //    foreach (var element2 in element.Elements())
-                //    {
-                //        if (Convert.ToBoolean(element2.Attribute("enabled").Value) == true)
-                //            shaderPool.Add(element2.Attribute("content").Value);
-                //    }
-                //}
-                //else if (element.Name == "palette")
-                //{
-                //    palettePool = Randomizer.ElementToArray(element);
-                //}
-                else if (element.Name == "music")
-                {
-                    musicPool = Randomizer.ElementToArray(element);
-                }
-            }
+            //foreach (var element in doc.Root.Elements())
+            //{
+            //    if (element.Name == "tile_graphics")
+            //    {
+            //        tile_graphicsPool = Randomizer.ElementToArray(element);
+            //    }
+            //    else if (element.Name == "overlay_graphics")
+            //    {
+            //        overlay_graphicsPool = Randomizer.ElementToArray(element);
+            //    }
+            //    else if (element.Name == "particles")
+            //    {
+            //        particlePool = Randomizer.ElementToArray(element);
+            //    }
+            //    else if (element.Name == "music")
+            //    {
+            //        musicPool = Randomizer.ElementToArray(element);
+            //    }
+            //}
+            numPalettes = Convert.ToInt32(doc.Root.Element("palettes").Value);
+            tile_graphicsPool = Randomizer.ElementToArray(doc.Root.Element("tile_graphics"));
+            overlay_graphicsPool = Randomizer.ElementToArray(doc.Root.Element("overlay_graphics"));
+            particlePool = Randomizer.ElementToArray(doc.Root.Element("particles"));
+            musicPool = Randomizer.ElementToArray(doc.Root.Element("music"));
+
             foreach (var shader in Randomizer.ShadersList)
             {
                 if (shader.Enabled)
                     shaderPool.Add(shader.Content);
             }
 
-
-
-            // shuffle pools
-            //for (int i = 0; i < settings.NumShuffles; i++)
-            //{
-            //    Randomizer.Shuffle(tile_graphicsPool);
-            //    Randomizer.Shuffle(overlay_graphicsPool);
-            //    //Shuffle(background_graphicsPool);
-            //    Randomizer.Shuffle(particlePool);
-            //    Randomizer.Shuffle(shaderPool);
-            //    Randomizer.Shuffle(palettePool);
-            //    Randomizer.Shuffle(musicPool);
-            //}
-
             Tile = ($"    tile_graphics { tile_graphicsPool[Randomizer.myRNG.rand.Next(0, tile_graphicsPool.Count())] }\n");
             Overlay = ($"    overlay_graphics { overlay_graphicsPool[Randomizer.myRNG.rand.Next(0, overlay_graphicsPool.Count())] }\n");
-            //Palette = ($"    palette { palettePool[Randomizer.myRNG.rand.Next(0, palettePool.Count())] }\n");
-            Palette = ($"    palette { Randomizer.myRNG.rand.Next(1, 464) }\n");
+            Palette = ($"    palette { Randomizer.myRNG.rand.Next(1, numPalettes) }\n");
             Music = ($"    music { musicPool[Randomizer.myRNG.rand.Next(0, musicPool.Count())] }\n");
-            //tileset += ($"    background_graphics { background_graphicsPool[rng.Next(0, tile_graphicsPool.Count())] }\n");
 
             if (Randomizer.myRNG.rand.Next(0, 2) == 0)  // set shader
             {

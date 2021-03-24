@@ -67,10 +67,14 @@ namespace TEiNRandomizer
                     level.TSDefault += tiledefault;
                     level.TSNeed += tileneed;
                     level.Art += tileart;
+                    level.Name = element.Attribute("name").Value;
+                    level.HasSecret = Convert.ToBoolean(element.Attribute("secret").Value);
+                    level.CanReverse = Convert.ToBoolean(element.Attribute("reverse").Value);
+                    
                     foreach (var element2 in element.Elements())
                     {
-                        if (element2.Name == "name") level.Name = element2.Value;
-                        else if (element2.Name == "tileset")
+                        //if (element2.Name == "name") level.Name = element2.Value;
+                        if (element2.Name == "tileset")
                         {
                             foreach (var element3 in element2.Elements())
                             {

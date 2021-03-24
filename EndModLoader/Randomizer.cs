@@ -72,6 +72,18 @@ namespace TEiNRandomizer
 
             return myArray;
         }
+        public static Int32[] ElementToArray(XElement element, bool y) // converts xml element value to a string array
+        {
+            string t_string = Convert.ToString(element.Value).Trim();
+            var myArray = t_string.Split(Convert.ToChar("\n"));
+            int[] intArray = new int[myArray.Count()];
+            for (int i = 0; i < myArray.Count(); i++)
+            {
+                intArray[i] = Convert.ToInt32(myArray[i].Trim(Convert.ToChar("\t"), Convert.ToChar(" ")));
+            }
+
+            return intArray;
+        }
         public static IEnumerable<PoolCategory> PoolLoader(string path)
         {
             var poolCats = new ObservableCollection<PoolCategory>();
@@ -340,7 +352,18 @@ namespace TEiNRandomizer
             {
                 for (int i = 0; i < settings.NumLevels; i++)
                 {
-                    File.Copy($"data/vtilemaps/{ChosenLevels[j][i].Folder}/{ChosenLevels[j][i].Name}.lvl", settings.GameDirectory + $"tilemaps/v{j + 1}-{i + 1}.lvl", true);
+                    
+                    var levelFile = LevelManip.Load($"data/vtilemaps/{ChosenLevels[j][i].Folder}/{ChosenLevels[j][i].Name}.lvl");
+                    
+                    if (ChosenLevels[j][i].CanReverse && myRNG.CoinFlip())
+                        LevelManip.FlipLevelH(ref levelFile);
+
+                    if (true)   // will become setting
+                        Corruptors.CorruptLevel(ref levelFile);
+
+                    LevelManip.Save(levelFile, settings.GameDirectory + $"tilemaps/v{j + 1}-{i + 1}.lvl");
+                    
+                    //File.Copy($"data/vtilemaps/{ChosenLevels[j][i].Folder}/{ChosenLevels[j][i].Name}.lvl", settings.GameDirectory + $"tilemaps/v{j + 1}-{i + 1}.lvl", true);
                 }
             }
         }

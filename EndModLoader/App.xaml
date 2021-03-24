@@ -123,7 +123,7 @@
         </Style>
 
         <Style x:Key="FolderSelectButton" TargetType="Button">
-            <Setter Property="Content" Value="Change" />
+            <Setter Property="Content" Value="Set Path" />
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="IsEnabled" Value="True" />
             <Setter Property="Margin" Value="0,0,0,0" />

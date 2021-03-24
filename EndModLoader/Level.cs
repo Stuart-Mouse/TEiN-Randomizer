@@ -7,5 +7,8 @@
         public string TSNeed;
         public string Art;
         public string Folder;
+        public bool HasSecret;
+        public bool CanReverse;
+        //public LevelFile File;
     }
 }

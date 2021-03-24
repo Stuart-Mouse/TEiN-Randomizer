@@ -429,8 +429,6 @@ namespace TEiNRandomizer
         //    AdvancedSettingsList.GetBindingExpression(ListBox.VisibilityProperty).UpdateTarget();
         //}
 
-
-
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             //GameSeed = Randomizer.myRNG.GetUInt32();

@@ -140,9 +140,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Analysis.cs" />
+    <Compile Include="Corruptors.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="EXEIconDisplayer.cs" />
     <Compile Include="Level.cs" />
+    <Compile Include="LevelFile.cs" />
+    <Compile Include="LevelManip.cs" />
     <Compile Include="MyRNG.cs" />
     <Compile Include="ParticleGenerator.cs" />
     <Compile Include="Pool.cs" />

@@ -23,4 +23,11 @@ namespace TEiNRandomizer
         Crazy,
         Insane
     }
+
+    public enum Secrets
+    {
+        Up,
+        Down
+    }
+
 }

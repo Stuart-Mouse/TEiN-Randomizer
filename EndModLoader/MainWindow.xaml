@@ -177,16 +177,6 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="Settings++" Style="{StaticResource TitleText}" Width="70" VerticalAlignment="Top" TextAlignment="Center" FontSize="13" FontFamily="Segoe UI Semibold"/>
                 <ListBox Grid.Row="1" Name="SettingsList2" Padding="5" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False">
-                    <TextBlock Text="Shader Settings:" Visibility="{Binding RSettings.DoShaders, Converter={StaticResource SettingsDisplayer}}"/>
-                    <ListBox
-                        Name="ShadersListBox"
-                        ItemsSource="{Binding ShadersList}"
-                        ScrollViewer.CanContentScroll="False"
-                        Visibility="{Binding RSettings.DoShaders, Converter={StaticResource SettingsDisplayer}}"
-                        ItemTemplate="{StaticResource ShadersListTemplate}"
-                        Width="186"
-                        MinHeight="40">
-                    </ListBox>
                     <TextBlock Text="Particle Settings:" Visibility="{Binding RSettings.DoParticles, Converter={StaticResource SettingsDisplayer}}"/>
                     <ListBox
                         Name="ParticlesListBox"
@@ -220,9 +210,17 @@
                             </TextBox>
                         </Grid>
                     </ListBox>
-                            
+                    <TextBlock Text="Shader Settings:" Visibility="{Binding RSettings.DoShaders, Converter={StaticResource SettingsDisplayer}}"/>
+                    <ListBox
+                        Name="ShadersListBox"
+                        ItemsSource="{Binding ShadersList}"
+                        ScrollViewer.CanContentScroll="False"
+                        Visibility="{Binding RSettings.DoShaders, Converter={StaticResource SettingsDisplayer}}"
+                        ItemTemplate="{StaticResource ShadersListTemplate}"
+                        Width="186"
+                        MinHeight="40">
+                    </ListBox>
                 </ListBox>
-                
             </Grid>
         </Grid>
         <Grid Grid.Row="3">
