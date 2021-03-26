@@ -21,11 +21,11 @@ namespace TEiNRandomizer
 
     public struct LevelData
     {
-        public Int32[] back1;
-        public Int32[] active;
-        public Int32[] tag;
-        public Int32[] overlay;
-        public Int32[] back2;
+        public TileID[] back1;
+        public TileID[] active;
+        public TileID[] tag;
+        public TileID[] overlay;
+        public TileID[] back2;
     }
 
     public struct Pair

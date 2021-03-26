@@ -38,6 +38,7 @@ namespace TEiNRandomizer
             int max_particles = settings.MaxParticles;
             int emit_spread = 0;
             string rotation_speed = "0";
+            string initial_rotation = "0";
             double particle_lifetime = Randomizer.myRNG.rand.Next(1, 5);
             string size_start;
             int size_end = Randomizer.myRNG.rand.Next(50, 101);
@@ -80,6 +81,7 @@ namespace TEiNRandomizer
             {
                 int temp = Randomizer.myRNG.rand.Next(0, 251);
                 rotation_speed = $"[{temp},{temp * 1.5}]";
+                initial_rotation = "[0, 359]";
             }
 
             template = template.Replace("PARTICLE_NAME", particle_name);
@@ -94,7 +96,7 @@ namespace TEiNRandomizer
             //template = template.Replace("EMIT_OFFSET", emit_offset);
             template = template.Replace("PARTICLE_LIFETIME", particle_lifetime.ToString());
             template = template.Replace("INITIAL_SPEED", $"[{initial_speed},{initial_speed * 2}]");
-            template = template.Replace("INITIAL_ROTATION", "0");
+            template = template.Replace("INITIAL_ROTATION", initial_rotation.ToString());
             template = template.Replace("ROTATION_SPEED", rotation_speed.ToString());
             template = template.Replace("FORCE", force);
             template = template.Replace("FRICTION", friction.ToString());
@@ -128,6 +130,7 @@ namespace TEiNRandomizer
             int max_particles = settings.MaxParticles;
             int emit_spread = 0;
             string rotation_speed = "0";
+            string initial_rotation = "0";
             double particle_lifetime = 80;
             string size_start;
 
@@ -250,6 +253,7 @@ namespace TEiNRandomizer
             {
                 int temp = Randomizer.myRNG.rand.Next(0, 251);
                 rotation_speed = $"[{temp},{temp * 1.5}]";
+                initial_rotation = "[0, 359]";
             }
 
             // write all values to template
@@ -265,7 +269,7 @@ namespace TEiNRandomizer
             template = template.Replace("EMIT_OFFSET", emit_offset);
             template = template.Replace("PARTICLE_LIFETIME", particle_lifetime.ToString());
             template = template.Replace("INITIAL_SPEED", $"[{initial_speed},{initial_speed * 2}]");
-            template = template.Replace("INITIAL_ROTATION", "0");
+            template = template.Replace("INITIAL_ROTATION", initial_rotation.ToString());
             template = template.Replace("ROTATION_SPEED", rotation_speed.ToString());
             template = template.Replace("FORCE", force);
             template = template.Replace("FRICTION", friction.ToString());

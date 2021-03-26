@@ -22,13 +22,13 @@ namespace TEiNRandomizer
             foreach (var line in hflips)
             {
                 temp = line.Split(Convert.ToChar(" "));
-                pair.First = Convert.ToInt32(temp[0]);
+                pair.First  = Convert.ToInt32(temp[0]);
                 pair.Second = Convert.ToInt32(temp[1]);
                 HFlipIndex.Add(pair);
             }
         }
 
-        public static void LoadLayer(ref byte[] filedata, ref Int32[] layer, ref int offset)
+        public static void LoadLayer(ref byte[] filedata, ref TileID[] layer, ref int offset)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace TEiNRandomizer
                 {
                     Buffer.BlockCopy(filedata, offset, tempBytes, 0, 4);
                     Array.Reverse(tempBytes);
-                    layer[i] = (BitConverter.ToInt32(tempBytes, 0));
+                    layer[i] = (TileID)(BitConverter.ToInt32(tempBytes, 0));
                     offset += 4;
                 }
             }
@@ -51,12 +51,12 @@ namespace TEiNRandomizer
             }
         }
 
-        public static void SaveLayer(ref byte[] filedata, ref Int32[] layer, ref int offset)
+        public static void SaveLayer(ref byte[] filedata, ref TileID[] layer, ref int offset)
         {
             byte[] tempBytes = new byte[4];
             for (int i = 0; i < layer.Length; i++)
             {
-                tempBytes = BitConverter.GetBytes(layer[i]);
+                tempBytes = BitConverter.GetBytes((Int32)layer[i]);
                 Array.Reverse(tempBytes);
                 Buffer.BlockCopy(tempBytes, 0, filedata, offset, 4);
                 offset += 4;
@@ -65,7 +65,7 @@ namespace TEiNRandomizer
 
         public static LevelFile Load(string path)
         {
-            Console.WriteLine("load");
+            //Console.WriteLine("load");
 
             LevelFile level = new LevelFile() { };
             byte[] filedata = File.ReadAllBytes(path);
@@ -88,15 +88,15 @@ namespace TEiNRandomizer
 
             // get data layer length
             int layerLength = level.header.width * level.header.height;
-            Console.WriteLine("file length  (bytes): " + filedata.Length);
-            Console.WriteLine("layer length (bytes): " + layerLength);
+            //Console.WriteLine("file length  (bytes): " + filedata.Length);
+            //Console.WriteLine("layer length (bytes): " + layerLength);
 
             // initialize data layers
-            level.data.back1 = new Int32[layerLength];
-            level.data.active = new Int32[layerLength];
-            level.data.tag = new Int32[layerLength];
-            level.data.overlay = new Int32[layerLength];
-            level.data.back2 = new Int32[layerLength];
+            level.data.back1    = new TileID[layerLength];
+            level.data.active   = new TileID[layerLength];
+            level.data.tag      = new TileID[layerLength];
+            level.data.overlay  = new TileID[layerLength];
+            level.data.back2    = new TileID[layerLength];
 
             // load data layers
             int offset = 16;
@@ -106,20 +106,18 @@ namespace TEiNRandomizer
             LoadLayer(ref filedata, ref level.data.overlay, ref offset);
             LoadLayer(ref filedata, ref level.data.back2, ref offset);
 
-            File.WriteAllBytes("output_original.lvl", filedata);    // output original file
-
             return level;
         }
 
         public static void Save(LevelFile level, string path)
         {
-            Console.WriteLine("save");
+            //Console.WriteLine("save");
 
             // get data layer length
             int layerLength = level.header.width * level.header.height;
             int fileLength = layerLength * 5 * 4 + 16;
-            Console.WriteLine("file length  (bytes): " + fileLength);
-            Console.WriteLine("layer length (bytes): " + layerLength);
+            //Console.WriteLine("file length  (bytes): " + fileLength);
+            //Console.WriteLine("layer length (bytes): " + layerLength);
 
             byte[] filedata = new byte[fileLength];
             byte[] tempBytes = new byte[4];
@@ -144,8 +142,6 @@ namespace TEiNRandomizer
             SaveLayer(ref filedata, ref level.data.overlay, ref offset);
             SaveLayer(ref filedata, ref level.data.back2, ref offset);
 
-
-
             File.WriteAllBytes(path, filedata);     // output copied file
 
         }
@@ -163,9 +159,9 @@ namespace TEiNRandomizer
             FlipLayerH(ref level.data.back2, lw, lh);
         }
 
-        public static void FlipLayerH(ref Int32[] layer, Int32 lw, Int32 lh)
+        public static void FlipLayerH(ref TileID[] layer, Int32 lw, Int32 lh)
         {
-            int temp;
+            TileID temp;
             for (int row = 0; row < lh; row++)
             {
                 for (int col = 0; col < lw; col++)
@@ -175,26 +171,29 @@ namespace TEiNRandomizer
 
                     if (index < toSwap)
                     {
-                        // insert tile flip lookup here
-                        GetFlipH(ref layer[index]);
-                        GetFlipH(ref layer[toSwap]);
+                        if (layer[index] != TileID.Background && layer[toSwap] != TileID.Background && layer[index] != TileID.Foreground && layer[toSwap] != TileID.Foreground) // Don't flip BG and FG alignment tiles
+                        {
+                            // insert tile flip lookup here
+                            GetFlipH(ref layer[index]);
+                            GetFlipH(ref layer[toSwap]);
 
-                        temp = layer[index];
-                        layer[index] = layer[toSwap];
-                        layer[toSwap] = temp;
+                            temp = layer[index];
+                            layer[index] = layer[toSwap];
+                            layer[toSwap] = temp;
+                        }
                     }
                 }
             }
         }
 
-        public static Int32 GetFlipH(ref Int32 id)
+        public static TileID GetFlipH(ref TileID id)
         {
             foreach (var pair in HFlipIndex)
             {
-                if (id == pair.First)
-                    id = pair.Second;
-                else if (id == pair.Second)
-                    id = pair.First;
+                if (id == (TileID)pair.First)
+                    id = (TileID)pair.Second;
+                else if (id == (TileID)pair.Second)
+                    id = (TileID)pair.First;
             }
             return id;
         }
@@ -210,15 +209,11 @@ namespace TEiNRandomizer
                 for (int j = 0; j < lw; j++)
                 {
                     int index = i * lw + j;
-                    if (level.data.tag[index] == 20070)
-                        Console.Write("*");
-                    else if (level.data.overlay[index] == 30009)
-                        Console.Write("■");
-                    else if (level.data.active[index] == 1)
+                    if (level.data.active[index] == TileID.Solid)
                         Console.Write("▓");
-                    else if (level.data.back1[index] == 50000)
+                    else if (level.data.back1[index] == TileID.WholePiece)
                         Console.Write("▒");
-                    else if (level.data.back2[index] == 50033)
+                    else if (level.data.back2[index] == TileID.WholePiece2)
                         Console.Write("░");
                     else Console.Write(" ");
 

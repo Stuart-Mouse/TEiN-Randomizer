@@ -29,16 +29,16 @@ namespace TEiNRandomizer
 
         public UInt32 GameSeed { get; set; }
         public int PrevRuns { get; set; }
-        public List<Level> AnalysisLevelList = new List<Level> { };
-        public List<string> AnalysisPaletteList = new List<string> { };
-        public List<string> AnalysisMusicList = new List<string> { };
-        public List<string> AnalysisTileList = new List<string> { };
-        public List<string> AnalysisOverlayList = new List<string> { };
-        public List<string> AnalysisParticlesList = new List<string> { };
-        public List<string> AnalysisShaderList = new List<string> { };
-        public List<string> AnalysisFullSetList = new List<string> { };
-        public UInt32 ProgressCounter;
-        public string ProgressMessage;
+        //public List<Level> AnalysisLevelList = new List<Level> { };
+        //public List<string> AnalysisPaletteList = new List<string> { };
+        //public List<string> AnalysisMusicList = new List<string> { };
+        //public List<string> AnalysisTileList = new List<string> { };
+        //public List<string> AnalysisOverlayList = new List<string> { };
+        //public List<string> AnalysisParticlesList = new List<string> { };
+        //public List<string> AnalysisShaderList = new List<string> { };
+        //public List<string> AnalysisFullSetList = new List<string> { };
+        //public UInt32 ProgressCounter;
+        //public string ProgressMessage;
         public bool ShowAdvancedSettings { get; set; } = false;
 
         public RandomizerSettings RSettings { get; set; } = new RandomizerSettings();
@@ -234,7 +234,7 @@ namespace TEiNRandomizer
                 }
 
                 AppState = AppState.InGame;
-                Randomizer.Randomize(this, false);
+                Randomizer.Randomize(this);
 
                 if (RSettings.AutoRefresh)
                     AutoRefresh();
@@ -271,7 +271,7 @@ namespace TEiNRandomizer
                 GameSeed++;
                 Randomizer.myRNG.SeedMe((int)GameSeed);
                 SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-                Randomizer.Randomize(this, false);
+                Randomizer.Randomize(this);
                 await Task.Delay(7000);
             }
         }
@@ -404,36 +404,36 @@ namespace TEiNRandomizer
             ReadyEndIsNighPath();
         }
 
-        public class ItemCounter : IComparable<ItemCounter>
-        {
-            public string Name;
-            public int Occurences;
+        //public class ItemCounter : IComparable<ItemCounter>
+        //{
+        //    public string Name;
+        //    public int Occurences;
 
-            public int CompareTo(ItemCounter other) => Occurences.CompareTo(other.Occurences);
-        }
+        //    public int CompareTo(ItemCounter other) => Occurences.CompareTo(other.Occurences);
+        //}
 
-        public List<ItemCounter> TilesetAnalysis(List<string> TSList)
-        {
-            var TSCounter = new List<ItemCounter> { };
-            bool found;
-            foreach (var item in TSList)
-            {
-                found = false;
-                for (int i = 0; i < TSCounter.Count; i++)
-                {
-                    if (item == TSCounter[i].Name)
-                    {
-                        TSCounter[i].Occurences++;
-                        found = true;
-                    }
-                }
-                if (found == false)
-                {
-                    TSCounter.Add(new ItemCounter() { Name = item, Occurences = 1 });
-                }
-            }
-            return TSCounter;
-        }
+        //public List<ItemCounter> TilesetAnalysis(List<string> TSList)
+        //{
+        //    var TSCounter = new List<ItemCounter> { };
+        //    bool found;
+        //    foreach (var item in TSList)
+        //    {
+        //        found = false;
+        //        for (int i = 0; i < TSCounter.Count; i++)
+        //        {
+        //            if (item == TSCounter[i].Name)
+        //            {
+        //                TSCounter[i].Occurences++;
+        //                found = true;
+        //            }
+        //        }
+        //        if (found == false)
+        //        {
+        //            TSCounter.Add(new ItemCounter() { Name = item, Occurences = 1 });
+        //        }
+        //    }
+        //    return TSCounter;
+        //}
         
         private void ParticleRanger()
         {
@@ -455,7 +455,7 @@ namespace TEiNRandomizer
             GameSeed += 500;
             Randomizer.myRNG.SeedMe((int)GameSeed);
             SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-            Randomizer.Randomize(this, false);
+            Randomizer.Randomize(this);
         }
     }
 }

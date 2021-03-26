@@ -84,96 +84,79 @@ namespace TEiNRandomizer
 
         public Tileset(RandomizerSettings settings, bool isMainTS)
         {
-            var tile_graphicsPool = new string[] { };
-            var overlay_graphicsPool = new string[] { };
-            var background_graphicsPool = new string[] { };
-            var particlePool = new string[] { };
-            var shaderPool = new List<string> { };
-            int numPalettes = 464;
-            var musicPool = new string[] { };
-
-            var doc = XDocument.Load("data/tilesets_pools.xml");    // open levelpool file
-            //foreach (var element in doc.Root.Elements())
-            //{
-            //    if (element.Name == "tile_graphics")
-            //    {
-            //        tile_graphicsPool = Randomizer.ElementToArray(element);
-            //    }
-            //    else if (element.Name == "overlay_graphics")
-            //    {
-            //        overlay_graphicsPool = Randomizer.ElementToArray(element);
-            //    }
-            //    else if (element.Name == "particles")
-            //    {
-            //        particlePool = Randomizer.ElementToArray(element);
-            //    }
-            //    else if (element.Name == "music")
-            //    {
-            //        musicPool = Randomizer.ElementToArray(element);
-            //    }
-            //}
-            numPalettes = Convert.ToInt32(doc.Root.Element("palettes").Value);
-            tile_graphicsPool = Randomizer.ElementToArray(doc.Root.Element("tile_graphics"));
-            overlay_graphicsPool = Randomizer.ElementToArray(doc.Root.Element("overlay_graphics"));
-            particlePool = Randomizer.ElementToArray(doc.Root.Element("particles"));
-            musicPool = Randomizer.ElementToArray(doc.Root.Element("music"));
-
-            foreach (var shader in Randomizer.ShadersList)
+            try
             {
-                if (shader.Enabled)
-                    shaderPool.Add(shader.Content);
-            }
+                var tile_graphicsPool = new string[] { };
+                var overlay_graphicsPool = new string[] { };
+                var background_graphicsPool = new string[] { };
+                var particlePool = new string[] { };
+                var shaderPool = new List<string> { };
+                int numPalettes = 464;
+                var musicPool = new string[] { };
 
-            Tile = ($"    tile_graphics { tile_graphicsPool[Randomizer.myRNG.rand.Next(0, tile_graphicsPool.Count())] }\n");
-            Overlay = ($"    overlay_graphics { overlay_graphicsPool[Randomizer.myRNG.rand.Next(0, overlay_graphicsPool.Count())] }\n");
-            Palette = ($"    palette { Randomizer.myRNG.rand.Next(1, numPalettes) }\n");
-            Music = ($"    music { musicPool[Randomizer.myRNG.rand.Next(0, musicPool.Count())] }\n");
+                var doc = XDocument.Load("data/tilesets_pools.xml");    // open levelpool file
 
-            if (Randomizer.myRNG.rand.Next(0, 2) == 0)  // set shader
-            {
-                Shader = ($"    { shaderPool[Randomizer.myRNG.rand.Next(0, shaderPool.Count())] }\n");
-            }
-            Shader += "shader_param " + Randomizer.myRNG.rand.NextDouble();
+                numPalettes = Convert.ToInt32(doc.Root.Element("palettes").Value);
+                tile_graphicsPool = Randomizer.ElementToArray(doc.Root.Element("tile_graphics"));
+                overlay_graphicsPool = Randomizer.ElementToArray(doc.Root.Element("overlay_graphics"));
+                particlePool = Randomizer.ElementToArray(doc.Root.Element("particles"));
+                musicPool = Randomizer.ElementToArray(doc.Root.Element("music"));
 
-            // set particles
-            var loop = Randomizer.myRNG.rand.Next(0, settings.MaxParticleEffects);
-            if (settings.GenerateCustomParticles)
-            {
-                for (int i = 0; i < loop; i++)
+                foreach (var shader in Randomizer.ShadersList)
                 {
-                    Particles += ("    global_particle_" + (i + 1).ToString() + $" { ParticleGenerator.GetParticle(settings) }\n");
+                    if (shader.Enabled)
+                        shaderPool.Add(shader.Content);
                 }
-            }
-            else
-            {
-                for (int i = 0; i < loop; i++)
+
+                Tile = ($"    tile_graphics { tile_graphicsPool[Randomizer.myRNG.rand.Next(0, tile_graphicsPool.Count())] }\n");
+                Overlay = ($"    overlay_graphics { overlay_graphicsPool[Randomizer.myRNG.rand.Next(0, overlay_graphicsPool.Count())] }\n");
+                Palette = ($"    palette { Randomizer.myRNG.rand.Next(1, numPalettes) }\n");
+                Music = ($"    music { musicPool[Randomizer.myRNG.rand.Next(0, musicPool.Count())] }\n");
+
+                if (Randomizer.myRNG.rand.Next(0, 2) == 0)  // set shader
                 {
-                    Particles += ("    global_particle_" + (i + 1).ToString() + $" { particlePool[Randomizer.myRNG.rand.Next(0, particlePool.Count())] }\n");
+                    Shader = ($"    { shaderPool[Randomizer.myRNG.rand.Next(0, shaderPool.Count())] }\n");
                 }
+                Shader += "shader_param " + Randomizer.myRNG.rand.NextDouble();
+
+                // set particles
+                var loop = Randomizer.myRNG.rand.Next(0, settings.MaxParticleEffects);
+                if (settings.GenerateCustomParticles)
+                {
+                    for (int i = 0; i < loop; i++)
+                    {
+                        Particles += ("    global_particle_" + (i + 1).ToString() + $" { ParticleGenerator.GetParticle(settings) }\n");
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < loop; i++)
+                    {
+                        Particles += ("    global_particle_" + (i + 1).ToString() + $" { particlePool[Randomizer.myRNG.rand.Next(0, particlePool.Count())] }\n");
+                    }
+                }
+
+                if (settings.DoNevermoreTilt && Randomizer.myRNG.rand.Next(0, 6) == 0 && !(isMainTS && !settings.UseCommonTileset))
+                {
+                    Extras += ($"    do_tilt true\n");
+                }
+                if (settings.DoExodusWobble && Randomizer.myRNG.rand.Next(0, 6) == 0 && !(isMainTS && !settings.UseCommonTileset))
+                {
+                    Extras += ($"    do_wobble true\n");
+                }
+
+                // bgsolid for auto-refresh
+                if (settings.AutoRefresh)
+                    Extras += "background_graphics bgsolid\n";
+
+                // generate Art Alts
+                if (settings.AltLevel != AltLevels.None)
+                    GetArtAlts(settings);
+
+                // create "all", which is just the entire tileset in one string
+                All = Tile + "\n" + Overlay + "\n" + Particles + "\n" + Shader + "\n" + Palette + "\n" + Music + "\n" + Extras;
             }
-            
-
-            if (settings.DoNevermoreTilt && Randomizer.myRNG.rand.Next(0, 6) == 0 && !(isMainTS && !settings.UseCommonTileset))
-            {
-                Extras += ($"    do_tilt true\n");
-            }
-            if (settings.DoExodusWobble && Randomizer.myRNG.rand.Next(0, 6) == 0 && !(isMainTS && !settings.UseCommonTileset))
-            {
-                Extras += ($"    do_wobble true\n");
-            }
-
-            // bgsolid for auto-refresh
-            if (settings.AutoRefresh)
-                Extras += "background_graphics bgsolid\n";
-
-            // generate Art Alts
-            if (settings.AltLevel != AltLevels.None)
-                GetArtAlts(settings);
-
-            // create "all", which is just the entire tileset in one string
-            All = Tile + "\n" + Overlay + "\n" + Particles + "\n" + Shader + "\n" + Palette + "\n" + Music + "\n" + Extras;
-
-
+            catch (Exception ex) { MessageBox.Show($"Error creating tileset. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
         }
     }
 }

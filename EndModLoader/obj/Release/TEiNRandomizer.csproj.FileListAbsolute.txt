@@ -49,4 +49,3 @@ C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRand
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRandomizer.csproj.CoreCompileInputs.cache
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRandomizer.exe
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRandomizer.pdb
-C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRandomizer_Content.g.cs

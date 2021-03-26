@@ -16,8 +16,38 @@ namespace TEiNRandomizer
         static RandomizerSettings settings;
         public static List<Shader> ShadersList;
         //static string gameDir;
-        static int prevRuns = 0;
+        //static int prevRuns = 0;
 
+        static void FlipCSV(string path)
+        {
+            var arr = File.ReadAllLines(path);
+            int length = 0;
+            var file = new List<string[]>();
+            foreach (var str in arr)
+            {
+                var line = str.Split(Convert.ToChar(","));
+                if (line.Length > length)
+                    length = line.Length;
+                line = line.Reverse().ToArray();
+                file.Add(line);
+            }
+            var newfile = new string[arr.Length];
+            for (int j = 0; j < file.Count; j++)
+            {
+                string newline = "";
+                int offset = length - file[j].Length;
+                for (int i = 0; i < offset; i++)
+                {
+                    newline += ",";
+                }
+                for (int i = 0; i < file[j].Length; i++)
+                {
+                    newline += file[j][i] + ",";
+                }
+                newfile[j] = newline;
+            }
+            File.WriteAllLines(path, newfile);
+        }
         public static List<Shader> GetShadersList()
         {
             ShadersList = new List<Shader>() { };
@@ -293,6 +323,9 @@ namespace TEiNRandomizer
                 }
                 sw.Write("v-end.lvl");
             }
+            if (settings.MirrorMode)
+                FlipCSV(settings.GameDirectory + "data/map.csv");
+
         }
         static void LevelInfo()
         {
@@ -335,18 +368,26 @@ namespace TEiNRandomizer
                 {
                     for (int j = 0; j < settings.NumLevels; j++)
                     {
-                        sw.WriteLine("\"v" + Convert.ToString(prevRuns + i + 1) + "-" + Convert.ToString(j + 1) + "\" {name=\"" + areaname + Convert.ToString(j + 1) + "\" id=-1}");
+                        sw.WriteLine("\"v" + Convert.ToString(i + 1) + "-" + Convert.ToString(j + 1) + "\" {name=\"" + areaname + Convert.ToString(j + 1) + "\" id=-1}");
                     }
                 }
             }
         }
         static void TileMaps()
         {
-            File.Copy("data/vtilemaps/The End is Nigh/1-1.lvl", settings.GameDirectory + "tilemaps/1-1.lvl", true);
-            File.Copy("data/vtilemaps/The End is Nigh/1-1x.lvl", settings.GameDirectory + "tilemaps/1-2.lvl", true);
-            File.Copy("data/vtilemaps/The End is Nigh/v-connect.lvl", settings.GameDirectory + "tilemaps/v-connect.lvl", true);
-            File.Copy("data/vtilemaps/The End is Nigh/v-start.lvl", settings.GameDirectory + "tilemaps/v-start.lvl", true);
-            File.Copy("data/vtilemaps/The End is Nigh/v-end.lvl", settings.GameDirectory + "tilemaps/v-end.lvl", true);
+            string[] baseLevels = { "1-1", "1-1x", "v-connect", "v-start", "v-end" };
+
+            foreach (var level in baseLevels)
+            {
+                //File.Copy($"data/vtilemaps/The End is Nigh/{level}.lvl", settings.GameDirectory + $"tilemaps/{level}.lvl", true);
+                var levelFile = LevelManip.Load($"data/vtilemaps/The End is Nigh/{level}.lvl");
+
+                if (settings.MirrorMode)
+                    LevelManip.FlipLevelH(ref levelFile);
+
+                LevelManip.Save(levelFile, settings.GameDirectory + $"tilemaps/{level}.lvl");
+            }
+
 
             for (int j = 0; j < settings.NumAreas; j++)
             {
@@ -355,11 +396,11 @@ namespace TEiNRandomizer
                     
                     var levelFile = LevelManip.Load($"data/vtilemaps/{ChosenLevels[j][i].Folder}/{ChosenLevels[j][i].Name}.lvl");
                     
-                    if (ChosenLevels[j][i].CanReverse && myRNG.CoinFlip())
+                    if (ChosenLevels[j][i].CanReverse && myRNG.CoinFlip() || settings.MirrorMode)
                         LevelManip.FlipLevelH(ref levelFile);
 
-                    if (true)   // will become setting
-                        Corruptors.CorruptLevel(ref levelFile);
+                    if (settings.DoCorruptions)
+                        ChosenLevels[j][i].TSNeed += Corruptors.CorruptLevel(ref levelFile);
 
                     LevelManip.Save(levelFile, settings.GameDirectory + $"tilemaps/v{j + 1}-{i + 1}.lvl");
                     
@@ -382,14 +423,14 @@ namespace TEiNRandomizer
             }
         }
 
-        public static void Randomize(MainWindow mw, bool analyzeMe)
+        public static void Randomize(MainWindow mw)
         {
 
             //var allpools = mw.Pools;            // get pools from main window
             //gameDir = mw.EndIsNighPath;         // set game path (no longer used)
             ShadersList = mw.ShadersList;
             settings = mw.RSettings;
-            prevRuns = mw.PrevRuns;
+            //prevRuns = mw.PrevRuns;
 
             var drawpool = new List<Level> { };     // make drawpool
             try
@@ -413,22 +454,23 @@ namespace TEiNRandomizer
             }
             catch (Exception){MessageBox.Show( "Error creating drawpool.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw;}
 
-            try
-            {
-                if (settings.CacheRuns != 0)
-                {
-                    var toRemove = LoadRecents();       // load cached levels
-                    foreach (var item in toRemove)      // actually remove them
-                    {
-                        for (int i = 0; i < drawpool.Count(); i++)
-                        {
-                            if (drawpool[i].Name == item)
-                                drawpool.RemoveAt(i);
-                        }
-                    }
-                }
-            }
-            catch (Exception){MessageBox.Show("Error loading cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw;}
+            // cache loading no longer used
+            //try
+            //{
+            //    if (settings.CacheRuns != 0)
+            //    {
+            //        var toRemove = LoadRecents();       // load cached levels
+            //        foreach (var item in toRemove)      // actually remove them
+            //        {
+            //            for (int i = 0; i < drawpool.Count(); i++)
+            //            {
+            //                if (drawpool[i].Name == item)
+            //                    drawpool.RemoveAt(i);
+            //            }
+            //        }
+            //    }
+            //}
+            //catch (Exception){MessageBox.Show("Error loading cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw;}
 
             //for (int i = 0; i < mw.RSettings.NumShuffles; i++)  // shuffle drawpool
             //    Shuffle(drawpool);
@@ -448,43 +490,32 @@ namespace TEiNRandomizer
                     }
                     ChosenLevels.Add(levels);
                 }
-                if (settings.CacheRuns != 0) SaveRecents();      // add chosenlevels to cache
+                //if (settings.CacheRuns != 0) SaveRecents();      // add chosenlevels to cache
             }
-            catch (Exception){MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);throw;}
+            catch (Exception){MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);throw;} 
 
-            if (analyzeMe)      // provide info to analyzer
-            {
-                foreach (var area in ChosenLevels)
-                {
-                    foreach (var level in area)
-                    {
-                        mw.AnalysisLevelList.Add(level);
-                    }
-                }
-            }   
-
-            if (!analyzeMe)     // skip this when analyzing to save time
-            {
-                try{
-                    WriteDebug();   //debugging output chosen levels
-                    CleanFolders(); // clean up folders
-                }
-                catch (Exception) { MessageBox.Show("Error cleaning folders or printing debug.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-                try{
-                    LevelInfo();    // create levelinfo.txt
-                }
-                catch (Exception) { MessageBox.Show("Error creating levelinfo.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-                try{
-                    MapCSV();       // create map.csv
-                }
-                catch (Exception) { MessageBox.Show("Error creating map.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-                try{
-                    TileMaps();     // copy tilemaps to game folder
-                }
-                catch (Exception) { MessageBox.Show("Error copying tilemaps.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-                
+            try{
+                WriteDebug();   //debugging output chosen levels
+                CleanFolders(); // clean up folders
             }
-            Tilesets();             // create tilesets.txt
+            catch (Exception ex) { MessageBox.Show("Error cleaning folders or printing debug. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try{
+                LevelInfo();    // create levelinfo.txt
+            }
+            catch (Exception ex) { MessageBox.Show("Error creating levelinfo. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try{
+                MapCSV();       // create map.csv
+            }
+            catch (Exception ex) { MessageBox.Show("Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try{
+                TileMaps();     // copy tilemaps to game folder
+            }
+            catch (Exception ex) { MessageBox.Show("Error copying tilemaps. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try
+            {
+                Tilesets();             // create tilesets.txt
+            }
+            catch (Exception ex) { MessageBox.Show("Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
         }
     }
 }

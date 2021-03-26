@@ -112,7 +112,6 @@
                     <!--<CheckBox Content="Randomize Palette Per Level" IsChecked="{Binding RSettings.PalettePerLevel}" />
                     <CheckBox Content="Randomize Music Per Level" IsChecked="{Binding RSettings.MusicPerLevel}" />-->
                     <CheckBox Content="Randomize Shaders" IsChecked="{Binding RSettings.DoShaders}" />
-
                     <CheckBox Content="Randomize Particles" IsChecked="{Binding RSettings.DoParticles}" />
                     <CheckBox Content="Randomize Overlays" IsChecked="{Binding RSettings.DoOverlays}" />
                     <CheckBox Content="Randomize Tile Graphics" IsChecked="{Binding RSettings.DoTileGraphics}" />
@@ -134,6 +133,8 @@
                     </Grid>
                     <CheckBox Content="Can Apply Nevermore Tilt" IsChecked="{Binding RSettings.DoNevermoreTilt}" />
                     <CheckBox Content="Can Apply Exodus Wobble" IsChecked="{Binding RSettings.DoExodusWobble}" />
+                    <CheckBox Content="Corrupt Levels" IsChecked="{Binding RSettings.DoCorruptions}" />
+                    <CheckBox Content="Mirror Mode" IsChecked="{Binding RSettings.MirrorMode}" />
                     <CheckBox Content="Auto-Refresh Levels" IsChecked="{Binding RSettings.AutoRefresh}" />
                     <Separator Margin="0,5"/>
                     <TextBlock Grid.Column="0" Text="Tilesets Options: "/>
