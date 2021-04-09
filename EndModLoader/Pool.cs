@@ -49,9 +49,9 @@ namespace TEiNRandomizer
             this.Name = fileName;
             this.Folder = folder;
             this.Levels = new List<Level>();
-            string tiledefault = null;
-            string tileneed = null;
-            string tileart = null;
+            string tiledefault = "";
+            string tileneed = "";
+            string tileart = "";
 
             var doc = XDocument.Load($"data/levelpools/{Folder}/{Name}.xml");    // open levelpool file
             this.Active = Convert.ToBoolean(doc.Root.Attribute("enabled").Value == "True");
@@ -65,7 +65,7 @@ namespace TEiNRandomizer
                     var level = new Level { };
                     level.Folder = this.Folder;
                     level.TSDefault += tiledefault;
-                    level.TSNeed += tileneed;
+                    level.TSNeed = tileneed;
                     level.Art += tileart;
                     level.Name = element.Attribute("name").Value;
                     level.HasSecret = Convert.ToBoolean(element.Attribute("secret").Value);
@@ -79,11 +79,12 @@ namespace TEiNRandomizer
                             foreach (var element3 in element2.Elements())
                             {
                                 if (element3.Name == "default") level.TSDefault += element3.Value.Replace("\t", null);
-                                else if (element3.Name == "need") level.TSNeed += element3.Value.Replace("\t", null);
+                                else if (element3.Name == "need") level.TSNeed += " " + element3.Value.Replace("\t", null);
                                 else if (element3.Name == "art") level.Art += element3.Value.Replace("\t", null);
                             }
                         }
                     }
+                    Console.WriteLine($"{level.Name} {level.TSNeed}");
                     this.Levels.Add(level);
                 }
                 else if (element.Name == "tileset")

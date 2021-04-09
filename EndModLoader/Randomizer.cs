@@ -91,7 +91,7 @@ namespace TEiNRandomizer
                 list[n] = value;
             }
         }
-        public static string[] ElementToArray(XElement element) // converts xml element value to a string array
+        public static string[] ElementToArray(XElement element)         // converts xml element value to a string array
         {
             string t_string = Convert.ToString(element.Value).Trim();
             var myArray = t_string.Split(Convert.ToChar("\n"));
@@ -102,7 +102,7 @@ namespace TEiNRandomizer
 
             return myArray;
         }
-        public static Int32[] ElementToArray(XElement element, bool y) // converts xml element value to a string array
+        public static Int32[] ElementToArray(XElement element, bool y)  // converts xml element value to a string array
         {
             string t_string = Convert.ToString(element.Value).Trim();
             var myArray = t_string.Split(Convert.ToChar("\n"));
@@ -239,13 +239,13 @@ namespace TEiNRandomizer
                         sw.WriteLine("    " + Convert.ToString(i + 1) + " {");
                         sw.WriteLine("    " + ChosenLevels[j][i].TSDefault);
 
+                        sw.WriteLine($"# Level Name: {ChosenLevels[j][i].Name}");
+
                         // Write Tileset info for level
                         if (settings.UseCommonTileset)
-                        {
                             tileset = areatileset;
-                            if (!settings.UseDefaultMusic)
-                                sw.WriteLine(tileset.Music);
-                        }
+                        if (!settings.UseDefaultMusic)
+                            sw.WriteLine(tileset.Music);
                         if (!settings.UseDefaultPalettes)
                             sw.WriteLine(tileset.Palette);
                         if (settings.DoTileGraphics)
@@ -265,11 +265,13 @@ namespace TEiNRandomizer
                         // Art alts
                         sw.Write("art_alts[" + ChosenLevels[j][i].Art);
                         sw.Write(tileset.ArtAlts);
-                        if (settings.UseCommonTileset)
-                            sw.Write(areatileset.ArtAlts);
+                        //if (settings.UseCommonTileset)
+                        //    sw.Write(areatileset.ArtAlts);
                         sw.WriteLine("]");
 
+                        sw.WriteLine("# TS Needs");
                         sw.WriteLine("    " + ChosenLevels[j][i].TSNeed);
+
                         sw.WriteLine(settings.AttachToTS);
                         sw.WriteLine("    }\n");
                     }
@@ -280,6 +282,8 @@ namespace TEiNRandomizer
         }
         static void CleanFolders()
         {
+
+            Console.WriteLine("del data");
             try
             {
                 foreach (var file in Directory.GetFiles(settings.GameDirectory + "data"))
@@ -289,6 +293,7 @@ namespace TEiNRandomizer
             }
             catch (DirectoryNotFoundException) { }
             Directory.CreateDirectory(settings.GameDirectory + "data");
+            Console.WriteLine("del tilemaps");
             try
             {
                 foreach (var file in Directory.GetFiles(settings.GameDirectory + "tilemaps"))
@@ -297,17 +302,17 @@ namespace TEiNRandomizer
                 }
             }
             catch (DirectoryNotFoundException) { }
-            Directory.CreateDirectory(settings.GameDirectory + "tilemaps");
-            
-            Directory.CreateDirectory(settings.GameDirectory + "textures");
-            File.Copy("data/palette.png", settings.GameDirectory + "textures/palette.png", true);
-            Directory.CreateDirectory(settings.GameDirectory + "shaders");
-            Directory.CreateDirectory(settings.GameDirectory + "swfs");        
-            File.Copy("data/endnigh.swf", settings.GameDirectory + "swfs/endnigh.swf", true);    // copy swf
+            Directory.CreateDirectory(settings.GameDirectory + "tilemaps"); Console.WriteLine("tilemaps");
+            Directory.CreateDirectory(settings.GameDirectory + "textures"); Console.WriteLine("textures");
+            File.Copy("data/palette.png", settings.GameDirectory + "textures/palette.png", true); Console.WriteLine("palette");
+            Directory.CreateDirectory(settings.GameDirectory + "shaders"); Console.WriteLine("shaders");
+            Directory.CreateDirectory(settings.GameDirectory + "swfs"); Console.WriteLine("swfs");
+            File.Copy("data/endnigh.swf", settings.GameDirectory + "swfs/endnigh.swf", true); Console.WriteLine("swf");
             foreach (var file in Directory.GetFiles("data/shaders"))
             {
                 File.Copy(file, settings.GameDirectory + $"shaders/{Path.GetFileName(file)}", true);
             }
+            Console.WriteLine("shaders");
         }
         static void MapCSV()
         {
@@ -432,6 +437,8 @@ namespace TEiNRandomizer
             settings = mw.RSettings;
             //prevRuns = mw.PrevRuns;
 
+            Console.WriteLine("start randomizer");
+
             // This is an odd spot for this but I don't know where else to put it right now (sets areatype to glitch if dead racer mode is turned on)
             if (settings.DeadRacer) settings.AreaType = AreaTypes.glitch;
 
@@ -496,36 +503,49 @@ namespace TEiNRandomizer
                 }
                 //if (settings.CacheRuns != 0) SaveRecents();      // add chosenlevels to cache
             }
-            catch (Exception){MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);throw;} 
+            catch (Exception){ Console.WriteLine("Error selecting levels or saving cache."); MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; } 
 
             try{
                 WriteDebug();   //debugging output chosen levels
+                Console.WriteLine("clean folders start");
                 CleanFolders(); // clean up folders
+                Console.WriteLine("clean folders end");
             }
-            catch (Exception ex) { MessageBox.Show("Error cleaning folders or printing debug. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            catch (Exception ex) { Console.WriteLine($"Error cleaning folders or printing debug. Exception {ex}"); MessageBox.Show($"Error cleaning folders or printing debug. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try{
                 LevelInfo();    // create levelinfo.txt
+                Console.WriteLine("level info");
             }
-            catch (Exception ex) { MessageBox.Show("Error creating levelinfo. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            catch (Exception ex) { Console.WriteLine($"Error creating levelinfo. Exception {ex}"); MessageBox.Show($"Error creating levelinfo. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try
             {
                 Worldmap.WriteWorldMap(settings);   // create worldmap.txt
+                Console.WriteLine("level info");
+
             }
-            catch (Exception ex) { MessageBox.Show("Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            catch (Exception ex) { Console.WriteLine($"Error creating worldmap. Exception {ex}"); MessageBox.Show($"Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try
             {
                 MapCSV();       // create map.csv
+                Console.WriteLine("mapcsv");
+
             }
-            catch (Exception ex) { MessageBox.Show("Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            catch (Exception ex) { Console.WriteLine($"Error creating map. Exception {ex}"); MessageBox.Show($"Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try{
                 TileMaps();     // copy tilemaps to game folder
+                Console.WriteLine("tilemaps");
+
             }
-            catch (Exception ex) { MessageBox.Show("Error copying tilemaps. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            catch (Exception ex) { Console.WriteLine($"Error copying tilemaps. Exception {ex}"); MessageBox.Show($"Error copying tilemaps. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try
             {
                 Tilesets();             // create tilesets.txt
+                Console.WriteLine("tilesets");
+
             }
-            catch (Exception ex) { MessageBox.Show("Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}"); MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+
+            Console.WriteLine(mw.GameSeed);
         }
     }
 }

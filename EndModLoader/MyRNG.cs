@@ -12,6 +12,7 @@ namespace TEiNRandomizer
         public RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider();
         public byte[] byteArray = new byte[4];
         public Random rand = new Random();
+        //public Int32 CurrentSeed;
 
         public MyRNG()
         {
@@ -21,6 +22,7 @@ namespace TEiNRandomizer
         public void SeedMe(int seed)
         {
             rand = new Random(seed);
+
         }
 
         public UInt32 GetUInt32()

@@ -183,6 +183,8 @@ namespace TEiNRandomizer
 
         private async Task PlayRandomizer()
         {
+            Console.WriteLine("play randomizer");
+
             if (AppState == AppState.ReadyToPlay)
             {
                 if (File.Exists(EndIsNighPath + "backup/TheEndIsNigh -backup.exe")) // If backup exe exists restore regular from it
@@ -232,6 +234,7 @@ namespace TEiNRandomizer
                         return;
                     }
                 }
+
 
                 AppState = AppState.InGame;
                 Randomizer.Randomize(this);

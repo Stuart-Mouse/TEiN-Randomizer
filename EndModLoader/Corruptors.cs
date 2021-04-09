@@ -34,7 +34,7 @@ namespace TEiNRandomizer
             //OverlayStuff(ref level);
             if (SmartCorrupt(ref level))
             {
-                TSAppend += "fx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2";
+                TSAppend += "\n#added by level corruptor\nfx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2";
             }
             //if (AddEnemies(ref level, 5))
             //{
@@ -42,12 +42,9 @@ namespace TEiNRandomizer
             //}
             //AddTiles(ref level, 10);
             //TotalChaos(ref level);
-
             
             if (Randomizer.settings.AreaType == AreaTypes.normal) TumorRandomizer(ref level);
             else if (Randomizer.settings.AreaType == AreaTypes.cart) RingRandomizer(ref level);
-
-
 
             return TSAppend;
         }

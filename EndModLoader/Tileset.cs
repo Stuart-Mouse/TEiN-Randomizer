@@ -65,7 +65,7 @@ namespace TEiNRandomizer
                     {
                         ArtAlts += "[" + alt.Trim() + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
                     }
-                    ArtAlts += "[ChainLink, None][ChainLink2, None]";
+                    //ArtAlts += "[ChainLink, None][ChainLink2, None]";
                 }
             }
             catch (Exception)
