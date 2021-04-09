@@ -432,6 +432,10 @@ namespace TEiNRandomizer
             settings = mw.RSettings;
             //prevRuns = mw.PrevRuns;
 
+            // This is an odd spot for this but I don't know where else to put it right now (sets areatype to glitch if dead racer mode is turned on)
+            if (settings.DeadRacer) settings.AreaType = AreaTypes.glitch;
+
+
             var drawpool = new List<Level> { };     // make drawpool
             try
             {
@@ -503,7 +507,13 @@ namespace TEiNRandomizer
                 LevelInfo();    // create levelinfo.txt
             }
             catch (Exception ex) { MessageBox.Show("Error creating levelinfo. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try{
+            try
+            {
+                Worldmap.WriteWorldMap(settings);   // create worldmap.txt
+            }
+            catch (Exception ex) { MessageBox.Show("Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try
+            {
                 MapCSV();       // create map.csv
             }
             catch (Exception ex) { MessageBox.Show("Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }

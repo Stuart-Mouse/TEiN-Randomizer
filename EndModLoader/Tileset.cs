@@ -120,19 +120,22 @@ namespace TEiNRandomizer
                 Shader += "shader_param " + Randomizer.myRNG.rand.NextDouble();
 
                 // set particles
-                var loop = Randomizer.myRNG.rand.Next(0, settings.MaxParticleEffects);
-                if (settings.GenerateCustomParticles)
+                if(settings.DoParticles)
                 {
-                    for (int i = 0; i < loop; i++)
+                    var loop = Randomizer.myRNG.rand.Next(1, settings.MaxParticleEffects);
+                    if (settings.GenerateCustomParticles)
                     {
-                        Particles += ("    global_particle_" + (i + 1).ToString() + $" { ParticleGenerator.GetParticle(settings) }\n");
+                        for (int i = 0; i < loop; i++)
+                        {
+                            Particles += ("    global_particle_" + (i + 1).ToString() + $" { ParticleGenerator.GetParticle(settings) }\n");
+                        }
                     }
-                }
-                else
-                {
-                    for (int i = 0; i < loop; i++)
+                    else
                     {
-                        Particles += ("    global_particle_" + (i + 1).ToString() + $" { particlePool[Randomizer.myRNG.rand.Next(0, particlePool.Count())] }\n");
+                        for (int i = 0; i < loop; i++)
+                        {
+                            Particles += ("    global_particle_" + (i + 1).ToString() + $" { particlePool[Randomizer.myRNG.rand.Next(0, particlePool.Count())] }\n");
+                        }
                     }
                 }
 

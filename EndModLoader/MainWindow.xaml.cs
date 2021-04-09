@@ -292,7 +292,7 @@ namespace TEiNRandomizer
 
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            ParticleRanger();
+            ParticleRanger(); // this function is stupid and I should get rid of it later
             Randomizer.myRNG.SeedMe((int)GameSeed);
             await PlayRandomizer();
         }
@@ -435,7 +435,7 @@ namespace TEiNRandomizer
         //    return TSCounter;
         //}
         
-        private void ParticleRanger()
+        private void ParticleRanger() // this function is stupid and I should get rid of it later
         {
             if (RSettings.MaxParticleEffects < 0) RSettings.MaxParticleEffects = 0;
             else if (RSettings.MaxParticleEffects > 3) RSettings.MaxParticleEffects = 3;

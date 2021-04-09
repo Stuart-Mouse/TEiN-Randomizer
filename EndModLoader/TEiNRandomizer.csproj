@@ -155,6 +155,7 @@
     <Compile Include="Shader.cs" />
     <Compile Include="StringManipulator.cs" />
     <Compile Include="Tileset.cs" />
+    <Compile Include="Worldmap.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

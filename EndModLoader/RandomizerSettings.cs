@@ -36,6 +36,8 @@ namespace TEiNRandomizer
         public bool MirrorMode { get; set; }
         public bool DoCorruptions { get; set; }
         public bool ManualLoad { get; set; }
+        public bool DeadRacer { get; set; }
+        public int CartLives { get; set; }
 
         public RandomizerSettings()
         {
@@ -68,6 +70,8 @@ namespace TEiNRandomizer
             ManualLoad = false;
             DoCorruptions = false;
             MirrorMode = false;
+            DeadRacer = false;
+            CartLives = 10;
             GameDirectory = "C:/Program Files(x86)/Steam/steamapps/common/theendisnigh/";
 
             try
@@ -132,6 +136,8 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(ManualLoad), ManualLoad);
                     element.SetElementValue(nameof(DoCorruptions), DoCorruptions);
                     element.SetElementValue(nameof(MirrorMode), MirrorMode);
+                    element.SetElementValue(nameof(DeadRacer), DeadRacer);
+                    element.SetElementValue(nameof(CartLives), CartLives);
                 }
             }
             doc.Save("data/RandomizerSettings.xml");
@@ -173,6 +179,8 @@ namespace TEiNRandomizer
                     ManualLoad = (bool)element.Element(nameof(ManualLoad));
                     DoCorruptions = (bool)element.Element(nameof(DoCorruptions));
                     MirrorMode = (bool)element.Element(nameof(MirrorMode));
+                    DeadRacer = (bool)element.Element(nameof(DeadRacer));
+                    CartLives = (int)element.Element(nameof(CartLives));
                 }
             }
         }

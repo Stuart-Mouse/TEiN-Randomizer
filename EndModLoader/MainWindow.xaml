@@ -106,6 +106,18 @@
                         <Button Grid.Column="2"  Name="AreaTypeDownButton" Content="-" Width="15" Click="AreaTypeDec" HorizontalAlignment="Right"/>
                         <Button Grid.Column="3"  Name="AreaTypeUpButton" Content="+" Width="15" Click="AreaTypeInc" />
                     </Grid>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Cart Lives: "/>
+                        <TextBox Grid.Column="1" Name="CartLivesTextBox" Margin="0,0,0,0">
+                            <TextBox.Text>
+                                <Binding Path="RSettings.CartLives" UpdateSourceTrigger="PropertyChanged"/>
+                            </TextBox.Text>
+                        </TextBox>
+                    </Grid>
                     <CheckBox Content="One Tileset Per Area" IsChecked="{Binding RSettings.UseCommonTileset}" />
                     <CheckBox Content="Use Default Music" IsChecked="{Binding RSettings.UseDefaultMusic}" />
                     <CheckBox Content="Use Default Palettes" IsChecked="{Binding RSettings.UseDefaultPalettes}" />
@@ -135,6 +147,7 @@
                     <CheckBox Content="Can Apply Exodus Wobble" IsChecked="{Binding RSettings.DoExodusWobble}" />
                     <CheckBox Content="Corrupt Levels" IsChecked="{Binding RSettings.DoCorruptions}" />
                     <CheckBox Content="Mirror Mode" IsChecked="{Binding RSettings.MirrorMode}" />
+                    <CheckBox Content="Dead Racer Mode" IsChecked="{Binding RSettings.DeadRacer}" />
                     <CheckBox Content="Auto-Refresh Levels" IsChecked="{Binding RSettings.AutoRefresh}" />
                     <Separator Margin="0,5"/>
                     <TextBlock Grid.Column="0" Text="Tilesets Options: "/>

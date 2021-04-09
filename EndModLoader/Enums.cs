@@ -129,7 +129,7 @@ namespace TEiNRandomizer
         MegaTumor           = 40111,
         Cartridge           = 40038,
         Key                 = 40073,
-        PollutionCloud      = 40047,
+        GasCloud            = 40047,
         Mother              = 40048,
         CannonRA            = 40050,
         CannonGA            = 40052,

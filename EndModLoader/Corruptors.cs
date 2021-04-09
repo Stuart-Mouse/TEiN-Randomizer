@@ -25,7 +25,7 @@ namespace TEiNRandomizer
         public static string CorruptLevel(ref LevelFile level)
         {
             string TSAppend = "";
-            
+
             //RandomCrumbles(ref level);
             //SpikeStrips(ref level);
             //Crushers(ref level);
@@ -34,9 +34,40 @@ namespace TEiNRandomizer
             {
                 TSAppend += "fx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2";
             }
+            //if (AddEnemies(ref level, 5))
+            //{
+            //    TSAppend += "fx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2";
+            //}
+            //AddTiles(ref level, 10);
             //TotalChaos(ref level);
 
             return TSAppend;
+        }
+
+        public static bool AddEnemies(ref LevelFile level, int num)
+        {
+            bool hasGas = false;
+            for (int i = 0; i < num; i++)
+            {
+                int index = Randomizer.myRNG.rand.Next(0, level.data.active.Length);
+                if (level.data.active[index] == 0 && level.data.tag[index] == 0)
+                {
+                    var tile = (TileID)entityTiles[Randomizer.myRNG.rand.Next(0, entityTiles.Length)];
+                    level.data.active[index] = tile;
+                    if (tile == TileID.Gasper || tile == TileID.GasCloud) hasGas = true;
+
+                }
+            }
+            return hasGas;
+        }
+        public static void AddTiles(ref LevelFile level, int num)
+        {
+            for (int i = 0; i < num; i++)
+            {
+                int index = Randomizer.myRNG.rand.Next(0, level.data.active.Length);
+                if (level.data.active[index] != TileID.Solid && level.data.tag[index] == TileID.Empty)
+                    level.data.active[index] = (TileID)activeTiles[Randomizer.myRNG.rand.Next(0, activeTiles.Length)];
+            }
         }
         public static void SpikeStrips(ref LevelFile level)
         {
@@ -63,18 +94,7 @@ namespace TEiNRandomizer
         }
         public static void TotalChaos(ref LevelFile level)
         {
-            for (int i = 0; i < 300; i++)
-            {
-                int index = Randomizer.myRNG.rand.Next(0, level.data.active.Length);
-                if (level.data.active[index] == TileID.Solid && level.data.tag[index] == TileID.Empty)
-                    level.data.active[index] = (TileID)activeTiles[Randomizer.myRNG.rand.Next(0, activeTiles.Length)];
-            }
-            for (int i = 0; i < 10; i++)
-            {
-                int index = Randomizer.myRNG.rand.Next(0, level.data.active.Length);
-                if (level.data.active[index] == 0 && level.data.tag[index] == 0)
-                    level.data.active[index] = (TileID)entityTiles[Randomizer.myRNG.rand.Next(0, entityTiles.Length)];
-            }
+           
         }
 
         public static void Crushers(ref LevelFile level)
@@ -112,6 +132,7 @@ namespace TEiNRandomizer
             var smart = doc.Root.Element("smart");
             var options = new string[] { };
             bool hasGas = false;
+            int corruptLevel = 3;
 
             // loop over entire level
             for (int i = 0; i < lh; i++)
@@ -128,7 +149,7 @@ namespace TEiNRandomizer
                     
                     if ((Int32)level.data.active[index] < 1000)
                     {
-                        if (Randomizer.myRNG.CoinFlip())
+                        if (Randomizer.myRNG.rand.Next(0, corruptLevel) == 0)
                         {
                             try
                             {
@@ -150,7 +171,7 @@ namespace TEiNRandomizer
                             if (s != null && s != "")
                             {
                                 int num = Convert.ToInt32(s);
-                                if (num == 40003) { hasGas = true; }
+                                if (num == 40003 || num == 40047) { hasGas = true; }
                                 level.data.active[index] = (TileID)num;
                             }
                         }
