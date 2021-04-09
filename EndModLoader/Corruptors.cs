@@ -14,6 +14,7 @@ namespace TEiNRandomizer
         public static Int32[] tagTiles { get; set; }
         public static Int32[] back1Tiles { get; set; }
         public static Int32[] back2Tiles { get; set; }
+        public static XElement smartTiles { get; set; }
 
         static Corruptors()
         {
@@ -21,6 +22,7 @@ namespace TEiNRandomizer
             activeTiles = Randomizer.ElementToArray(doc.Root.Element("active"), true);
             entityTiles = Randomizer.ElementToArray(doc.Root.Element("entity"), true);
             overlayTiles = Randomizer.ElementToArray(doc.Root.Element("overlay"), true);
+            smartTiles = doc.Root.Element("smart");
         }
         public static string CorruptLevel(ref LevelFile level)
         {
@@ -40,6 +42,12 @@ namespace TEiNRandomizer
             //}
             //AddTiles(ref level, 10);
             //TotalChaos(ref level);
+
+            
+            if (Randomizer.settings.AreaType == AreaTypes.normal) TumorRandomizer(ref level);
+            else if (Randomizer.settings.AreaType == AreaTypes.cart) RingRandomizer(ref level);
+
+
 
             return TSAppend;
         }
@@ -94,7 +102,7 @@ namespace TEiNRandomizer
         }
         public static void TotalChaos(ref LevelFile level)
         {
-           
+
         }
 
         public static void Crushers(ref LevelFile level)
@@ -124,12 +132,155 @@ namespace TEiNRandomizer
                 //}
             }
         }
+
+        public static void TumorRandomizer(ref LevelFile level)
+        {
+            int tumorsPerLevel = 1;
+            int index = 0;
+            int lw = level.header.width;
+            int lh = level.header.height;
+
+            Bounds bounds = GetCameraBounds(ref level);
+
+            // delete original tumor
+            for (int i = 0; i < lh; i++)
+            {
+                for (int j = 0; j < lw; j++)
+                {
+                    index = i * lw + j;
+                    if (level.data.active[index] == TileID.Tumor)
+                        level.data.active[index] = TileID.Empty;
+                }
+            }
+            // place new tumor(s)
+            for (int i = 0; i < tumorsPerLevel; i++)
+            {
+                bool placed = false;
+                do {
+                    int row = Randomizer.myRNG.rand.Next(bounds.Top, bounds.Bottom);
+                    int col = Randomizer.myRNG.rand.Next(bounds.Left, bounds.Right);
+
+                    index = row * lw + col;
+                    if (level.data.active[index] == TileID.Empty)
+                    {
+                        level.data.active[index] = TileID.Tumor;
+                        placed = true;
+                    }
+
+                } while (!placed);
+            }
+        }
+
+        public static void RingRandomizer(ref LevelFile level)
+        {
+            int ringsPerLevel = 10;
+            int index = 0;
+            int lw = level.header.width;
+            int lh = level.header.height;
+
+            Bounds bounds = GetCameraBounds(ref level);
+
+            // delete original tumor
+            for (int i = 0; i < lh; i++)
+            {
+                for (int j = 0; j < lw; j++)
+                {
+                    index = i * lw + j;
+                    if (level.data.active[index] == TileID.Tumor)
+                        level.data.active[index] = TileID.Empty;
+                }
+            }
+            // place new rings(s)
+            for (int i = 0; i < ringsPerLevel; i++)
+            {
+                bool placed = false;
+                do
+                {
+                    int row = Randomizer.myRNG.rand.Next(bounds.Top, bounds.Bottom);
+                    int col = Randomizer.myRNG.rand.Next(bounds.Left, bounds.Right);
+
+                    index = row * lw + col;
+                    if (level.data.active[index] == TileID.Empty)
+                    {
+                        level.data.active[index] = TileID.Ring;
+                        placed = true;
+                    }
+
+                } while (!placed);
+            }
+        }
+
+        public static Bounds GetCameraBounds(ref LevelFile level)
+        {
+            int lw = level.header.width;
+            int lh = level.header.height;
+            var bounds = new Bounds { Left = lw, Top = lh, Bottom = 0, Right = 0 };
+            bool noCameraFound = false;
+
+            int index = 0;
+            for (int row = 0; row < lh; row++)
+            {
+                for (int col = 0; col < lw; col++)
+                {
+                    index = row * lw + col;
+                    if (level.data.tag[index] == TileID.CameraBounds)
+                    {
+                        bounds.Top = Math.Min(row, bounds.Top);
+                        bounds.Bottom = Math.Max(row, bounds.Bottom);
+                        bounds.Left = Math.Min(col, bounds.Left);
+                        bounds.Right = Math.Max(col, bounds.Right);
+                    }
+                }
+            }
+
+            // correct for aspect ratio
+            double correctAspect = 16 / 9;
+            double width = bounds.Right - bounds.Left;
+            double height = bounds.Bottom - bounds.Top;
+            double aspect = width / height;
+            double hCenter = bounds.Left + (width / 2);
+            double vCenter = bounds.Top + (height / 2);
+
+            if (aspect < correctAspect) // aspect ratio too tall
+            {
+                width = height * 16 / 9;
+                bounds.Right = (int)(hCenter - width / 2);
+                bounds.Left = (int)(hCenter + width / 2);
+
+            }
+            if (aspect > correctAspect) // aspect ratio too wide
+            {
+                height = width * 9 / 16;
+                bounds.Top = (int)(vCenter - height / 2);
+                bounds.Bottom = (int)(vCenter + height / 2);
+            }
+
+            if (bounds.Top < 0) bounds.Top = 0;
+            if (bounds.Left < 0) bounds.Left = 0;
+            if (bounds.Right > lw) bounds.Top = lw;
+            if (bounds.Bottom > lh) bounds.Bottom = lh;
+
+            if (bounds.Top > bounds.Bottom || bounds.Left > bounds.Right)
+            {
+                Console.WriteLine("Broken Bounds");
+            }
+
+
+            return bounds;
+        }
+
+        public static bool IsInCameraBounds(Bounds bounds, int row, int col)
+        {
+            if (row > bounds.Top && row < bounds.Bottom && col > bounds.Left && col < bounds.Right)
+                return true;
+            else return false;
+        }
+
         public static bool SmartCorrupt(ref LevelFile level)
         {
             int lw = level.header.width;
             int lh = level.header.height;
-            var doc = XDocument.Load($"data/corruptor_tiles.xml");
-            var smart = doc.Root.Element("smart");
+            
             var options = new string[] { };
             bool hasGas = false;
             int corruptLevel = 3;
@@ -142,7 +293,7 @@ namespace TEiNRandomizer
                     int index = i * lw + j;
 
                     // active layer
-                    var element = smart.Element(Enum.GetName(typeof(TileID), level.data.active[index]));
+                    var element = smartTiles.Element(Enum.GetName(typeof(TileID), level.data.active[index]));
 
                     if (element != null)
                         options = Randomizer.ElementToArray(element);   // use index to get enum name, search for corruption options in xml
@@ -179,7 +330,7 @@ namespace TEiNRandomizer
                     }
 
                     // overlay layer
-                    element = smart.Element(Enum.GetName(typeof(TileID), level.data.overlay[index]));
+                    element = smartTiles.Element(Enum.GetName(typeof(TileID), level.data.overlay[index]));
                     if (element != null)
                         options = Randomizer.ElementToArray(element);   // use index to get enum name, search for corruption options in xml
                     if (Randomizer.myRNG.CoinFlip())
@@ -202,6 +353,7 @@ namespace TEiNRandomizer
             // Make consistent rules for tag replacement
             // Cannons (need targets)
             // special case for musk
+
 
 
             return hasGas;

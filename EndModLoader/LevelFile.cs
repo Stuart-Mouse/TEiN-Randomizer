@@ -33,4 +33,13 @@ namespace TEiNRandomizer
         public Int32 First;
         public Int32 Second;
     }
+
+    public struct Bounds
+    {
+        public Int32 Left;
+        public Int32 Right;
+        public Int32 Top;
+        public Int32 Bottom;
+    }
+
 }

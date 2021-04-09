@@ -13,7 +13,7 @@ namespace TEiNRandomizer
 
         public static MyRNG myRNG = new MyRNG();
         public static List<List<Level>> ChosenLevels;
-        static RandomizerSettings settings;
+        public static RandomizerSettings settings;
         public static List<Shader> ShadersList;
         //static string gameDir;
         //static int prevRuns = 0;

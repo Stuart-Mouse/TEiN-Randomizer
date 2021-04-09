@@ -181,7 +181,7 @@ namespace TEiNRandomizer
         Decoration1         = 40096,
         Decoration2         = 40097,
         Decoration3         = 40098,
-        Ring                = 40110,
+        Ring                = 40100,
         LevelGoal           = 40110,
         FriendPieces1       = 40101,
         FriendPieces2       = 40102,

@@ -12,7 +12,6 @@ namespace TEiNRandomizer
             CartLives(ref file, settings);
             File.WriteAllText(settings.GameDirectory + "data/worldmap.txt", file);
         }
-
         public static void DeadRacer(ref string file, RandomizerSettings settings)
         {
             string timedCarts = "";
@@ -22,7 +21,6 @@ namespace TEiNRandomizer
             }
             file = file.Replace("TIMEDCARTS", timedCarts);
         }
-
         public static void CartLives(ref string file, RandomizerSettings settings)
         {
             string cartLives = "";
