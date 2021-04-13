@@ -148,6 +148,7 @@
     <Compile Include="LevelManip.cs" />
     <Compile Include="MyRNG.cs" />
     <Compile Include="ParticleGenerator.cs" />
+    <Compile Include="Physics.cs" />
     <Compile Include="Pool.cs" />
     <Compile Include="PoolCategory.cs" />
     <Compile Include="Randomizer.cs" />

@@ -32,19 +32,29 @@ namespace TEiNRandomizer
             //SpikeStrips(ref level);
             //Crushers(ref level);
             //OverlayStuff(ref level);
-            if (SmartCorrupt(ref level))
+            if (SmartCorruptActive(ref level))
             {
                 TSAppend += "\n#added by level corruptor\nfx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2";
             }
+            //SmartCorruptOverlay(ref level);
+
             //if (AddEnemies(ref level, 5))
             //{
             //    TSAppend += "fx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2";
             //}
             //AddTiles(ref level, 10);
             //TotalChaos(ref level);
-            
+
             if (Randomizer.settings.AreaType == AreaTypes.normal) TumorRandomizer(ref level);
             else if (Randomizer.settings.AreaType == AreaTypes.cart) RingRandomizer(ref level);
+            else if (Randomizer.settings.AreaType == AreaTypes.dark) TumorRemover(ref level);
+            else if (Randomizer.settings.AreaType == AreaTypes.glitch) TumorRemover(ref level);
+            else if (Randomizer.settings.AreaType == AreaTypes.ironcart) TumorRemover(ref level);
+
+            //PlaceTile(ref level, TileID.Feral, 5);
+            //PlaceTile(ref level, TileID.Mother, 10, TileID.Solid, true);
+
+            //WaterLevel(ref level);
 
             return TSAppend;
         }
@@ -101,7 +111,6 @@ namespace TEiNRandomizer
         {
 
         }
-
         public static void Crushers(ref LevelFile level)
         {
             for (int i = 0; i < 30; i++)
@@ -117,7 +126,6 @@ namespace TEiNRandomizer
                 }
             }
         }
-
         public static void OverlayStuff(ref LevelFile level)
         {
             for (int i = 0; i < 60; i++)
@@ -129,7 +137,6 @@ namespace TEiNRandomizer
                 //}
             }
         }
-
         public static void TumorRandomizer(ref LevelFile level)
         {
             int tumorsPerLevel = 1;
@@ -138,17 +145,8 @@ namespace TEiNRandomizer
             int lh = level.header.height;
 
             Bounds bounds = GetCameraBounds(ref level);
+            TumorRemover(ref level);
 
-            // delete original tumor
-            for (int i = 0; i < lh; i++)
-            {
-                for (int j = 0; j < lw; j++)
-                {
-                    index = i * lw + j;
-                    if (level.data.active[index] == TileID.Tumor)
-                        level.data.active[index] = TileID.Empty;
-                }
-            }
             // place new tumor(s)
             for (int i = 0; i < tumorsPerLevel; i++)
             {
@@ -167,16 +165,53 @@ namespace TEiNRandomizer
                 } while (!placed);
             }
         }
-
-        public static void RingRandomizer(ref LevelFile level)
+        public static void WaterLevel(ref LevelFile level)
         {
-            int ringsPerLevel = 10;
-            int index = 0;
             int lw = level.header.width;
             int lh = level.header.height;
 
             Bounds bounds = GetCameraBounds(ref level);
 
+            for (int j = 0; j < lw; j++)
+            {
+                level.data.overlay[j] = TileID.WaterUB;
+            }
+        }
+        public static void PlaceTile(ref LevelFile level, TileID toPlace, int numPerLevel, TileID toReplace = TileID.Empty, bool ignoreTags = false, int cushion = 3)
+        {
+            //int numPerLevel = 10;
+            int index = 0;
+            int lw = level.header.width;
+            int lh = level.header.height;
+
+            Bounds bounds = GetCameraBounds(ref level);
+            //TumorRemover(ref level);
+
+            // place new tumor(s)
+            for (int i = 0; i < numPerLevel; i++)
+            {
+                bool placed = false;
+                do
+                {
+                    int row = Randomizer.myRNG.rand.Next(bounds.Top, bounds.Bottom);
+                    int col = Randomizer.myRNG.rand.Next(bounds.Left + cushion, bounds.Right - cushion);
+
+                    index = row * lw + col;
+                    if (level.data.active[index] == toReplace)
+                    {
+                        if (level.data.tag[index] == TileID.Empty || ignoreTags)
+                            level.data.active[index] = toPlace;
+                        placed = true;
+                    }
+
+                } while (!placed);
+            }
+        }
+        public static void TumorRemover(ref LevelFile level)
+        {
+            int index = 0;
+            int lw = level.header.width;
+            int lh = level.header.height;
             // delete original tumor
             for (int i = 0; i < lh; i++)
             {
@@ -187,6 +222,17 @@ namespace TEiNRandomizer
                         level.data.active[index] = TileID.Empty;
                 }
             }
+        }
+        public static void RingRandomizer(ref LevelFile level)
+        {
+            int ringsPerLevel = 10;
+            int index = 0;
+            int lw = level.header.width;
+            int lh = level.header.height;
+
+            Bounds bounds = GetCameraBounds(ref level);
+            TumorRemover(ref level);
+
             // place new rings(s)
             for (int i = 0; i < ringsPerLevel; i++)
             {
@@ -206,7 +252,6 @@ namespace TEiNRandomizer
                 } while (!placed);
             }
         }
-
         public static Bounds GetCameraBounds(ref LevelFile level)
         {
             int lw = level.header.width;
@@ -265,15 +310,13 @@ namespace TEiNRandomizer
 
             return bounds;
         }
-
         public static bool IsInCameraBounds(Bounds bounds, int row, int col)
         {
             if (row > bounds.Top && row < bounds.Bottom && col > bounds.Left && col < bounds.Right)
                 return true;
             else return false;
         }
-
-        public static bool SmartCorrupt(ref LevelFile level)
+        public static bool SmartCorruptActive(ref LevelFile level)
         {
             int lw = level.header.width;
             int lh = level.header.height;
@@ -325,9 +368,31 @@ namespace TEiNRandomizer
                         }
                         catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                     }
+                }
+            }
+            // Replace Tile and Enemies by List
+            // Make consistent rules for tag replacement
+            // Cannons (need targets)
+            // special case for musk
+            return hasGas;
+        }
+        public static void SmartCorruptOverlay(ref LevelFile level)
+        {
+            int lw = level.header.width;
+            int lh = level.header.height;
 
+            var options = new string[] { };
+            bool hasGas = false;
+            int corruptLevel = 3;
+
+            // loop over entire level
+            for (int i = 0; i < lh; i++)
+            {
+                for (int j = 0; j < lw; j++)
+                {
+                    int index = i * lw + j;
                     // overlay layer
-                    element = smartTiles.Element(Enum.GetName(typeof(TileID), level.data.overlay[index]));
+                    var element = smartTiles.Element(Enum.GetName(typeof(TileID), level.data.overlay[index]));
                     if (element != null)
                         options = Randomizer.ElementToArray(element);   // use index to get enum name, search for corruption options in xml
                     if (Randomizer.myRNG.CoinFlip())
@@ -345,17 +410,6 @@ namespace TEiNRandomizer
                     }
                 }
             }
-
-            // Replace Tile and Enemies by List
-            // Make consistent rules for tag replacement
-            // Cannons (need targets)
-            // special case for musk
-
-
-
-            return hasGas;
         }
-        
-
     }
 }

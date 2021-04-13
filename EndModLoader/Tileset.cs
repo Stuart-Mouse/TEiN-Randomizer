@@ -82,7 +82,7 @@ namespace TEiNRandomizer
             return;
         }
 
-        public Tileset(RandomizerSettings settings, bool isMainTS)
+        public Tileset(RandomizerSettings settings, bool isAreaTS)
         {
             try
             {
@@ -139,15 +139,6 @@ namespace TEiNRandomizer
                     }
                 }
 
-                if (settings.DoNevermoreTilt && Randomizer.myRNG.rand.Next(0, 6) == 0 && !(isMainTS && !settings.UseCommonTileset))
-                {
-                    Extras += ($"    do_tilt true\n");
-                }
-                if (settings.DoExodusWobble && Randomizer.myRNG.rand.Next(0, 6) == 0 && !(isMainTS && !settings.UseCommonTileset))
-                {
-                    Extras += ($"    do_wobble true\n");
-                }
-
                 // bgsolid for auto-refresh
                 if (settings.AutoRefresh)
                     Extras += "background_graphics bgsolid\n";
@@ -155,6 +146,27 @@ namespace TEiNRandomizer
                 // generate Art Alts
                 if (settings.AltLevel != AltLevels.None)
                     GetArtAlts(settings);
+
+                // extras
+                if (settings.UseAreaTileset == isAreaTS)
+                {
+                    if (settings.DoNevermoreTilt && Randomizer.myRNG.rand.Next(0, 6) == 0 /*!(isAreaTS && !settings.UseAreaTileset)*/)
+                    {
+                        Extras += ($"    do_tilt true\n");
+                    }
+                    if (settings.DoExodusWobble && Randomizer.myRNG.rand.Next(0, 6) == 0 /*!(isAreaTS && !settings.UseAreaTileset)*/)
+                    {
+                        Extras += ($"    do_wobble true\n");
+                    }
+                    if (settings.PlatformPhysics)
+                    {
+                        Extras += "water_physics " + Physics.WaterPhysics() + "\n";
+                        Extras += "player_physics " + Physics.PlayerPhysics() + "\n";
+                        Extras += "lowgrav_physics " + Physics.LowGravPhysics() + "\n";
+                        Extras += "platform_physics " + Physics.PlatformPhysics() + "\n";
+
+                    }
+                }
 
                 // create "all", which is just the entire tileset in one string
                 All = Tile + "\n" + Overlay + "\n" + Particles + "\n" + Shader + "\n" + Palette + "\n" + Music + "\n" + Extras;

@@ -118,7 +118,7 @@
                             </TextBox.Text>
                         </TextBox>
                     </Grid>
-                    <CheckBox Content="One Tileset Per Area" IsChecked="{Binding RSettings.UseCommonTileset}" />
+                    <CheckBox Content="One Tileset Per Area" IsChecked="{Binding RSettings.UseAreaTileset}" />
                     <CheckBox Content="Use Default Music" IsChecked="{Binding RSettings.UseDefaultMusic}" />
                     <CheckBox Content="Use Default Palettes" IsChecked="{Binding RSettings.UseDefaultPalettes}" />
                     <!--<CheckBox Content="Randomize Palette Per Level" IsChecked="{Binding RSettings.PalettePerLevel}" />
@@ -148,6 +148,7 @@
                     <CheckBox Content="Corrupt Levels" IsChecked="{Binding RSettings.DoCorruptions}" />
                     <CheckBox Content="Mirror Mode" IsChecked="{Binding RSettings.MirrorMode}" />
                     <CheckBox Content="Dead Racer Mode" IsChecked="{Binding RSettings.DeadRacer}" />
+                    <CheckBox Content="Randomize Platform Physics" IsChecked="{Binding RSettings.PlatformPhysics}" />
                     <CheckBox Content="Auto-Refresh Levels" IsChecked="{Binding RSettings.AutoRefresh}" />
                     <Separator Margin="0,5"/>
                     <TextBlock Grid.Column="0" Text="Tilesets Options: "/>

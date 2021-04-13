@@ -230,7 +230,7 @@ namespace TEiNRandomizer
                     var areatileset = new Tileset(settings, true) { };
 
                     sw.WriteLine("v" + (j + 1).ToString() + " {\n    area_name \"TEiN Randomizer\"\n    area_label_frame 0\n    background_graphics neverbg\n    area_type " + settings.AreaType.ToString() + "\n");
-                    if (settings.UseCommonTileset || (settings.DoShaders && settings.DoParticles))
+                    if (settings.UseAreaTileset || (settings.DoShaders && settings.DoParticles))
                         sw.WriteLine(areatileset.All + "art_alts[" + areatileset.ArtAlts + "]");
 
                     for (int i = 0; i < settings.NumLevels; i++) // level loop
@@ -242,7 +242,7 @@ namespace TEiNRandomizer
                         sw.WriteLine($"# Level Name: {ChosenLevels[j][i].Name}");
 
                         // Write Tileset info for level
-                        if (settings.UseCommonTileset)
+                        if (settings.UseAreaTileset)
                             tileset = areatileset;
                         if (!settings.UseDefaultMusic)
                             sw.WriteLine(tileset.Music);
@@ -307,6 +307,10 @@ namespace TEiNRandomizer
             File.Copy("data/palette.png", settings.GameDirectory + "textures/palette.png", true); Console.WriteLine("palette");
             Directory.CreateDirectory(settings.GameDirectory + "shaders"); Console.WriteLine("shaders");
             Directory.CreateDirectory(settings.GameDirectory + "swfs"); Console.WriteLine("swfs");
+            Directory.CreateDirectory(settings.GameDirectory + "data/platform_physics");
+            Directory.CreateDirectory(settings.GameDirectory + "data/water_physics");
+            Directory.CreateDirectory(settings.GameDirectory + "data/lowgrav_physics");
+            Directory.CreateDirectory(settings.GameDirectory + "data/player_physics");
             File.Copy("data/endnigh.swf", settings.GameDirectory + "swfs/endnigh.swf", true); Console.WriteLine("swf");
             foreach (var file in Directory.GetFiles("data/shaders"))
             {

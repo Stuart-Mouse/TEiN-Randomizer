@@ -21,7 +21,7 @@ namespace TEiNRandomizer
         public bool DoExodusWobble { get; set; }
         //public bool DoArtAlts { get; set; }
         public bool DoNPCs { get; set; }
-        public bool UseCommonTileset { get; set; }
+        public bool UseAreaTileset { get; set; }
         public int CacheRuns { get; set; }
         //public int NumShuffles { get; set; }
         public AreaTypes AreaType { get; set; }
@@ -38,6 +38,7 @@ namespace TEiNRandomizer
         public bool ManualLoad { get; set; }
         public bool DeadRacer { get; set; }
         public int CartLives { get; set; }
+        public bool PlatformPhysics { get; set; }
 
         public RandomizerSettings()
         {
@@ -57,7 +58,7 @@ namespace TEiNRandomizer
             AutoRefresh = false;
             //DoArtAlts = false;
             DoNPCs = false;
-            UseCommonTileset = false;
+            UseAreaTileset = true;
             CacheRuns = 0;
             //NumShuffles = 0;
             AreaType = AreaTypes.normal;
@@ -71,7 +72,8 @@ namespace TEiNRandomizer
             DoCorruptions = false;
             MirrorMode = false;
             DeadRacer = false;
-            CartLives = 10;
+            CartLives = 19;
+            PlatformPhysics = false;
             GameDirectory = "C:/Program Files(x86)/Steam/steamapps/common/theendisnigh/";
 
             try
@@ -121,7 +123,7 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(DoExodusWobble), DoExodusWobble);
                     //element.SetElementValue(nameof(DoArtAlts), DoArtAlts);
                     element.SetElementValue(nameof(DoNPCs), DoNPCs);
-                    element.SetElementValue(nameof(UseCommonTileset), UseCommonTileset);
+                    element.SetElementValue(nameof(UseAreaTileset), UseAreaTileset);
                     element.SetElementValue(nameof(CacheRuns), CacheRuns);
                     //element.SetElementValue(nameof(NumShuffles), NumShuffles);
                     element.SetElementValue(nameof(AutoRefresh), AutoRefresh);
@@ -138,6 +140,7 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(MirrorMode), MirrorMode);
                     element.SetElementValue(nameof(DeadRacer), DeadRacer);
                     element.SetElementValue(nameof(CartLives), CartLives);
+                    element.SetElementValue(nameof(PlatformPhysics), PlatformPhysics);
                 }
             }
             doc.Save("data/RandomizerSettings.xml");
@@ -164,7 +167,7 @@ namespace TEiNRandomizer
                     DoExodusWobble = (bool)element.Element(nameof(DoExodusWobble));
                     //DoArtAlts = (bool)element.Element(nameof(DoArtAlts));
                     DoNPCs = (bool)element.Element(nameof(DoNPCs));
-                    UseCommonTileset = (bool)element.Element(nameof(UseCommonTileset));
+                    UseAreaTileset = (bool)element.Element(nameof(UseAreaTileset));
                     CacheRuns = (int)element.Element(nameof(CacheRuns));
                     //NumShuffles = (int)element.Element(nameof(NumShuffles));
                     AreaType = (AreaTypes)(int)element.Element(nameof(AreaType));
@@ -181,6 +184,7 @@ namespace TEiNRandomizer
                     MirrorMode = (bool)element.Element(nameof(MirrorMode));
                     DeadRacer = (bool)element.Element(nameof(DeadRacer));
                     CartLives = (int)element.Element(nameof(CartLives));
+                    PlatformPhysics = (bool)element.Element(nameof(PlatformPhysics));
                 }
             }
         }
