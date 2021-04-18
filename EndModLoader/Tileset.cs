@@ -147,7 +147,7 @@ namespace TEiNRandomizer
                 if (settings.AltLevel != AltLevels.None)
                     GetArtAlts(settings);
 
-                // extras
+                // extras and physics
                 if (settings.UseAreaTileset == isAreaTS)
                 {
                     if (settings.DoNevermoreTilt && Randomizer.myRNG.rand.Next(0, 6) == 0 /*!(isAreaTS && !settings.UseAreaTileset)*/)
@@ -158,13 +158,16 @@ namespace TEiNRandomizer
                     {
                         Extras += ($"    do_wobble true\n");
                     }
-                    if (settings.PlatformPhysics)
+                    if (settings.DoPhysics)
                     {
-                        Extras += "water_physics " + Physics.WaterPhysics() + "\n";
-                        Extras += "player_physics " + Physics.PlayerPhysics() + "\n";
-                        Extras += "lowgrav_physics " + Physics.LowGravPhysics() + "\n";
-                        Extras += "platform_physics " + Physics.PlatformPhysics() + "\n";
-
+                        if (settings.PlatformPhysics)
+                            Extras += "    platform_physics " + Physics.PlatformPhysics() + "\n";
+                        if (settings.WaterPhysics)
+                            Extras += "    water_physics " + Physics.WaterPhysics() + "\n";
+                        if (settings.PlayerPhysics)
+                            Extras += "    player_physics " + Physics.PlayerPhysics() + "\n";
+                        if (settings.LowGravPhysics)
+                            Extras += "    lowgrav_physics " + Physics.LowGravPhysics() + "\n";
                     }
                 }
 

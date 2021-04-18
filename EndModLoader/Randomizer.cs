@@ -245,7 +245,7 @@ namespace TEiNRandomizer
                         if (settings.UseAreaTileset)
                             tileset = areatileset;
                         if (!settings.UseDefaultMusic)
-                            sw.WriteLine(tileset.Music);
+                            sw.WriteLine(areatileset.Music);
                         if (!settings.UseDefaultPalettes)
                             sw.WriteLine(tileset.Palette);
                         if (settings.DoTileGraphics)
@@ -397,21 +397,50 @@ namespace TEiNRandomizer
                 LevelManip.Save(levelFile, settings.GameDirectory + $"tilemaps/{level}.lvl");
             }
 
+            var levelFileNext = new LevelFile();
 
             for (int j = 0; j < settings.NumAreas; j++)
             {
                 for (int i = 0; i < settings.NumLevels; i++)
                 {
-                    
                     var levelFile = LevelManip.Load($"data/vtilemaps/{ChosenLevels[j][i].Folder}/{ChosenLevels[j][i].Name}.lvl");
-                    
+                    try
+                    {
+                        if (j + 1 < settings.NumAreas)
+                        {
+                            if (i + 1 >= settings.NumLevels)
+                                levelFileNext = LevelManip.Load($"data/vtilemaps/{ChosenLevels[j + 1][0].Folder}/{ChosenLevels[j + 1][0].Name}.lvl");
+                            else
+                                levelFileNext = LevelManip.Load($"data/vtilemaps/{ChosenLevels[j][i + 1].Folder}/{ChosenLevels[j][i + 1].Name}.lvl");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("oops");
+                    }
+
+                    var levelFileToSave = new LevelFile();
+
+                    if (settings.LevelMerge)
+                    {
+                        try
+                        {
+                            levelFileToSave = Corruptors.CombineLevels(levelFile, levelFileNext);
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("oops");
+                        }
+                    }
+                    else levelFileToSave = levelFile;
+
                     if (ChosenLevels[j][i].CanReverse && myRNG.CoinFlip() || settings.MirrorMode)
                         LevelManip.FlipLevelH(ref levelFile);
 
                     if (settings.DoCorruptions)
                         ChosenLevels[j][i].TSNeed += Corruptors.CorruptLevel(ref levelFile);
 
-                    LevelManip.Save(levelFile, settings.GameDirectory + $"tilemaps/v{j + 1}-{i + 1}.lvl");
+                    LevelManip.Save(levelFileToSave, settings.GameDirectory + $"tilemaps/v{j + 1}-{i + 1}.lvl");
                     
                     //File.Copy($"data/vtilemaps/{ChosenLevels[j][i].Folder}/{ChosenLevels[j][i].Name}.lvl", settings.GameDirectory + $"tilemaps/v{j + 1}-{i + 1}.lvl", true);
                 }
@@ -490,7 +519,7 @@ namespace TEiNRandomizer
             //for (int i = 0; i < mw.RSettings.NumShuffles; i++)  // shuffle drawpool
             //    Shuffle(drawpool);
 
-            ChosenLevels = new List<List<Level>> { };           // initialize ChosenLevels
+            ChosenLevels = new List<List<Level>> { };   // initialize ChosenLevels
 
             try
             {

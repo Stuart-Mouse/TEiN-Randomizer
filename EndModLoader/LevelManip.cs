@@ -210,18 +210,30 @@ namespace TEiNRandomizer
                 {
                     int index = i * lw + j;
                     if (level.data.active[index] == TileID.Solid)
-                        Console.Write("▓");
+                        Console.Write("▓▓");
                     else if (level.data.back1[index] == TileID.WholePiece)
-                        Console.Write("▒");
+                        Console.Write("▒▒");
                     else if (level.data.back2[index] == TileID.WholePiece2)
-                        Console.Write("░");
-                    else Console.Write(" ");
+                        Console.Write("░░");
+                    else Console.Write("  ");
 
                 }
                 Console.Write("\n");
             }
             Console.WriteLine("============================================");
         }
+
+        public static LevelFile exampleFunc(LevelFile level)
+        {
+            var levelNew = new LevelFile();
+
+            levelNew.data.active = level.data.active;
+
+            return levelNew;
+        }
+
+
+
 
     }
 }

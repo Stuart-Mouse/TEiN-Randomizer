@@ -411,5 +411,87 @@ namespace TEiNRandomizer
                 }
             }
         }
+
+        public static LevelFile CombineLevels(LevelFile level1, LevelFile level2)
+        {
+            var levelNew = level1;
+
+            if (level1.header.height == 32 && level2.header.height == 32 && level1.header.width == 54 && level2.header.width == 54)
+            {
+                int index = 0;
+                int lw = 54;
+                int lh = 32;
+                for (int i = 0; i < lh; i++)
+                {
+                    for (int j = 0; j < lw / 2; j++)
+                    {
+                        index = i * lw + j;
+                        index += 27;
+                        //if (j % 4 < 2)
+                        //{
+                            levelNew.data.active[index] = level2.data.active[index];
+                            levelNew.data.back1[index] = level2.data.back1[index];
+                            levelNew.data.back2[index] = level2.data.back2[index];
+                            levelNew.data.tag[index] = level2.data.tag[index];
+                            levelNew.data.overlay[index] = level2.data.overlay[index];
+                        //}
+                    }
+                }
+
+                for (int i = 0; i < lh; i++)
+                {
+                    for (int j = 25; j < 29; j++)
+                    {
+                        index = i * lw + j;
+
+                        //levelNew.data.overlay[index] = TileID.GraityBeam;
+
+                        if (Randomizer.myRNG.CoinFlip() && Randomizer.myRNG.CoinFlip() && Randomizer.myRNG.CoinFlip())
+                        {
+                            switch (Randomizer.myRNG.rand.Next(0, 3))
+                            {
+                                case 0:
+                                    levelNew.data.active[index] = TileID.Crumble;
+                                    break;
+                                case 1:
+                                    levelNew.data.active[index] = TileID.Platform;
+                                    break;
+                                case 2:
+                                    levelNew.data.active[index] = TileID.Solid;
+                                    break;
+                            }
+                        }
+                        else if (levelNew.data.active[index] == TileID.Solid) levelNew.data.active[index] = TileID.Empty;
+                    }
+                }
+
+                for (int i = 0; i < 3; i++)
+                {
+                    levelNew.data.active[Randomizer.myRNG.rand.Next(0, lw * lh)] = TileID.Switch1U;
+                    levelNew.data.active[Randomizer.myRNG.rand.Next(0, lw * lh)] = TileID.Switch2U;
+                    levelNew.data.active[Randomizer.myRNG.rand.Next(0, lw * lh)] = TileID.Switch3U;
+                    levelNew.data.active[Randomizer.myRNG.rand.Next(0, lw * lh)] = TileID.Switch4U;
+                }
+
+
+                levelNew.data.tag[0] = TileID.CameraBounds;
+                levelNew.data.tag[1727] = TileID.CameraBounds;
+                //for (int i = 0; i < lh; i++)
+                //{
+                //    for (int j = 0; j < 27; j++)
+                //    {
+                //        index = i * lw + j;
+                //        index += 16;
+                //        levelNew.data.active[index] = level2.data.active[index];
+                //        levelNew.data.back1[index] = level2.data.back1[index];
+                //        levelNew.data.back2[index] = level2.data.back2[index];
+                //        levelNew.data.tag[index] = level2.data.tag[index];
+                //        levelNew.data.overlay[index] = level2.data.overlay[index];
+                //    }
+                //}
+            }
+
+            return levelNew;
+        }
     }
 }

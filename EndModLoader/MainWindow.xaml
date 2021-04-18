@@ -127,6 +127,7 @@
                     <CheckBox Content="Randomize Particles" IsChecked="{Binding RSettings.DoParticles}" />
                     <CheckBox Content="Randomize Overlays" IsChecked="{Binding RSettings.DoOverlays}" />
                     <CheckBox Content="Randomize Tile Graphics" IsChecked="{Binding RSettings.DoTileGraphics}" />
+                    <CheckBox Content="Randomize Physics" IsChecked="{Binding RSettings.DoPhysics}" />
                     <CheckBox Content="Randomize NPCs" IsChecked="{Binding RSettings.DoNPCs}" />
                     <TextBlock Text="Randomize Art Alts: " />
                     <Grid>
@@ -146,9 +147,9 @@
                     <CheckBox Content="Can Apply Nevermore Tilt" IsChecked="{Binding RSettings.DoNevermoreTilt}" />
                     <CheckBox Content="Can Apply Exodus Wobble" IsChecked="{Binding RSettings.DoExodusWobble}" />
                     <CheckBox Content="Corrupt Levels" IsChecked="{Binding RSettings.DoCorruptions}" />
+                    <CheckBox Content="Level Merge" IsChecked="{Binding RSettings.LevelMerge}" />
                     <CheckBox Content="Mirror Mode" IsChecked="{Binding RSettings.MirrorMode}" />
                     <CheckBox Content="Dead Racer Mode" IsChecked="{Binding RSettings.DeadRacer}" />
-                    <CheckBox Content="Randomize Platform Physics" IsChecked="{Binding RSettings.PlatformPhysics}" />
                     <CheckBox Content="Auto-Refresh Levels" IsChecked="{Binding RSettings.AutoRefresh}" />
                     <Separator Margin="0,5"/>
                     <TextBlock Grid.Column="0" Text="Tilesets Options: "/>
@@ -193,6 +194,18 @@
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Text="Settings++" Style="{StaticResource TitleText}" Width="70" VerticalAlignment="Top" TextAlignment="Center" FontSize="13" FontFamily="Segoe UI Semibold"/>
                 <ListBox Grid.Row="1" Name="SettingsList2" Padding="5" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False">
+                    <TextBlock Text="Physics Settings:" Visibility="{Binding RSettings.DoPhysics, Converter={StaticResource SettingsDisplayer}}"/>
+                    <ListBox
+                        Name="PhysicsListBox"
+                        ScrollViewer.CanContentScroll="False"
+                        Visibility="{Binding RSettings.DoPhysics, Converter={StaticResource SettingsDisplayer}}"
+                        Width="186"
+                        MinHeight="40">
+                        <CheckBox Content="Platform Physics" IsChecked="{Binding RSettings.PlatformPhysics}" />
+                        <CheckBox Content="Player Physics" IsChecked="{Binding RSettings.PlayerPhysics}" />
+                        <CheckBox Content="Water Physics" IsChecked="{Binding RSettings.WaterPhysics}" />
+                        <CheckBox Content="LowGrav Physics" IsChecked="{Binding RSettings.LowGravPhysics}" />
+                    </ListBox>
                     <TextBlock Text="Particle Settings:" Visibility="{Binding RSettings.DoParticles, Converter={StaticResource SettingsDisplayer}}"/>
                     <ListBox
                         Name="ParticlesListBox"

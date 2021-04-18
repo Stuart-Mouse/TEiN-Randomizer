@@ -38,7 +38,12 @@ namespace TEiNRandomizer
         public bool ManualLoad { get; set; }
         public bool DeadRacer { get; set; }
         public int CartLives { get; set; }
+        public bool DoPhysics { get; set; }
         public bool PlatformPhysics { get; set; }
+        public bool PlayerPhysics { get; set; }
+        public bool WaterPhysics { get; set; }
+        public bool LowGravPhysics { get; set; }
+        public bool LevelMerge { get; set; }
 
         public RandomizerSettings()
         {
@@ -73,7 +78,12 @@ namespace TEiNRandomizer
             MirrorMode = false;
             DeadRacer = false;
             CartLives = 19;
+            DoPhysics = false;
             PlatformPhysics = false;
+            PlayerPhysics = false;
+            WaterPhysics = false;
+            LowGravPhysics = false;
+            LevelMerge = false;
             GameDirectory = "C:/Program Files(x86)/Steam/steamapps/common/theendisnigh/";
 
             try
@@ -140,7 +150,12 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(MirrorMode), MirrorMode);
                     element.SetElementValue(nameof(DeadRacer), DeadRacer);
                     element.SetElementValue(nameof(CartLives), CartLives);
+                    element.SetElementValue(nameof(DoPhysics), DoPhysics);
                     element.SetElementValue(nameof(PlatformPhysics), PlatformPhysics);
+                    element.SetElementValue(nameof(PlayerPhysics), PlayerPhysics);
+                    element.SetElementValue(nameof(WaterPhysics), WaterPhysics);
+                    element.SetElementValue(nameof(LowGravPhysics), LowGravPhysics);
+                    element.SetElementValue(nameof(LevelMerge), LevelMerge);
                 }
             }
             doc.Save("data/RandomizerSettings.xml");
@@ -184,7 +199,12 @@ namespace TEiNRandomizer
                     MirrorMode = (bool)element.Element(nameof(MirrorMode));
                     DeadRacer = (bool)element.Element(nameof(DeadRacer));
                     CartLives = (int)element.Element(nameof(CartLives));
+                    DoPhysics = (bool)element.Element(nameof(DoPhysics));
                     PlatformPhysics = (bool)element.Element(nameof(PlatformPhysics));
+                    PlayerPhysics = (bool)element.Element(nameof(PlayerPhysics));
+                    WaterPhysics = (bool)element.Element(nameof(WaterPhysics));
+                    LowGravPhysics = (bool)element.Element(nameof(LowGravPhysics));
+                    LevelMerge = (bool)element.Element(nameof(LevelMerge));
                 }
             }
         }
