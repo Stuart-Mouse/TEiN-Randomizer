@@ -68,6 +68,15 @@ namespace TEiNRandomizer
     {
         public Int32 First;
         public Int32 Second;
+
+        public Pair(int a, int b)
+        { First = a; Second = b; }
+
+        public static Pair operator +(Pair a) => a;
+        public static Pair operator -(Pair a) => new Pair(-a.First, -a.Second);
+        public static Pair operator +(Pair a, Pair b) => new Pair(a.First + b.First, a.Second + b.Second);
+        public static Pair operator -(Pair a, Pair b) => new Pair(a.First - b.First, a.Second - b.Second);
+
     }
 
     public struct Bounds

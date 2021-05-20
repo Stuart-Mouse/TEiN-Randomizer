@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Xml.Linq;
-using System.Collections.ObjectModel;
 
 namespace TEiNRandomizer
 {
@@ -397,9 +392,9 @@ namespace TEiNRandomizer
             CrumblingPlatformGravitytHigh *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             SmasherSpeedLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             SmasherDelayLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmasherSpeedMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            SmasherSpeedMed *= (double)Randomizer.myRNG.rand.Next(lower, 61) / 100;
             SmasherDelayMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmasherSpeedHigh *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            SmasherSpeedHigh *= (double)Randomizer.myRNG.rand.Next(lower, 61) / 100;
             SmasherDelayHigh *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             WeightedPlatformSpeedLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             WeightedPlatformSpeedMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;

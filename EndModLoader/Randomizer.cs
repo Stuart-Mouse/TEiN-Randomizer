@@ -13,6 +13,7 @@ namespace TEiNRandomizer
 
         public static MyRNG myRNG = new MyRNG();
         public static List<List<Level>> ChosenLevels;
+        public static List<List<Level>> ChosenLevels2;
         public static RandomizerSettings settings;
         public static List<Shader> ShadersList;
         //static string gameDir;
@@ -397,52 +398,58 @@ namespace TEiNRandomizer
                 LevelManip.Save(levelFile, settings.GameDirectory + $"tilemaps/{level}.lvl");
             }
 
-            var levelFileNext = new LevelFile();
+            for (int j = 0; j < settings.NumAreas; j++)
+            {
+                for (int i = 0; i < settings.NumLevels; i++)
+                {
+                    var level = ChosenLevels[j][i];
+                    var levelFile = LevelManip.Load($"data/vtilemaps/{level.Folder}/{level.Name}.lvl");
+
+                    if (level.CanReverse && myRNG.CoinFlip() || settings.MirrorMode)
+                        LevelManip.FlipLevelH(ref levelFile);
+
+                    if (settings.DoCorruptions)
+                        level.TSNeed += Corruptors.CorruptLevel(ref levelFile);
+
+                    LevelManip.Save(levelFile, settings.GameDirectory + $"tilemaps/v{j + 1}-{i + 1}.lvl");
+                }
+            }
+        }
+        static void TileMapsMerged()
+        {
+            string[] baseLevels = { "1-1", "1-1x", "v-connect", "v-start", "v-end" };
+
+            foreach (var level in baseLevels)
+            {
+                //File.Copy($"data/vtilemaps/The End is Nigh/{level}.lvl", settings.GameDirectory + $"tilemaps/{level}.lvl", true);
+                var levelFile = LevelManip.Load($"data/vtilemaps/The End is Nigh/{level}.lvl");
+
+                if (settings.MirrorMode)
+                    LevelManip.FlipLevelH(ref levelFile);
+
+                LevelManip.Save(levelFile, settings.GameDirectory + $"tilemaps/{level}.lvl");
+            }
 
             for (int j = 0; j < settings.NumAreas; j++)
             {
                 for (int i = 0; i < settings.NumLevels; i++)
                 {
-                    var levelFile = LevelManip.Load($"data/vtilemaps/{ChosenLevels[j][i].Folder}/{ChosenLevels[j][i].Name}.lvl");
-                    try
-                    {
-                        if (j + 1 < settings.NumAreas)
-                        {
-                            if (i + 1 >= settings.NumLevels)
-                                levelFileNext = LevelManip.Load($"data/vtilemaps/{ChosenLevels[j + 1][0].Folder}/{ChosenLevels[j + 1][0].Name}.lvl");
-                            else
-                                levelFileNext = LevelManip.Load($"data/vtilemaps/{ChosenLevels[j][i + 1].Folder}/{ChosenLevels[j][i + 1].Name}.lvl");
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("oops");
-                    }
+                    var level1 = ChosenLevels[j][i];
+                    var level2 = ChosenLevels2[j][i];
+                    var levelFile1 = LevelManip.Load($"data/vtilemaps/{level1.Folder}/{level1.Name}.lvl");
+                    var levelFile2 = LevelManip.Load($"data/vtilemaps/{level2.Folder}/{level2.Name}.lvl");
 
-                    var levelFileToSave = new LevelFile();
+                    var levelM = level1;
+                    levelM.TSNeed += level2.TSNeed + " decoration_1 CreepingMass ";
+                    var levelFileM = Corruptors.CombineLevels(levelFile1, levelFile2);
 
-                    if (settings.LevelMerge)
-                    {
-                        try
-                        {
-                            levelFileToSave = Corruptors.CombineLevels(levelFile, levelFileNext);
-                        }
-                        catch (Exception)
-                        {
-                            Console.WriteLine("oops");
-                        }
-                    }
-                    else levelFileToSave = levelFile;
-
-                    if (ChosenLevels[j][i].CanReverse && myRNG.CoinFlip() || settings.MirrorMode)
-                        LevelManip.FlipLevelH(ref levelFile);
+                    if (settings.MirrorMode)
+                        LevelManip.FlipLevelH(ref levelFileM);
 
                     if (settings.DoCorruptions)
-                        ChosenLevels[j][i].TSNeed += Corruptors.CorruptLevel(ref levelFile);
+                        levelM.TSNeed += Corruptors.CorruptLevel(ref levelFileM);
 
-                    LevelManip.Save(levelFileToSave, settings.GameDirectory + $"tilemaps/v{j + 1}-{i + 1}.lvl");
-                    
-                    //File.Copy($"data/vtilemaps/{ChosenLevels[j][i].Folder}/{ChosenLevels[j][i].Name}.lvl", settings.GameDirectory + $"tilemaps/v{j + 1}-{i + 1}.lvl", true);
+                    LevelManip.Save(levelFileM, settings.GameDirectory + $"tilemaps/v{j + 1}-{i + 1}.lvl");
                 }
             }
         }
@@ -536,9 +543,55 @@ namespace TEiNRandomizer
                 }
                 //if (settings.CacheRuns != 0) SaveRecents();      // add chosenlevels to cache
             }
-            catch (Exception){ Console.WriteLine("Error selecting levels or saving cache."); MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; } 
+            catch (Exception){ Console.WriteLine("Error selecting levels or saving cache."); MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
-            try{
+            if (settings.LevelMerge)
+            {
+                drawpool = new List<Level> { };     // make drawpool
+                try
+                {
+                    foreach (var cat in mw.PoolCats)
+                    {
+                        if (cat.Enabled)
+                        {
+                            foreach (var pool in cat.Pools) // push levels in all active level pools into drawpool vector
+                            {
+                                if (pool.Active)
+                                {
+                                    foreach (var level in pool.Levels)
+                                    {
+                                        drawpool.Add(level);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception) { MessageBox.Show("Error creating drawpool.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+
+
+                ChosenLevels2 = new List<List<Level>> { };   // initialize ChosenLevels
+
+                try
+                {
+                    for (int j = 0; j < mw.RSettings.NumAreas; j++)     // select levels
+                    {
+                        var levels = new List<Level> { };
+                        for (int i = 0; i < mw.RSettings.NumLevels; i++)
+                        {
+                            int selection = myRNG.rand.Next(0, drawpool.Count());
+                            levels.Add(drawpool[selection]);
+                            drawpool.RemoveAt(selection);
+                        }
+                        ChosenLevels2.Add(levels);
+                    }
+                }
+                catch (Exception) { Console.WriteLine("Error selecting levels 2 or saving cache."); MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            }
+
+
+            try
+            {
                 WriteDebug();   //debugging output chosen levels
                 Console.WriteLine("clean folders start");
                 CleanFolders(); // clean up folders
@@ -565,7 +618,8 @@ namespace TEiNRandomizer
             }
             catch (Exception ex) { Console.WriteLine($"Error creating map. Exception {ex}"); MessageBox.Show($"Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try{
-                TileMaps();     // copy tilemaps to game folder
+                if (settings.LevelMerge) TileMapsMerged();
+                else TileMaps();     // copy tilemaps to game folder
                 Console.WriteLine("tilemaps");
 
             }

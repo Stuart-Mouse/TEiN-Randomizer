@@ -140,8 +140,11 @@ namespace TEiNRandomizer
                 }
 
                 // bgsolid for auto-refresh
-                if (settings.AutoRefresh)
+                if (settings.AutoRefresh || settings.LevelMerge)
                     Extras += "background_graphics bgsolid\n";
+
+                if (settings.LevelMerge)
+                    Extras += "global_particle_1 None\nglobal_particle_2 None\nglobal_particle_3 None tile_particle_1 None tile_particle_2 None tile_particle_3 None tile_particle_4 None tile_particle_5 None\n";
 
                 // generate Art Alts
                 if (settings.AltLevel != AltLevels.None)
