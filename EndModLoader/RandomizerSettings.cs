@@ -32,6 +32,7 @@ namespace TEiNRandomizer
         public bool GenerateCustomParticles { get; set; }
         public int MaxParticles { get; set; }
         public string GameDirectory { get; set; }
+        public string ModSaveDirectory { get; set; }
         public int MaxParticleEffects { get; set; }
         public bool MirrorMode { get; set; }
         public bool DoCorruptions { get; set; }
@@ -85,6 +86,7 @@ namespace TEiNRandomizer
             LowGravPhysics = false;
             LevelMerge = false;
             GameDirectory = "C:/Program Files(x86)/Steam/steamapps/common/theendisnigh/";
+            ModSaveDirectory = "Saved Mods/";
 
             try
             {
@@ -144,6 +146,7 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(MaxParticles), MaxParticles);
                     element.SetElementValue(nameof(GenerateCustomParticles), GenerateCustomParticles);
                     element.SetElementValue(nameof(GameDirectory), GameDirectory);
+                    element.SetElementValue(nameof(ModSaveDirectory), ModSaveDirectory);
                     element.SetElementValue(nameof(MaxParticleEffects), MaxParticleEffects);
                     element.SetElementValue(nameof(ManualLoad), ManualLoad);
                     element.SetElementValue(nameof(DoCorruptions), DoCorruptions);
@@ -160,7 +163,6 @@ namespace TEiNRandomizer
             }
             doc.Save("data/RandomizerSettings.xml");
         }
-
         public void Load(string preset)
         {
             var doc = XDocument.Load("data/RandomizerSettings.xml");    // open levelpool file
@@ -193,6 +195,7 @@ namespace TEiNRandomizer
                     GenerateCustomParticles = (bool)element.Element(nameof(GenerateCustomParticles));
                     MaxParticles = (int)element.Element(nameof(MaxParticles));
                     GameDirectory = (string)element.Element(nameof(GameDirectory));
+                    ModSaveDirectory = (string)element.Element(nameof(ModSaveDirectory));
                     MaxParticleEffects = (int)element.Element(nameof(MaxParticleEffects));
                     ManualLoad = (bool)element.Element(nameof(ManualLoad));
                     DoCorruptions = (bool)element.Element(nameof(DoCorruptions));

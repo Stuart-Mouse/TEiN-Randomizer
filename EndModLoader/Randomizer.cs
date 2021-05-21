@@ -16,7 +16,7 @@ namespace TEiNRandomizer
         public static List<List<Level>> ChosenLevels2;
         public static RandomizerSettings settings;
         public static List<Shader> ShadersList;
-        //static string gameDir;
+        public static string saveDir;
         //static int prevRuns = 0;
 
         static void FlipCSV(string path)
@@ -222,7 +222,7 @@ namespace TEiNRandomizer
         }
         static void Tilesets()
         {
-            using (StreamWriter sw = File.CreateText(settings.GameDirectory + "data/tilesets.txt.append"))
+            using (StreamWriter sw = File.CreateText(saveDir + "data/tilesets.txt.append"))
             {
                 sw.WriteLine("v { area_name \"Void\" area_label_frame 0 tile_graphics Tilehell overlay_graphics Overlaysairship background_graphics neverbg foreground_graphics none palette 0 do_tilt true fx_shader ripples fx_shader_mid heatwave2 midfx_graphics SolidBox global_particle_1 bgrain global_particle_2 embers global_particle_3 leaves decoration_1 CreepingMass decoration_2 OrbBlob2 decoration_3 OrbLarge2 ambience flesh.ogg art_alts[[OrbSmall, OrbBlob2][OrbLarge, OrbLarge2][ChainLink, None][ChainLink2, None]]}");
                 
@@ -279,7 +279,7 @@ namespace TEiNRandomizer
                     sw.WriteLine("}");
                 }
             }
-            File.Copy(settings.GameDirectory + "data/tilesets.txt.append", "data/debug/last_tilesets.txt", true);
+            File.Copy(saveDir + "data/tilesets.txt.append", "data/debug/last_tilesets.txt", true);
         }
         static void CleanFolders()
         {
@@ -287,42 +287,42 @@ namespace TEiNRandomizer
             Console.WriteLine("del data");
             try
             {
-                foreach (var file in Directory.GetFiles(settings.GameDirectory + "data"))
+                foreach (var file in Directory.GetFiles(saveDir + "data"))
                 {
                     File.Delete(file);
                 }
             }
             catch (DirectoryNotFoundException) { }
-            Directory.CreateDirectory(settings.GameDirectory + "data");
+            Directory.CreateDirectory(saveDir + "data");
             Console.WriteLine("del tilemaps");
             try
             {
-                foreach (var file in Directory.GetFiles(settings.GameDirectory + "tilemaps"))
+                foreach (var file in Directory.GetFiles(saveDir + "tilemaps"))
                 {
                     File.Delete(file);
                 }
             }
             catch (DirectoryNotFoundException) { }
-            Directory.CreateDirectory(settings.GameDirectory + "tilemaps"); Console.WriteLine("tilemaps");
-            Directory.CreateDirectory(settings.GameDirectory + "textures"); Console.WriteLine("textures");
-            File.Copy("data/palette.png", settings.GameDirectory + "textures/palette.png", true); Console.WriteLine("palette");
-            Directory.CreateDirectory(settings.GameDirectory + "shaders"); Console.WriteLine("shaders");
-            Directory.CreateDirectory(settings.GameDirectory + "swfs"); Console.WriteLine("swfs");
-            Directory.CreateDirectory(settings.GameDirectory + "data/platform_physics");
-            Directory.CreateDirectory(settings.GameDirectory + "data/water_physics");
-            Directory.CreateDirectory(settings.GameDirectory + "data/lowgrav_physics");
-            Directory.CreateDirectory(settings.GameDirectory + "data/player_physics");
-            File.Copy("data/endnigh.swf", settings.GameDirectory + "swfs/endnigh.swf", true); Console.WriteLine("swf");
+            Directory.CreateDirectory(saveDir + "tilemaps"); Console.WriteLine("tilemaps");
+            Directory.CreateDirectory(saveDir + "textures"); Console.WriteLine("textures");
+            File.Copy("data/palette.png", saveDir + "textures/palette.png", true); Console.WriteLine("palette");
+            Directory.CreateDirectory(saveDir + "shaders"); Console.WriteLine("shaders");
+            Directory.CreateDirectory(saveDir + "swfs"); Console.WriteLine("swfs");
+            Directory.CreateDirectory(saveDir + "data/platform_physics");
+            Directory.CreateDirectory(saveDir + "data/water_physics");
+            Directory.CreateDirectory(saveDir + "data/lowgrav_physics");
+            Directory.CreateDirectory(saveDir + "data/player_physics");
+            File.Copy("data/endnigh.swf", saveDir + "swfs/endnigh.swf", true); Console.WriteLine("swf");
             foreach (var file in Directory.GetFiles("data/shaders"))
             {
-                File.Copy(file, settings.GameDirectory + $"shaders/{Path.GetFileName(file)}", true);
+                File.Copy(file, saveDir + $"shaders/{Path.GetFileName(file)}", true);
             }
             Console.WriteLine("shaders");
         }
         static void MapCSV()
         {
-            System.IO.File.Copy("data/map_CLEAN.csv", settings.GameDirectory + "data/map.csv", true);
-            using (StreamWriter sw = File.AppendText(settings.GameDirectory + "data/map.csv"))
+            System.IO.File.Copy("data/map_CLEAN.csv", saveDir + "data/map.csv", true);
+            using (StreamWriter sw = File.AppendText(saveDir + "data/map.csv"))
             {
                 for (int j = 0; j < settings.NumAreas; j++)
                 {
@@ -334,7 +334,7 @@ namespace TEiNRandomizer
                 sw.Write("v-end.lvl");
             }
             if (settings.MirrorMode)
-                FlipCSV(settings.GameDirectory + "data/map.csv");
+                FlipCSV(saveDir + "data/map.csv");
 
         }
         static void LevelInfo()
@@ -374,7 +374,7 @@ namespace TEiNRandomizer
                     areaname += noun[myRNG.rand.Next(0, noun.Length)] + " ";
                 }
 
-                using (StreamWriter sw = File.AppendText(settings.GameDirectory + "data/levelinfo.txt.append"))
+                using (StreamWriter sw = File.AppendText(saveDir + "data/levelinfo.txt.append"))
                 {
                     for (int j = 0; j < settings.NumLevels; j++)
                     {
@@ -389,13 +389,13 @@ namespace TEiNRandomizer
 
             foreach (var level in baseLevels)
             {
-                //File.Copy($"data/vtilemaps/The End is Nigh/{level}.lvl", settings.GameDirectory + $"tilemaps/{level}.lvl", true);
+                //File.Copy($"data/vtilemaps/The End is Nigh/{level}.lvl", saveDir + $"tilemaps/{level}.lvl", true);
                 var levelFile = LevelManip.Load($"data/vtilemaps/The End is Nigh/{level}.lvl");
 
                 if (settings.MirrorMode)
                     LevelManip.FlipLevelH(ref levelFile);
 
-                LevelManip.Save(levelFile, settings.GameDirectory + $"tilemaps/{level}.lvl");
+                LevelManip.Save(levelFile, saveDir + $"tilemaps/{level}.lvl");
             }
 
             for (int j = 0; j < settings.NumAreas; j++)
@@ -411,7 +411,7 @@ namespace TEiNRandomizer
                     if (settings.DoCorruptions)
                         level.TSNeed += Corruptors.CorruptLevel(ref levelFile);
 
-                    LevelManip.Save(levelFile, settings.GameDirectory + $"tilemaps/v{j + 1}-{i + 1}.lvl");
+                    LevelManip.Save(levelFile, saveDir + $"tilemaps/v{j + 1}-{i + 1}.lvl");
                 }
             }
         }
@@ -421,13 +421,13 @@ namespace TEiNRandomizer
 
             foreach (var level in baseLevels)
             {
-                //File.Copy($"data/vtilemaps/The End is Nigh/{level}.lvl", settings.GameDirectory + $"tilemaps/{level}.lvl", true);
+                //File.Copy($"data/vtilemaps/The End is Nigh/{level}.lvl", saveDir + $"tilemaps/{level}.lvl", true);
                 var levelFile = LevelManip.Load($"data/vtilemaps/The End is Nigh/{level}.lvl");
 
                 if (settings.MirrorMode)
                     LevelManip.FlipLevelH(ref levelFile);
 
-                LevelManip.Save(levelFile, settings.GameDirectory + $"tilemaps/{level}.lvl");
+                LevelManip.Save(levelFile, saveDir + $"tilemaps/{level}.lvl");
             }
 
             for (int j = 0; j < settings.NumAreas; j++)
@@ -449,7 +449,7 @@ namespace TEiNRandomizer
                     if (settings.DoCorruptions)
                         levelM.TSNeed += Corruptors.CorruptLevel(ref levelFileM);
 
-                    LevelManip.Save(levelFileM, settings.GameDirectory + $"tilemaps/v{j + 1}-{i + 1}.lvl");
+                    LevelManip.Save(levelFileM, saveDir + $"tilemaps/v{j + 1}-{i + 1}.lvl");
                 }
             }
         }
@@ -468,7 +468,7 @@ namespace TEiNRandomizer
             }
         }
 
-        public static void Randomize(MainWindow mw)
+        public static void Randomize(MainWindow mw, string args = null)
         {
 
             //var allpools = mw.Pools;            // get pools from main window
@@ -477,11 +477,14 @@ namespace TEiNRandomizer
             settings = mw.RSettings;
             //prevRuns = mw.PrevRuns;
 
+            saveDir = settings.GameDirectory;
+            if (args == "savemod")
+                saveDir = settings.ModSaveDirectory + mw.GameSeed.ToString() + "/";
+
             Console.WriteLine("start randomizer");
 
             // This is an odd spot for this but I don't know where else to put it right now (sets areatype to glitch if dead racer mode is turned on)
             if (settings.DeadRacer) settings.AreaType = AreaTypes.glitch;
-
 
             var drawpool = new List<Level> { };     // make drawpool
             try
@@ -504,27 +507,6 @@ namespace TEiNRandomizer
                 }
             }
             catch (Exception){MessageBox.Show( "Error creating drawpool.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw;}
-
-            // cache loading no longer used
-            //try
-            //{
-            //    if (settings.CacheRuns != 0)
-            //    {
-            //        var toRemove = LoadRecents();       // load cached levels
-            //        foreach (var item in toRemove)      // actually remove them
-            //        {
-            //            for (int i = 0; i < drawpool.Count(); i++)
-            //            {
-            //                if (drawpool[i].Name == item)
-            //                    drawpool.RemoveAt(i);
-            //            }
-            //        }
-            //    }
-            //}
-            //catch (Exception){MessageBox.Show("Error loading cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw;}
-
-            //for (int i = 0; i < mw.RSettings.NumShuffles; i++)  // shuffle drawpool
-            //    Shuffle(drawpool);
 
             ChosenLevels = new List<List<Level>> { };   // initialize ChosenLevels
 
@@ -569,7 +551,6 @@ namespace TEiNRandomizer
                 }
                 catch (Exception) { MessageBox.Show("Error creating drawpool.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
-
                 ChosenLevels2 = new List<List<Level>> { };   // initialize ChosenLevels
 
                 try
@@ -588,7 +569,6 @@ namespace TEiNRandomizer
                 }
                 catch (Exception) { Console.WriteLine("Error selecting levels 2 or saving cache."); MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             }
-
 
             try
             {

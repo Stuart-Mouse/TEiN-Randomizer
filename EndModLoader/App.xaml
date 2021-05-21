@@ -22,6 +22,13 @@
             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
         </Style>
 
+        <Style x:Key="TabTitleText" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="Padding" Value="5"/>
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+        </Style>
+        
         <Style x:Key="DescriptionText" TargetType="TextBlock">
             <Setter Property="FontSize" Value="11" />
             <Setter Property="Foreground" Value="Gray" />
@@ -211,7 +218,7 @@
         </Style>
 
         <DataTemplate x:Key="PoolListTemplate">
-            <StackPanel Margin="0.2,5,0.2,5" Orientation="Vertical">
+            <StackPanel Margin="0.2,5,0.2,5" Orientation="Vertical" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />

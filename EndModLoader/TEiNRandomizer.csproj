@@ -145,6 +145,7 @@
     <Compile Include="EXEIconDisplayer.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="LevelFile.cs" />
+    <Compile Include="LevelGenerator.cs" />
     <Compile Include="LevelManip.cs" />
     <Compile Include="MyRNG.cs" />
     <Compile Include="ParticleGenerator.cs" />

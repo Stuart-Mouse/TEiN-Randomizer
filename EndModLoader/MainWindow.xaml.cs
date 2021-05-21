@@ -460,5 +460,11 @@ namespace TEiNRandomizer
             SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
             Randomizer.Randomize(this);
         }
+
+        private void SaveModButton_Click(object sender, RoutedEventArgs e)
+        {
+            Randomizer.Randomize(this, "savemod");
+            MessageBox.Show($"Mod Saved to {RSettings.ModSaveDirectory}.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 }

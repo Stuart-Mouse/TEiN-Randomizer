@@ -10,7 +10,7 @@ namespace TEiNRandomizer
             string file = File.ReadAllText("data/worldmap_template.txt");
             if (settings.DeadRacer) DeadRacer(ref file, settings);
             CartLives(ref file, settings);
-            File.WriteAllText(settings.GameDirectory + "data/worldmap.txt", file);
+            File.WriteAllText(Randomizer.saveDir + "data/worldmap.txt", file);
         }
         public static void DeadRacer(ref string file, RandomizerSettings settings)
         {
