@@ -122,7 +122,7 @@ namespace TEiNRandomizer
 
             string filename = "data/player_physics/" + Randomizer.myRNG.GetUInt32().ToString() + ".txt";
 
-            using (StreamWriter sw = File.CreateText(Randomizer.settings.GameDirectory + filename))
+            using (StreamWriter sw = File.CreateText(Randomizer.saveDir + filename))
             {
                 sw.WriteLine(nameof(gravity) + " " + gravity);
                 sw.WriteLine(nameof(leniency) + " " + leniency);
@@ -218,7 +218,7 @@ namespace TEiNRandomizer
 
             string filename = "data/lowgrav_physics/" + Randomizer.myRNG.GetUInt32().ToString() + ".txt";
 
-            using (StreamWriter sw = File.CreateText(Randomizer.settings.GameDirectory + filename))
+            using (StreamWriter sw = File.CreateText(Randomizer.saveDir + filename))
             {
                 sw.WriteLine(nameof(gravity) + " " + gravity);
                 sw.WriteLine(nameof(leniency) + " " + leniency);
@@ -313,7 +313,7 @@ namespace TEiNRandomizer
 
             string filename = "data/water_physics/" + Randomizer.myRNG.GetUInt32().ToString() + ".txt";
 
-            using (StreamWriter sw = File.CreateText(Randomizer.settings.GameDirectory + filename))
+            using (StreamWriter sw = File.CreateText(Randomizer.saveDir + filename))
             {
                 sw.WriteLine(nameof(gravity) + " " + gravity);
                 sw.WriteLine(nameof(leniency) + " " + leniency);
@@ -390,11 +390,11 @@ namespace TEiNRandomizer
             CrumblingPlatformGravitytLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             CrumblingPlatformGravitytMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             CrumblingPlatformGravitytHigh *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmasherSpeedLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            SmasherSpeedLow = (double)Randomizer.myRNG.rand.Next(5, 60);
             SmasherDelayLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmasherSpeedMed *= (double)Randomizer.myRNG.rand.Next(lower, 61) / 100;
+            SmasherSpeedMed = (double)Randomizer.myRNG.rand.Next(7, 60);
             SmasherDelayMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmasherSpeedHigh *= (double)Randomizer.myRNG.rand.Next(lower, 61) / 100;
+            SmasherSpeedHigh = (double)Randomizer.myRNG.rand.Next(10, 60);
             SmasherDelayHigh *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             WeightedPlatformSpeedLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             WeightedPlatformSpeedMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
@@ -402,7 +402,7 @@ namespace TEiNRandomizer
 
             // Write platformphysics.txt
             string filename = "data/platform_physics/" + Randomizer.myRNG.GetUInt32().ToString() + ".txt";
-            using (StreamWriter sw = File.CreateText(Randomizer.settings.GameDirectory + filename))
+            using (StreamWriter sw = File.CreateText(Randomizer.saveDir + filename))
             {
                 sw.WriteLine(nameof(MovingPlatformSpeedLow) + " " + MovingPlatformSpeedLow);
                 sw.WriteLine(nameof(MovingPlatformSpeedMed) + " " + MovingPlatformSpeedMed);

@@ -223,11 +223,11 @@ namespace TEiNRandomizer
             Console.WriteLine("============================================");
         }
 
-        public static LevelFile exampleFunc(LevelFile level)
+        public static LevelFile copyLevel(LevelFile level)
         {
             var levelNew = new LevelFile();
 
-            levelNew.data.active = level.data.active;
+            levelNew = level;
 
             return levelNew;
         }

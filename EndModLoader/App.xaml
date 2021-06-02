@@ -110,7 +110,7 @@
 
         <Style x:Key="PoolCatListStyle" TargetType="ListBox">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"></Setter>
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InGame}">
                     <Setter Property="IsEnabled" Value="False" />
@@ -217,8 +217,26 @@
             </Style.Triggers>
         </Style>
 
-        <DataTemplate x:Key="PoolListTemplate">
+        <DataTemplate x:Key="PieceListTemplate">
             <StackPanel Margin="0.2,5,0.2,5" Orientation="Vertical" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding Name}" Style="{StaticResource TitleText}" Margin="10,0,0,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding NumPieces}" Style="{StaticResource DescriptionText}"/>
+                    <CheckBox Grid.Column="2" Content="Enabled" IsChecked="{Binding Active}" HorizontalAlignment="Right"/>
+                </Grid>
+                <Separator Margin="2.5, 5, 2.5, 0"/>
+                <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->
+            </StackPanel>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="PoolListTemplate" >
+            <StackPanel Margin="0.2,5,0.2,5" Orientation="Vertical">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -240,13 +258,13 @@
         </DataTemplate>
         
         <DataTemplate x:Key="PoolCatListTemplate" x:Name="PoolCatItem">
-            <StackPanel>
+            <StackPanel MouseDown="NoClick" Focusable="False" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20" />
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
-                    <Canvas Grid.Row="0" Background="LightGray" MouseDown="NoClick" >
+                    <Canvas Grid.Row="0" Background="LightGray">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
@@ -259,10 +277,11 @@
                         </Grid>
                     </Canvas>
                     <ListBox Grid.Row="1" Name="PoolList" MouseDown="NoClick"
-                ItemTemplate="{StaticResource PoolListTemplate}"
-                ItemsSource="{Binding Pools}"
-                Style="{StaticResource PoolListStyle}"
-                Visibility="{Binding Enabled, Converter={StaticResource SettingsDisplayer}}" />
+                    ItemTemplate="{StaticResource PoolListTemplate}"
+                    ItemsSource="{Binding Pools}"
+                    Style="{StaticResource PoolListStyle}"
+                    Visibility="{Binding Enabled, Converter={StaticResource SettingsDisplayer}}" 
+                    ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
                 </Grid>
             </StackPanel>
         </DataTemplate>

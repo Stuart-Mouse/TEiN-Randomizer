@@ -11,25 +11,25 @@ namespace TEiNRandomizer
         public LevelHeader header;
         public LevelData data;
 
-        public LevelFile()
-        {
-            header.version = 1;
-            header.width = 54;
-            header.height = 32;
-            header.layers = 5;
+        //public LevelFile()
+        //{
+        //    header.version = 1;
+        //    header.width = 54;
+        //    header.height = 32;
+        //    header.layers = 5;
 
-            // get data layer length
-            int layerLength = header.width * header.height;
+        //    // get data layer length
+        //    int layerLength = header.width * header.height;
 
-            // initialize data layers
-            data.back1      = new TileID[layerLength];
-            data.active     = new TileID[layerLength];
-            data.tag        = new TileID[layerLength];
-            data.overlay    = new TileID[layerLength];
-            data.back2      = new TileID[layerLength];
-        }
+        //    // initialize data layers
+        //    data.back1      = new TileID[layerLength];
+        //    data.active     = new TileID[layerLength];
+        //    data.tag        = new TileID[layerLength];
+        //    data.overlay    = new TileID[layerLength];
+        //    data.back2      = new TileID[layerLength];
+        //}
 
-        public LevelFile(int width, int height)
+        public LevelFile(int width = 54, int height = 32)
         {
             header.version = 1;
             header.width = width;

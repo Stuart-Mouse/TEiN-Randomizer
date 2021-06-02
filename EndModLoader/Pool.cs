@@ -84,7 +84,7 @@ namespace TEiNRandomizer
                             }
                         }
                     }
-                    Console.WriteLine($"{level.Name} {level.TSNeed}");
+                    //Console.WriteLine($"{level.Name} {level.TSNeed}");
                     this.Levels.Add(level);
                 }
                 else if (element.Name == "tileset")

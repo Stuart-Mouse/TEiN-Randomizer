@@ -149,6 +149,21 @@ namespace TEiNRandomizer
             }
             return poolCats;
         }
+        public static IEnumerable<PiecePool> PieceLoader(string path)
+        {
+            var folder = Path.GetFileNameWithoutExtension(path);
+            var pools = new ObservableCollection<PiecePool>();
+            bool enabled = false;
+            foreach (var file in Directory.GetFiles(path, "*.xml", SearchOption.TopDirectoryOnly))
+            {
+                var pool = new PiecePool(Path.GetFileNameWithoutExtension(file), folder);    // pool creation done in Pool constructor
+                if (pool != null)
+                {
+                    pools.Add(pool);
+                }
+            }
+            return pools;
+        }
         static IEnumerable<string> LoadRecents()
         {
             var recents = new List<string> { };
@@ -390,7 +405,7 @@ namespace TEiNRandomizer
             foreach (var level in baseLevels)
             {
                 //File.Copy($"data/vtilemaps/The End is Nigh/{level}.lvl", saveDir + $"tilemaps/{level}.lvl", true);
-                var levelFile = LevelManip.Load($"data/vtilemaps/The End is Nigh/{level}.lvl");
+                var levelFile = LevelManip.Load($"data/tilemaps/The End is Nigh/{level}.lvl");
 
                 if (settings.MirrorMode)
                     LevelManip.FlipLevelH(ref levelFile);
@@ -403,7 +418,7 @@ namespace TEiNRandomizer
                 for (int i = 0; i < settings.NumLevels; i++)
                 {
                     var level = ChosenLevels[j][i];
-                    var levelFile = LevelManip.Load($"data/vtilemaps/{level.Folder}/{level.Name}.lvl");
+                    var levelFile = LevelManip.Load($"data/tilemaps/{level.Folder}/{level.Name}.lvl");
 
                     if (level.CanReverse && myRNG.CoinFlip() || settings.MirrorMode)
                         LevelManip.FlipLevelH(ref levelFile);
@@ -422,7 +437,7 @@ namespace TEiNRandomizer
             foreach (var level in baseLevels)
             {
                 //File.Copy($"data/vtilemaps/The End is Nigh/{level}.lvl", saveDir + $"tilemaps/{level}.lvl", true);
-                var levelFile = LevelManip.Load($"data/vtilemaps/The End is Nigh/{level}.lvl");
+                var levelFile = LevelManip.Load($"data/tilemaps/The End is Nigh/{level}.lvl");
 
                 if (settings.MirrorMode)
                     LevelManip.FlipLevelH(ref levelFile);
@@ -436,8 +451,8 @@ namespace TEiNRandomizer
                 {
                     var level1 = ChosenLevels[j][i];
                     var level2 = ChosenLevels2[j][i];
-                    var levelFile1 = LevelManip.Load($"data/vtilemaps/{level1.Folder}/{level1.Name}.lvl");
-                    var levelFile2 = LevelManip.Load($"data/vtilemaps/{level2.Folder}/{level2.Name}.lvl");
+                    var levelFile1 = LevelManip.Load($"data/tilemaps/{level1.Folder}/{level1.Name}.lvl");
+                    var levelFile2 = LevelManip.Load($"data/tilemaps/{level2.Folder}/{level2.Name}.lvl");
 
                     var levelM = level1;
                     levelM.TSNeed += level2.TSNeed + " decoration_1 CreepingMass ";

@@ -22,6 +22,7 @@ namespace TEiNRandomizer
 
         private string ModPath { get => Path.Combine(EndIsNighPath, "mods"); }
         private string PoolPath { get => "data/levelpools"; }
+        private string PiecePoolPath { get => "data/piecepools"; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -49,6 +50,7 @@ namespace TEiNRandomizer
         public ObservableCollection<Mod> Mods { get; private set; } = new ObservableCollection<Mod>();
         //public ObservableCollection<Pool> Pools { get; private set; } = new ObservableCollection<Pool>();
         public ObservableCollection<PoolCategory> PoolCats { get; private set; } = new ObservableCollection<PoolCategory>();
+        public ObservableCollection<PiecePool> PiecePools { get; private set; } = new ObservableCollection<PiecePool>();
 
         private AppState _appState;
         public AppState AppState
@@ -117,6 +119,7 @@ namespace TEiNRandomizer
                     FileSystem.MakeSaveBackup(EndIsNighPath);
                     //LoadModList(FileSystem.ReadModFolder(ModPath).OrderBy(m => m));
                     LoadPoolList(Randomizer.PoolLoader(PoolPath).OrderBy(p => p));
+                    LoadPieceList(Randomizer.PieceLoader(PiecePoolPath).OrderBy(p => p));
                     GameSeed = Randomizer.myRNG.GetUInt32();
                     FileSystem.EnableWatching(ModPath, OnAdd, OnRemove, OnRename);
                 }
@@ -384,11 +387,22 @@ namespace TEiNRandomizer
                 PoolCats.Add(cat);
             }
 
+            if (PoolCats.Count == 0) AppState = AppState.NoModsFound;
+            //else if (ModList.SelectedIndex == -1) AppState = AppState.NoModSelected;
+            else AppState = AppState.ReadyToPlay;
+        }
+        private void LoadPieceList(IOrderedEnumerable<PiecePool> pools)
+        {
+            PiecePools.Clear();
+            foreach (var pool in pools.OrderBy(m => m))
+            {
+                PiecePools.Add(pool);
+            }
+
             //if (Pools.Count == 0) AppState = AppState.NoModsFound;
             //else if (ModList.SelectedIndex == -1) AppState = AppState.NoModSelected;
-            AppState = AppState.ReadyToPlay;
+            //AppState = AppState.ReadyToPlay;
         }
-
         private void FolderButton_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new CommonOpenFileDialog
@@ -466,5 +480,19 @@ namespace TEiNRandomizer
             Randomizer.Randomize(this, "savemod");
             MessageBox.Show($"Mod Saved to {RSettings.ModSaveDirectory}.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+
+        private void LevelGenTestButton_Click(object sender, RoutedEventArgs e)
+        {
+            LevelGenerator.LoadPieces(this);
+
+            for (int i = 0; i < 40; i++)
+            {
+                LevelManip.Save(LevelGenerator.CreateLevel(), $"output/1-{i}.lvl");
+            }
+
+            MessageBox.Show($"level gen test complete", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+
     }
 }

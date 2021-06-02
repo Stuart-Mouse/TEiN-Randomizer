@@ -30,6 +30,16 @@ namespace TEiNRandomizer
         Down
     }
 
+    public enum Direction
+    {
+        None = 0,
+        Up = 1,
+        Down = -1,
+        Left = 2,
+        Right = -2,
+        Any = 3
+    }
+
     public enum TileID
     {
         // Active
@@ -385,10 +395,11 @@ namespace TEiNRandomizer
         Unused20 = 50032,
 
         // Markers
-        TagMarker1 = 92001,
-        TagMarker2 = 92002,
-        TagMarker3 = 92003,
-        TagMarker4 = 92004,
+        OOBMarker   = 92000,
+        TagMarker1  = 92001,
+        TagMarker2  = 92002,
+        TagMarker3  = 92003,
+        TagMarker4  = 92004,
 
         //MergeMarker0 = 92100,
         MergeMarkerR = 92101,

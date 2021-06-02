@@ -5,8 +5,72 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TEiNRandomizer"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="900" Width="640" MinHeight="480" MinWidth="640" MaxWidth="840"
+        Title="{Binding WindowTitle}" Height="740" Width="640" MinHeight="480" MinWidth="640" MaxWidth="640"
         Closing="Window_Closing" >
+    <Window.Resources>
+        <Style x:Key="FocusVisual">
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <SolidColorBrush x:Key="Item.MouseOver.Background" Color="#1F26A0DA"/>
+        <SolidColorBrush x:Key="Item.MouseOver.Border" Color="#a826A0Da"/>
+        <SolidColorBrush x:Key="Item.SelectedInactive.Background" Color="#3DDADADA"/>
+        <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="#FFDADADA"/>
+        <SolidColorBrush x:Key="Item.SelectedActive.Background" Color="#3D26A0DA"/>
+        <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="#FF26A0DA"/>
+        <Style x:Key="ListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="Padding" Value="4,1"/>
+            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsMouseOver" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
+                            </MultiTrigger>
+                            <!--<MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                                    <Condition Property="IsSelected" Value="True"/>
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
+                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
+                            </MultiTrigger>-->
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid Margin="10,10,10,10">
         <Grid.RowDefinitions>
             <!--<RowDefinition Height="12" />
@@ -22,24 +86,25 @@
             </Grid.ColumnDefinitions>
             <TextBlock Name="PathText" Text="{Binding EndIsNighPath}" Style="{StaticResource PathText}" Grid.Column="0" />
         </Grid>-->
-        <Grid Grid.Row="0" VerticalAlignment="Stretch" Margin="0,0,0,10">
-            <TabControl Name="MenuTabs" >
+        <Grid Grid.Row="0" VerticalAlignment="Stretch" Margin="0,0,0,10" >
+            <TabControl Name="MenuTabs" Padding="0,0,0,10">
                 <TabItem Header=" Level Pools " >
-                    <Grid Grid.Column="0" Width="480" HorizontalAlignment="Center" Margin="0,10,0,0" >
+                    <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
                             <RowDefinition MinHeight="100" />
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Level Pools" Style="{StaticResource TabTitleText}" Width="auto" VerticalAlignment="Top" TextAlignment="Center" FontFamily="Segoe UI Semibold"/>
+                        <TextBlock Grid.Row="0" Text="Level Pools" Padding="5" Style="{StaticResource TabTitleText}" VerticalAlignment="Top" TextAlignment="Center" FontFamily="Segoe UI Semibold"/>
                         <ListView Grid.Row="1" Name="PoolCatList"
                         ItemTemplate="{StaticResource PoolCatListTemplate}"
                         ItemsSource="{Binding PoolCats}"
                         ScrollViewer.CanContentScroll="False"
-                        Style="{StaticResource PoolCatListStyle}" />
+                        Style="{StaticResource PoolCatListStyle}"
+                        ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header=" Randomization ">
-                    <Grid HorizontalAlignment="Center" Margin="0,10,0,0">
+                    <Grid HorizontalAlignment="Center" >
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="250"/>
                             <ColumnDefinition Width="250"/>
@@ -51,8 +116,8 @@
                                 <!--<RowDefinition Height="30" />
                                 <RowDefinition Height="Auto" />-->
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Text="Main Settings" Padding="5" Style="{StaticResource TabTitleText}" Width="auto" Height="auto" VerticalAlignment="Top" TextAlignment="Center" FontFamily="Segoe UI Semibold" FontSize="15"/>
-                            <ListBox Grid.Row="1" Name="SettingsList" Padding="5" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False">
+                            <TextBlock Grid.Row="0" Text="Main Settings" Padding="5" Style="{StaticResource TabTitleText}" VerticalAlignment="Top" TextAlignment="Center" FontFamily="Segoe UI Semibold" FontSize="15"/>
+                            <ListBox Grid.Row="1" Name="SettingsList" Padding="5" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="40"/>
@@ -168,7 +233,7 @@
                                 <RowDefinition MinHeight="100" />
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" Text="Sub-Settings" Padding="5" Style="{StaticResource TabTitleText}" Width="auto" Height="auto" VerticalAlignment="Top" TextAlignment="Center" FontFamily="Segoe UI Semibold" FontSize="15"/>
-                            <ListBox Grid.Row="1" Name="SubSettingsList" Padding="5" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False">
+                            <ListBox Grid.Row="1" Name="SubSettingsList" Padding="5" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
                                 <TextBlock Text="Physics Settings:" FontWeight="Bold" Visibility="{Binding RSettings.DoPhysics, Converter={StaticResource SettingsDisplayer}}"/>
                                 <ListBox
                                     Name="PhysicsListBox"
@@ -176,7 +241,8 @@
                                     Visibility="{Binding RSettings.DoPhysics, Converter={StaticResource SettingsDisplayer}}"
                                     Width="200"
                                     MinHeight="40"
-                                    BorderBrush="Transparent">
+                                    BorderBrush="Transparent"
+                                    ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
                                     <CheckBox Content="Platform Physics" IsChecked="{Binding RSettings.PlatformPhysics}" />
                                     <CheckBox Content="Player Physics" IsChecked="{Binding RSettings.PlayerPhysics}" />
                                     <CheckBox Content="Water Physics" IsChecked="{Binding RSettings.WaterPhysics}" />
@@ -190,7 +256,8 @@
                                     Visibility="{Binding RSettings.DoParticles, Converter={StaticResource SettingsDisplayer}}"
                                     Width="200"
                                     MinHeight="40"
-                                    BorderBrush="Transparent">
+                                    BorderBrush="Transparent"
+                                    ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
                                     <CheckBox Content="Generate Custom Particles" IsChecked="{Binding RSettings.GenerateCustomParticles}" />
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -227,14 +294,15 @@
                                     ItemTemplate="{StaticResource ShadersListTemplate}"
                                     Width="200"
                                     MinHeight="40"
-                                    BorderBrush="Transparent">
+                                    BorderBrush="Transparent"
+                                    ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
                                 </ListBox>
                             </ListBox>
                         </Grid>
                     </Grid>
                 </TabItem>
                 <TabItem Header="  Program  ">
-                    <Grid Grid.Column="0" Height="Auto" HorizontalAlignment="Center" Width="420" Margin="0,10,0,0">
+                    <Grid Grid.Column="0" Height="Auto" HorizontalAlignment="Center" Width="420" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="auto" />
                             <RowDefinition MinHeight="50" />
@@ -242,7 +310,7 @@
                                 <RowDefinition Height="Auto" />-->
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Text="Program Settings" Style="{StaticResource TabTitleText}" Width="auto" VerticalAlignment="Top" TextAlignment="Center" FontFamily="Segoe UI Semibold"/>
-                        <ListBox Grid.Row="1" Name="ProramSettingsList" Padding="5" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False">
+                        <ListBox Grid.Row="1" Name="ProramSettingsList" Padding="5" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
                             <TextBlock Text="Game Directory: "/>
                             <TextBox Name="GameDirTextBox" Width="auto">
                                 <TextBox.Text>
@@ -260,8 +328,24 @@
                             <Separator Margin="0,5"/>
                             <CheckBox Content="Manual Load" IsChecked="{Binding RSettings.ManualLoad}" />
                             <TextBlock Text="This may be necessary for Epic Games users." Foreground="Gray"/>
+                            <Button Name="LevelGenTestButton" Content="Level Gen Test" Click="LevelGenTestButton_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>
 
                         </ListBox>
+                    </Grid>
+                </TabItem>
+                <TabItem Header=" Level Gen " >
+                    <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition MinHeight="100" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="Level Generator" Padding="5" Style="{StaticResource TabTitleText}" VerticalAlignment="Top" TextAlignment="Center" FontFamily="Segoe UI Semibold"/>
+                        <ListView Grid.Row="1" Name="LevelPieceList"
+                        ItemTemplate="{StaticResource PieceListTemplate}"
+                        ItemsSource="{Binding PiecePools}"
+                        ScrollViewer.CanContentScroll="False"
+                        Style="{StaticResource PoolListStyle}"
+                        ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="  ???  ">

@@ -142,14 +142,17 @@
     <Compile Include="Analysis.cs" />
     <Compile Include="Corruptors.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="Exceptions.cs" />
     <Compile Include="EXEIconDisplayer.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="LevelFile.cs" />
     <Compile Include="LevelGenerator.cs" />
     <Compile Include="LevelManip.cs" />
+    <Compile Include="LevelPiece.cs" />
     <Compile Include="MyRNG.cs" />
     <Compile Include="ParticleGenerator.cs" />
     <Compile Include="Physics.cs" />
+    <Compile Include="PiecePool.cs" />
     <Compile Include="Pool.cs" />
     <Compile Include="PoolCategory.cs" />
     <Compile Include="Randomizer.cs" />
