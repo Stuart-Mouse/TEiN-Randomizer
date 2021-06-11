@@ -65,8 +65,6 @@ namespace TEiNRandomizer
 
         public static LevelFile Load(string path)
         {
-            //Console.WriteLine("load");
-
             LevelFile level = new LevelFile() { };
             byte[] filedata = File.ReadAllBytes(path);
 
@@ -111,7 +109,7 @@ namespace TEiNRandomizer
 
         public static void Save(LevelFile level, string path)
         {
-            //Console.WriteLine("save");
+            if (level == null) { Console.WriteLine("tried to save null level"); return; }
 
             // get data layer length
             int layerLength = level.header.width * level.header.height;

@@ -153,14 +153,11 @@ namespace TEiNRandomizer
         {
             var folder = Path.GetFileNameWithoutExtension(path);
             var pools = new ObservableCollection<PiecePool>();
-            bool enabled = false;
             foreach (var file in Directory.GetFiles(path, "*.xml", SearchOption.TopDirectoryOnly))
             {
                 var pool = new PiecePool(Path.GetFileNameWithoutExtension(file), folder);    // pool creation done in Pool constructor
                 if (pool != null)
-                {
                     pools.Add(pool);
-                }
             }
             return pools;
         }

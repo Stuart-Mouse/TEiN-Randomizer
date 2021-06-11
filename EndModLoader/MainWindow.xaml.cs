@@ -420,37 +420,6 @@ namespace TEiNRandomizer
 
             ReadyEndIsNighPath();
         }
-
-        //public class ItemCounter : IComparable<ItemCounter>
-        //{
-        //    public string Name;
-        //    public int Occurences;
-
-        //    public int CompareTo(ItemCounter other) => Occurences.CompareTo(other.Occurences);
-        //}
-
-        //public List<ItemCounter> TilesetAnalysis(List<string> TSList)
-        //{
-        //    var TSCounter = new List<ItemCounter> { };
-        //    bool found;
-        //    foreach (var item in TSList)
-        //    {
-        //        found = false;
-        //        for (int i = 0; i < TSCounter.Count; i++)
-        //        {
-        //            if (item == TSCounter[i].Name)
-        //            {
-        //                TSCounter[i].Occurences++;
-        //                found = true;
-        //            }
-        //        }
-        //        if (found == false)
-        //        {
-        //            TSCounter.Add(new ItemCounter() { Name = item, Occurences = 1 });
-        //        }
-        //    }
-        //    return TSCounter;
-        //}
         
         private void ParticleRanger() // this function is stupid and I should get rid of it later
         {
@@ -458,12 +427,6 @@ namespace TEiNRandomizer
             else if (RSettings.MaxParticleEffects > 3) RSettings.MaxParticleEffects = 3;
             MaxParticleEffectsTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
         }
-
-        //private void AdvancedSettings_Click(object sender, RoutedEventArgs e)
-        //{
-        //    ShowAdvancedSettings = !ShowAdvancedSettings;
-        //    AdvancedSettingsList.GetBindingExpression(ListBox.VisibilityProperty).UpdateTarget();
-        //}
 
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
@@ -484,13 +447,81 @@ namespace TEiNRandomizer
         private void LevelGenTestButton_Click(object sender, RoutedEventArgs e)
         {
             LevelGenerator.LoadPieces(this);
+            //Randomizer.myRNG.SeedMe(0);
 
             for (int i = 0; i < 40; i++)
             {
-                LevelManip.Save(LevelGenerator.CreateLevel(), $"output/1-{i}.lvl");
+                LevelManip.Save(LevelGenerator.CreateLevel(), $"C:\\Program Files (x86)\\Steam\\steamapps\\common\\theendisnigh\\tilemaps/1-{i}.lvl");
             }
 
             MessageBox.Show($"level gen test complete", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void CreatePiecePools(object sender, RoutedEventArgs e)
+        {
+            foreach (var folder in Directory.GetDirectories("data/levelpieces"))
+            {
+                string folderName = Path.GetFileNameWithoutExtension(folder); // get folder name
+                if (folderName == "GEN") continue; // ignore GEN folder
+
+                XDocument doc = new XDocument();
+                XElement pool = new XElement("pool");
+                pool.SetAttributeValue("enabled", "True");
+                pool.SetAttributeValue("source" , folderName);
+                pool.SetAttributeValue("author" , "Uzerro");
+                pool.SetAttributeValue("order"  , "0");
+
+                foreach (var file in Directory.GetFiles(folder, "*.lvl", SearchOption.TopDirectoryOnly))
+                {
+                    string fileName = Path.GetFileNameWithoutExtension(file); // get file name
+                    XElement piece = new XElement("piece");  
+                    piece.SetAttributeValue("name", fileName);
+                    // create XElement for piece
+                    LevelFile level = LevelManip.Load(file);                  // load the associated level file
+
+                    Pair enCoord = LevelGenerator.GetEntryCoord(ref level); // get entry coord
+                    Pair exCoord = LevelGenerator.GetExitCoord(ref level);  // get exit coord
+
+                    // check for ceilings and floors
+                    piece.SetAttributeValue("ceilingEn", "False");
+                    piece.SetAttributeValue("ceilingEx", "False");
+                    piece.SetAttributeValue("floorEn"  , "False");
+                    piece.SetAttributeValue("floorEx"  , "False");
+
+                    int index, lw = level.header.width, lh = level.header.height;
+
+                    if (level.data.active[0] == TileID.Solid)               // checks top left tile for solid block
+                        piece.SetAttributeValue("ceilingEn" , "True");
+                    if (level.data.active[lw - 1] == TileID.Solid)          // checks top right tile for solid block
+                        piece.SetAttributeValue("ceilingEx", "True");
+
+                    index = (enCoord.First + 1) * lw + enCoord.Second;
+                    if (index < lh*lw)
+                    {
+                        if (level.data.active[index] == TileID.Solid)       // checks tile underneath the entrance for solid block
+                            piece.SetAttributeValue("floorEn", "True");
+                    }
+                    index = (exCoord.First + 1) * lw + exCoord.Second;
+                    if (index < lh * lw)
+                    {
+                        if (level.data.active[index] == TileID.Solid)       // checks tile underneath the exit for solid block
+                            piece.SetAttributeValue("floorEx", "True");
+                    }
+
+
+
+
+                    // FullHeight, AllowBuildingAbove/Below, Margin will need to be set manually.
+
+                    pool.Add(piece);
+                }
+
+                doc.Add(pool);
+                doc.Save($"data/piecepools/{folderName}.xml");
+
+                MessageBox.Show($"creating piece pools complete", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            }
         }
 
 

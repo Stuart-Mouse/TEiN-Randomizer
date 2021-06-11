@@ -11,30 +11,40 @@ namespace TEiNRandomizer
     public static class LevelGenerator
     {
         static List<LevelPiece> Pieces;
-        static LevelFile TLeft = LevelManip.Load("data/levelpieces/Transitions/t-left.lvl");
-        static LevelFile TRight = LevelManip.Load("data/levelpieces/Transitions/t-right.lvl");
-        static GenInfo genInfo;
+        static LevelPiece LTransition = new LevelPiece(LevelManip.Load("data/levelpieces/GEN/t-left.lvl")) { CeilingEx = false, FloorEx = true, CeilingEn = false, FloorEn = true };
+        static LevelPiece RTransition = new LevelPiece(LevelManip.Load("data/levelpieces/GEN/t-right.lvl")) { CeilingEx = false, FloorEx = true, CeilingEn = false, FloorEn = true };
+        static LevelPiece LTransitionC = new LevelPiece(LevelManip.Load("data/levelpieces/GEN/t-leftc.lvl")) { CeilingEx = true, FloorEx = true, CeilingEn = true, FloorEn = true };
+        static LevelPiece RTransitionC = new LevelPiece(LevelManip.Load("data/levelpieces/GEN/t-rightc.lvl")) { CeilingEx = true, FloorEx = true, CeilingEn = true, FloorEn = true };
 
+
+        // These are basically constants but I might want to change them in the settings
         static int UsableWidth = 48;
-        static int UsableHeight = 30;
-        static int MaxPieces = 8;
+        static int UsableHeight = 32;
+        static int MaxPieces = 3;
 
+        // The level file for the level being created
+        static LevelPiece Canvas    = new LevelPiece();
+        static LevelPiece LastPiece = new LevelPiece();
+        static LevelPiece NextPiece = new LevelPiece();
+        static LevelFile  TempLevel = new LevelFile();
 
-        public struct GenInfo
-        {
-            public int hClearance;
-            public int vClearance;
-            public Pair currEntryCoord;
-            public Pair currExitCoord;
-        }
+        static Bounds CameraBounds = new Bounds();
+
+        // Level Generation Info
+        static Direction EntranceDirection = Direction.None;
+        static Direction ExitDirection = Direction.None;
+        static int WidthRemaining;
 
         static void InitGenInfo()
         {
-            // initialize vars for usable piece size
-            genInfo.hClearance = UsableWidth;
-            genInfo.vClearance = UsableHeight;
-            //genInfo.currExitCoord = new Pair();
-            //genInfo.currEntryCoord = new Pair();
+            LastPiece = new LevelPiece();
+            NextPiece = new LevelPiece();
+            EntranceDirection = Direction.Left;
+            ExitDirection = Direction.Right;
+            WidthRemaining = UsableWidth;
+
+            if (Randomizer.myRNG.CoinFlip()) { Canvas.FloorEx = true; Canvas.CeilingEx = true; };
+            //CameraBounds = { }
         }
 
         static LevelFile GetNewLevelFile(int width = 54, int height = 32)
@@ -55,11 +65,10 @@ namespace TEiNRandomizer
 
             return level;
         }
-
         public static void LoadPieces(MainWindow mw)    // this needs to be run when the program starts up or when the randomization starts
         {
             Pieces = new List<LevelPiece>();
-            
+
             foreach (var pool in mw.PiecePools)
             {
                 if (pool.Active)
@@ -73,7 +82,6 @@ namespace TEiNRandomizer
                 }
             }
         }
-
         public static bool GetPieceEntrances(ref LevelPiece piece)
         {
             int index = 0;
@@ -112,72 +120,107 @@ namespace TEiNRandomizer
             }
 
         }
-
-        public static LevelPiece GetPiece(Direction entranceDir = Direction.Any, Direction exitDir = Direction.Any, int maxHeight = 100, int maxWidth = 100, string badName = null)
+        public static bool GetNextPiece(int maxHeight, int maxWidth)
         {
             var pool = new List<LevelPiece>();
-            
+
             foreach (LevelPiece piece in Pieces)
             {
-                if (piece.Name != badName)
-                    if (entranceDir == Direction.Any || piece.Entrance == entranceDir)  // entrance check
-                        if (exitDir == Direction.Any || piece.Exit == exitDir)          // exit check
-                            if (piece.File.header.height <= maxHeight && piece.File.header.width <= maxWidth)   // piece size check
+                if (piece.Name != LastPiece.Name)
+                    if (EntranceDirection == Direction.Any || piece.Entrance == EntranceDirection) // entrance check
+                        //if (piece.CeilingEn == Canvas.CeilingEx && piece.FloorEn == Canvas.FloorEx)
+                        if (ExitDirection == Direction.Any || piece.Exit == ExitDirection)         // exit check
+                            if (piece.File.header.height <= maxHeight && piece.File.header.width <= maxWidth) // piece size check
                                 pool.Add(piece);
             }
 
-            var npiece = pool[Randomizer.myRNG.rand.Next(0, pool.Count())];
+            if (pool.Count == 0)
+                return false;
+            else
+                NextPiece = pool[Randomizer.myRNG.rand.Next(0, pool.Count())];
+            return true;
 
-            return npiece;   // return a random valid piece
         }
 
-        public static LevelFile CreateLevel()
+        public static bool AttemptAddPiece()
         {
-            // select first piece
-            var lastPiece = new LevelPiece();
-            var nextPiece = GetPiece(Direction.Left, Direction.Right, UsableHeight, UsableWidth);
-            var level = nextPiece.File;
-
-            for (int i = 0; i < MaxPieces; i++)
+            // attempt to add a piece that does not make the level too big
+            for (int a = 0; a < 5; a++) // it gives five attempts to add a piece
             {
-                lastPiece = nextPiece;
-                Direction entranceDir = (Direction)(-(int)lastPiece.Exit); // get the opposite direction of the exit
-                nextPiece = GetPiece(entranceDir, Direction.Right, 100, 100, lastPiece.Name);
-                
-                // attempt to add a piece that does not make the level too big
-                for (int attempt = 0; attempt < 5;)
-                {
-                    var tuple = AppendPiece(level, nextPiece.File);
-                    if (tuple.Item1)
-                    { level = tuple.Item2; break; }
-                    else attempt++;
-                }
+                if (!GetNextPiece(100, WidthRemaining)) return false;   // if cannot get new piece, return false and break from adding pieces
 
-                // perform size check
-                if (level.header.height >= UsableHeight || level.header.width >= UsableWidth)
-                    break;
+                //if (Randomizer.myRNG.CoinFlip())    // random chance to place the new piece on either the left or right side
+                //{                                   // Since tall pieces are more likely to be picked first, this should keep them more centered, rather than always appearing at the start of a level
+                    return AppendPieceH(Canvas, NextPiece);  // return true if piece is added successfully
+                //}
+                //else return AppendPieceH(NextPiece.File, Canvas);  // return true if piece is added successfully
+            }
+            return false;
+        }
+
+        public static LevelFile CreateLevel(/*Direction EnDir = Direction.Right, Direction ExDir = Direction.Right*/)   // later I will want to be able to specify the entrance and exit direction
+        {
+
+            InitGenInfo();  // Initialize the generator info
+
+            if (!GetNextPiece(100, 100))    // select first piece
+            { Console.WriteLine("null starting level"); return null; }
+            Canvas.File = NextPiece.File;    // initializes canvas to first piece selected
+            Canvas.CeilingEn = NextPiece.CeilingEn;
+            Canvas.CeilingEx = NextPiece.CeilingEx;
+            Canvas.FloorEn = NextPiece.FloorEn;
+            Canvas.FloorEx = NextPiece.FloorEx;
+
+            int numPieces = 0;
+            while (true)
+            {
+                LastPiece = NextPiece;                                      // the old new piece becomes the new old piece
+                Direction entranceDir = (Direction)(-(int)LastPiece.Exit);  // get the opposite direction of the exit
+                WidthRemaining = UsableWidth - Canvas.File.header.width;         // The amount of space left before reaching the usable width limit
+
+                if (!AttemptAddPiece()) break; // try to add a new piece. if this fails, break from the loop
+                if (Canvas.File.header.height >= UsableHeight || Canvas.File.header.width >= UsableWidth) break; // perform size check
+
+                numPieces++; // piece number check
+                if (numPieces >= MaxPieces) break;
             }
 
-            // Finalizing the level
-            // add entrance and exit landing
-            level = AppendPiece(TLeft, level, true).Item2;
-            level = AppendPiece(level, TRight, true).Item2;
-            // fill in top/bottom
-            FillEmptySpace(ref level);
+            //int widthToReach = Canvas.header.height * 16 / 9;    // The width required to meet a 16:9 aspect ratio
+            //int difference = widthToReach - Canvas.header.width; // If the level is too thin, we want to add more pieces.
 
-            return level;
+            // Finalizing the level, Add entrance and exit landing
+            if (Canvas.CeilingEn)
+                AppendPieceH(LTransitionC, Canvas, true);
+            else AppendPieceH(LTransition, Canvas, true);
+            if (Canvas.CeilingEx)
+                AppendPieceH(Canvas, RTransitionC, true);
+            else AppendPieceH(Canvas, RTransition, true);
+
+
+
+            FillEmptySpace(); // fill in top/bottom
+
+            // add camera bounds
+            //int vert = level.header.height / 2;
+            //int width = level.header.width;
+            //int index = vert * width + (width - 2);     // right camera tile
+            //level.data.tag[index] = TileID.CameraBounds;
+            //index = vert * width + 1;                   // left camera tile
+            //level.data.tag[index] = TileID.CameraBounds;    
+            // vertical camera bounds are not set, they should just naturally work out
+
+            return Canvas.File;
         }
-
-        static void FillEmptySpace(ref LevelFile level)
+        static void FillEmptySpace()
         {
             int index = 0;
-            int lw = level.header.width;
-            int lh = level.header.height;
+            int lw = Canvas.File.header.width;
+            int lh = Canvas.File.header.height;
 
-            TileID activeFillTile   = TileID.Empty;
-            TileID back1FillTile    = TileID.Empty;
-            TileID back2FillTile    = TileID.Empty;
-            TileID tagFillTile      = TileID.OOBMarker;
+            TileID activeFillTile = TileID.Empty;
+            TileID back1FillTile = TileID.Empty;
+            TileID back2FillTile = TileID.Empty;
+            TileID tagFillTile = TileID.OOBMarker;
 
             // j is on the outside loop here because I need to increment along columns instead of rows
             for (int j = 0; j < lw; j++)
@@ -188,23 +231,24 @@ namespace TEiNRandomizer
                 {
                     index = i * lw + j;
 
-                    if (level.data.tag[index] == TileID.OOBMarker)
+                    if (Canvas.File.data.tag[index] == TileID.OOBMarker)
                     {
                         if (tagFillTile != TileID.OOBMarker)
                         {
-                            level.data.tag[index]       = TileID.Empty;
-                            level.data.active[index]    = activeFillTile;
-                            level.data.back1[index]     = back1FillTile;
-                            level.data.back2[index]     = back2FillTile;
-                            level.data.tag[index]       = tagFillTile;
+                            Canvas.File.data.tag[index] = TileID.Empty;
+                            Canvas.File.data.active[index] = activeFillTile;
+                            Canvas.File.data.back1[index] = back1FillTile;
+                            Canvas.File.data.back2[index] = back2FillTile;
+                            Canvas.File.data.tag[index] = tagFillTile;
                         }
                     }
                     else
                     {
-                        activeFillTile  = level.data.active[index];
-                        back1FillTile   = level.data.back1[index];
-                        back2FillTile   = level.data.back2[index];
-                        tagFillTile     = level.data.tag[index];
+                        activeFillTile = Canvas.File.data.active[index];
+                        back1FillTile = Canvas.File.data.back1[index];
+                        back2FillTile = Canvas.File.data.back2[index];
+                        //if (Canvas.data.tag[index] != TileID.Empty)
+                        tagFillTile = Canvas.File.data.tag[index];
                     }
                 }
 
@@ -214,151 +258,204 @@ namespace TEiNRandomizer
                 {
                     index = i * lw + j;
 
-                    if (level.data.tag[index] == TileID.OOBMarker)
+                    if (Canvas.File.data.tag[index] == TileID.OOBMarker)
                     {
                         if (tagFillTile != TileID.OOBMarker)
                         {
-                            level.data.tag[index] = TileID.Empty;
-                            level.data.active[index] = activeFillTile;
-                            level.data.back1[index] = back1FillTile;
-                            level.data.back2[index] = back2FillTile;
-                            level.data.tag[index] = tagFillTile;
+                            Canvas.File.data.tag[index] = TileID.Empty;
+                            Canvas.File.data.active[index] = activeFillTile;
+                            Canvas.File.data.back1[index] = back1FillTile;
+                            Canvas.File.data.back2[index] = back2FillTile;
+                            Canvas.File.data.tag[index] = tagFillTile;
                         }
                     }
                     else
                     {
-                        activeFillTile = level.data.active[index];
-                        back1FillTile = level.data.back1[index];
-                        back2FillTile = level.data.back2[index];
-                        tagFillTile = level.data.tag[index];
+                        activeFillTile = Canvas.File.data.active[index];
+                        back1FillTile = Canvas.File.data.back1[index];
+                        back2FillTile = Canvas.File.data.back2[index];
+                        //if (Canvas.data.tag[index] != TileID.Empty)
+                        tagFillTile = Canvas.File.data.tag[index];
                     }
                 }
             }
         }
-
-        public static Tuple<bool,LevelFile> AppendPiece(LevelFile level1, LevelFile level2, bool noExcept = false)
+        public static Pair GetExitCoord(ref LevelFile level)
         {
-            Pair L1ExitCoord = new Pair(0, 0), L2EntryCoord = new Pair(0, 0);
-
+            // Find Canvas exit coordinates
             int index = 0;
-            int lw = level1.header.width;
-            int lh = level1.header.height;
+            int lw = level.header.width;
+            int lh = level.header.height;
             for (int i = 0; i < lh; i++)
             {
                 for (int j = 0; j < lw; j++)
                 {
                     index = i * lw + j;
-                    if (level1.data.tag[index] == TileID.YellowTransitionR)
-                    { L1ExitCoord.First = i; L1ExitCoord.Second = j; }
+                    if (level.data.tag[index] == TileID.YellowTransitionR)
+                        return new Pair(i, j);
                 }
             }
-
-            lw = level2.header.width;
-            lh = level2.header.height;
+            return new Pair();
+        }
+        public static Pair GetEntryCoord(ref LevelFile level)
+        {
+            // Find new piece's entrance coordinates
+            int index = 0;
+            int lw = level.header.width;
+            int lh = level.header.height;
             for (int i = 0; i < lh; i++)
             {
                 for (int j = 0; j < lw; j++)
                 {
                     index = i * lw + j;
-                    if (level2.data.tag[index] == TileID.GreenTransitionL)
-                    { L2EntryCoord.First = i; L2EntryCoord.Second = j; }
+                    if (level.data.tag[index] == TileID.GreenTransitionL)
+                        return new Pair(i, j);
                 }
             }
+            return new Pair();
+        }
+        static void GetLevelOrigins(Pair L1ExitCoord, Pair L2EntryCoord, ref Pair L1Origin, ref Pair L2Origin)
+        {
+            if (L1ExitCoord.First < L2EntryCoord.First) // if the L1 exit is higher up than the L2 entrance then L2 must be moved up to meet the L1 exit
+                                                        // L2 will sit higher and thus L1 must start lower
+                L1Origin.First = L2EntryCoord.First - L1ExitCoord.First;    // find vertical offset of L1 (originOffset = L2EntryCoord.height - L1ExitCoord.height)
 
-            // establish level boundaries and new level size
-            Pair L1Origin = new Pair(0, 0); // find vertical offset of L1 (originOffset = L2EntryCoord.height - L1ExitCoord.height)
-            Pair L2Origin = new Pair(0, 0); // level 2 origin point = originOffset + L1ExitCoord - L2EntryCoord
+            else                        // if the above wasn't true, then that means L1 is sitting higher than L2, and so it's vertical orgin can be set to zero.
+                L1Origin.First = 0;     // I had a more complicated formula here before but it turned out to be unnecessary.
 
-            if (L1ExitCoord.First < L2EntryCoord.First)
-            {
-                L1Origin.First = L2EntryCoord.First - L1ExitCoord.First;
-            }
-            else
-            {
-                L1Origin.First = 0;    // this is (was) somehow wrong. it is creating levels that are way too tall (setting equal to zero seems to work now?)
-            }
-            L2Origin = L1Origin + L1ExitCoord - L2EntryCoord;
-            L2Origin.Second++;
-
-            //Console.WriteLine($"L1ExitCoord: {L1ExitCoord.First}, {L1ExitCoord.Second}");
-            //Console.WriteLine($"L2EntryCoord: {L2EntryCoord.First}, {L2EntryCoord.Second}");
-            //Console.WriteLine($"L1Origin: {L1Origin.First}, {L1Origin.Second}");
-            //Console.WriteLine($"L2Origin: {L2Origin.First}, {L2Origin.Second}");
-
-            // create new level
-            // dimensions calculated based on entrances, exits, level sizes
-            int width = L1ExitCoord.Second + level2.header.width - L2EntryCoord.Second + 1;
-            int height = Math.Max(L1Origin.First + level1.header.height, L2Origin.First + level2.header.height);
-
-            if (!noExcept && (height > UsableHeight || width > UsableWidth))
-            {
-                return new Tuple<bool, LevelFile>(false, level1);
-            }
-
-            var levelNew = GetNewLevelFile(width, height);
-
-            //Console.WriteLine($"New Level Height: {height}");
-            //Console.WriteLine($"New Level Width: {width}");
-
-            // copy first level into new level
-            int copyIndex = 0;
-            int pasteIndex = 0;
-            int copylw = level1.header.width;
-            int copylh = level1.header.height;
-            int pastelw = levelNew.header.width;
-            int pastelh = levelNew.header.height;
-            for (int i = 0; i < copylh; i++)
-            {
-                for (int j = 0; j < L1ExitCoord.Second + 1; j++)
-                {
-                    copyIndex = i * copylw + j;
-                    pasteIndex = (i + L1Origin.First) * pastelw + (j + L1Origin.Second);
-
-                    if (levelNew.data.tag[pasteIndex] != TileID.OOBMarker)
-                        throw new LevelCollisionException();
-
-                    levelNew.data.active[pasteIndex] = level1.data.active[copyIndex];
-                    levelNew.data.back1[pasteIndex] = level1.data.back1[copyIndex];
-                    levelNew.data.back2[pasteIndex] = level1.data.back2[copyIndex];
-                    levelNew.data.tag[pasteIndex] = level1.data.tag[copyIndex];
-                    levelNew.data.overlay[pasteIndex] = level1.data.overlay[copyIndex];
-                }
-            }
-
-            // copy second level into new level
-            copyIndex = 0;
-            pasteIndex = 0;
-            copylw = level2.header.width;
-            copylh = level2.header.height;
-            pastelw = levelNew.header.width;
-            pastelh = levelNew.header.height;
-            for (int i = 0; i < copylh; i++)
-            {
-                for (int j = L2EntryCoord.Second; j < copylw; j++)
-                {
-                    copyIndex = i * copylw + j;
-                    pasteIndex = (i + L2Origin.First) * pastelw + (j + L2Origin.Second);
-
-                    if (levelNew.data.tag[pasteIndex] != TileID.OOBMarker)
-                        throw new LevelCollisionException();
-
-                    levelNew.data.active[pasteIndex] = level2.data.active[copyIndex];
-                    levelNew.data.back1[pasteIndex] = level2.data.back1[copyIndex];
-                    levelNew.data.back2[pasteIndex] = level2.data.back2[copyIndex];
-                    levelNew.data.tag[pasteIndex] = level2.data.tag[copyIndex];
-                    levelNew.data.overlay[pasteIndex] = level2.data.overlay[copyIndex];
-                }
-            }
-
-            // get rid of old entrances
-            index = (L1Origin.First + L1ExitCoord.First) * pastelw + (L1Origin.Second + L1ExitCoord.Second);
-            levelNew.data.tag[index] = TileID.Empty;
-
-            index = (L2Origin.First + L2EntryCoord.First) * pastelw + (L2Origin.Second + L2EntryCoord.Second);
-            levelNew.data.tag[index] = TileID.Empty;
-
-            return new Tuple<bool, LevelFile>(true, levelNew);
+            L2Origin = L1Origin + L1ExitCoord - L2EntryCoord;   // L2 origin point = originOffset + L1ExitCoord - L2EntryCoord
+            L2Origin.Second++;  // add 1 so that it is next to the L1 exit but not on top of it
         }
 
+        static LevelPiece CheckCeilingFloor(ref LevelPiece left, ref LevelPiece right)
+        {
+            Pair L1ExitCoord = GetExitCoord(ref left.File);
+            Pair L2EntryCoord = GetEntryCoord(ref right.File);
+
+            int ceilingHeight = 0;
+            LevelPiece transition = new LevelPiece(new LevelFile(1,3));
+
+            if (left.CeilingEx != right.CeilingEn) // check ceiling height
+            {
+                TileID sidePiece = TileID.SmallSideL;
+                if (left.CeilingEx)
+                    ceilingHeight = GetCeilingHeight(left.File, L1ExitCoord);
+                else { ceilingHeight = GetCeilingHeight(right.File, L2EntryCoord); sidePiece = TileID.SmallSideR; }
+                transition = new LevelPiece(new LevelFile(1, ceilingHeight + 2));
+                for (int i = 1; i < ceilingHeight; i++)
+                {
+                    if (Randomizer.myRNG.CoinFlip()) transition.File.data.back1[i] = sidePiece;
+                }
+            }
+
+            int lh = transition.File.header.height;
+            
+            if (left.FloorEx || right.FloorEn) // check floor
+            {
+                if (left.CeilingEx) transition.File.data.back1[lh - 2] = TileID.LargeCornerBL;
+                else if (right.CeilingEn) transition.File.data.back1[lh - 2] = TileID.LargeCornerBR;
+                transition.File.data.active[lh - 1] = TileID.Solid; // add ground
+            }
+
+            //LevelFile tempFile = GetNewLevelFile(left.File.header.width + 1, left.File.header.height);
+            //Pair tCoords = new Pair(L1ExitCoord.First - ceilingHeight, left.File.header.width - 1);
+
+            //CopyToCoords(ref left.File, ref tempFile, new Pair(0,0));
+            //CopyToCoords(ref transition.File, ref tempFile, new Pair(0,0));
+
+            return transition;
+        }
+
+        static int GetCeilingHeight(LevelFile level, Pair coord)
+        {
+            int ceilingHeight = 0;
+            int lw = level.header.width;
+            for (ceilingHeight = 1; ceilingHeight < coord.First; ceilingHeight++)
+            {
+                int index = (coord.First - ceilingHeight) * lw + coord.Second;
+                if (level.data.active[index] == TileID.Solid) break;
+            }
+            return ceilingHeight;
+        }
+
+        public static bool AppendPieceH(LevelPiece left, LevelPiece right, bool noExcept = false)
+        {
+            Pair L1ExitCoord  = GetExitCoord(ref left.File);   // Get entry and exit coords
+            Pair L2EntryCoord = GetEntryCoord(ref right.File);
+
+            // check for mismatch in level exit/entrance
+            //if (left.CeilingEx != right.CeilingEn) FixCeiling(ref left, ref right);
+            //if (left.FloorEx   != right.FloorEn)   FixFloor(ref left, ref right);
+
+            // establish level boundaries and new level size
+            Pair L1Origin = new Pair(), L2Origin = new Pair(); // initialize
+            GetLevelOrigins(L1ExitCoord, L2EntryCoord, ref L1Origin, ref L2Origin); // set the values in this function
+
+            // calculate dimensions for new level
+            int width = L1ExitCoord.Second + right.File.header.width - L2EntryCoord.Second + 1;
+            int height = Math.Max(L1Origin.First + left.File.header.height, L2Origin.First + right.File.header.height);
+
+            // check for and correct ceiling and floor compatibility
+            LevelPiece transition = new LevelPiece(new LevelFile(0,0)); Pair TOrigin = new Pair();
+            if (left.CeilingEx != right.CeilingEn || left.FloorEx != right.FloorEn)
+            {
+                transition = CheckCeilingFloor(ref left, ref right);
+                TOrigin.First = L1Origin.First + L1ExitCoord.First - transition.File.header.height + 2;
+                TOrigin.Second = L2Origin.Second;
+                width++; L2Origin.Second++;
+            }
+
+            // noExcept is used to make sure that the entrances and exits
+            // can be added without triggering the size limitation
+            if (!noExcept && (height > UsableHeight || width > UsableWidth))
+                return false;
+
+            TempLevel = GetNewLevelFile(width, height);             // create new level
+            CopyToCoords(ref left.File,  ref TempLevel, L1Origin);  // copy left  level into new level
+            if (transition.File.header.height != 0)
+                CopyToCoords(ref transition.File, ref TempLevel, TOrigin);
+            CopyToCoords(ref right.File, ref TempLevel, L2Origin);  // copy right level into new level
+
+            // get rid of old entrances
+            int index = (L1Origin.First + L1ExitCoord.First) * TempLevel.header.width + (L1Origin.Second + L1ExitCoord.Second);
+            TempLevel.data.tag[index] = TileID.Empty;
+            index = (L2Origin.First + L2EntryCoord.First) * TempLevel.header.width + (L2Origin.Second + L2EntryCoord.Second);
+            TempLevel.data.tag[index] = TileID.Empty;
+
+            // set canvas piece info
+            Canvas.File = TempLevel;
+            Canvas.FloorEn = left.FloorEn;
+            Canvas.FloorEx = right.FloorEx;
+            Canvas.CeilingEn = left.CeilingEn;
+            Canvas.CeilingEx = right.CeilingEx;
+
+            return true;
+        }
+        static void CopyToCoords(ref LevelFile copyLevel, ref LevelFile pasteLevel, Pair coords)    // pass in the origin coords of the level to be copied from
+        {
+            int copyIndex = 0;
+            int pasteIndex = 0;
+            int copylw = copyLevel.header.width;
+            int copylh = copyLevel.header.height;
+            int pastelw = pasteLevel.header.width;
+            int pastelh = pasteLevel.header.height;
+            for (int i = 0; i < copylh; i++)
+            {
+                for (int j = 0; j < copylw; j++)
+                {
+                    copyIndex = i * copylw + j;
+                    pasteIndex = (i + coords.First) * pastelw + (j + coords.Second);
+
+                    if (pasteLevel.data.tag[pasteIndex] != TileID.OOBMarker)
+                        throw new LevelCollisionException();
+
+                    pasteLevel.data.active[pasteIndex] = copyLevel.data.active[copyIndex];
+                    pasteLevel.data.back1[pasteIndex] = copyLevel.data.back1[copyIndex];
+                    pasteLevel.data.back2[pasteIndex] = copyLevel.data.back2[copyIndex];
+                    pasteLevel.data.tag[pasteIndex] = copyLevel.data.tag[copyIndex];
+                    pasteLevel.data.overlay[pasteIndex] = copyLevel.data.overlay[copyIndex];
+                }
+            }
+        }
     }
 }

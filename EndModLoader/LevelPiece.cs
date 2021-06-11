@@ -8,7 +8,6 @@ namespace TEiNRandomizer
 {
     public class LevelPiece
     {
-        
         // The level file associated with the level piece.
         public LevelFile File;
 
@@ -17,8 +16,13 @@ namespace TEiNRandomizer
         public string Folder;
 
         // Whether or not the piece has a ceiling / floor.
-        public bool HasCeiling = true;
-        public bool HasFloor = true;
+        public bool CeilingEn = false;
+        public bool CeilingEx = false;
+
+        public bool FloorEn = false;
+        public bool FloorEx = false;
+
+        public bool FullHeight = false;
 
         // Determines whether pieces can be placed above or below a certain piece.
         public bool AllowBuildingAbove = true;
@@ -27,18 +31,32 @@ namespace TEiNRandomizer
         // The direction the entrance and exit tiles are facing. 
         // Later on these should be replaced by a list of all entrances and exits to a piece.
         public Direction Entrance = Direction.None;
-        public Direction Exit = Direction.None;
+        public Direction Exit     = Direction.None;
 
-        // These margin values tell the generator how many tiles on each side can be ignored when placing camera bounds.
-        public int MarginTop = 0;
-        public int MarginBottom = 0;
-        public int MarginLeft = 0;
-        public int MarginRight = 0;
+        // The margin values tell the generator how many tiles on each side can be ignored when placing camera bounds.
+        public Bounds Margin;
 
         // This is the offset of the exit as compared to the entrance
-        //public int hChange = 0;
-        //public int vChange = 0;
+        //public Pair Shift;
+        
+        public LevelPiece()
+        {
+            File = new LevelFile();
 
+            Margin.Left = 0;
+            Margin.Right = 0;
+            Margin.Top = 0;
+            Margin.Bottom = 0;
+        }
 
+        public LevelPiece(LevelFile file)
+        {
+            File = file;
+
+            Margin.Left = 0;
+            Margin.Right = 0;
+            Margin.Top = 0;
+            Margin.Bottom = 0;
+        }
     }
 }

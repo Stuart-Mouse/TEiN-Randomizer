@@ -328,8 +328,6 @@
                             <Separator Margin="0,5"/>
                             <CheckBox Content="Manual Load" IsChecked="{Binding RSettings.ManualLoad}" />
                             <TextBlock Text="This may be necessary for Epic Games users." Foreground="Gray"/>
-                            <Button Name="LevelGenTestButton" Content="Level Gen Test" Click="LevelGenTestButton_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>
-
                         </ListBox>
                     </Grid>
                 </TabItem>
@@ -348,8 +346,25 @@
                         ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
                     </Grid>
                 </TabItem>
-                <TabItem Header="  ???  ">
-                    <TextBlock Text="Nothing here yet..."/>
+                <TabItem Header="  Tools  ">
+                    <Grid Grid.Column="0" Height="Auto" HorizontalAlignment="Center" Width="420" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition MinHeight="50" />
+                            <!--<RowDefinition Height="30" />
+                                <RowDefinition Height="Auto" />-->
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="Tools and Utilities" Style="{StaticResource TabTitleText}" Width="auto" VerticalAlignment="Top" TextAlignment="Center" FontFamily="Segoe UI Semibold"/>
+                        <ListBox Grid.Row="1" Name="ToolsList" Padding="5" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
+                            <Button Name="LevelGenTestButton" Content="Level Gen Test" Click="LevelGenTestButton_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>
+                            <Button Name="CreatePiecePoolsButton" Content="Create Piece Pools" Click="CreatePiecePools" Padding="5,0" Margin="0,0,0,0" Height="20"/>
+                            <TextBlock Text="Level Corruptors"/>
+                            <TextBlock Text="Generate Particles"/>
+                            <TextBlock Text="Rotate Levels"/>
+                            <TextBlock Text="Input Folder"/>
+                            <TextBlock Text="Output Folder"/>
+                        </ListBox>
+                    </Grid>
                 </TabItem>
             </TabControl>
         </Grid>

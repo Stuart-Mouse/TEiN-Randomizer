@@ -63,6 +63,15 @@ namespace TEiNRandomizer
                     piece.Name = element.Attribute("name").Value;
                     piece.Folder = this.Name;
                     piece.File = LevelManip.Load($"data/levelpieces/{piece.Folder}/{piece.Name}.lvl");
+                    piece.CeilingEn = Convert.ToBoolean(element.Attribute("ceilingEn").Value);
+                    piece.CeilingEx = Convert.ToBoolean(element.Attribute("ceilingEx").Value);
+                    piece.FloorEn   = Convert.ToBoolean(element.Attribute("floorEn").Value);
+                    piece.FloorEx   = Convert.ToBoolean(element.Attribute("floorEx").Value);
+
+                    if (element.Attribute("marginTop") != null)
+                        piece.Margin.Top = Convert.ToInt32(element.Attribute("marginTop").Value);
+                    if (element.Attribute("marginBottom") != null)
+                        piece.Margin.Bottom = Convert.ToInt32(element.Attribute("marginTop").Value);
 
                     this.Pieces.Add(piece);
                 }
