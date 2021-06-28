@@ -47,7 +47,7 @@ namespace TEiNRandomizer
             //CameraBounds = { }
         }
 
-        static LevelFile GetNewLevelFile(int width = 54, int height = 32)
+        public static LevelFile GetNewLevelFile(int width = 54, int height = 32)
         {
             LevelFile level = new LevelFile(width, height);
 
@@ -235,11 +235,16 @@ namespace TEiNRandomizer
                     {
                         if (tagFillTile != TileID.OOBMarker)
                         {
-                            Canvas.File.data.tag[index] = TileID.Empty;
-                            Canvas.File.data.active[index] = activeFillTile;
-                            Canvas.File.data.back1[index] = back1FillTile;
-                            Canvas.File.data.back2[index] = back2FillTile;
-                            Canvas.File.data.tag[index] = tagFillTile;
+                            //Canvas.File.data.tag[index]     = TileID.Empty;
+                            Canvas.File.data.active[index]  = activeFillTile;
+                            Canvas.File.data.back1[index]   = back1FillTile;
+                            Canvas.File.data.back2[index]   = back2FillTile;
+                            Canvas.File.data.tag[index]     = tagFillTile;
+                            //if (Randomizer.myRNG.CoinFlip())
+                            //{
+                            //    Canvas.File.data.active[index] = TileID.Kuko;
+                            //    Canvas.File.data.overlay[index] = TileID.FakeSolidOver;
+                            //}
                         }
                     }
                     else
@@ -267,6 +272,8 @@ namespace TEiNRandomizer
                             Canvas.File.data.back1[index] = back1FillTile;
                             Canvas.File.data.back2[index] = back2FillTile;
                             Canvas.File.data.tag[index] = tagFillTile;
+                            //if (Randomizer.myRNG.CoinFlip())
+                            //    Canvas.File.data.active[index] = TileID.Mother;
                         }
                     }
                     else
@@ -431,7 +438,7 @@ namespace TEiNRandomizer
 
             return true;
         }
-        static void CopyToCoords(ref LevelFile copyLevel, ref LevelFile pasteLevel, Pair coords)    // pass in the origin coords of the level to be copied from
+        public static void CopyToCoords(ref LevelFile copyLevel, ref LevelFile pasteLevel, Pair coords)    // pass in the origin coords of the level to be copied from
         {
             int copyIndex = 0;
             int pasteIndex = 0;
@@ -449,10 +456,10 @@ namespace TEiNRandomizer
                     if (pasteLevel.data.tag[pasteIndex] != TileID.OOBMarker)
                         throw new LevelCollisionException();
 
-                    pasteLevel.data.active[pasteIndex] = copyLevel.data.active[copyIndex];
-                    pasteLevel.data.back1[pasteIndex] = copyLevel.data.back1[copyIndex];
-                    pasteLevel.data.back2[pasteIndex] = copyLevel.data.back2[copyIndex];
-                    pasteLevel.data.tag[pasteIndex] = copyLevel.data.tag[copyIndex];
+                    pasteLevel.data.active[pasteIndex]  = copyLevel.data.active[copyIndex];
+                    pasteLevel.data.back1[pasteIndex]   = copyLevel.data.back1[copyIndex];
+                    pasteLevel.data.back2[pasteIndex]   = copyLevel.data.back2[copyIndex];
+                    pasteLevel.data.tag[pasteIndex]     = copyLevel.data.tag[copyIndex];
                     pasteLevel.data.overlay[pasteIndex] = copyLevel.data.overlay[copyIndex];
                 }
             }

@@ -11,20 +11,33 @@ namespace TEiNRandomizer
     public static class LevelManip
     {
         public static List<Pair> HFlipIndex;
+        public static List<Pair> RotationIndex;
 
         static LevelManip()
         {
             // load flips dictionary in constructor
             HFlipIndex = new List<Pair> { };
-            var hflips = File.ReadAllLines("data/hflips.txt");
+            var file = File.ReadAllLines("data/hflips.txt");
             Pair pair;
             string[] temp;
-            foreach (var line in hflips)
+            foreach (var line in file)
             {
+                if (line == "") continue;
                 temp = line.Split(Convert.ToChar(" "));
                 pair.First  = Convert.ToInt32(temp[0]);
                 pair.Second = Convert.ToInt32(temp[1]);
                 HFlipIndex.Add(pair);
+            }
+
+            RotationIndex = new List<Pair> { };
+            file = File.ReadAllLines("data/rotations.txt");
+            foreach (var line in file)
+            {
+                if (line == "") continue;
+                temp = line.Split(Convert.ToChar(" "));
+                pair.First = Convert.ToInt32(temp[0]);
+                pair.Second = Convert.ToInt32(temp[1]);
+                RotationIndex.Add(pair);
             }
         }
 
@@ -140,6 +153,9 @@ namespace TEiNRandomizer
             SaveLayer(ref filedata, ref level.data.overlay, ref offset);
             SaveLayer(ref filedata, ref level.data.back2, ref offset);
 
+            string folder = Path.GetDirectoryName(path);
+            if (!File.Exists(folder))
+                Directory.CreateDirectory(folder);
             File.WriteAllBytes(path, filedata);     // output copied file
 
         }
@@ -184,7 +200,7 @@ namespace TEiNRandomizer
             }
         }
 
-        public static TileID GetFlipH(ref TileID id)
+        public static void GetFlipH(ref TileID id)
         {
             foreach (var pair in HFlipIndex)
             {
@@ -193,7 +209,7 @@ namespace TEiNRandomizer
                 else if (id == (TileID)pair.Second)
                     id = (TileID)pair.First;
             }
-            return id;
+            //return id;
         }
 
         public static void PrintLevelToConsole(LevelFile level)
@@ -231,7 +247,57 @@ namespace TEiNRandomizer
         }
 
 
+        public static LevelFile RotateLevel(ref LevelFile level)
+        {
+            int lw = level.header.width;
+            int lh = level.header.height;
 
+            LevelFile levelNew = new LevelFile(lh, lw);
+
+            for (int row = 0; row < lh; row++)
+            {
+                for (int col = 0; col < lw; col++)
+                {
+                    int copyIndex = row * lw + col;
+                    int pasteIndex = col * lh + (lh-row-1);
+
+                    levelNew.data.active[pasteIndex]  = GetRotation(level.data.active[copyIndex]);
+                    levelNew.data.back1[pasteIndex]   = GetRotation(level.data.back1[copyIndex]);
+                    levelNew.data.back2[pasteIndex]   = GetRotation(level.data.back2[copyIndex]);
+                    levelNew.data.tag[pasteIndex]     = GetRotation(level.data.tag[copyIndex]);
+                    levelNew.data.overlay[pasteIndex] = GetRotation(level.data.overlay[copyIndex]);
+                }
+            }
+
+            return levelNew;
+        }
+
+        public static TileID GetRotation(TileID id)
+        {
+            foreach (var pair in RotationIndex)
+            {
+                if (id == (TileID)pair.First)
+                    return (TileID)pair.Second;
+            }
+            return id;
+        }
+
+        public static LevelFile FixAspect(ref LevelFile levelIn)
+        {
+            int lh = levelIn.header.height;
+            int lw = levelIn.header.width;
+
+            if (lh * 16 > lw * 9)
+                lw = lh * 16 / 9;
+            else lh = lw * 9 / 16;
+
+            LevelFile levelOut = LevelGenerator.GetNewLevelFile(lw, lh);
+            int hOffset = lh - levelIn.header.width;
+
+            LevelGenerator.CopyToCoords(ref levelIn, ref levelOut, new Pair(0, hOffset));
+
+            return levelOut;
+        }
 
     }
 }

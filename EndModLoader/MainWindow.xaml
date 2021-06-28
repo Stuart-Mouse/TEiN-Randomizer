@@ -195,7 +195,7 @@
                                 <CheckBox Content="Randomize Overlays" IsChecked="{Binding RSettings.DoOverlays}" />
                                 <CheckBox Content="Randomize Tile Graphics" IsChecked="{Binding RSettings.DoTileGraphics}" />
                                 <CheckBox Content="Randomize Physics" IsChecked="{Binding RSettings.DoPhysics}" />
-                                <CheckBox Content="Randomize NPCs" IsChecked="{Binding RSettings.DoNPCs}" />
+                                <!--<CheckBox Content="Randomize NPCs" IsChecked="{Binding RSettings.DoNPCs}" />-->
                                 <TextBlock Text="Randomize Art Alts: " />
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -214,7 +214,7 @@
                                 <CheckBox Content="Can Apply Nevermore Tilt" IsChecked="{Binding RSettings.DoNevermoreTilt}" />
                                 <CheckBox Content="Can Apply Exodus Wobble" IsChecked="{Binding RSettings.DoExodusWobble}" />
                                 <CheckBox Content="Corrupt Levels" IsChecked="{Binding RSettings.DoCorruptions}" />
-                                <CheckBox Content="Level Merge" IsChecked="{Binding RSettings.LevelMerge}" />
+                                <!--<CheckBox Content="Level Merge" IsChecked="{Binding RSettings.LevelMerge}" />-->
                                 <CheckBox Content="Mirror Mode" IsChecked="{Binding RSettings.MirrorMode}" />
                                 <CheckBox Content="Dead Racer Mode" IsChecked="{Binding RSettings.DeadRacer}" />
                                 <!--<CheckBox Content="Auto-Refresh Levels" IsChecked="{Binding RSettings.AutoRefresh}" />-->
@@ -356,13 +356,47 @@
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Text="Tools and Utilities" Style="{StaticResource TabTitleText}" Width="auto" VerticalAlignment="Top" TextAlignment="Center" FontFamily="Segoe UI Semibold"/>
                         <ListBox Grid.Row="1" Name="ToolsList" Padding="5" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
-                            <Button Name="LevelGenTestButton" Content="Level Gen Test" Click="LevelGenTestButton_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>
-                            <Button Name="CreatePiecePoolsButton" Content="Create Piece Pools" Click="CreatePiecePools" Padding="5,0" Margin="0,0,0,0" Height="20"/>
-                            <TextBlock Text="Level Corruptors"/>
-                            <TextBlock Text="Generate Particles"/>
-                            <TextBlock Text="Rotate Levels"/>
+                            <TextBlock Text="Randomizer Tools" FontWeight="Bold"/>
+                            <Menu>
+                                <MenuItem Header="Level Gen Test" Click="LevelGenTestButton_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>
+                                <MenuItem Header="Create Piece Pools" Click="CreatePiecePools" Padding="5,0" Margin="0,0,0,0" Height="20"/>
+                            </Menu>
+                            <Separator Margin="0,5"/>
+                            <TextBlock Text="Modding Tools" FontWeight="Bold"/>
+                            <Menu>
+                                <MenuItem Header="Level Corruptors">
+                                    <MenuItem Header="Smart Corrupt" Click="SmartCorrupt_Click" Padding="5,0" Margin="0,0,0,0" Height="20">
+                                        <MenuItem.Icon>
+                                            <Image Source="icons/floater2.png" Stretch="Fill"/>
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </MenuItem>
+                                <!--<MenuItem Header="Generate Particles" Click="GenerateParticles_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>-->
+                                <MenuItem Header="Rotate Levels">
+                                    <MenuItem Header="90 Degrees"  Tag="1" Click="RotateLevels_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>
+                                    <MenuItem Header="180 Degrees" Tag="2" Click="RotateLevels_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>
+                                    <MenuItem Header="270 Degrees" Tag="3" Click="RotateLevels_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>
+                                </MenuItem>
+                                <MenuItem Header="Flip Levels">
+                                    <MenuItem Header="Flip Horizontal" Click="FlipLevelsH_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>
+                                    <!--<MenuItem Header="Flip Vertical" Click="FlipLevelsV_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>-->
+                                </MenuItem>
+                            </Menu>
+                            <Separator Margin="0,5"/>
+                            <TextBlock Text="Tools File I/O Settings" FontWeight="Bold"/>
                             <TextBlock Text="Input Folder"/>
+                            <TextBox Name="ToolsInFolder" Width="160">
+                                <TextBox.Text>
+                                    <Binding Path="RSettings.ToolsInDirectory" UpdateSourceTrigger="PropertyChanged"/>
+                                </TextBox.Text>
+                            </TextBox>
                             <TextBlock Text="Output Folder"/>
+                            <TextBox Name="ToolsOutFolder" Width="160">
+                                <TextBox.Text>
+                                    <Binding Path="RSettings.ToolsOutDirectory" UpdateSourceTrigger="PropertyChanged"/>
+                                </TextBox.Text>
+                            </TextBox>
+                            <TextBlock Text="Read the instructions in the README before using the tools!" Foreground="DarkRed"/>
                         </ListBox>
                     </Grid>
                 </TabItem>

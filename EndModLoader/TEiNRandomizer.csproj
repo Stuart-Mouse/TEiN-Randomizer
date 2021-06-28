@@ -141,6 +141,7 @@
     </ApplicationDefinition>
     <Compile Include="Analysis.cs" />
     <Compile Include="Corruptors.cs" />
+    <Compile Include="CSV.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="EXEIconDisplayer.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="LevelGenerator.cs" />
     <Compile Include="LevelManip.cs" />
     <Compile Include="LevelPiece.cs" />
+    <Compile Include="MainWindowButtons.cs" />
     <Compile Include="MyRNG.cs" />
     <Compile Include="ParticleGenerator.cs" />
     <Compile Include="Physics.cs" />
@@ -227,6 +229,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\floater2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.2.0.0\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.2.0.0\build\dotnet\Fody.targets')" />

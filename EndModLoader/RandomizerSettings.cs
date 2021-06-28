@@ -33,6 +33,8 @@ namespace TEiNRandomizer
         public int MaxParticles { get; set; }
         public string GameDirectory { get; set; }
         public string ModSaveDirectory { get; set; }
+        public string ToolsInDirectory { get; set; }
+        public string ToolsOutDirectory { get; set; }
         public int MaxParticleEffects { get; set; }
         public bool MirrorMode { get; set; }
         public bool DoCorruptions { get; set; }
@@ -86,7 +88,9 @@ namespace TEiNRandomizer
             LowGravPhysics = false;
             LevelMerge = false;
             GameDirectory = "C:/Program Files(x86)/Steam/steamapps/common/theendisnigh/";
-            ModSaveDirectory = "Saved Mods/";
+            ModSaveDirectory = "[Saved Mods]/";
+            ToolsInDirectory = "tools/input/";
+            ToolsOutDirectory = "tools/output/";
 
             try
             {
@@ -159,6 +163,8 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(WaterPhysics), WaterPhysics);
                     element.SetElementValue(nameof(LowGravPhysics), LowGravPhysics);
                     element.SetElementValue(nameof(LevelMerge), LevelMerge);
+                    element.SetElementValue(nameof(ToolsInDirectory), ToolsInDirectory);
+                    element.SetElementValue(nameof(ToolsOutDirectory), ToolsOutDirectory);
                 }
             }
             doc.Save("data/RandomizerSettings.xml");
@@ -208,6 +214,8 @@ namespace TEiNRandomizer
                     WaterPhysics = (bool)element.Element(nameof(WaterPhysics));
                     LowGravPhysics = (bool)element.Element(nameof(LowGravPhysics));
                     LevelMerge = (bool)element.Element(nameof(LevelMerge));
+                    ToolsInDirectory = (string)element.Element(nameof(ToolsInDirectory));
+                    ToolsOutDirectory = (string)element.Element(nameof(ToolsOutDirectory));
                 }
             }
         }

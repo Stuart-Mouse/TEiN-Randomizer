@@ -411,6 +411,8 @@ namespace TEiNRandomizer
             }
         }
 
+
+        // These need to be updated or removed
         public static LevelFile CombineLevels2(LevelFile level1, LevelFile level2)
         {
             var levelNew = level1;
