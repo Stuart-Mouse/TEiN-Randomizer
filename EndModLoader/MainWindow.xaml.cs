@@ -120,6 +120,7 @@ namespace TEiNRandomizer
                     //LoadModList(FileSystem.ReadModFolder(ModPath).OrderBy(m => m));
                     LoadPoolList(Randomizer.PoolLoader(PoolPath).OrderBy(p => p));
                     LoadPieceList(Randomizer.PieceLoader(PiecePoolPath).OrderBy(p => p));
+                    Randomizer.LoadNPCs();
                     GameSeed = Randomizer.myRNG.GetUInt32();
                     FileSystem.EnableWatching(ModPath, OnAdd, OnRemove, OnRename);
                 }

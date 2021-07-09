@@ -16,6 +16,9 @@ namespace TEiNRandomizer
         public static List<List<Level>> ChosenLevels2;
         public static RandomizerSettings settings;
         public static List<Shader> ShadersList;
+        public static string[] NPCMovieClips;
+        public static string[] NPCSoundIDs;
+        public static List<string> NPCTexts;
         public static string saveDir;
         //static int prevRuns = 0;
 
@@ -232,12 +235,52 @@ namespace TEiNRandomizer
             cachedoc.Root.Add(newelement);
             cachedoc.Save("data/cache.xml");
         }
+        public static void LoadNPCs()
+        {
+            var doc = XDocument.Load($"data/npcs.xml");    // open npcs file
+            NPCMovieClips = ElementToArray(doc.Root.Element("movieclips"));
+            NPCSoundIDs = ElementToArray(doc.Root.Element("soundids"));
+            NPCTexts = new List<string>();
+            foreach (XElement item in doc.Root.Element("text").Elements())
+            {
+                NPCTexts.Add(item.Value);
+            }
+        }
+        static void NPCs()
+        {
+            using (StreamWriter sw = File.CreateText(saveDir + "data/npcs.txt.append"))
+            {
+                for (int j = 0; j < settings.NumAreas; j++) // area loop
+                {
+                    for (int i = 0; i < settings.NumLevels; i++) // level loop
+                    {
+                        sw.WriteLine($"NPC{j}-{i} {{");
+                        sw.WriteLine($"\tmovieclip {NPCMovieClips[myRNG.rand.Next(0, NPCMovieClips.Length)]}");
+                        sw.WriteLine($"\tsound_id {NPCSoundIDs[myRNG.rand.Next(0, NPCSoundIDs.Length)]}");
+                        sw.WriteLine($"\ttext [");
+                        sw.WriteLine(NPCTexts[myRNG.rand.Next(0, NPCTexts.Count())]);
+                        sw.WriteLine("\t]\n}");
+                    }
+                    sw.WriteLine($"NPCv{j + 1} {{");
+                    sw.WriteLine($"\tmovieclip {NPCMovieClips[myRNG.rand.Next(0, NPCMovieClips.Length)]}");
+                    sw.WriteLine($"\tsound_id {NPCSoundIDs[myRNG.rand.Next(0, NPCSoundIDs.Length)]}");
+                    sw.WriteLine($"\ttext [");
+                    sw.WriteLine(NPCTexts[myRNG.rand.Next(0, NPCTexts.Count())]);
+                    sw.WriteLine("\t]\n}");
+                }
+            }
+        }
         static void Tilesets()
         {
             using (StreamWriter sw = File.CreateText(saveDir + "data/tilesets.txt.append"))
             {
-                sw.WriteLine("v { area_name \"Void\" area_label_frame 0 tile_graphics Tilehell overlay_graphics Overlaysairship background_graphics neverbg foreground_graphics none palette 0 do_tilt true fx_shader ripples fx_shader_mid heatwave2 midfx_graphics SolidBox global_particle_1 bgrain global_particle_2 embers global_particle_3 leaves decoration_1 CreepingMass decoration_2 OrbBlob2 decoration_3 OrbLarge2 ambience flesh.ogg art_alts[[OrbSmall, OrbBlob2][OrbLarge, OrbLarge2][ChainLink, None][ChainLink2, None]]}");
-                
+                sw.WriteLine("v { area_name \"Void\" area_label_frame 0 tile_graphics Tilehell overlay_graphics Overlaysairship background_graphics neverbg foreground_graphics none palette 0 do_tilt true fx_shader ripples fx_shader_mid heatwave2 midfx_graphics SolidBox global_particle_1 bgrain global_particle_2 embers global_particle_3 leaves decoration_1 CreepingMass decoration_2 OrbBlob2 decoration_3 OrbLarge2 ambience flesh.ogg art_alts[[OrbSmall, OrbBlob2][OrbLarge, OrbLarge2][ChainLink, None][ChainLink2, None]]");
+                for (int j = 0; j < settings.NumAreas; j++) // npc levels
+                {
+                    sw.WriteLine($"npc{j + 1} {{ npc_1 NPCv{j + 1} }}");
+                }
+                sw.WriteLine("}");
+
                 for (int j = 0; j < settings.NumAreas; j++) // area loop
                 {
                     var areatileset = new Tileset(settings, true) { };
@@ -276,16 +319,19 @@ namespace TEiNRandomizer
                         sw.WriteLine(tileset.Extras);
 
                         // Art alts
-                        sw.Write("art_alts[" + ChosenLevels[j][i].Art);
+                        sw.Write("     art_alts[" + ChosenLevels[j][i].Art);
                         sw.Write(tileset.ArtAlts);
                         //if (settings.UseCommonTileset)
                         //    sw.Write(areatileset.ArtAlts);
-                        sw.WriteLine("]");
+                        sw.WriteLine("     ]");
 
-                        sw.WriteLine("# TS Needs");
+                        sw.WriteLine("     # TS Needs");
                         sw.WriteLine("    " + ChosenLevels[j][i].TSNeed);
 
                         sw.WriteLine(settings.AttachToTS);
+
+                        // NPCs
+                        sw.WriteLine($"     npc_1 NPC{j}-{i}\n");
                         sw.WriteLine("    }\n");
                     }
                     sw.WriteLine("}");
@@ -342,6 +388,7 @@ namespace TEiNRandomizer
                     {
                         sw.Write($"v{j + 1}-{i + 1}.lvl,");
                     }
+                    sw.Write($"v-npc{j + 1}.lvl,");
                 }
                 sw.Write("v-end.lvl");
             }
@@ -398,6 +445,7 @@ namespace TEiNRandomizer
         static void TileMaps()
         {
             string[] baseLevels = { "1-1", "1-1x", "v-connect", "v-start", "v-end" };
+            var npclevel = LevelManip.Load($"data/tilemaps/The End is Nigh/v-npc.lvl");
 
             foreach (var level in baseLevels)
             {
@@ -425,6 +473,7 @@ namespace TEiNRandomizer
 
                     LevelManip.Save(levelFile, saveDir + $"tilemaps/v{j + 1}-{i + 1}.lvl");
                 }
+                LevelManip.Save(npclevel, saveDir + $"tilemaps/v-npc{j + 1}.lvl");
             }
         }
         static void TileMapsMerged()
@@ -539,88 +588,90 @@ namespace TEiNRandomizer
             }
             catch (Exception){ Console.WriteLine("Error selecting levels or saving cache."); MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
-            if (settings.LevelMerge)
-            {
-                drawpool = new List<Level> { };     // make drawpool
-                try
-                {
-                    foreach (var cat in mw.PoolCats)
-                    {
-                        if (cat.Enabled)
-                        {
-                            foreach (var pool in cat.Pools) // push levels in all active level pools into drawpool vector
-                            {
-                                if (pool.Active)
-                                {
-                                    foreach (var level in pool.Levels)
-                                    {
-                                        drawpool.Add(level);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                catch (Exception) { MessageBox.Show("Error creating drawpool.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            //if (settings.LevelMerge)
+            //{
+            //    drawpool = new List<Level> { };     // make drawpool
+            //    try
+            //    {
+            //        foreach (var cat in mw.PoolCats)
+            //        {
+            //            if (cat.Enabled)
+            //            {
+            //                foreach (var pool in cat.Pools) // push levels in all active level pools into drawpool vector
+            //                {
+            //                    if (pool.Active)
+            //                    {
+            //                        foreach (var level in pool.Levels)
+            //                        {
+            //                            drawpool.Add(level);
+            //                        }
+            //                    }
+            //                }
+            //            }
+            //        }
+            //    }
+            //    catch (Exception) { MessageBox.Show("Error creating drawpool.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
-                ChosenLevels2 = new List<List<Level>> { };   // initialize ChosenLevels
+            //    ChosenLevels2 = new List<List<Level>> { };   // initialize ChosenLevels
 
-                try
-                {
-                    for (int j = 0; j < mw.RSettings.NumAreas; j++)     // select levels
-                    {
-                        var levels = new List<Level> { };
-                        for (int i = 0; i < mw.RSettings.NumLevels; i++)
-                        {
-                            int selection = myRNG.rand.Next(0, drawpool.Count());
-                            levels.Add(drawpool[selection]);
-                            drawpool.RemoveAt(selection);
-                        }
-                        ChosenLevels2.Add(levels);
-                    }
-                }
-                catch (Exception) { Console.WriteLine("Error selecting levels 2 or saving cache."); MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            }
+            //    try
+            //    {
+            //        for (int j = 0; j < mw.RSettings.NumAreas; j++)     // select levels
+            //        {
+            //            var levels = new List<Level> { };
+            //            for (int i = 0; i < mw.RSettings.NumLevels; i++)
+            //            {
+            //                int selection = myRNG.rand.Next(0, drawpool.Count());
+            //                levels.Add(drawpool[selection]);
+            //                drawpool.RemoveAt(selection);
+            //            }
+            //            ChosenLevels2.Add(levels);
+            //        }
+            //    }
+            //    catch (Exception) { Console.WriteLine("Error selecting levels 2 or saving cache."); MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            //}
 
             try
             {
                 WriteDebug();   //debugging output chosen levels
-                Console.WriteLine("clean folders start");
+                //Console.WriteLine("clean folders start");
                 CleanFolders(); // clean up folders
-                Console.WriteLine("clean folders end");
+                //Console.WriteLine("clean folders end");
             }
             catch (Exception ex) { Console.WriteLine($"Error cleaning folders or printing debug. Exception {ex}"); MessageBox.Show($"Error cleaning folders or printing debug. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try{
                 LevelInfo();    // create levelinfo.txt
-                Console.WriteLine("level info");
+                //Console.WriteLine("level info");
             }
             catch (Exception ex) { Console.WriteLine($"Error creating levelinfo. Exception {ex}"); MessageBox.Show($"Error creating levelinfo. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try
             {
                 Worldmap.WriteWorldMap(settings);   // create worldmap.txt
-                Console.WriteLine("level info");
-
+                //Console.WriteLine("level info");
             }
             catch (Exception ex) { Console.WriteLine($"Error creating worldmap. Exception {ex}"); MessageBox.Show($"Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try
             {
                 MapCSV();       // create map.csv
-                Console.WriteLine("mapcsv");
-
+                //Console.WriteLine("mapcsv");
             }
             catch (Exception ex) { Console.WriteLine($"Error creating map. Exception {ex}"); MessageBox.Show($"Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try{
                 if (settings.LevelMerge) TileMapsMerged();
                 else TileMaps();     // copy tilemaps to game folder
-                Console.WriteLine("tilemaps");
-
+                //Console.WriteLine("tilemaps");
             }
             catch (Exception ex) { Console.WriteLine($"Error copying tilemaps. Exception {ex}"); MessageBox.Show($"Error copying tilemaps. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try
             {
                 Tilesets();             // create tilesets.txt
-                Console.WriteLine("tilesets");
-
+                //Console.WriteLine("tilesets");
+            }
+            catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}"); MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try
+            {
+                NPCs();             // create npcs.txt
+                //Console.WriteLine("npcs");
             }
             catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}"); MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
