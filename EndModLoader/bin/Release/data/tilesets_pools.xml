@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <palettes>1241</palettes>
+  <tile_graphics>
+	Tilecity
+	Tilefield
+	Tilecaves
+	Tiletox
+	Tiletox2
+	Tilehell
+	Tileairship
+	Tilecomplex
+	theglow
+	TileEnd
+	Tileretro
+	TileGlitch
+	Tilesewers
+  </tile_graphics>
+  <overlay_graphics>
+	Overlayscity
+	Overlaysfield
+	Overlayscaves
+	Overlaystox
+	Overlaystox2
+	Overlayshell
+	Overlaysairship
+	Overlayscomplex
+	Overlaystheglow
+	Overlaysend
+	Overlaysretro
+	TileOverlays
+  </overlay_graphics>
+  <particles>
+	fgrain
+	bgrain
+	embers
+	wind
+	wind2
+	cloudwind
+	cloudwind2
+	cloudwind_light
+	cloudwind_heavy
+	fallout
+	fallout2
+	lightning
+	rocks
+	cold
+	mist
+	mist2
+	rocks
+  </particles>
+  <shaders>
+    <heatwave2 enabled="True" content="fx_shader_mid heatwave2  midfx_graphics SolidBox" />
+    <lighting enabled="True" content="fx_shader_mid lighting  midfx_graphics ShadeBox  midfx_layer 2  shader_param 0.1" />
+    <radiation enabled="True" content="fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2" />
+    <heatwave enabled="True" content="fx_shader_mid heatwave  midfx_graphics SolidBox" />
+    <eightbit enabled="False" content="fx_shader_mid 8bit  midfx_graphics ShadeBox  midfx_layer 2" />
+    <eightbit_lighting enabled="False" content="fx_shader_mid 8bit_lighting  midfx_graphics ShadeBox  midfx_layer 2" />
+    <chromatic enabled="False" content="fx_shader_mid chromatic  midfx_graphics SolidBox  midfx_layer 2" />
+    <chromatic_pulse enabled="True" content="fx_shader_mid chromatic_pulse  midfx_graphics SolidBox  midfx_layer 2" />
+    <colorpulse enabled="False" content="fx_shader_mid colorpulse  midfx_graphics SolidBox  midfx_layer 2" />
+    <pixelate enabled="False" content="fx_shader_mid pixelate  midfx_graphics SolidBox  midfx_layer 2" />
+    <pixelate_pulse enabled="False" content="fx_shader_mid pixelate_pulse  midfx_graphics SolidBox  midfx_layer 2" />
+    <screenshake enabled="False" content="fx_shader_mid screenshake  midfx_graphics SolidBox  midfx_layer 2" />
+    <staticpixel enabled="False" content="fx_shader_mid staticpixel  midfx_graphics SolidBox  midfx_layer 2" />
+    <staticpixel_pulse enabled="False" content="fx_shader_mid staticpixel_pulse  midfx_graphics SolidBox  midfx_layer 2" />
+    <verticalflip enabled="False" content="fx_shader_mid verticalflip  midfx_graphics SolidBox  midfx_layer 2" />
+  </shaders>
+  <music>
+	[1812_intro.ogg, 1812_loop.ogg]
+	[1812_intro_dark.ogg, 1812_loop_dark.ogg]
+	[bumblebee_intro.ogg, bumblebee_loop.ogg]
+	[danse_intro.ogg, danse_loop.ogg]
+	[danse_intro_dark.ogg, danse_loop_dark.ogg]
+	[dante_intro.ogg, dante_loop.ogg]
+	[fields_intro.ogg, fields_loop.ogg]
+	[gnossiennes_intro.ogg, gnossiennes_loop.ogg]
+	[hell_intro.ogg, hell_loop.ogg]
+	[hungarian_rhapsody_intro.ogg, hungarian_rhapsody_loop.ogg]
+	[mountainking_intro.ogg, mountainking_loop.ogg]
+	[newworld2_intro.ogg, newworld2_loop.ogg]
+	[newworld_intro.ogg, newworld_loop.ogg]
+	[newworld_intro_dark.ogg, newworld_loop_dark.ogg]
+	[requiem_intro.ogg, requiem_loop.ogg]
+	[slave_intro.ogg, slave_loop.ogg]
+	[valkyries_intro.ogg, valkyries_loop.ogg]
+  </music>
+</root>

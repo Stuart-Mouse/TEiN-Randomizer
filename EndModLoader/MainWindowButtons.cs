@@ -17,32 +17,46 @@ namespace TEiNRandomizer
 {
     partial class MainWindow
     {
-        private void AltLevelInc(object sender, RoutedEventArgs e)
-        {
-            if (RSettings.AltLevel < AltLevels.Insane)
-                RSettings.AltLevel++;
-            AltLevelTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-        }
-        private void AltLevelDec(object sender, RoutedEventArgs e)
-        {
-            if (RSettings.AltLevel > AltLevels.None)
-                RSettings.AltLevel--;
-            AltLevelTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-        }
+        //private void AltLevelInc(object sender, RoutedEventArgs e)
+        //{
+        //    if (RSettings.AltLevel < AltLevels.Insane)
+        //        RSettings.AltLevel++;
+        //    AltLevelTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+        //}
+        //private void AltLevelDec(object sender, RoutedEventArgs e)
+        //{
+        //    if (RSettings.AltLevel > AltLevels.None)
+        //        RSettings.AltLevel--;
+        //    AltLevelTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+        //}
 
-        private void AreaTypeInc(object sender, RoutedEventArgs e)
-        {
-            if (RSettings.AreaType < AreaTypes.glitch)
-                RSettings.AreaType++;
-            AreaTypeTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-        }
-        private void AreaTypeDec(object sender, RoutedEventArgs e)
-        {
-            if (RSettings.AreaType > AreaTypes.normal)
-                RSettings.AreaType--;
-            AreaTypeTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-        }
+        //private void AreaTypeInc(object sender, RoutedEventArgs e)
+        //{
+        //    if (RSettings.AreaType < AreaTypes.glitch)
+        //        RSettings.AreaType++;
+        //    AreaTypeTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+        //}
+        //private void AreaTypeDec(object sender, RoutedEventArgs e)
+        //{
+        //    if (RSettings.AreaType > AreaTypes.normal)
+        //        RSettings.AreaType--;
+        //    AreaTypeTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+        //}
 
+        //<Grid>
+        //                            <Grid.ColumnDefinitions>
+        //                                <ColumnDefinition Width = "30" />
+        //                                < ColumnDefinition Width="80"/>
+        //                                <ColumnDefinition Width = "30" />
+        //                            </ Grid.ColumnDefinitions >
+        //                            < Button Grid.Column="0"  Name="AltDownButton" Padding="5,0" Content="-" Width="25" Click="AltLevelDec" Margin="0,0" />
+        //                            <TextBox Grid.Column="1" Name= "AltLevelTextBox" Width= "70" >
+        //                                < TextBox.Text >
+        //                                    < Binding Path= "RSettings.AltLevel" UpdateSourceTrigger= "PropertyChanged" />
+        //                                </ TextBox.Text >
+        //                            </ TextBox >
+        //                            < Button Grid.Column= "2"  Name= "AltUpButton" Padding= "5,0" Content= "+" Width= "25" Click= "AltLevelInc" Margin= "0,0" />
+        //                        </ Grid >
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             //GameSeed = Randomizer.myRNG.GetUInt32();

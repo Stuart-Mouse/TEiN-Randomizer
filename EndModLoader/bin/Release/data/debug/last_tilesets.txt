@@ -1,0 +1,1823 @@
+v { area_name "Void" area_label_frame 0 tile_graphics Tilehell overlay_graphics Overlaysairship background_graphics neverbg foreground_graphics none palette 0 do_tilt true fx_shader ripples fx_shader_mid heatwave2 midfx_graphics SolidBox global_particle_1 bgrain global_particle_2 embers global_particle_3 leaves decoration_1 CreepingMass decoration_2 OrbBlob2 decoration_3 OrbLarge2 ambience flesh.ogg art_alts[[OrbSmall, OrbBlob2][OrbLarge, OrbLarge2][ChainLink, None][ChainLink2, None]]}
+v1 {
+    area_name "TEiN Randomizer"
+    area_label_frame 0
+    background_graphics neverbg
+    area_type normal
+
+    tile_graphics Tilefield
+
+    overlay_graphics Overlayscomplex
+
+    global_particle_1 DirectionParticle3030800343
+
+    fx_shader_mid chromatic_pulse  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.892233857834821
+    palette 254
+
+    music [slave_intro.ogg, slave_loop.ogg]
+
+    do_tilt true
+    platform_physics data/platform_physics/3922695245.txt
+art_alts[[Player,Player][Frog,Frog][Floater,RetroGhost][Fireball,cartend][Slug,Revolverretro][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Frog][CheepCheep,cheepretro][Bullet,Fish][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,eyeshooter][Cannonball,CheepCheep][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,Maskretro][Mask,Mask][Revolver,Floater][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstandretro][Bouncer,Ghost][ElectroBall,RetroElectroBall][OrbSmall,OrbChomp][OrbLarge,pacman][OrbChomp,OrbChomp][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,eyebullet][MiniRat,MiniRat][MiniFish,MiniFishWhite][MiniWorm,NPCG3]]
+    1 {
+    
+tile_graphics Tileretro
+overlay_graphics Overlaysretro
+background_graphics bgretrox
+foreground_graphics none
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+global_particle_1 none
+global_particle_2 none
+global_particle_3 none
+
+palette 45
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+
+# Level Name: conqi4-2
+    music [slave_intro.ogg, slave_loop.ogg]
+
+    palette 254
+
+    tile_graphics Tilefield
+
+    overlay_graphics Overlayscomplex
+
+    fx_shader_mid chromatic_pulse  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.892233857834821
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle3030800343
+
+    do_tilt true
+    platform_physics data/platform_physics/3922695245.txt
+
+art_alts[[Player, PlayerRetro][Frog, Frogretro][Floater, RetroGhost][Slug, Slugretro][SkullFloater, SkullFloaterretro][Gasser, Gasserretro][Splatter, Splatterretro][CheepCheep, cheepretro][Bullet, bulletretro][SpitterX, SpitterXretro][SpitterY, SpitterYretro][AimSpitter, SpitterZretro][Cannonball, cannonballretro][Fireball, cannonballfireretro][Hopper, hopperretro][SkullSlug, SkullSlugretro][SkullCrow, SkullCrowretro][ChainChomp, ChainChompretro][ChainLink, ChainLinkretro][ChainLink2, ChainLinkretro][Mask, Maskretro][Revolver, Revolverretro][GasCloud, GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,Bouncerretro][ElectroBall, RetroElectroBall][OrbSmall, RetroOrbSmall][OrbLarge, RetroOrbLarge][ChargeSlug, RetroChargerSlug][Fish, RetroFish][CreepingMass, CreepingMassRetro][Player,Player][Frog,Frog][Floater,RetroGhost][Fireball,cartend][Slug,Revolverretro][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Frog][CheepCheep,cheepretro][Bullet,Fish][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,eyeshooter][Cannonball,CheepCheep][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,Maskretro][Mask,Mask][Revolver,Floater][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstandretro][Bouncer,Ghost][ElectroBall,RetroElectroBall][OrbSmall,OrbChomp][OrbLarge,pacman][OrbChomp,OrbChomp][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,eyebullet][MiniRat,MiniRat][MiniFish,MiniFishWhite][MiniWorm,NPCG3]]
+# TS Needs
+    
+
+    }
+
+    2 {
+    
+tile_graphics Tileretro
+overlay_graphics Overlaysretro
+background_graphics bgretrox
+foreground_graphics none
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+global_particle_1 none
+global_particle_2 none
+global_particle_3 none
+
+palette 48
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+
+# Level Name: conqi3-5
+    music [slave_intro.ogg, slave_loop.ogg]
+
+    palette 254
+
+    tile_graphics Tilefield
+
+    overlay_graphics Overlayscomplex
+
+    fx_shader_mid chromatic_pulse  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.892233857834821
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle3030800343
+
+    do_tilt true
+    platform_physics data/platform_physics/3922695245.txt
+
+art_alts[[Player, PlayerRetro][Frog, Frogretro][Floater, RetroGhost][Slug, Slugretro][SkullFloater, SkullFloaterretro][Gasser, Gasserretro][Splatter, Splatterretro][CheepCheep, cheepretro][Bullet, bulletretro][SpitterX, SpitterXretro][SpitterY, SpitterYretro][AimSpitter, SpitterZretro][Cannonball, cannonballretro][Fireball, cannonballfireretro][Hopper, hopperretro][SkullSlug, SkullSlugretro][SkullCrow, SkullCrowretro][ChainChomp, ChainChompretro][ChainLink, ChainLinkretro][ChainLink2, ChainLinkretro][Mask, Maskretro][Revolver, Revolverretro][GasCloud, GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,Bouncerretro][ElectroBall, RetroElectroBall][OrbSmall, RetroOrbSmall][OrbLarge, RetroOrbLarge][ChargeSlug, RetroChargerSlug][Fish, RetroFish][CreepingMass, CreepingMassRetro][Player,Player][Frog,Frog][Floater,RetroGhost][Fireball,cartend][Slug,Revolverretro][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Frog][CheepCheep,cheepretro][Bullet,Fish][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,eyeshooter][Cannonball,CheepCheep][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,Maskretro][Mask,Mask][Revolver,Floater][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstandretro][Bouncer,Ghost][ElectroBall,RetroElectroBall][OrbSmall,OrbChomp][OrbLarge,pacman][OrbChomp,OrbChomp][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,eyebullet][MiniRat,MiniRat][MiniFish,MiniFishWhite][MiniWorm,NPCG3]]
+# TS Needs
+    
+
+    }
+
+    3 {
+    
+tile_graphics Tileretro
+overlay_graphics Overlaysretro
+background_graphics bgretrox
+foreground_graphics none
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+global_particle_1 none
+global_particle_2 none
+global_particle_3 none
+
+palette 48
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+
+# Level Name: conqi3-6
+    music [slave_intro.ogg, slave_loop.ogg]
+
+    palette 254
+
+    tile_graphics Tilefield
+
+    overlay_graphics Overlayscomplex
+
+    fx_shader_mid chromatic_pulse  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.892233857834821
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle3030800343
+
+    do_tilt true
+    platform_physics data/platform_physics/3922695245.txt
+
+art_alts[[Player, PlayerRetro][Frog, Frogretro][Floater, RetroGhost][Slug, Slugretro][SkullFloater, SkullFloaterretro][Gasser, Gasserretro][Splatter, Splatterretro][CheepCheep, cheepretro][Bullet, bulletretro][SpitterX, SpitterXretro][SpitterY, SpitterYretro][AimSpitter, SpitterZretro][Cannonball, cannonballretro][Fireball, cannonballfireretro][Hopper, hopperretro][SkullSlug, SkullSlugretro][SkullCrow, SkullCrowretro][ChainChomp, ChainChompretro][ChainLink, ChainLinkretro][ChainLink2, ChainLinkretro][Mask, Maskretro][Revolver, Revolverretro][GasCloud, GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,Bouncerretro][ElectroBall, RetroElectroBall][OrbSmall, RetroOrbSmall][OrbLarge, RetroOrbLarge][ChargeSlug, RetroChargerSlug][Fish, RetroFish][CreepingMass, CreepingMassRetro][Player,Player][Frog,Frog][Floater,RetroGhost][Fireball,cartend][Slug,Revolverretro][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Frog][CheepCheep,cheepretro][Bullet,Fish][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,eyeshooter][Cannonball,CheepCheep][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,Maskretro][Mask,Mask][Revolver,Floater][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstandretro][Bouncer,Ghost][ElectroBall,RetroElectroBall][OrbSmall,OrbChomp][OrbLarge,pacman][OrbChomp,OrbChomp][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,eyebullet][MiniRat,MiniRat][MiniFish,MiniFishWhite][MiniWorm,NPCG3]]
+# TS Needs
+    
+
+    }
+
+    4 {
+    
+tile_graphics Tilecomplex
+overlay_graphics Overlayscomplex
+background_graphics bgsolid
+foreground_graphics None
+palette 51
+music [gymnopedies_intro.ogg, gymnopedies_loop.ogg]
+#music [summer_intro.ogg, summer_loop.ogg]
+ambience cogs.ogg
+        fx_shader_mid cloudripples
+        midfx_layer 2
+ambience_volume 1
+tile_particle_1 spark
+tile_particle_2 spark2
+tile_particle_3 smoke2
+global_particle_1 cold
+global_particle_3 embers
+
+# Level Name: fac-4
+    music [slave_intro.ogg, slave_loop.ogg]
+
+    palette 254
+
+    tile_graphics Tilefield
+
+    overlay_graphics Overlayscomplex
+
+    fx_shader_mid chromatic_pulse  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.892233857834821
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle3030800343
+
+    do_tilt true
+    platform_physics data/platform_physics/3922695245.txt
+
+art_alts[[Fireball, ThwampGear][eyebullet, Bullet][Player,Player][Frog,Frog][Floater,RetroGhost][Fireball,cartend][Slug,Revolverretro][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Frog][CheepCheep,cheepretro][Bullet,Fish][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,eyeshooter][Cannonball,CheepCheep][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,Maskretro][Mask,Mask][Revolver,Floater][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstandretro][Bouncer,Ghost][ElectroBall,RetroElectroBall][OrbSmall,OrbChomp][OrbLarge,pacman][OrbChomp,OrbChomp][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,eyebullet][MiniRat,MiniRat][MiniFish,MiniFishWhite][MiniWorm,NPCG3]]
+# TS Needs
+    
+
+    }
+
+    5 {
+    
+tile_graphics Tileretro
+overlay_graphics Overlaysretro
+background_graphics bgretrox
+foreground_graphics none
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+global_particle_1 none
+global_particle_2 none
+global_particle_3 none
+
+palette 47
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+
+# Level Name: conqi2-4
+    music [slave_intro.ogg, slave_loop.ogg]
+
+    palette 254
+
+    tile_graphics Tilefield
+
+    overlay_graphics Overlayscomplex
+
+    fx_shader_mid chromatic_pulse  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.892233857834821
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle3030800343
+
+    do_tilt true
+    platform_physics data/platform_physics/3922695245.txt
+
+art_alts[[Player, PlayerRetro][Frog, Frogretro][Floater, RetroGhost][Slug, Slugretro][SkullFloater, SkullFloaterretro][Gasser, Gasserretro][Splatter, Splatterretro][CheepCheep, cheepretro][Bullet, bulletretro][SpitterX, SpitterXretro][SpitterY, SpitterYretro][AimSpitter, SpitterZretro][Cannonball, cannonballretro][Fireball, cannonballfireretro][Hopper, hopperretro][SkullSlug, SkullSlugretro][SkullCrow, SkullCrowretro][ChainChomp, ChainChompretro][ChainLink, ChainLinkretro][ChainLink2, ChainLinkretro][Mask, Maskretro][Revolver, Revolverretro][GasCloud, GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,Bouncerretro][ElectroBall, RetroElectroBall][OrbSmall, RetroOrbSmall][OrbLarge, RetroOrbLarge][ChargeSlug, RetroChargerSlug][Fish, RetroFish][CreepingMass, CreepingMassRetro][Player,Player][Frog,Frog][Floater,RetroGhost][Fireball,cartend][Slug,Revolverretro][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Frog][CheepCheep,cheepretro][Bullet,Fish][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,eyeshooter][Cannonball,CheepCheep][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,Maskretro][Mask,Mask][Revolver,Floater][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstandretro][Bouncer,Ghost][ElectroBall,RetroElectroBall][OrbSmall,OrbChomp][OrbLarge,pacman][OrbChomp,OrbChomp][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,eyebullet][MiniRat,MiniRat][MiniFish,MiniFishWhite][MiniWorm,NPCG3]]
+# TS Needs
+    
+
+    }
+
+    6 {
+    
+tile_graphics Tilehell
+overlay_graphics Overlaystox2
+background_graphics bgsolid
+foreground_graphics None
+fx_shader sludgeripples
+palette 51
+global_particle_1 cold
+global_particle_2 mist2
+decoration_1 Deco10
+decoration_2 Deco11
+decoration_3 none
+fx_shader_mid lighting
+midfx_graphics ShadeBox
+midfx_layer 2
+tile_particle_1 drip
+shader_param 0
+music [gymnopedies_intro_dark.ogg, gymnopedies_loop_dark.ogg]
+ambience none
+
+# Level Name: df2-10
+    music [slave_intro.ogg, slave_loop.ogg]
+
+    palette 254
+
+    tile_graphics Tilefield
+
+    overlay_graphics Overlayscomplex
+
+    fx_shader_mid chromatic_pulse  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.892233857834821
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle3030800343
+
+    do_tilt true
+    platform_physics data/platform_physics/3922695245.txt
+
+art_alts[[MiniFly, MiniWisp][MiniRat, MiniRatWhite][MiniFrog, MiniFrogWhite][Player,Player][Frog,Frog][Floater,RetroGhost][Fireball,cartend][Slug,Revolverretro][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Frog][CheepCheep,cheepretro][Bullet,Fish][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,eyeshooter][Cannonball,CheepCheep][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,Maskretro][Mask,Mask][Revolver,Floater][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstandretro][Bouncer,Ghost][ElectroBall,RetroElectroBall][OrbSmall,OrbChomp][OrbLarge,pacman][OrbChomp,OrbChomp][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,eyebullet][MiniRat,MiniRat][MiniFish,MiniFishWhite][MiniWorm,NPCG3]]
+# TS Needs
+    
+    decoration_1 Deco10
+decoration_2 Deco11
+decoration_3 none
+
+#added by level corruptor
+fx_shader_mid cloudripples
+midfx_graphics None
+midfx_layer 2
+
+    }
+
+    7 {
+    
+tile_graphics Tiletox
+overlay_graphics Overlaystox
+background_graphics ch4abg
+foreground_graphics None
+fx_shader ripples
+palette 56
+global_particle_1 wind2
+global_particle_2 wind
+ambience wind.ogg
+
+# Level Name: 4hd-3
+    music [slave_intro.ogg, slave_loop.ogg]
+
+    palette 254
+
+    tile_graphics Tilefield
+
+    overlay_graphics Overlayscomplex
+
+    fx_shader_mid chromatic_pulse  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.892233857834821
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle3030800343
+
+    do_tilt true
+    platform_physics data/platform_physics/3922695245.txt
+
+art_alts[[Floater, Ghost][Player,Player][Frog,Frog][Floater,RetroGhost][Fireball,cartend][Slug,Revolverretro][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Frog][CheepCheep,cheepretro][Bullet,Fish][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,eyeshooter][Cannonball,CheepCheep][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,Maskretro][Mask,Mask][Revolver,Floater][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstandretro][Bouncer,Ghost][ElectroBall,RetroElectroBall][OrbSmall,OrbChomp][OrbLarge,pacman][OrbChomp,OrbChomp][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,eyebullet][MiniRat,MiniRat][MiniFish,MiniFishWhite][MiniWorm,NPCG3]]
+# TS Needs
+     
+fx_shader_mid cloudripples
+midfx_graphics None
+midfx_layer 2
+
+
+    }
+
+    8 {
+    
+tile_graphics Tiletox2
+overlay_graphics Overlaystox2
+background_graphics Background
+foreground_graphics None
+fx_shader sludgeripples
+palette 6
+global_particle_1 cold
+global_particle_2 mist2
+decoration_1 Deco10
+decoration_2 Deco11
+decoration_3 none
+fx_shader_mid lighting
+shader_param 0
+midfx_graphics ShadeBox
+midfx_layer 2
+tile_particle_1 drip
+#global_particle_1 lightingtest
+music [hmk_secret_intro.ogg, hmk_secret_loop.ogg]
+ambience caves.ogg
+  
+# Level Name: 4ct-2
+    music [slave_intro.ogg, slave_loop.ogg]
+
+    palette 254
+
+    tile_graphics Tilefield
+
+    overlay_graphics Overlayscomplex
+
+    fx_shader_mid chromatic_pulse  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.892233857834821
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle3030800343
+
+    do_tilt true
+    platform_physics data/platform_physics/3922695245.txt
+
+art_alts[[MiniFly, MiniWisp][MiniRat, MiniRatWhite][MiniFrog, MiniFrogWhite][Player,Player][Frog,Frog][Floater,RetroGhost][Fireball,cartend][Slug,Revolverretro][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Frog][CheepCheep,cheepretro][Bullet,Fish][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,eyeshooter][Cannonball,CheepCheep][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,Maskretro][Mask,Mask][Revolver,Floater][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstandretro][Bouncer,Ghost][ElectroBall,RetroElectroBall][OrbSmall,OrbChomp][OrbLarge,pacman][OrbChomp,OrbChomp][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,eyebullet][MiniRat,MiniRat][MiniFish,MiniFishWhite][MiniWorm,NPCG3]]
+# TS Needs
+    
+
+    }
+
+    9 {
+    
+tile_graphics Tilecomplex
+overlay_graphics Overlayscomplex
+background_graphics bgsolid
+foreground_graphics None
+palette 51
+music [gymnopedies_intro.ogg, gymnopedies_loop.ogg]
+#music [summer_intro.ogg, summer_loop.ogg]
+ambience cogs.ogg
+        fx_shader_mid cloudripples
+        midfx_layer 2
+ambience_volume 1
+tile_particle_1 spark
+tile_particle_2 spark2
+tile_particle_3 smoke2
+global_particle_1 cold
+global_particle_3 embers
+
+# Level Name: fac-7
+    music [slave_intro.ogg, slave_loop.ogg]
+
+    palette 254
+
+    tile_graphics Tilefield
+
+    overlay_graphics Overlayscomplex
+
+    fx_shader_mid chromatic_pulse  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.892233857834821
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle3030800343
+
+    do_tilt true
+    platform_physics data/platform_physics/3922695245.txt
+
+art_alts[[Fireball, ThwampGear][eyebullet, Bullet][Player,Player][Frog,Frog][Floater,RetroGhost][Fireball,cartend][Slug,Revolverretro][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Frog][CheepCheep,cheepretro][Bullet,Fish][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,eyeshooter][Cannonball,CheepCheep][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,Maskretro][Mask,Mask][Revolver,Floater][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstandretro][Bouncer,Ghost][ElectroBall,RetroElectroBall][OrbSmall,OrbChomp][OrbLarge,pacman][OrbChomp,OrbChomp][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,eyebullet][MiniRat,MiniRat][MiniFish,MiniFishWhite][MiniWorm,NPCG3]]
+# TS Needs
+    
+
+    }
+
+    10 {
+    
+    tile_graphics Tiletox2
+overlay_graphics Overlaystox2
+background_graphics bgsolid
+foreground_graphics None
+fx_shader sludgeripples
+palette 57
+global_particle_1 cold
+global_particle_2 mist2
+decoration_1 Deco10
+decoration_2 Deco11
+decoration_3 none
+fx_shader_mid lighting
+midfx_graphics ShadeBox
+midfx_layer 2
+tile_particle_1 drip
+shader_param 0
+#global_particle_1 lightingtest
+ambience caves.ogg
+  
+# Level Name: 4ln-5
+    music [slave_intro.ogg, slave_loop.ogg]
+
+    palette 254
+
+    tile_graphics Tilefield
+
+    overlay_graphics Overlayscomplex
+
+    fx_shader_mid chromatic_pulse  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.892233857834821
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle3030800343
+
+    do_tilt true
+    platform_physics data/platform_physics/3922695245.txt
+
+art_alts[[MiniFly, MiniWisp][MiniRat, MiniRatWhite][MiniFrog, MiniFrogWhite][OrbSmall, orbblob][OrbChomp, MovingOrbBlob][Player,Player][Frog,Frog][Floater,RetroGhost][Fireball,cartend][Slug,Revolverretro][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Frog][CheepCheep,cheepretro][Bullet,Fish][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,eyeshooter][Cannonball,CheepCheep][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,Maskretro][Mask,Mask][Revolver,Floater][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstandretro][Bouncer,Ghost][ElectroBall,RetroElectroBall][OrbSmall,OrbChomp][OrbLarge,pacman][OrbChomp,OrbChomp][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,eyebullet][MiniRat,MiniRat][MiniFish,MiniFishWhite][MiniWorm,NPCG3]]
+# TS Needs
+    
+
+    }
+
+}
+v2 {
+    area_name "TEiN Randomizer"
+    area_label_frame 0
+    background_graphics neverbg
+    area_type normal
+
+    tile_graphics TileGlitch
+
+    overlay_graphics Overlaysend
+
+    global_particle_1 MistParticle1862813622
+
+shader_param 0.674089373868932
+    palette 192
+
+    music [fields_intro.ogg, fields_loop.ogg]
+
+    do_wobble true
+    platform_physics data/platform_physics/3749185835.txt
+art_alts[[Player,PlayerRetro][Frog,Frogretro][Floater,Sentry][Fireball,FloaterGlitch][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,eyebullet][SpitterX,SpitterXretro][SpitterY,SpitterYretro][AimSpitter,AimSpitter][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,ChainChomp][Mask,Mask][Revolver,Revolver][GasCloud,GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstand][Bouncer,cannonballfireretro][ElectroBall,RetroElectroBall][OrbSmall,RetroOrbSmall][OrbLarge,RetroOrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,ThwampEye][MiniRat,MiniRat][MiniFish,MiniGhost][MiniWorm,NPCB2]]
+    1 {
+    
+tile_graphics Tilefield
+overlay_graphics Overlaysfield
+background_graphics ch2bg
+foreground_graphics fg1
+fx_shader ripples
+fx_shader_mid heatwave2
+midfx_graphics SolidBox
+palette 58
+global_particle_1 leaves
+tile_particle_1 dust
+decoration_1 Decoration9
+decoration_2 none
+decoration_3 none
+ambience wind.ogg
+
+# Level Name: 2dd-4
+    music [fields_intro.ogg, fields_loop.ogg]
+
+    palette 192
+
+    tile_graphics TileGlitch
+
+    overlay_graphics Overlaysend
+
+shader_param 0.674089373868932
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle1862813622
+
+    do_wobble true
+    platform_physics data/platform_physics/3749185835.txt
+
+art_alts[[Player,PlayerRetro][Frog,Frogretro][Floater,Sentry][Fireball,FloaterGlitch][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,eyebullet][SpitterX,SpitterXretro][SpitterY,SpitterYretro][AimSpitter,AimSpitter][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,ChainChomp][Mask,Mask][Revolver,Revolver][GasCloud,GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstand][Bouncer,cannonballfireretro][ElectroBall,RetroElectroBall][OrbSmall,RetroOrbSmall][OrbLarge,RetroOrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,ThwampEye][MiniRat,MiniRat][MiniFish,MiniGhost][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    2 {
+    
+tile_graphics Tilecomplex
+overlay_graphics Overlayscomplex
+background_graphics bgsolid
+foreground_graphics None
+palette 51
+music [gymnopedies_intro.ogg, gymnopedies_loop.ogg]
+#music [summer_intro.ogg, summer_loop.ogg]
+ambience cogs.ogg
+        fx_shader_mid cloudripples
+        midfx_layer 2
+ambience_volume 1
+tile_particle_1 spark
+tile_particle_2 spark2
+tile_particle_3 smoke2
+global_particle_1 cold
+global_particle_3 embers
+
+# Level Name: facx-7
+    music [fields_intro.ogg, fields_loop.ogg]
+
+    palette 192
+
+    tile_graphics TileGlitch
+
+    overlay_graphics Overlaysend
+
+shader_param 0.674089373868932
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle1862813622
+
+    do_wobble true
+    platform_physics data/platform_physics/3749185835.txt
+
+art_alts[[Fireball, ThwampGear][eyebullet, Bullet][Player,PlayerRetro][Frog,Frogretro][Floater,Sentry][Fireball,FloaterGlitch][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,eyebullet][SpitterX,SpitterXretro][SpitterY,SpitterYretro][AimSpitter,AimSpitter][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,ChainChomp][Mask,Mask][Revolver,Revolver][GasCloud,GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstand][Bouncer,cannonballfireretro][ElectroBall,RetroElectroBall][OrbSmall,RetroOrbSmall][OrbLarge,RetroOrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,ThwampEye][MiniRat,MiniRat][MiniFish,MiniGhost][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    3 {
+    
+tile_graphics Tilecomplex
+overlay_graphics Overlayscomplex
+background_graphics bgsolid
+foreground_graphics None
+palette 51
+music [gymnopedies_intro.ogg, gymnopedies_loop.ogg]
+#music [summer_intro.ogg, summer_loop.ogg]
+ambience cogs.ogg
+        fx_shader_mid cloudripples
+        midfx_layer 2
+ambience_volume 1
+tile_particle_1 spark
+tile_particle_2 spark2
+tile_particle_3 smoke2
+global_particle_1 cold
+global_particle_3 embers
+
+# Level Name: fac-11
+    music [fields_intro.ogg, fields_loop.ogg]
+
+    palette 192
+
+    tile_graphics TileGlitch
+
+    overlay_graphics Overlaysend
+
+shader_param 0.674089373868932
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle1862813622
+
+    do_wobble true
+    platform_physics data/platform_physics/3749185835.txt
+
+art_alts[[Fireball, ThwampGear][eyebullet, Bullet][Player,PlayerRetro][Frog,Frogretro][Floater,Sentry][Fireball,FloaterGlitch][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,eyebullet][SpitterX,SpitterXretro][SpitterY,SpitterYretro][AimSpitter,AimSpitter][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,ChainChomp][Mask,Mask][Revolver,Revolver][GasCloud,GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstand][Bouncer,cannonballfireretro][ElectroBall,RetroElectroBall][OrbSmall,RetroOrbSmall][OrbLarge,RetroOrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,ThwampEye][MiniRat,MiniRat][MiniFish,MiniGhost][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    4 {
+    
+tile_graphics Tileretro
+overlay_graphics Overlaysretro
+background_graphics bgretrox
+foreground_graphics none
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+global_particle_1 none
+global_particle_2 none
+global_particle_3 none
+
+palette 48
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+
+# Level Name: conqi3-2
+    music [fields_intro.ogg, fields_loop.ogg]
+
+    palette 192
+
+    tile_graphics TileGlitch
+
+    overlay_graphics Overlaysend
+
+shader_param 0.674089373868932
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle1862813622
+
+    do_wobble true
+    platform_physics data/platform_physics/3749185835.txt
+
+art_alts[[Player, PlayerRetro][Frog, Frogretro][Floater, RetroGhost][Slug, Slugretro][SkullFloater, SkullFloaterretro][Gasser, Gasserretro][Splatter, Splatterretro][CheepCheep, cheepretro][Bullet, bulletretro][SpitterX, SpitterXretro][SpitterY, SpitterYretro][AimSpitter, SpitterZretro][Cannonball, cannonballretro][Fireball, cannonballfireretro][Hopper, hopperretro][SkullSlug, SkullSlugretro][SkullCrow, SkullCrowretro][ChainChomp, ChainChompretro][ChainLink, ChainLinkretro][ChainLink2, ChainLinkretro][Mask, Maskretro][Revolver, Revolverretro][GasCloud, GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,Bouncerretro][ElectroBall, RetroElectroBall][OrbSmall, RetroOrbSmall][OrbLarge, RetroOrbLarge][ChargeSlug, RetroChargerSlug][Fish, RetroFish][CreepingMass, CreepingMassRetro][Player,PlayerRetro][Frog,Frogretro][Floater,Sentry][Fireball,FloaterGlitch][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,eyebullet][SpitterX,SpitterXretro][SpitterY,SpitterYretro][AimSpitter,AimSpitter][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,ChainChomp][Mask,Mask][Revolver,Revolver][GasCloud,GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstand][Bouncer,cannonballfireretro][ElectroBall,RetroElectroBall][OrbSmall,RetroOrbSmall][OrbLarge,RetroOrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,ThwampEye][MiniRat,MiniRat][MiniFish,MiniGhost][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    5 {
+    
+tile_graphics Tilecomplex
+overlay_graphics Overlayscomplex
+background_graphics bgsolid
+foreground_graphics None
+palette 51
+music [gymnopedies_intro.ogg, gymnopedies_loop.ogg]
+#music [summer_intro.ogg, summer_loop.ogg]
+ambience cogs.ogg
+        fx_shader_mid cloudripples
+        midfx_layer 2
+ambience_volume 1
+tile_particle_1 spark
+tile_particle_2 spark2
+tile_particle_3 smoke2
+global_particle_1 cold
+global_particle_3 embers
+
+# Level Name: fac-2
+    music [fields_intro.ogg, fields_loop.ogg]
+
+    palette 192
+
+    tile_graphics TileGlitch
+
+    overlay_graphics Overlaysend
+
+shader_param 0.674089373868932
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle1862813622
+
+    do_wobble true
+    platform_physics data/platform_physics/3749185835.txt
+
+art_alts[[Fireball, ThwampGear][eyebullet, Bullet][Player,PlayerRetro][Frog,Frogretro][Floater,Sentry][Fireball,FloaterGlitch][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,eyebullet][SpitterX,SpitterXretro][SpitterY,SpitterYretro][AimSpitter,AimSpitter][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,ChainChomp][Mask,Mask][Revolver,Revolver][GasCloud,GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstand][Bouncer,cannonballfireretro][ElectroBall,RetroElectroBall][OrbSmall,RetroOrbSmall][OrbLarge,RetroOrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,ThwampEye][MiniRat,MiniRat][MiniFish,MiniGhost][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    6 {
+    
+tile_graphics Tileretro
+overlay_graphics Overlaysretro
+background_graphics bgretrox
+foreground_graphics none
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+global_particle_1 none
+global_particle_2 none
+global_particle_3 none
+
+palette 49
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+
+# Level Name: conqi5-4
+    music [fields_intro.ogg, fields_loop.ogg]
+
+    palette 192
+
+    tile_graphics TileGlitch
+
+    overlay_graphics Overlaysend
+
+shader_param 0.674089373868932
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle1862813622
+
+    do_wobble true
+    platform_physics data/platform_physics/3749185835.txt
+
+art_alts[[Player, PlayerRetro][Frog, Frogretro][Floater, RetroGhost][Slug, Slugretro][SkullFloater, SkullFloaterretro][Gasser, Gasserretro][Splatter, Splatterretro][CheepCheep, cheepretro][Bullet, bulletretro][SpitterX, SpitterXretro][SpitterY, SpitterYretro][AimSpitter, SpitterZretro][Cannonball, cannonballretro][Fireball, cannonballfireretro][Hopper, hopperretro][SkullSlug, SkullSlugretro][SkullCrow, SkullCrowretro][ChainChomp, ChainChompretro][ChainLink, ChainLinkretro][ChainLink2, ChainLinkretro][Mask, Maskretro][Revolver, Revolverretro][GasCloud, GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,Bouncerretro][ElectroBall, RetroElectroBall][OrbSmall, RetroOrbSmall][OrbLarge, RetroOrbLarge][ChargeSlug, RetroChargerSlug][Fish, RetroFish][CreepingMass, CreepingMassRetro][Player,PlayerRetro][Frog,Frogretro][Floater,Sentry][Fireball,FloaterGlitch][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,eyebullet][SpitterX,SpitterXretro][SpitterY,SpitterYretro][AimSpitter,AimSpitter][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,ChainChomp][Mask,Mask][Revolver,Revolver][GasCloud,GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstand][Bouncer,cannonballfireretro][ElectroBall,RetroElectroBall][OrbSmall,RetroOrbSmall][OrbLarge,RetroOrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,ThwampEye][MiniRat,MiniRat][MiniFish,MiniGhost][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    7 {
+    
+tile_graphics Tilecomplex
+overlay_graphics Overlayscomplex
+background_graphics bgsolid
+foreground_graphics None
+palette 51
+music [gymnopedies_intro.ogg, gymnopedies_loop.ogg]
+#music [summer_intro.ogg, summer_loop.ogg]
+ambience cogs.ogg
+        fx_shader_mid cloudripples
+        midfx_layer 2
+ambience_volume 1
+tile_particle_1 spark
+tile_particle_2 spark2
+tile_particle_3 smoke2
+global_particle_1 cold
+global_particle_3 embers
+
+# Level Name: fac-1
+    music [fields_intro.ogg, fields_loop.ogg]
+
+    palette 192
+
+    tile_graphics TileGlitch
+
+    overlay_graphics Overlaysend
+
+shader_param 0.674089373868932
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle1862813622
+
+    do_wobble true
+    platform_physics data/platform_physics/3749185835.txt
+
+art_alts[[Fireball, ThwampGear][eyebullet, Bullet][Player,PlayerRetro][Frog,Frogretro][Floater,Sentry][Fireball,FloaterGlitch][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,eyebullet][SpitterX,SpitterXretro][SpitterY,SpitterYretro][AimSpitter,AimSpitter][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,ChainChomp][Mask,Mask][Revolver,Revolver][GasCloud,GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstand][Bouncer,cannonballfireretro][ElectroBall,RetroElectroBall][OrbSmall,RetroOrbSmall][OrbLarge,RetroOrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,ThwampEye][MiniRat,MiniRat][MiniFish,MiniGhost][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    8 {
+    
+tile_graphics Tilehell
+overlay_graphics Overlaystox2
+background_graphics bgsolid
+foreground_graphics None
+fx_shader sludgeripples
+palette 51
+global_particle_1 cold
+global_particle_2 mist2
+decoration_1 Deco10
+decoration_2 Deco11
+decoration_3 none
+fx_shader_mid lighting
+midfx_graphics ShadeBox
+midfx_layer 2
+tile_particle_1 drip
+shader_param 0
+music [gymnopedies_intro_dark.ogg, gymnopedies_loop_dark.ogg]
+ambience none
+
+# Level Name: df2-13
+    music [fields_intro.ogg, fields_loop.ogg]
+
+    palette 192
+
+    tile_graphics TileGlitch
+
+    overlay_graphics Overlaysend
+
+shader_param 0.674089373868932
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle1862813622
+
+    do_wobble true
+    platform_physics data/platform_physics/3749185835.txt
+
+art_alts[[MiniFly, MiniWisp][MiniRat, MiniRatWhite][MiniFrog, MiniFrogWhite][Player,PlayerRetro][Frog,Frogretro][Floater,Sentry][Fireball,FloaterGlitch][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,eyebullet][SpitterX,SpitterXretro][SpitterY,SpitterYretro][AimSpitter,AimSpitter][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,ChainChomp][Mask,Mask][Revolver,Revolver][GasCloud,GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstand][Bouncer,cannonballfireretro][ElectroBall,RetroElectroBall][OrbSmall,RetroOrbSmall][OrbLarge,RetroOrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,ThwampEye][MiniRat,MiniRat][MiniFish,MiniGhost][MiniWorm,NPCB2]]
+# TS Needs
+    
+    decoration_1 Deco10
+decoration_2 Deco11
+decoration_3 none
+
+
+    }
+
+    9 {
+    
+tile_graphics Tileretro
+overlay_graphics Overlaysretro
+background_graphics bgretrox
+foreground_graphics none
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+global_particle_1 none
+global_particle_2 none
+global_particle_3 none
+
+palette 45
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+
+# Level Name: conqi4-5
+    music [fields_intro.ogg, fields_loop.ogg]
+
+    palette 192
+
+    tile_graphics TileGlitch
+
+    overlay_graphics Overlaysend
+
+shader_param 0.674089373868932
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle1862813622
+
+    do_wobble true
+    platform_physics data/platform_physics/3749185835.txt
+
+art_alts[[Player, PlayerRetro][Frog, Frogretro][Floater, RetroGhost][Slug, Slugretro][SkullFloater, SkullFloaterretro][Gasser, Gasserretro][Splatter, Splatterretro][CheepCheep, cheepretro][Bullet, bulletretro][SpitterX, SpitterXretro][SpitterY, SpitterYretro][AimSpitter, SpitterZretro][Cannonball, cannonballretro][Fireball, cannonballfireretro][Hopper, hopperretro][SkullSlug, SkullSlugretro][SkullCrow, SkullCrowretro][ChainChomp, ChainChompretro][ChainLink, ChainLinkretro][ChainLink2, ChainLinkretro][Mask, Maskretro][Revolver, Revolverretro][GasCloud, GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,Bouncerretro][ElectroBall, RetroElectroBall][OrbSmall, RetroOrbSmall][OrbLarge, RetroOrbLarge][ChargeSlug, RetroChargerSlug][Fish, RetroFish][CreepingMass, CreepingMassRetro][Player,PlayerRetro][Frog,Frogretro][Floater,Sentry][Fireball,FloaterGlitch][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,eyebullet][SpitterX,SpitterXretro][SpitterY,SpitterYretro][AimSpitter,AimSpitter][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,ChainChomp][Mask,Mask][Revolver,Revolver][GasCloud,GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstand][Bouncer,cannonballfireretro][ElectroBall,RetroElectroBall][OrbSmall,RetroOrbSmall][OrbLarge,RetroOrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,ThwampEye][MiniRat,MiniRat][MiniFish,MiniGhost][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    10 {
+    
+tile_graphics Tileretro
+overlay_graphics Overlaysretro
+background_graphics bgretrox
+foreground_graphics none
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+global_particle_1 none
+global_particle_2 none
+global_particle_3 none
+
+palette 48
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+
+# Level Name: conqi3-4
+    music [fields_intro.ogg, fields_loop.ogg]
+
+    palette 192
+
+    tile_graphics TileGlitch
+
+    overlay_graphics Overlaysend
+
+shader_param 0.674089373868932
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle1862813622
+
+    do_wobble true
+    platform_physics data/platform_physics/3749185835.txt
+
+art_alts[[Player, PlayerRetro][Frog, Frogretro][Floater, RetroGhost][Slug, Slugretro][SkullFloater, SkullFloaterretro][Gasser, Gasserretro][Splatter, Splatterretro][CheepCheep, cheepretro][Bullet, bulletretro][SpitterX, SpitterXretro][SpitterY, SpitterYretro][AimSpitter, SpitterZretro][Cannonball, cannonballretro][Fireball, cannonballfireretro][Hopper, hopperretro][SkullSlug, SkullSlugretro][SkullCrow, SkullCrowretro][ChainChomp, ChainChompretro][ChainLink, ChainLinkretro][ChainLink2, ChainLinkretro][Mask, Maskretro][Revolver, Revolverretro][GasCloud, GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,Bouncerretro][ElectroBall, RetroElectroBall][OrbSmall, RetroOrbSmall][OrbLarge, RetroOrbLarge][ChargeSlug, RetroChargerSlug][Fish, RetroFish][CreepingMass, CreepingMassRetro][Player,PlayerRetro][Frog,Frogretro][Floater,Sentry][Fireball,FloaterGlitch][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,eyebullet][SpitterX,SpitterXretro][SpitterY,SpitterYretro][AimSpitter,AimSpitter][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrow][ChainChomp,ChainChomp][Mask,Mask][Revolver,Revolver][GasCloud,GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstand][Bouncer,cannonballfireretro][ElectroBall,RetroElectroBall][OrbSmall,RetroOrbSmall][OrbLarge,RetroOrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrog][MiniFly,ThwampEye][MiniRat,MiniRat][MiniFish,MiniGhost][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+}
+v3 {
+    area_name "TEiN Randomizer"
+    area_label_frame 0
+    background_graphics neverbg
+    area_type normal
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlaysfield
+
+    global_particle_1 DirectionParticle2701998078
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.467882398268153
+    palette 275
+
+    music [bumblebee_intro.ogg, bumblebee_loop.ogg]
+
+    platform_physics data/platform_physics/3942007125.txt
+art_alts[[Player,Player][Frog,Frog][Floater,cannonballfireretro][Fireball,Fireball][Slug,Splatter][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,AimSpitter2][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlugretro][SkullCrow,SkullCrowretro][ChainChomp,ChainChompretro][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstand][Bouncer,Bouncerretro][ElectroBall,RetroElectroBall][OrbSmall,OrbBlob2][OrbLarge,OrbLarge][OrbChomp,OrbBlob2][Fish,Fish][ChargeSlug,RetroChargerSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrogWhite][MiniFly,NPCD6][MiniRat,MiniRatWhite][MiniFish,MiniGhost][MiniWorm,NPCG3]]
+    1 {
+    
+tile_graphics Tilehell
+overlay_graphics Overlaystox2
+background_graphics bgsolid
+foreground_graphics None
+fx_shader sludgeripples
+palette 51
+global_particle_1 cold
+global_particle_2 mist2
+decoration_1 Deco10
+decoration_2 Deco11
+decoration_3 none
+fx_shader_mid lighting
+midfx_graphics ShadeBox
+midfx_layer 2
+tile_particle_1 drip
+shader_param 0
+music [gymnopedies_intro_dark.ogg, gymnopedies_loop_dark.ogg]
+ambience none
+
+# Level Name: df2-18
+    music [bumblebee_intro.ogg, bumblebee_loop.ogg]
+
+    palette 275
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlaysfield
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.467882398268153
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle2701998078
+
+    platform_physics data/platform_physics/3942007125.txt
+
+art_alts[[MiniFly, MiniWisp][MiniRat, MiniRatWhite][MiniFrog, MiniFrogWhite][Player,Player][Frog,Frog][Floater,cannonballfireretro][Fireball,Fireball][Slug,Splatter][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,AimSpitter2][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlugretro][SkullCrow,SkullCrowretro][ChainChomp,ChainChompretro][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstand][Bouncer,Bouncerretro][ElectroBall,RetroElectroBall][OrbSmall,OrbBlob2][OrbLarge,OrbLarge][OrbChomp,OrbBlob2][Fish,Fish][ChargeSlug,RetroChargerSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrogWhite][MiniFly,NPCD6][MiniRat,MiniRatWhite][MiniFish,MiniGhost][MiniWorm,NPCG3]]
+# TS Needs
+    
+    decoration_1 Deco10
+decoration_2 Deco11
+decoration_3 none
+
+
+    }
+
+    2 {
+    
+tile_graphics Tilefield
+overlay_graphics Overlaysfield
+background_graphics field2bg
+foreground_graphics None
+fx_shader reflectionripples
+fx_shader_mid radiation
+midfx_graphics SolidBox
+palette 5
+midfx_layer 2
+decoration_1 inst11
+global_particle_1 rocks
+#global_particle_2 mist
+music [hmk_secret_intro.ogg, hmk_secret_loop.ogg]
+ambience flesh.ogg
+
+# Level Name: 4bt-3
+    music [bumblebee_intro.ogg, bumblebee_loop.ogg]
+
+    palette 275
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlaysfield
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.467882398268153
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle2701998078
+
+    platform_physics data/platform_physics/3942007125.txt
+
+art_alts[[AimSpitter,eyeshooter][Bullet,eyebullet][MiniFrog, MiniFlea][OrbSmall, OrbBlob2][ChainLink2, None][OrbChomp, MovingOrbBlob][OrbLarge, OrbLarge2][Player,Player][Frog,Frog][Floater,cannonballfireretro][Fireball,Fireball][Slug,Splatter][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,AimSpitter2][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlugretro][SkullCrow,SkullCrowretro][ChainChomp,ChainChompretro][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstand][Bouncer,Bouncerretro][ElectroBall,RetroElectroBall][OrbSmall,OrbBlob2][OrbLarge,OrbLarge][OrbChomp,OrbBlob2][Fish,Fish][ChargeSlug,RetroChargerSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrogWhite][MiniFly,NPCD6][MiniRat,MiniRatWhite][MiniFish,MiniGhost][MiniWorm,NPCG3]]
+# TS Needs
+    
+
+    }
+
+    3 {
+    
+tile_graphics Tilecomplex
+overlay_graphics Overlaystox
+background_graphics field2bg
+foreground_graphics None
+fx_shader reflectionripples
+fx_shader_mid radiation
+midfx_graphics SolidBox
+palette 55
+midfx_layer 2
+decoration_1 inst11
+global_particle_1 rocks
+#global_particle_2 mist
+ambience flesh.ogg
+  
+# Level Name: 4db-5
+    music [bumblebee_intro.ogg, bumblebee_loop.ogg]
+
+    palette 275
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlaysfield
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.467882398268153
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle2701998078
+
+    platform_physics data/platform_physics/3942007125.txt
+
+art_alts[[AimSpitter,eyeshooter][Bullet,eyebullet][MiniFrog, MiniFlea][OrbSmall, OrbBlob2][ChainLink2, None][OrbChomp, MovingOrbBlob][OrbLarge, OrbLarge2][Player,Player][Frog,Frog][Floater,cannonballfireretro][Fireball,Fireball][Slug,Splatter][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,AimSpitter2][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlugretro][SkullCrow,SkullCrowretro][ChainChomp,ChainChompretro][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstand][Bouncer,Bouncerretro][ElectroBall,RetroElectroBall][OrbSmall,OrbBlob2][OrbLarge,OrbLarge][OrbChomp,OrbBlob2][Fish,Fish][ChargeSlug,RetroChargerSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrogWhite][MiniFly,NPCD6][MiniRat,MiniRatWhite][MiniFish,MiniGhost][MiniWorm,NPCG3]]
+# TS Needs
+    
+
+    }
+
+    4 {
+    
+tile_graphics Tileretro
+overlay_graphics Overlaysretro
+background_graphics bgretrox
+foreground_graphics none
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+global_particle_1 none
+global_particle_2 none
+global_particle_3 none
+
+palette 46
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+
+# Level Name: conqi1-3
+    music [bumblebee_intro.ogg, bumblebee_loop.ogg]
+
+    palette 275
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlaysfield
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.467882398268153
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle2701998078
+
+    platform_physics data/platform_physics/3942007125.txt
+
+art_alts[[Player, PlayerRetro][Frog, Frogretro][Floater, RetroGhost][Slug, Slugretro][SkullFloater, SkullFloaterretro][Gasser, Gasserretro][Splatter, Splatterretro][CheepCheep, cheepretro][Bullet, bulletretro][SpitterX, SpitterXretro][SpitterY, SpitterYretro][AimSpitter, SpitterZretro][Cannonball, cannonballretro][Fireball, cannonballfireretro][Hopper, hopperretro][SkullSlug, SkullSlugretro][SkullCrow, SkullCrowretro][ChainChomp, ChainChompretro][ChainLink, ChainLinkretro][ChainLink2, ChainLinkretro][Mask, Maskretro][Revolver, Revolverretro][GasCloud, GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,Bouncerretro][ElectroBall, RetroElectroBall][OrbSmall, RetroOrbSmall][OrbLarge, RetroOrbLarge][ChargeSlug, RetroChargerSlug][Fish, RetroFish][CreepingMass, CreepingMassRetro][Player,Player][Frog,Frog][Floater,cannonballfireretro][Fireball,Fireball][Slug,Splatter][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,AimSpitter2][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlugretro][SkullCrow,SkullCrowretro][ChainChomp,ChainChompretro][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstand][Bouncer,Bouncerretro][ElectroBall,RetroElectroBall][OrbSmall,OrbBlob2][OrbLarge,OrbLarge][OrbChomp,OrbBlob2][Fish,Fish][ChargeSlug,RetroChargerSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrogWhite][MiniFly,NPCD6][MiniRat,MiniRatWhite][MiniFish,MiniGhost][MiniWorm,NPCG3]]
+# TS Needs
+    
+
+    }
+
+    5 {
+    
+tile_graphics Tilecomplex
+overlay_graphics Overlaystox
+background_graphics field2bg
+foreground_graphics None
+fx_shader reflectionripples
+fx_shader_mid radiation
+midfx_graphics SolidBox
+palette 55
+midfx_layer 2
+decoration_1 inst11
+global_particle_1 rocks
+#global_particle_2 mist
+ambience flesh.ogg
+  
+# Level Name: 4db-3
+    music [bumblebee_intro.ogg, bumblebee_loop.ogg]
+
+    palette 275
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlaysfield
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.467882398268153
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle2701998078
+
+    platform_physics data/platform_physics/3942007125.txt
+
+art_alts[[AimSpitter,eyeshooter][Bullet,eyebullet][MiniFrog, MiniFlea][OrbSmall, OrbBlob2][ChainLink2, None][OrbChomp, MovingOrbBlob][OrbLarge, OrbLarge2][Player,Player][Frog,Frog][Floater,cannonballfireretro][Fireball,Fireball][Slug,Splatter][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,AimSpitter2][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlugretro][SkullCrow,SkullCrowretro][ChainChomp,ChainChompretro][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstand][Bouncer,Bouncerretro][ElectroBall,RetroElectroBall][OrbSmall,OrbBlob2][OrbLarge,OrbLarge][OrbChomp,OrbBlob2][Fish,Fish][ChargeSlug,RetroChargerSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrogWhite][MiniFly,NPCD6][MiniRat,MiniRatWhite][MiniFish,MiniGhost][MiniWorm,NPCG3]]
+# TS Needs
+    
+
+    }
+
+    6 {
+    
+tile_graphics Tilecity
+overlay_graphics Overlayscity
+background_graphics bg2
+foreground_graphics fg1
+fx_shader distortionparticles
+palette 51
+ambience rain.ogg
+tile_particle_1 drip
+tile_particle_2 splash
+global_particle_1 fgrain
+global_particle_2 bgrain
+global_particle_3 distortrain
+decoration_1 Decoration0
+decoration_2 Decoration1
+decoration_3 inst10
+
+# Level Name: 1pm-3
+    music [bumblebee_intro.ogg, bumblebee_loop.ogg]
+
+    palette 275
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlaysfield
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.467882398268153
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle2701998078
+
+    platform_physics data/platform_physics/3942007125.txt
+
+art_alts[[Floater, Ghost][Player,Player][Frog,Frog][Floater,cannonballfireretro][Fireball,Fireball][Slug,Splatter][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,AimSpitter2][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlugretro][SkullCrow,SkullCrowretro][ChainChomp,ChainChompretro][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstand][Bouncer,Bouncerretro][ElectroBall,RetroElectroBall][OrbSmall,OrbBlob2][OrbLarge,OrbLarge][OrbChomp,OrbBlob2][Fish,Fish][ChargeSlug,RetroChargerSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrogWhite][MiniFly,NPCD6][MiniRat,MiniRatWhite][MiniFish,MiniGhost][MiniWorm,NPCG3]]
+# TS Needs
+     
+
+    }
+
+    7 {
+    
+tile_graphics Tilehell
+overlay_graphics Overlaystox2
+background_graphics bgsolid
+foreground_graphics None
+fx_shader sludgeripples
+palette 51
+global_particle_1 cold
+global_particle_2 mist2
+decoration_1 Deco10
+decoration_2 Deco11
+decoration_3 none
+fx_shader_mid lighting
+midfx_graphics ShadeBox
+midfx_layer 2
+tile_particle_1 drip
+shader_param 0
+music [gymnopedies_intro_dark.ogg, gymnopedies_loop_dark.ogg]
+ambience none
+
+# Level Name: df2-14
+    music [bumblebee_intro.ogg, bumblebee_loop.ogg]
+
+    palette 275
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlaysfield
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.467882398268153
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle2701998078
+
+    platform_physics data/platform_physics/3942007125.txt
+
+art_alts[[MiniFly, MiniWisp][MiniRat, MiniRatWhite][MiniFrog, MiniFrogWhite][Player,Player][Frog,Frog][Floater,cannonballfireretro][Fireball,Fireball][Slug,Splatter][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,AimSpitter2][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlugretro][SkullCrow,SkullCrowretro][ChainChomp,ChainChompretro][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstand][Bouncer,Bouncerretro][ElectroBall,RetroElectroBall][OrbSmall,OrbBlob2][OrbLarge,OrbLarge][OrbChomp,OrbBlob2][Fish,Fish][ChargeSlug,RetroChargerSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrogWhite][MiniFly,NPCD6][MiniRat,MiniRatWhite][MiniFish,MiniGhost][MiniWorm,NPCG3]]
+# TS Needs
+    
+    decoration_1 Deco10
+decoration_2 Deco11
+decoration_3 none
+
+
+    }
+
+    8 {
+    
+tile_graphics Tiletox
+overlay_graphics Overlaystox
+background_graphics ch4abg
+foreground_graphics None
+fx_shader ripples
+palette 56
+global_particle_1 wind2
+global_particle_2 wind
+ambience wind.ogg
+
+# Level Name: 4hd-1
+    music [bumblebee_intro.ogg, bumblebee_loop.ogg]
+
+    palette 275
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlaysfield
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.467882398268153
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle2701998078
+
+    platform_physics data/platform_physics/3942007125.txt
+
+art_alts[[Floater, Ghost][Player,Player][Frog,Frog][Floater,cannonballfireretro][Fireball,Fireball][Slug,Splatter][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,AimSpitter2][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlugretro][SkullCrow,SkullCrowretro][ChainChomp,ChainChompretro][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstand][Bouncer,Bouncerretro][ElectroBall,RetroElectroBall][OrbSmall,OrbBlob2][OrbLarge,OrbLarge][OrbChomp,OrbBlob2][Fish,Fish][ChargeSlug,RetroChargerSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrogWhite][MiniFly,NPCD6][MiniRat,MiniRatWhite][MiniFish,MiniGhost][MiniWorm,NPCG3]]
+# TS Needs
+     
+fx_shader_mid cloudripples
+midfx_graphics None
+midfx_layer 2
+
+#added by level corruptor
+fx_shader_mid cloudripples
+midfx_graphics None
+midfx_layer 2
+
+    }
+
+    9 {
+    
+tile_graphics Tilehell
+overlay_graphics Overlaystox2
+background_graphics bgsolid
+foreground_graphics None
+fx_shader sludgeripples
+palette 51
+global_particle_1 cold
+global_particle_2 mist2
+decoration_1 Deco10
+decoration_2 Deco11
+decoration_3 none
+fx_shader_mid lighting
+midfx_graphics ShadeBox
+midfx_layer 2
+tile_particle_1 drip
+shader_param 0
+music [gymnopedies_intro_dark.ogg, gymnopedies_loop_dark.ogg]
+ambience none
+
+# Level Name: df2-11
+    music [bumblebee_intro.ogg, bumblebee_loop.ogg]
+
+    palette 275
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlaysfield
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.467882398268153
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle2701998078
+
+    platform_physics data/platform_physics/3942007125.txt
+
+art_alts[[MiniFly, MiniWisp][MiniRat, MiniRatWhite][MiniFrog, MiniFrogWhite][Player,Player][Frog,Frog][Floater,cannonballfireretro][Fireball,Fireball][Slug,Splatter][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,AimSpitter2][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlugretro][SkullCrow,SkullCrowretro][ChainChomp,ChainChompretro][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstand][Bouncer,Bouncerretro][ElectroBall,RetroElectroBall][OrbSmall,OrbBlob2][OrbLarge,OrbLarge][OrbChomp,OrbBlob2][Fish,Fish][ChargeSlug,RetroChargerSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrogWhite][MiniFly,NPCD6][MiniRat,MiniRatWhite][MiniFish,MiniGhost][MiniWorm,NPCG3]]
+# TS Needs
+    
+    decoration_1 Deco10
+decoration_2 Deco11
+decoration_3 none
+
+
+    }
+
+    10 {
+    
+tile_graphics Tilecomplex
+overlay_graphics Overlayscomplex
+background_graphics bgsolid
+foreground_graphics None
+palette 51
+music [gymnopedies_intro.ogg, gymnopedies_loop.ogg]
+#music [summer_intro.ogg, summer_loop.ogg]
+ambience cogs.ogg
+        fx_shader_mid cloudripples
+        midfx_layer 2
+ambience_volume 1
+tile_particle_1 spark
+tile_particle_2 spark2
+tile_particle_3 smoke2
+global_particle_1 cold
+global_particle_3 embers
+
+# Level Name: fac-5
+    music [bumblebee_intro.ogg, bumblebee_loop.ogg]
+
+    palette 275
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlaysfield
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.467882398268153
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 DirectionParticle2701998078
+
+    platform_physics data/platform_physics/3942007125.txt
+
+art_alts[[Fireball, ThwampGear][eyebullet, Bullet][Player,Player][Frog,Frog][Floater,cannonballfireretro][Fireball,Fireball][Slug,Splatter][SkullFloater,SkullFloaterretro][Gasser,Gasserretro][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterYretro][AimSpitter,AimSpitter2][Cannonball,Cannonball][Hopper,hopperretro][SkullSlug,SkullSlugretro][SkullCrow,SkullCrowretro][ChainChomp,ChainChompretro][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannon][Cannonstand,Cannonstand][Bouncer,Bouncerretro][ElectroBall,RetroElectroBall][OrbSmall,OrbBlob2][OrbLarge,OrbLarge][OrbChomp,OrbBlob2][Fish,Fish][ChargeSlug,RetroChargerSlug][ChainHitch,ChainHitch][ThwampEye,ThwampEye][MiniFrog,MiniFrogWhite][MiniFly,NPCD6][MiniRat,MiniRatWhite][MiniFish,MiniGhost][MiniWorm,NPCG3]]
+# TS Needs
+    
+
+    }
+
+}
+v4 {
+    area_name "TEiN Randomizer"
+    area_label_frame 0
+    background_graphics neverbg
+    area_type normal
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlayscaves
+
+    global_particle_1 MistParticle204159855
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.768377819456336
+    palette 154
+
+    music [dante_intro.ogg, dante_loop.ogg]
+
+    platform_physics data/platform_physics/755777314.txt
+art_alts[[Player,PlayerRetro][Frog,Frog][Floater,Ghost][Fireball,Bouncer][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterY][AimSpitter,eyeshooter][Cannonball,cannonballretro][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrowretro][ChainChomp,Mask][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,ChainChomp][ElectroBall,RetroElectroBall][OrbSmall,orbblob][OrbLarge,OrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitchRetro][ThwampEye,ThwampEyeRetro][MiniFrog,MiniFrog][MiniFly,MiniGhost][MiniRat,MiniRat][MiniFish,MiniFish][MiniWorm,NPCB2]]
+    1 {
+    
+tile_graphics Tilecomplex
+overlay_graphics Overlayscomplex
+background_graphics bgsolid
+foreground_graphics None
+palette 51
+music [gymnopedies_intro.ogg, gymnopedies_loop.ogg]
+#music [summer_intro.ogg, summer_loop.ogg]
+ambience cogs.ogg
+        fx_shader_mid cloudripples
+        midfx_layer 2
+ambience_volume 1
+tile_particle_1 spark
+tile_particle_2 spark2
+tile_particle_3 smoke2
+global_particle_1 cold
+global_particle_3 embers
+
+# Level Name: fac-14
+    music [dante_intro.ogg, dante_loop.ogg]
+
+    palette 154
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlayscaves
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.768377819456336
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle204159855
+
+    platform_physics data/platform_physics/755777314.txt
+
+art_alts[[Fireball, ThwampGear][eyebullet, Bullet][Player,PlayerRetro][Frog,Frog][Floater,Ghost][Fireball,Bouncer][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterY][AimSpitter,eyeshooter][Cannonball,cannonballretro][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrowretro][ChainChomp,Mask][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,ChainChomp][ElectroBall,RetroElectroBall][OrbSmall,orbblob][OrbLarge,OrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitchRetro][ThwampEye,ThwampEyeRetro][MiniFrog,MiniFrog][MiniFly,MiniGhost][MiniRat,MiniRat][MiniFish,MiniFish][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    2 {
+    
+tile_graphics Tilecomplex
+overlay_graphics Overlayscomplex
+background_graphics bgsolid
+foreground_graphics None
+palette 51
+music [gymnopedies_intro.ogg, gymnopedies_loop.ogg]
+#music [summer_intro.ogg, summer_loop.ogg]
+ambience cogs.ogg
+        fx_shader_mid cloudripples
+        midfx_layer 2
+ambience_volume 1
+tile_particle_1 spark
+tile_particle_2 spark2
+tile_particle_3 smoke2
+global_particle_1 cold
+global_particle_3 embers
+
+# Level Name: facx-5
+    music [dante_intro.ogg, dante_loop.ogg]
+
+    palette 154
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlayscaves
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.768377819456336
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle204159855
+
+    platform_physics data/platform_physics/755777314.txt
+
+art_alts[[Fireball, ThwampGear][eyebullet, Bullet][Player,PlayerRetro][Frog,Frog][Floater,Ghost][Fireball,Bouncer][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterY][AimSpitter,eyeshooter][Cannonball,cannonballretro][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrowretro][ChainChomp,Mask][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,ChainChomp][ElectroBall,RetroElectroBall][OrbSmall,orbblob][OrbLarge,OrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitchRetro][ThwampEye,ThwampEyeRetro][MiniFrog,MiniFrog][MiniFly,MiniGhost][MiniRat,MiniRat][MiniFish,MiniFish][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    3 {
+    
+tile_graphics Tilecomplex
+overlay_graphics Overlayscomplex
+background_graphics field2bg
+foreground_graphics None
+fx_shader gravripples
+palette 9
+fx_shader_mid cloudripples
+midfx_layer 2
+tile_particle_1 spark2
+tile_particle_2 smoke
+global_particle_1 rocks
+music [hmk_secret_intro.ogg, hmk_secret_loop.ogg]
+ambience labloop.ogg
+  
+# Level Name: 5bt-3
+    music [dante_intro.ogg, dante_loop.ogg]
+
+    palette 154
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlayscaves
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.768377819456336
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle204159855
+
+    platform_physics data/platform_physics/755777314.txt
+
+art_alts[[Player,PlayerRetro][Frog,Frog][Floater,Ghost][Fireball,Bouncer][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterY][AimSpitter,eyeshooter][Cannonball,cannonballretro][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrowretro][ChainChomp,Mask][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,ChainChomp][ElectroBall,RetroElectroBall][OrbSmall,orbblob][OrbLarge,OrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitchRetro][ThwampEye,ThwampEyeRetro][MiniFrog,MiniFrog][MiniFly,MiniGhost][MiniRat,MiniRat][MiniFish,MiniFish][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    4 {
+    
+tile_graphics Tiletox
+overlay_graphics Overlaystox
+background_graphics ch4abg
+foreground_graphics None
+fx_shader ripples
+palette 56
+global_particle_1 wind2
+global_particle_2 wind
+ambience wind.ogg
+
+# Level Name: 4hd-5
+    music [dante_intro.ogg, dante_loop.ogg]
+
+    palette 154
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlayscaves
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.768377819456336
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle204159855
+
+    platform_physics data/platform_physics/755777314.txt
+
+art_alts[[Floater, Ghost][Player,PlayerRetro][Frog,Frog][Floater,Ghost][Fireball,Bouncer][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterY][AimSpitter,eyeshooter][Cannonball,cannonballretro][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrowretro][ChainChomp,Mask][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,ChainChomp][ElectroBall,RetroElectroBall][OrbSmall,orbblob][OrbLarge,OrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitchRetro][ThwampEye,ThwampEyeRetro][MiniFrog,MiniFrog][MiniFly,MiniGhost][MiniRat,MiniRat][MiniFish,MiniFish][MiniWorm,NPCB2]]
+# TS Needs
+     
+fx_shader_mid cloudripples
+midfx_graphics None
+midfx_layer 2
+
+#added by level corruptor
+fx_shader_mid cloudripples
+midfx_graphics None
+midfx_layer 2
+
+    }
+
+    5 {
+    
+tile_graphics Tilehell
+overlay_graphics Overlaystox2
+background_graphics bgsolid
+foreground_graphics None
+fx_shader sludgeripples
+palette 51
+global_particle_1 cold
+global_particle_2 mist2
+decoration_1 Deco10
+decoration_2 Deco11
+decoration_3 none
+fx_shader_mid lighting
+midfx_graphics ShadeBox
+midfx_layer 2
+tile_particle_1 drip
+shader_param 0
+music [gymnopedies_intro_dark.ogg, gymnopedies_loop_dark.ogg]
+ambience none
+
+# Level Name: dfa-16
+    music [dante_intro.ogg, dante_loop.ogg]
+
+    palette 154
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlayscaves
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.768377819456336
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle204159855
+
+    platform_physics data/platform_physics/755777314.txt
+
+art_alts[[MiniFly, MiniWisp][MiniRat, MiniRatWhite][MiniFrog, MiniFrogWhite][Player,PlayerRetro][Frog,Frog][Floater,Ghost][Fireball,Bouncer][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterY][AimSpitter,eyeshooter][Cannonball,cannonballretro][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrowretro][ChainChomp,Mask][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,ChainChomp][ElectroBall,RetroElectroBall][OrbSmall,orbblob][OrbLarge,OrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitchRetro][ThwampEye,ThwampEyeRetro][MiniFrog,MiniFrog][MiniFly,MiniGhost][MiniRat,MiniRat][MiniFish,MiniFish][MiniWorm,NPCB2]]
+# TS Needs
+    
+    decoration_1 Deco10
+decoration_2 Deco11
+decoration_3 none
+
+
+    }
+
+    6 {
+    
+tile_graphics Tileretro
+overlay_graphics Overlaysretro
+background_graphics bgretrox
+foreground_graphics none
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+global_particle_1 none
+global_particle_2 none
+global_particle_3 none
+
+palette 45
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+
+# Level Name: conqi4-6x
+    music [dante_intro.ogg, dante_loop.ogg]
+
+    palette 154
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlayscaves
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.768377819456336
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle204159855
+
+    platform_physics data/platform_physics/755777314.txt
+
+art_alts[[Player, PlayerRetro][Frog, Frogretro][Floater, RetroGhost][Slug, Slugretro][SkullFloater, SkullFloaterretro][Gasser, Gasserretro][Splatter, Splatterretro][CheepCheep, cheepretro][Bullet, bulletretro][SpitterX, SpitterXretro][SpitterY, SpitterYretro][AimSpitter, SpitterZretro][Cannonball, cannonballretro][Fireball, cannonballfireretro][Hopper, hopperretro][SkullSlug, SkullSlugretro][SkullCrow, SkullCrowretro][ChainChomp, ChainChompretro][ChainLink, ChainLinkretro][ChainLink2, ChainLinkretro][Mask, Maskretro][Revolver, Revolverretro][GasCloud, GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,Bouncerretro][ElectroBall, RetroElectroBall][OrbSmall, RetroOrbSmall][OrbLarge, RetroOrbLarge][ChargeSlug, RetroChargerSlug][Fish, RetroFish][CreepingMass, CreepingMassRetro][Player,PlayerRetro][Frog,Frog][Floater,Ghost][Fireball,Bouncer][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterY][AimSpitter,eyeshooter][Cannonball,cannonballretro][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrowretro][ChainChomp,Mask][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,ChainChomp][ElectroBall,RetroElectroBall][OrbSmall,orbblob][OrbLarge,OrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitchRetro][ThwampEye,ThwampEyeRetro][MiniFrog,MiniFrog][MiniFly,MiniGhost][MiniRat,MiniRat][MiniFish,MiniFish][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    7 {
+    
+tile_graphics Tileretro
+overlay_graphics Overlaysretro
+background_graphics bgretrox
+foreground_graphics none
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+global_particle_1 none
+global_particle_2 none
+global_particle_3 none
+
+palette 46
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+
+# Level Name: conqi1-4
+    music [dante_intro.ogg, dante_loop.ogg]
+
+    palette 154
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlayscaves
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.768377819456336
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle204159855
+
+    platform_physics data/platform_physics/755777314.txt
+
+art_alts[[Player, PlayerRetro][Frog, Frogretro][Floater, RetroGhost][Slug, Slugretro][SkullFloater, SkullFloaterretro][Gasser, Gasserretro][Splatter, Splatterretro][CheepCheep, cheepretro][Bullet, bulletretro][SpitterX, SpitterXretro][SpitterY, SpitterYretro][AimSpitter, SpitterZretro][Cannonball, cannonballretro][Fireball, cannonballfireretro][Hopper, hopperretro][SkullSlug, SkullSlugretro][SkullCrow, SkullCrowretro][ChainChomp, ChainChompretro][ChainLink, ChainLinkretro][ChainLink2, ChainLinkretro][Mask, Maskretro][Revolver, Revolverretro][GasCloud, GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,Bouncerretro][ElectroBall, RetroElectroBall][OrbSmall, RetroOrbSmall][OrbLarge, RetroOrbLarge][ChargeSlug, RetroChargerSlug][Fish, RetroFish][CreepingMass, CreepingMassRetro][Player,PlayerRetro][Frog,Frog][Floater,Ghost][Fireball,Bouncer][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterY][AimSpitter,eyeshooter][Cannonball,cannonballretro][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrowretro][ChainChomp,Mask][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,ChainChomp][ElectroBall,RetroElectroBall][OrbSmall,orbblob][OrbLarge,OrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitchRetro][ThwampEye,ThwampEyeRetro][MiniFrog,MiniFrog][MiniFly,MiniGhost][MiniRat,MiniRat][MiniFish,MiniFish][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    8 {
+    
+tile_graphics Tilecomplex
+overlay_graphics Overlayscomplex
+background_graphics bgsolid
+foreground_graphics None
+palette 51
+music [gymnopedies_intro.ogg, gymnopedies_loop.ogg]
+#music [summer_intro.ogg, summer_loop.ogg]
+ambience cogs.ogg
+        fx_shader_mid cloudripples
+        midfx_layer 2
+ambience_volume 1
+tile_particle_1 spark
+tile_particle_2 spark2
+tile_particle_3 smoke2
+global_particle_1 cold
+global_particle_3 embers
+
+# Level Name: facx-8
+    music [dante_intro.ogg, dante_loop.ogg]
+
+    palette 154
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlayscaves
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.768377819456336
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle204159855
+
+    platform_physics data/platform_physics/755777314.txt
+
+art_alts[[Fireball, ThwampGear][eyebullet, Bullet][Player,PlayerRetro][Frog,Frog][Floater,Ghost][Fireball,Bouncer][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterY][AimSpitter,eyeshooter][Cannonball,cannonballretro][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrowretro][ChainChomp,Mask][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,ChainChomp][ElectroBall,RetroElectroBall][OrbSmall,orbblob][OrbLarge,OrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitchRetro][ThwampEye,ThwampEyeRetro][MiniFrog,MiniFrog][MiniFly,MiniGhost][MiniRat,MiniRat][MiniFish,MiniFish][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    9 {
+    
+tile_graphics Tilecomplex
+overlay_graphics Overlaystox
+background_graphics field2bg
+foreground_graphics None
+fx_shader reflectionripples
+fx_shader_mid radiation
+midfx_graphics SolidBox
+palette 55
+midfx_layer 2
+decoration_1 inst11
+global_particle_1 rocks
+#global_particle_2 mist
+ambience flesh.ogg
+  
+# Level Name: 4db-2
+    music [dante_intro.ogg, dante_loop.ogg]
+
+    palette 154
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlayscaves
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.768377819456336
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle204159855
+
+    platform_physics data/platform_physics/755777314.txt
+
+art_alts[[AimSpitter,eyeshooter][Bullet,eyebullet][MiniFrog, MiniFlea][OrbSmall, OrbBlob2][ChainLink2, None][OrbChomp, MovingOrbBlob][OrbLarge, OrbLarge2][Player,PlayerRetro][Frog,Frog][Floater,Ghost][Fireball,Bouncer][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterY][AimSpitter,eyeshooter][Cannonball,cannonballretro][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrowretro][ChainChomp,Mask][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,ChainChomp][ElectroBall,RetroElectroBall][OrbSmall,orbblob][OrbLarge,OrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitchRetro][ThwampEye,ThwampEyeRetro][MiniFrog,MiniFrog][MiniFly,MiniGhost][MiniRat,MiniRat][MiniFish,MiniFish][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+    10 {
+    
+tile_graphics Tileretro
+overlay_graphics Overlaysretro
+background_graphics bgretrox
+foreground_graphics none
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+global_particle_1 none
+global_particle_2 none
+global_particle_3 none
+
+palette 48
+music [retro/requiem_intro.ogg, retro/requiem_loop.ogg]
+
+# Level Name: conqi3-1x
+    music [dante_intro.ogg, dante_loop.ogg]
+
+    palette 154
+
+    tile_graphics Tiletox2
+
+    overlay_graphics Overlayscaves
+
+    fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2
+shader_param 0.768377819456336
+global_particle_1 None
+global_particle_2 None
+global_particle_3 None
+
+    global_particle_1 MistParticle204159855
+
+    platform_physics data/platform_physics/755777314.txt
+
+art_alts[[Player, PlayerRetro][Frog, Frogretro][Floater, RetroGhost][Slug, Slugretro][SkullFloater, SkullFloaterretro][Gasser, Gasserretro][Splatter, Splatterretro][CheepCheep, cheepretro][Bullet, bulletretro][SpitterX, SpitterXretro][SpitterY, SpitterYretro][AimSpitter, SpitterZretro][Cannonball, cannonballretro][Fireball, cannonballfireretro][Hopper, hopperretro][SkullSlug, SkullSlugretro][SkullCrow, SkullCrowretro][ChainChomp, ChainChompretro][ChainLink, ChainLinkretro][ChainLink2, ChainLinkretro][Mask, Maskretro][Revolver, Revolverretro][GasCloud, GasCloudretro][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,Bouncerretro][ElectroBall, RetroElectroBall][OrbSmall, RetroOrbSmall][OrbLarge, RetroOrbLarge][ChargeSlug, RetroChargerSlug][Fish, RetroFish][CreepingMass, CreepingMassRetro][Player,PlayerRetro][Frog,Frog][Floater,Ghost][Fireball,Bouncer][Slug,Splatter][SkullFloater,SkullCrowretro][Gasser,Gasser][Splatter,Splatter][CheepCheep,CheepCheep][Bullet,bulletretro][SpitterX,SpitterX][SpitterY,SpitterY][AimSpitter,eyeshooter][Cannonball,cannonballretro][Hopper,hopperretro][SkullSlug,SkullSlug][SkullCrow,SkullCrowretro][ChainChomp,Mask][Mask,Mask][Revolver,Revolverretro][GasCloud,GasCloud][Cannon,Cannonretro][Cannonstand,Cannonstandretro][Bouncer,ChainChomp][ElectroBall,RetroElectroBall][OrbSmall,orbblob][OrbLarge,OrbLarge][OrbChomp,orbblob][Fish,RetroFish][ChargeSlug,ChargeSlug][ChainHitch,ChainHitchRetro][ThwampEye,ThwampEyeRetro][MiniFrog,MiniFrog][MiniFly,MiniGhost][MiniRat,MiniRat][MiniFish,MiniFish][MiniWorm,NPCB2]]
+# TS Needs
+    
+
+    }
+
+}

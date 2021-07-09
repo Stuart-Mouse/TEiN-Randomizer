@@ -51,6 +51,9 @@ namespace TEiNRandomizer
         //public ObservableCollection<Pool> Pools { get; private set; } = new ObservableCollection<Pool>();
         public ObservableCollection<PoolCategory> PoolCats { get; private set; } = new ObservableCollection<PoolCategory>();
         public ObservableCollection<PiecePool> PiecePools { get; private set; } = new ObservableCollection<PiecePool>();
+        public ObservableCollection<string> AltLevels { get; private set; } = new ObservableCollection<string>() { "None", "Safe", "Extended", "Crazy", "Insane" };
+        public ObservableCollection<string> AreaTypes { get; private set; } = new ObservableCollection<string>() { "normal", "dark", "cart", "ironcart", "glitch" };
+        public ObservableCollection<int> MaxParticleFXList { get; private set; } = new ObservableCollection<int>() { 1, 2, 3 };
 
         private AppState _appState;
         public AppState AppState
@@ -299,7 +302,7 @@ namespace TEiNRandomizer
 
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            ParticleRanger(); // this function is stupid and I should get rid of it later
+            //ParticleRanger(); // this function is stupid and I should get rid of it later
             Randomizer.myRNG.SeedMe((int)GameSeed);
             await PlayRandomizer();
         }
@@ -319,7 +322,7 @@ namespace TEiNRandomizer
 
         private void SaveSettings_Click(object sender, RoutedEventArgs e)
         {
-            ParticleRanger();
+            //ParticleRanger();
             RSettings.Save("default");
             Randomizer.SaveShadersList(ShadersList);
             foreach (PoolCategory cat in PoolCatList.Items)
@@ -395,12 +398,12 @@ namespace TEiNRandomizer
             ReadyEndIsNighPath();
         }
         
-        private void ParticleRanger() // this function is stupid and I should get rid of it later
-        {
-            if (RSettings.MaxParticleEffects < 0) RSettings.MaxParticleEffects = 0;
-            else if (RSettings.MaxParticleEffects > 3) RSettings.MaxParticleEffects = 3;
-            MaxParticleEffectsTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-        }
+        //private void ParticleRanger() // this function is stupid and I should get rid of it later
+        //{
+        //    if (RSettings.MaxParticleEffects < 0) RSettings.MaxParticleEffects = 0;
+        //    else if (RSettings.MaxParticleEffects > 3) RSettings.MaxParticleEffects = 3;
+        //    MaxParticleEffectsTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+        //}
 
     }
 }

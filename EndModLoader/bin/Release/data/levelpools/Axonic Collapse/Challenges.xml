@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pool enabled="False" source="Mods" author="ButcherBerries" order="1">
+  <tileset>
+    <default>
+		tile_graphics Tilecomplex
+		overlay_graphics Overlayscomplex
+		background_graphics bgsolid
+		foreground_graphics None
+		palette 51
+		music [gymnopedies_intro.ogg, gymnopedies_loop.ogg]
+		#music [summer_intro.ogg, summer_loop.ogg]
+		ambience cogs.ogg
+        fx_shader_mid cloudripples
+        midfx_layer 2
+		ambience_volume 1
+		tile_particle_1 spark
+		tile_particle_2 spark2
+		tile_particle_3 smoke2
+		global_particle_1 cold
+		global_particle_3 embers
+	</default>
+    <art>[Fireball, ThwampGear][eyebullet, Bullet]</art>
+  </tileset>
+  <level name="fac-17" reverse="False" secret="False" />
+  <level name="fac-18" reverse="False" secret="False" />
+  <level name="fac-19" reverse="False" secret="False" />
+</pool>

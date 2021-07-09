@@ -1,0 +1,119 @@
+<root>
+	<templates>
+		<DirectionParticle>
+			PARTICLE_NAME {
+				#system TestParticle
+				movieclip MOVIECLIP
+				max_particles MAX_PARTICLES
+				layer LAYER
+				livebounds [-10, 64, -10, 42]
+				prewarm 20
+				batched true
+						
+				#emitter properties
+				emit_rate EMIT_RATE
+				emit_amount EMIT_AMOUNT
+				emit_direction EMIT_DIRECTION
+				emit_spread EMIT_SPREAD        #0 - 90
+				emit_box EMIT_BOX      #[54, 1],[54, 1],[1, 32],[1, 32]  #54 for "level width", 32 for "level height"    
+				emit_offset EMIT_OFFSET   #[27,-1],[27,33],[-1,16],[55,16]  #27,16 for middle of the level. 0,0 for bottom left. 54,32 for upper right. this one sets it as a strip at the top 
+						
+				#particle animation properties
+				particle_lifetime PARTICLE_LIFETIME
+				initial_speed INITIAL_SPEED
+				initial_rotation INITIAL_ROTATION
+				rotation_speed ROTATION_SPEED
+				force FORCE
+				friction FRICTION
+				size_start SIZE_START
+				size_end 1
+				alpha_start ALPHA_START
+				alpha_end ALPHA_END
+				face_moving_direction FACE_MOVING_DIRECTION
+				speed_scale SPEED_SCALE
+				inherit_speed 0
+				tags []
+			}
+		</DirectionParticle>
+		<MistParticle>
+			PARTICLE_NAME {
+				#system TestParticle
+				movieclip MOVIECLIP
+				max_particles MAX_PARTICLES
+				layer LAYER
+				livebounds [-10, 64, -10, 42]
+				prewarm [20,48]
+
+				batched true
+						
+				#emitter properties
+				emit_rate EMIT_RATE
+				emit_amount EMIT_AMOUNT
+				emit_direction EMIT_DIRECTION
+				emit_spread EMIT_SPREAD
+				emit_box [54, 42]      #54 for "level width", 32 for "level height"    
+				emit_offset [27,16]   #27,16 for middle of the level. 0,0 for bottom left. 54,32 for upper right. this one sets it as a strip at the top 
+						
+				#particle animation properties
+				particle_lifetime PARTICLE_LIFETIME
+				initial_speed [2, 3]
+				initial_rotation 0
+				rotation_speed ROTATION_SPEED
+				force FORCE
+				friction FRICTION
+				size_start SIZE_START
+				size_end SIZE_END
+				alpha_start ALPHA_START
+				alpha_end 0
+				face_moving_direction FACE_MOVING_DIRECTION
+				speed_scale SPEED_SCALE
+				inherit_speed 0
+				#tags [player_bounce_waterfall]
+			}
+		</MistParticle>
+	</templates>
+	<particles>
+		<clip name="soliddrip" 				size="1" 	alpha="1" 	layer="4" density="2" 	face_moving_direction="true" 	speed_scale=".7"/>
+		<clip name="ToxicParticle" 			size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="TestParticle" 			size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="TestParticle2" 			size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="spark" 					size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="spark2" 				size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="spark" 					size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="true" 	speed_scale=".7"/>
+		<clip name="spark2" 				size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="true" 	speed_scale=".7"/>
+		<clip name="Rock" 					size="1" 	alpha="1" 	layer="0" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="Rock2" 					size="1" 	alpha="1" 	layer="2" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="Light" 					size="1" 	alpha=".1"	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="Lightning" 				size="1" 	alpha="1" 	layer="0" density=".2" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="Leaf" 					size="1" 	alpha="1" 	layer="2" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="Leaf2" 					size="1" 	alpha="1" 	layer="2" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="goo1" 					size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="goo2" 					size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="goo1" 					size="12" 	alpha=".5" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="goo2" 					size="12" 	alpha=".5" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="goo1" 					size="1" 	alpha="1" 	layer="4" density="2" 	face_moving_direction="true" 	speed_scale=".7"/>
+		<clip name="goo2" 					size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="true" 	speed_scale=".7"/>
+		<clip name="Gibs" 					size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="Gibs2" 					size="1" 	alpha="1" 	layer="4" density="2" 	face_moving_direction="true" 	speed_scale=".7"/>
+		<clip name="DistortionParticle" 	size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="DistortionParticle2" 	size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="WindCloud" 				size="5" 	alpha=".1"	layer="4" density="1" 	face_moving_direction="true" 	speed_scale="0"/>
+		<clip name="cloud" 					size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="blackpart" 				size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="true" 	speed_scale=".7"/>
+		<clip name="DeathGhost" 			size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="MiniGhost" 				size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="CreepEye" 				size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="Fish" 					size=".6" 	alpha=".5" 	layer="4" density="1" 	face_moving_direction="true" 	speed_scale="0"/>
+		<clip name="MiniDrone" 				size="1" 	alpha="1" 	layer="0" density="1" 	face_moving_direction="true" 	speed_scale="0"/>
+		<clip name="MiniFish" 				size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="true" 	speed_scale="0"/>
+		<clip name="MiniFishWhite" 			size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="true" 	speed_scale="0"/>
+		<clip name="MiniFly" 				size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="MiniWisp" 				size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="TheHeart" 				size=".1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="true" 	speed_scale=".7"/>
+		<clip name="ThwampGear" 			size="1" 	alpha="1" 	layer="1" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="ThwampEye" 				size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="ThwampGearRetro" 		size="1" 	alpha="1" 	layer="1" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="ThwampEyeRetro" 		size="1" 	alpha="1" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+		<clip name="NPCG3" 					size="1" 	alpha=".2" 	layer="4" density="1" 	face_moving_direction="false" 	speed_scale="0"/>
+	</particles>
+</root>

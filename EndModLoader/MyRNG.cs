@@ -22,7 +22,6 @@ namespace TEiNRandomizer
         public void SeedMe(int seed)
         {
             rand = new Random(seed);
-
         }
 
         public UInt32 GetUInt32()

@@ -388,7 +388,7 @@ namespace TEiNRandomizer
                     {
                         sw.Write($"v{j + 1}-{i + 1}.lvl,");
                     }
-                    sw.Write($"v-npc{j + 1}.lvl,");
+                    if (j != settings.NumAreas-1) sw.Write($"v-npc{j + 1}.lvl,");
                 }
                 sw.Write("v-end.lvl");
             }
@@ -545,7 +545,7 @@ namespace TEiNRandomizer
             Console.WriteLine("start randomizer");
 
             // This is an odd spot for this but I don't know where else to put it right now (sets areatype to glitch if dead racer mode is turned on)
-            if (settings.DeadRacer) settings.AreaType = AreaTypes.glitch;
+            if (settings.DeadRacer) settings.AreaType = "glitch";
 
             var drawpool = new List<Level> { };     // make drawpool
             try

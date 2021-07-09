@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <default>
+    <NumLevels>10</NumLevels>
+    <NumAreas>4</NumAreas>
+    <UseDefaultMusic>false</UseDefaultMusic>
+    <UseDefaultPalettes>false</UseDefaultPalettes>
+    <MusicPerLevel>false</MusicPerLevel>
+    <PalettePerLevel>true</PalettePerLevel>
+    <DoShaders>true</DoShaders>
+    <DoParticles>true</DoParticles>
+    <DoOverlays>true</DoOverlays>
+    <DoTileGraphics>true</DoTileGraphics>
+    <DoNevermoreTilt>true</DoNevermoreTilt>
+    <DoExodusWobble>true</DoExodusWobble>
+    <DoNPCs>false</DoNPCs>
+    <UseAreaTileset>true</UseAreaTileset>
+    <CacheRuns>0</CacheRuns>
+    <AutoRefresh>false</AutoRefresh>
+    <AreaType>0</AreaType>
+    <RepeatTolerance>0</RepeatTolerance>
+    <AltLevel>2</AltLevel>
+    <MaxParticles>1000</MaxParticles>
+    <GenerateCustomParticles>true</GenerateCustomParticles>
+    <GameDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\</GameDirectory>
+    <ModSaveDirectory>[Saved Mods]/</ModSaveDirectory>
+    <MaxParticleEffects>2</MaxParticleEffects>
+    <ManualLoad>false</ManualLoad>
+    <DoCorruptions>true</DoCorruptions>
+    <MirrorMode>false</MirrorMode>
+    <DeadRacer>false</DeadRacer>
+    <CartLives>19</CartLives>
+    <DoPhysics>true</DoPhysics>
+    <PlatformPhysics>true</PlatformPhysics>
+    <PlayerPhysics>false</PlayerPhysics>
+    <WaterPhysics>false</WaterPhysics>
+    <LowGravPhysics>false</LowGravPhysics>
+    <LevelMerge>false</LevelMerge>
+    <ToolsInDirectory>tools/input/</ToolsInDirectory>
+    <ToolsOutDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\tilemaps\</ToolsOutDirectory>
+  </default>
+</root>

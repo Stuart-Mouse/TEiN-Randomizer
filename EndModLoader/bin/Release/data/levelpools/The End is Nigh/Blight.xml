@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pool enabled="True" source="The End is Nigh" author="" order="12">
+  <tileset>
+    <default>
+		tile_graphics Tilecaves
+		overlay_graphics Overlayscaves
+		background_graphics ch3bg
+		foreground_graphics None
+		fx_shader reflectionripples
+		fx_shader_mid distortionparticles
+		palette 12
+		midfx_layer 1
+		music [1812_intro_dark.ogg, 1812_loop_dark.ogg]
+		global_particle_1 none
+		global_particle_2 none
+		global_particle_3 none
+	</default>
+    <need>
+		tile_particle_1 waterfall
+		tile_particle_2 waterfall_splash
+		tile_particle_3 bubbles
+		tile_particle_4 drip
+	</need>
+    <art>[OrbSmall, orbblob][ChainLink, None][ChainLink2, None]</art>
+  </tileset>
+  <level name="3d-1" reverse="False" secret="False" />
+  <level name="3d-2" reverse="False" secret="False" />
+  <level name="3d-3" reverse="False" secret="False" />
+  <level name="3d-4" reverse="False" secret="False" />
+  <level name="3d-5" reverse="False" secret="False" />
+  <level name="3d-6" reverse="False" secret="False" />
+  <level name="3d-7" reverse="False" secret="False" />
+  <level name="3d-8" reverse="False" secret="False" />
+  <level name="3d-9" reverse="False" secret="False" />
+  <level name="3d-10" reverse="False" secret="False" />
+  <level name="3d-11" reverse="False" secret="False" />
+  <level name="3d-12" reverse="False" secret="False" />
+  <level name="3d-13" reverse="False" secret="False" />
+  <level name="3d-14" reverse="False" secret="False" />
+  <level name="3d-15" reverse="False" secret="False" />
+  <level name="3d-16" reverse="False" secret="False" />
+  <level name="3d-17" reverse="False" secret="False" />
+  <level name="3d-18" reverse="False" secret="False" />
+  <level name="3d-19" reverse="False" secret="False" />
+  <level name="3d-20" reverse="False" secret="False" />
+</pool>

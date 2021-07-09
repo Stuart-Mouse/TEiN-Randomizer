@@ -1,12 +1,21 @@
-﻿using System;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Xml.Linq;
+using TEiNRandomizer.Properties;
 
 namespace TEiNRandomizer
 {
-    public enum AreaTypes
+    public enum AreaTypesEnum
     {
         normal,
         dark,
@@ -15,7 +24,9 @@ namespace TEiNRandomizer
         glitch
     }
 
-    public enum AltLevels
+    
+
+    public enum AltLevelsEnum
     {
         None,
         Safe,

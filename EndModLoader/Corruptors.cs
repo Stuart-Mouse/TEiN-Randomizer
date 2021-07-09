@@ -45,11 +45,11 @@ namespace TEiNRandomizer
             //AddTiles(ref level, 10);
             //TotalChaos(ref level);
 
-            if (Randomizer.settings.AreaType == AreaTypes.normal) TumorRandomizer(ref level);
-            else if (Randomizer.settings.AreaType == AreaTypes.cart) RingRandomizer(ref level);
-            else if (Randomizer.settings.AreaType == AreaTypes.dark) TumorRemover(ref level);
-            else if (Randomizer.settings.AreaType == AreaTypes.glitch) TumorRemover(ref level);
-            else if (Randomizer.settings.AreaType == AreaTypes.ironcart) TumorRemover(ref level);
+            if (Randomizer.settings.AreaType == "normal") TumorRandomizer(ref level);
+            else if (Randomizer.settings.AreaType == "cart") RingRandomizer(ref level);
+            else if (Randomizer.settings.AreaType == "dark") TumorRemover(ref level);
+            else if (Randomizer.settings.AreaType == "glitch") TumorRemover(ref level);
+            else if (Randomizer.settings.AreaType == "ironcart") TumorRemover(ref level);
 
             //PlaceTile(ref level, TileID.Feral, 5);
             //PlaceTile(ref level, TileID.Mother, 10, TileID.Solid, true);

@@ -24,6 +24,63 @@ namespace TEiNRandomizer
         public string Extras { get; set; }
         public string ArtAlts { get; set; }
 
+        //private void GetArtAltsOld(RandomizerSettings settings)
+        //{
+        //    ArtAlts = "";
+
+        //    try
+        //    {
+        //        var doc = XDocument.Load("data/art_alts.xml");
+        //        if (settings.AltLevel == AltLevels.Safe)
+        //        {
+        //            foreach (var art in doc.Root.Element("safe").Elements())
+        //            {
+        //                var alts = Randomizer.ElementToArray(art);
+        //                ArtAlts += "[" + art.Name + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
+        //            }
+        //        }
+        //        else if (settings.AltLevel == AltLevels.Extended)
+        //        {
+        //            foreach (var art in doc.Root.Element("extended").Elements())
+        //            {
+        //                var alts = Randomizer.ElementToArray(art);
+        //                ArtAlts += "[" + art.Name + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
+        //            }
+        //        }
+        //        else if (settings.AltLevel == AltLevels.Crazy)
+        //        {
+        //            foreach (var set in doc.Root.Element("crazy").Elements())
+        //            {
+        //                var alts = Randomizer.ElementToArray(set);
+        //                foreach (var alt in alts)
+        //                {
+        //                    ArtAlts += "[" + alt.Trim() + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
+        //                }
+        //            }
+        //        }
+        //        else if (settings.AltLevel == AltLevels.Insane)
+        //        {
+        //            var alts = Randomizer.ElementToArray(doc.Root.Element("insane"));
+        //            foreach (var alt in alts)
+        //            {
+        //                ArtAlts += "[" + alt.Trim() + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
+        //            }
+        //            //ArtAlts += "[ChainLink, None][ChainLink2, None]";
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        MessageBox.Show(
+        //                "Art Alt Error",
+        //                "Warning",
+        //                MessageBoxButton.OK,
+        //                MessageBoxImage.Information,
+        //                MessageBoxResult.OK
+        //            );
+        //        throw;
+        //    }
+        //    return;
+        //}
         private void GetArtAlts(RandomizerSettings settings)
         {
             ArtAlts = "";
@@ -31,7 +88,7 @@ namespace TEiNRandomizer
             try
             {
                 var doc = XDocument.Load("data/art_alts.xml");
-                if (settings.AltLevel == AltLevels.Safe)
+                if (settings.AltLevel == "Safe")
                 {
                     foreach (var art in doc.Root.Element("safe").Elements())
                     {
@@ -39,7 +96,7 @@ namespace TEiNRandomizer
                         ArtAlts += "[" + art.Name + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
                     }
                 }
-                else if (settings.AltLevel == AltLevels.Extended)
+                else if (settings.AltLevel == "Extended")
                 {
                     foreach (var art in doc.Root.Element("extended").Elements())
                     {
@@ -47,7 +104,7 @@ namespace TEiNRandomizer
                         ArtAlts += "[" + art.Name + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
                     }
                 }
-                else if (settings.AltLevel == AltLevels.Crazy)
+                else if (settings.AltLevel == "Crazy")
                 {
                     foreach (var set in doc.Root.Element("crazy").Elements())
                     {
@@ -58,7 +115,7 @@ namespace TEiNRandomizer
                         }
                     }
                 }
-                else if (settings.AltLevel == AltLevels.Insane)
+                else if (settings.AltLevel == "Insane")
                 {
                     var alts = Randomizer.ElementToArray(doc.Root.Element("insane"));
                     foreach (var alt in alts)
@@ -81,6 +138,7 @@ namespace TEiNRandomizer
             }
             return;
         }
+        
 
         public Tileset(RandomizerSettings settings, bool isAreaTS)
         {
@@ -147,7 +205,7 @@ namespace TEiNRandomizer
                     Extras += "global_particle_1 None\nglobal_particle_2 None\nglobal_particle_3 None tile_particle_1 None tile_particle_2 None tile_particle_3 None tile_particle_4 None tile_particle_5 None\n";
 
                 // generate Art Alts
-                if (settings.AltLevel != AltLevels.None)
+                if (settings.AltLevel != "None")
                     GetArtAlts(settings);
 
                 // extras and physics

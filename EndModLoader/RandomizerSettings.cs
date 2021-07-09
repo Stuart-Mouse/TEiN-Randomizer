@@ -24,9 +24,9 @@ namespace TEiNRandomizer
         public bool UseAreaTileset { get; set; }
         public int CacheRuns { get; set; }
         //public int NumShuffles { get; set; }
-        public AreaTypes AreaType { get; set; }
+        public string AreaType { get; set; }
         public int RepeatTolerance { get; set; }
-        public AltLevels AltLevel { get; set; }
+        public string AltLevel { get; set; }
         public string AttachToTS { get; set; }
         public bool AutoRefresh { get; set; }
         public bool GenerateCustomParticles { get; set; }
@@ -69,8 +69,8 @@ namespace TEiNRandomizer
             UseAreaTileset = true;
             CacheRuns = 0;
             //NumShuffles = 0;
-            AreaType = AreaTypes.normal;
-            AltLevel = AltLevels.Safe;
+            AreaType = "normal";
+            AltLevel = "Safe";
             RepeatTolerance = 0;
             AttachToTS = null;
             GenerateCustomParticles = false;
@@ -143,9 +143,9 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(CacheRuns), CacheRuns);
                     //element.SetElementValue(nameof(NumShuffles), NumShuffles);
                     element.SetElementValue(nameof(AutoRefresh), AutoRefresh);
-                    element.SetElementValue(nameof(AreaType), (int)AreaType);
+                    element.SetElementValue(nameof(AreaType), (string)AreaType);
                     element.SetElementValue(nameof(RepeatTolerance), RepeatTolerance);
-                    element.SetElementValue(nameof(AltLevel), (int)AltLevel);
+                    element.SetElementValue(nameof(AltLevel), (string)AltLevel);
                     element.SetElementValue(nameof(AttachToTS), AttachToTS);
                     element.SetElementValue(nameof(MaxParticles), MaxParticles);
                     element.SetElementValue(nameof(GenerateCustomParticles), GenerateCustomParticles);
@@ -193,9 +193,9 @@ namespace TEiNRandomizer
                     UseAreaTileset = (bool)element.Element(nameof(UseAreaTileset));
                     CacheRuns = (int)element.Element(nameof(CacheRuns));
                     //NumShuffles = (int)element.Element(nameof(NumShuffles));
-                    AreaType = (AreaTypes)(int)element.Element(nameof(AreaType));
+                    AreaType = (string)element.Element(nameof(AreaType));
                     RepeatTolerance = (int)element.Element(nameof(RepeatTolerance));
-                    AltLevel = (AltLevels)(int)element.Element(nameof(AltLevel));
+                    AltLevel = (string)element.Element(nameof(AltLevel));
                     AutoRefresh = (bool)element.Element(nameof(AutoRefresh));
                     AttachToTS = (string)element.Element(nameof(AttachToTS));
                     GenerateCustomParticles = (bool)element.Element(nameof(GenerateCustomParticles));

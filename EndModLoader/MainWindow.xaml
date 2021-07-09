@@ -164,13 +164,12 @@
                                         <ColumnDefinition Width="20"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" Text="Area Type: "/>
-                                    <TextBox Grid.Column="1" Name="AreaTypeTextBox" Margin="0,0,0,0">
-                                        <TextBox.Text>
-                                            <Binding Path="RSettings.AreaType" UpdateSourceTrigger="PropertyChanged"/>
-                                        </TextBox.Text>
-                                    </TextBox>
-                                    <Button Grid.Column="2"  Name="AreaTypeDownButton" Content="-" Width="15" Click="AreaTypeDec" HorizontalAlignment="Right"/>
-                                    <Button Grid.Column="3"  Name="AreaTypeUpButton" Content="+" Width="15" Click="AreaTypeInc" />
+                                    <StackPanel  Grid.Column="1"
+                                     Grid.Row="6">
+                                        <ComboBox Name="AreaTypesBox" SelectedItem="{Binding RSettings.AreaType}" ItemsSource="{Binding AreaTypes}" Text="Area Types" IsEditable="false" IsReadOnly="false"/>
+                                        <!--<TextBlock Text="{Binding ElementName=AreaTypesBox, Path=SelectedItem}"/>
+                                        <TextBlock Text="{Binding RSettings.AreaType}"/>-->
+                                    </StackPanel>
                                 </Grid>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -197,20 +196,12 @@
                                 <CheckBox Content="Randomize Physics" IsChecked="{Binding RSettings.DoPhysics}" />
                                 <!--<CheckBox Content="Randomize NPCs" IsChecked="{Binding RSettings.DoNPCs}" />-->
                                 <TextBlock Text="Randomize Art Alts: " />
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="30"/>
-                                        <ColumnDefinition Width="80"/>
-                                        <ColumnDefinition Width="30"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="0"  Name="AltDownButton" Padding="5,0" Content="-" Width="25" Click="AltLevelDec" Margin="0,0" />
-                                    <TextBox Grid.Column="1" Name="AltLevelTextBox" Width="70">
-                                        <TextBox.Text>
-                                            <Binding Path="RSettings.AltLevel" UpdateSourceTrigger="PropertyChanged"/>
-                                        </TextBox.Text>
-                                    </TextBox>
-                                    <Button Grid.Column="2"  Name="AltUpButton" Padding="5,0" Content="+" Width="25" Click="AltLevelInc" Margin="0,0" />
-                                </Grid>
+                                <StackPanel  Grid.Column="1"
+                                     Grid.Row="6">
+                                    <ComboBox Name="comboBox1" SelectedItem="{Binding RSettings.AltLevel}" ItemsSource="{Binding AltLevels}" Text="Alt Levels" IsEditable="false" IsReadOnly="false" Width="120"/>
+                                    <!--<TextBlock Text="{Binding ElementName=comboBox1, Path=SelectedItem}"/>
+                                    <TextBlock Text="{Binding RSettings.AltLevel}"/>-->
+                                </StackPanel>
                                 <CheckBox Content="Can Apply Nevermore Tilt" IsChecked="{Binding RSettings.DoNevermoreTilt}" />
                                 <CheckBox Content="Can Apply Exodus Wobble" IsChecked="{Binding RSettings.DoExodusWobble}" />
                                 <CheckBox Content="Corrupt Levels" IsChecked="{Binding RSettings.DoCorruptions}" />
@@ -277,11 +268,12 @@
                                             <ColumnDefinition Width="50"/>
                                         </Grid.ColumnDefinitions>
                                         <TextBlock Grid.Column="0" Text="Max Particle Effects: "/>
-                                        <TextBox Grid.Column="1" Name="MaxParticleEffectsTextBox" Margin="0,0,0,0">
-                                            <TextBox.Text>
-                                                <Binding Path="RSettings.MaxParticleEffects" UpdateSourceTrigger="PropertyChanged"/>
-                                            </TextBox.Text>
-                                        </TextBox>
+                                        <StackPanel  Grid.Column="1"
+                                            Grid.Row="6">
+                                            <ComboBox Name="MaxParticleFXBox" SelectedItem="{Binding RSettings.MaxParticleEffects}" ItemsSource="{Binding MaxParticleFXList}" Text="Max Particles" IsEditable="false" IsReadOnly="false"/>
+                                            <!--<TextBlock Text="{Binding ElementName=MaxParticleFXBox, Path=SelectedItem}"/>
+                                            <TextBlock Text="{Binding RSettings.MaxParticleEffects}"/>-->
+                                        </StackPanel>
                                     </Grid>
                                     <Separator Margin="0,5"/>
                                 </ListBox>
