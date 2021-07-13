@@ -28,33 +28,40 @@ namespace TEiNRandomizer
         {
             string TSAppend = "";
 
-            //RandomCrumbles(ref level);
-            //SpikeStrips(ref level);
-            //Crushers(ref level);
-            //OverlayStuff(ref level);
-            if (SmartCorruptActive(ref level))
+            // smart corruptions done first
+            if (Randomizer.settings.CRSmart)
             {
-                TSAppend += "\n#added by level corruptor\nfx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2";
+                if (SmartCorruptActive(ref level))
+                {
+                    TSAppend += "\n#added by level corruptor\nfx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2\n";
+                }
             }
-            //SmartCorruptOverlay(ref level);
+            if (Randomizer.settings.CROverlays) SmartCorruptOverlay(ref level);
 
-            //if (AddEnemies(ref level, 5))
-            //{
-            //    TSAppend += "fx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2";
-            //}
-            //AddTiles(ref level, 10);
-            //TotalChaos(ref level);
+            // tumor remover second
+            if (Randomizer.settings.CRTumors)
+            {
+                if (Randomizer.settings.AreaType == "normal") TumorRandomizer(ref level);
+                else if (Randomizer.settings.AreaType == "cart") RingRandomizer(ref level);
+                else if (Randomizer.settings.AreaType == "dark") TumorRemover(ref level);
+                else if (Randomizer.settings.AreaType == "glitch") TumorRemover(ref level);
+                else if (Randomizer.settings.AreaType == "ironcart") TumorRemover(ref level);
+            }
 
-            if (Randomizer.settings.AreaType == "normal") TumorRandomizer(ref level);
-            else if (Randomizer.settings.AreaType == "cart") RingRandomizer(ref level);
-            else if (Randomizer.settings.AreaType == "dark") TumorRemover(ref level);
-            else if (Randomizer.settings.AreaType == "glitch") TumorRemover(ref level);
-            else if (Randomizer.settings.AreaType == "ironcart") TumorRemover(ref level);
-
+            // add enemies and add tiles is next
+            AddTiles(ref level, Randomizer.settings.CRAddTiles);
+            if (AddEnemies(ref level, Randomizer.settings.CRAddEnemies))
+            {
+                TSAppend += "\nfx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2\n";
+            }
             //PlaceTile(ref level, TileID.Feral, 5);
-            //PlaceTile(ref level, TileID.Mother, 10, TileID.Solid, true);
-
-            //WaterLevel(ref level);
+            
+            // last priority is the various ones below
+            //if (Randomizer.settings.CRChaos) TotalChaos(ref level);
+            if (Randomizer.settings.CRCrumbles) RandomCrumbles(ref level);
+            if (Randomizer.settings.CRSpikeStrips) SpikeStrips(ref level);
+            if (Randomizer.settings.CRCrushers) Crushers(ref level);
+            if (Randomizer.settings.CRWaterLevels && Randomizer.myRNG.CoinFlip()) WaterLevel(ref level);
 
             return TSAppend;
         }

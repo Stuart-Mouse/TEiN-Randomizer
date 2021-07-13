@@ -57,6 +57,12 @@ namespace TEiNRandomizer
         //                            </ TextBox >
         //                            < Button Grid.Column= "2"  Name= "AltUpButton" Padding= "5,0" Content= "+" Width= "25" Click= "AltLevelInc" Margin= "0,0" />
         //                        </ Grid >
+
+        public void WriteSettingsCodeForMe_Click(object sender, RoutedEventArgs e)
+        {
+            RSettings.WriteNewSaveFunc();
+        }
+
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             //GameSeed = Randomizer.myRNG.GetUInt32();
@@ -72,7 +78,24 @@ namespace TEiNRandomizer
             Randomizer.Randomize(this, "savemod");
             MessageBox.Show($"Mod Saved to {RSettings.ModSaveDirectory}.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-
+        private void OpenTilesetsOptionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (File.Exists("data/AttachToTS.txt"))
+                    Process.Start("notepad.exe", "data/AttachToTS.txt");
+                else { File.Create("data/AttachToTS.txt"); Process.Start("data/AttachToTS.txt"); }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show($"Error opening or creating AttachToTS.txt.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void ReloadTilesetsOptionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            RSettings.AttachToTS = File.ReadAllText("data/AttachToTS.txt");
+            MessageBox.Show($"Tilesets options succesfully reloaded.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
         private void LevelGenTestButton_Click(object sender, RoutedEventArgs e)
         {
             LevelGenerator.LoadPieces(this);

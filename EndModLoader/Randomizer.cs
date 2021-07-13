@@ -20,6 +20,7 @@ namespace TEiNRandomizer
         public static string[] NPCSoundIDs;
         public static List<string> NPCTexts;
         public static string saveDir;
+        public static MainWindow sender;
         //static int prevRuns = 0;
 
         static void FlipCSV(string path)
@@ -283,6 +284,13 @@ namespace TEiNRandomizer
 
                 for (int j = 0; j < settings.NumAreas; j++) // area loop
                 {
+                    if (settings.RandomizeAreaType)
+                    { 
+                        settings.AreaType = sender.AreaTypes[myRNG.rand.Next(0, 5)];
+                        //if (settings.AreaType == "glitch")
+                        //    settings.DeadRacer = myRNG.CoinFlip();
+                    }
+                    
                     var areatileset = new Tileset(settings, true) { };
 
                     sw.WriteLine("v" + (j + 1).ToString() + " {\n    area_name \"TEiN Randomizer\"\n    area_label_frame 0\n    background_graphics neverbg\n    area_type " + settings.AreaType.ToString() + "\n");
@@ -537,6 +545,8 @@ namespace TEiNRandomizer
             ShadersList = mw.ShadersList;
             settings = mw.RSettings;
             //prevRuns = mw.PrevRuns;
+            sender = mw;
+            
 
             saveDir = settings.GameDirectory;
             if (args == "savemod")
@@ -657,8 +667,8 @@ namespace TEiNRandomizer
             }
             catch (Exception ex) { Console.WriteLine($"Error creating map. Exception {ex}"); MessageBox.Show($"Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try{
-                if (settings.LevelMerge) TileMapsMerged();
-                else TileMaps();     // copy tilemaps to game folder
+                //if (settings.LevelMerge) TileMapsMerged();
+                TileMaps();     // copy tilemaps to game folder
                 //Console.WriteLine("tilemaps");
             }
             catch (Exception ex) { Console.WriteLine($"Error copying tilemaps. Exception {ex}"); MessageBox.Show($"Error copying tilemaps. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }

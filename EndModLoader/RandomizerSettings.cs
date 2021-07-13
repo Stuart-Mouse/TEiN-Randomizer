@@ -1,10 +1,11 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Xml.Linq;
 
 namespace TEiNRandomizer
 {
-    
+
     public class RandomizerSettings
     {
         public int NumLevels { get; set; }
@@ -47,6 +48,19 @@ namespace TEiNRandomizer
         public bool WaterPhysics { get; set; }
         public bool LowGravPhysics { get; set; }
         public bool LevelMerge { get; set; }
+        public bool RandomizeAreaType { get; set; }
+
+        // Corruptor Settings
+        public bool CRSmart { get; set; }
+        public bool CROverlays { get; set; }
+        public bool CRTumors { get; set; }
+        public int CRAddTiles { get; set; }
+        public int CRAddEnemies { get; set; }
+        public bool CRSpikeStrips { get; set; }
+        public bool CRCrumbles { get; set; }
+        public bool CRCrushers { get; set; }
+        public bool CRChaos { get; set; }
+        public bool CRWaterLevels { get; set; }
 
         public RandomizerSettings()
         {
@@ -91,6 +105,17 @@ namespace TEiNRandomizer
             ModSaveDirectory = "[Saved Mods]/";
             ToolsInDirectory = "tools/input/";
             ToolsOutDirectory = "tools/output/";
+            RandomizeAreaType = false;
+            CRSmart = true;
+            CROverlays = false;
+            CRTumors = true;
+            CRAddTiles = 0;
+            CRAddEnemies = 0;
+            CRSpikeStrips = false;
+            CRCrumbles = false;
+            CRCrushers = false;
+            CRChaos = false;
+            CRWaterLevels = false;
 
             try
             {
@@ -146,7 +171,7 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(AreaType), (string)AreaType);
                     element.SetElementValue(nameof(RepeatTolerance), RepeatTolerance);
                     element.SetElementValue(nameof(AltLevel), (string)AltLevel);
-                    element.SetElementValue(nameof(AttachToTS), AttachToTS);
+                    //element.SetElementValue(nameof(AttachToTS), AttachToTS);
                     element.SetElementValue(nameof(MaxParticles), MaxParticles);
                     element.SetElementValue(nameof(GenerateCustomParticles), GenerateCustomParticles);
                     element.SetElementValue(nameof(GameDirectory), GameDirectory);
@@ -165,10 +190,22 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(LevelMerge), LevelMerge);
                     element.SetElementValue(nameof(ToolsInDirectory), ToolsInDirectory);
                     element.SetElementValue(nameof(ToolsOutDirectory), ToolsOutDirectory);
+                    element.SetElementValue(nameof(RandomizeAreaType), RandomizeAreaType);
+                    element.SetElementValue(nameof(CRSmart), CRSmart);
+                    element.SetElementValue(nameof(CROverlays), CROverlays);
+                    element.SetElementValue(nameof(CRTumors), CRTumors);
+                    element.SetElementValue(nameof(CRAddTiles), CRAddTiles);
+                    element.SetElementValue(nameof(CRAddEnemies), CRAddEnemies);
+                    element.SetElementValue(nameof(CRSpikeStrips), CRSpikeStrips);
+                    element.SetElementValue(nameof(CRCrumbles), CRCrumbles);
+                    element.SetElementValue(nameof(CRCrushers), CRCrushers);
+                    element.SetElementValue(nameof(CRChaos), CRChaos);
+                    element.SetElementValue(nameof(CRWaterLevels), CRWaterLevels);
                 }
             }
             doc.Save("data/RandomizerSettings.xml");
         }
+
         public void Load(string preset)
         {
             var doc = XDocument.Load("data/RandomizerSettings.xml");    // open levelpool file
@@ -196,8 +233,8 @@ namespace TEiNRandomizer
                     AreaType = (string)element.Element(nameof(AreaType));
                     RepeatTolerance = (int)element.Element(nameof(RepeatTolerance));
                     AltLevel = (string)element.Element(nameof(AltLevel));
+                    //AttachToTS = (string)element.Element(nameof(AttachToTS));
                     AutoRefresh = (bool)element.Element(nameof(AutoRefresh));
-                    AttachToTS = (string)element.Element(nameof(AttachToTS));
                     GenerateCustomParticles = (bool)element.Element(nameof(GenerateCustomParticles));
                     MaxParticles = (int)element.Element(nameof(MaxParticles));
                     GameDirectory = (string)element.Element(nameof(GameDirectory));
@@ -216,6 +253,49 @@ namespace TEiNRandomizer
                     LevelMerge = (bool)element.Element(nameof(LevelMerge));
                     ToolsInDirectory = (string)element.Element(nameof(ToolsInDirectory));
                     ToolsOutDirectory = (string)element.Element(nameof(ToolsOutDirectory));
+                    RandomizeAreaType = (bool)element.Element(nameof(RandomizeAreaType));
+                    CRSmart = (bool)element.Element(nameof(CRSmart));
+                    CROverlays = (bool)element.Element(nameof(CROverlays));
+                    CRTumors = (bool)element.Element(nameof(CRTumors));
+                    CRAddTiles = (int)element.Element(nameof(CRAddTiles));
+                    CRAddEnemies = (int)element.Element(nameof(CRAddEnemies));
+                    CRSpikeStrips = (bool)element.Element(nameof(CRSpikeStrips));
+                    CRCrumbles = (bool)element.Element(nameof(CRCrumbles));
+                    CRCrushers = (bool)element.Element(nameof(CRCrushers));
+                    CRChaos = (bool)element.Element(nameof(CRChaos));
+                    CRWaterLevels = (bool)element.Element(nameof(CRWaterLevels));
+                }
+            }
+            AttachToTS = File.ReadAllText("data/AttachToTS.txt");
+        }
+
+        public void WriteNewSaveFunc()
+        {
+            Type SettingsType = this.GetType();
+            System.Reflection.MemberInfo[] SettingsMembers = SettingsType.GetMembers();
+            using (StreamWriter sw = File.CreateText("data/newsavefunc.txt"))
+            {
+                sw.WriteLine("Members List");
+                for (int i = 0; i < SettingsMembers.Length; i++)
+                {
+                    var Member = SettingsMembers[i];
+                    sw.WriteLine(Member.Name);
+                }
+
+                sw.WriteLine("Save Function");
+                for (int i = 0; i < SettingsMembers.Length; i++)
+                {
+                    var Member = SettingsMembers[i];
+                    sw.WriteLine($"element.SetElementValue(nameof({Member.Name}), {Member.Name});");
+                }
+
+                sw.WriteLine("Load Function");
+                for (int i = 0; i < SettingsMembers.Length; i++)
+                {
+                    var Member = SettingsMembers[i];
+                    //var thing = Member.CustomAttributes;
+                    //var thingtwo = thing.
+                    sw.WriteLine($"{Member.Name} = (bool)element.Element(nameof({Member.Name}));");
                 }
             }
         }

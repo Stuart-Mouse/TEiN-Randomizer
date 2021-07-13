@@ -14,12 +14,12 @@
     <DoNevermoreTilt>true</DoNevermoreTilt>
     <DoExodusWobble>true</DoExodusWobble>
     <DoNPCs>false</DoNPCs>
-    <UseAreaTileset>true</UseAreaTileset>
+    <UseAreaTileset>false</UseAreaTileset>
     <CacheRuns>0</CacheRuns>
     <AutoRefresh>false</AutoRefresh>
     <AreaType>normal</AreaType>
     <RepeatTolerance>0</RepeatTolerance>
-    <AltLevel>Extended</AltLevel>
+    <AltLevel>Safe</AltLevel>
     <MaxParticles>1000</MaxParticles>
     <GenerateCustomParticles>true</GenerateCustomParticles>
     <GameDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\</GameDirectory>
@@ -29,7 +29,7 @@
     <DoCorruptions>true</DoCorruptions>
     <MirrorMode>false</MirrorMode>
     <DeadRacer>false</DeadRacer>
-    <CartLives>69</CartLives>
+    <CartLives>19</CartLives>
     <DoPhysics>true</DoPhysics>
     <PlatformPhysics>false</PlatformPhysics>
     <PlayerPhysics>false</PlayerPhysics>
@@ -38,5 +38,16 @@
     <LevelMerge>false</LevelMerge>
     <ToolsInDirectory>tools/input/</ToolsInDirectory>
     <ToolsOutDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\tilemaps\</ToolsOutDirectory>
+    <RandomizeAreaType>false</RandomizeAreaType>
+    <CRSmart>false</CRSmart>
+    <CROverlays>false</CROverlays>
+    <CRTumors>true</CRTumors>
+    <CRAddTiles>0</CRAddTiles>
+    <CRAddEnemies>0</CRAddEnemies>
+    <CRSpikeStrips>false</CRSpikeStrips>
+    <CRCrumbles>true</CRCrumbles>
+    <CRCrushers>false</CRCrushers>
+    <CRChaos>false</CRChaos>
+    <CRWaterLevels>false</CRWaterLevels>
   </default>
 </root>

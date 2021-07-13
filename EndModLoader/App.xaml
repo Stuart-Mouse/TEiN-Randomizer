@@ -129,6 +129,38 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="CorruptionSettings" TargetType="ListBox">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RSettings.DoCorruptions}" Value="False">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ParticleSettings" TargetType="ListBox">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RSettings.DoParticles}" Value="False">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="PhysicsSettings" TargetType="ListBox">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RSettings.DoPhysics}" Value="False">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ShaderSettings" TargetType="ListBox">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RSettings.DoShaders}" Value="False">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="FolderSelectButton" TargetType="Button">
             <Setter Property="Content" Value="Set Path" />
             <Setter Property="HorizontalAlignment" Value="Right" />
@@ -218,17 +250,17 @@
         </Style>
 
         <DataTemplate x:Key="PieceListTemplate">
-            <StackPanel Margin="0.2,5,0.2,5" Orientation="Vertical" >
+            <StackPanel Margin="0,3,0,3" Orientation="Vertical" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*"    />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding Name}" Style="{StaticResource TitleText}" Margin="10,0,0,0"/>
-                    <TextBlock Grid.Column="1" Text="{Binding NumPieces}" Style="{StaticResource DescriptionText}"/>
-                    <CheckBox Grid.Column="2" Content="Enabled" IsChecked="{Binding Active}" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Column="0" Text="{Binding Name}" Style="{StaticResource TitleText}" FontSize="13" Margin="10,0,0,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding NumPieces}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right"/>
+                    <CheckBox Grid.Column="2" Content="Enabled" IsChecked="{Binding Active}" Margin="10,0,10,0" HorizontalAlignment="Right"/>
                 </Grid>
                 <Separator Margin="2.5, 5, 2.5, 0"/>
                 <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->
@@ -236,17 +268,17 @@
         </DataTemplate>
         
         <DataTemplate x:Key="PoolListTemplate" >
-            <StackPanel Margin="0.2,5,0.2,5" Orientation="Vertical">
+            <StackPanel Margin="0,3,0,3" Orientation="Vertical">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*"    />
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding Name}" Style="{StaticResource TitleText}" Margin="10,0,0,0"/>
-                    <TextBlock Grid.Column="1" Text="{Binding NumLevels}" Style="{StaticResource DescriptionText}"/>
-                    <CheckBox Grid.Column="2" Content="Enabled" IsChecked="{Binding Active}" HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Column="0" Text="{Binding Name}" Style="{StaticResource TitleText}" FontSize="13" Margin="10,0,0,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding NumLevels}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right"/>
+                    <CheckBox Grid.Column="2" Content="Enabled" IsChecked="{Binding Active}" Margin="10,0,10,0" HorizontalAlignment="Right"/>
                 </Grid>
                 <Separator Margin="2.5, 5, 2.5, 0"/>
                 <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->
@@ -258,10 +290,10 @@
         </DataTemplate>
         
         <DataTemplate x:Key="PoolCatListTemplate" x:Name="PoolCatItem">
-            <StackPanel MouseDown="NoClick" Focusable="False" >
+            <StackPanel MouseDown="NoClick" Focusable="False" Width="350">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="20" />
+                        <RowDefinition Height="20"  />
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <Canvas Grid.Row="0" Background="LightGray">
@@ -271,9 +303,9 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <CheckBox Grid.Column="0" IsChecked="{Binding Enabled}" Margin="5,2,0,0"/>
+                            <CheckBox  Grid.Column="0" IsChecked="{Binding Enabled}" Margin="5,2,0,0"/>
                             <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" FontSize="11" FontFamily="Segoe UI Semibold" HorizontalAlignment="Left" Margin="5,2,0,0"/>
-                            <TextBlock Grid.Column="2" Text="{Binding Author}" Margin="10,0,0,0" Style="{StaticResource DescriptionText}"/>
+                            <TextBlock Grid.Column="2" Text="{Binding Author}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right"/>
                         </Grid>
                     </Canvas>
                     <ListBox Grid.Row="1" Name="PoolList" MouseDown="NoClick"

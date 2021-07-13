@@ -2,7 +2,7 @@
 <root>
   <default>
     <NumLevels>10</NumLevels>
-    <NumAreas>4</NumAreas>
+    <NumAreas>20</NumAreas>
     <UseDefaultMusic>false</UseDefaultMusic>
     <UseDefaultPalettes>false</UseDefaultPalettes>
     <MusicPerLevel>false</MusicPerLevel>
@@ -17,9 +17,9 @@
     <UseAreaTileset>true</UseAreaTileset>
     <CacheRuns>0</CacheRuns>
     <AutoRefresh>false</AutoRefresh>
-    <AreaType>0</AreaType>
+    <AreaType>normal</AreaType>
     <RepeatTolerance>0</RepeatTolerance>
-    <AltLevel>2</AltLevel>
+    <AltLevel>Extended</AltLevel>
     <MaxParticles>1000</MaxParticles>
     <GenerateCustomParticles>true</GenerateCustomParticles>
     <GameDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\</GameDirectory>
@@ -29,9 +29,9 @@
     <DoCorruptions>true</DoCorruptions>
     <MirrorMode>false</MirrorMode>
     <DeadRacer>false</DeadRacer>
-    <CartLives>19</CartLives>
+    <CartLives>69</CartLives>
     <DoPhysics>true</DoPhysics>
-    <PlatformPhysics>true</PlatformPhysics>
+    <PlatformPhysics>false</PlatformPhysics>
     <PlayerPhysics>false</PlayerPhysics>
     <WaterPhysics>false</WaterPhysics>
     <LowGravPhysics>false</LowGravPhysics>

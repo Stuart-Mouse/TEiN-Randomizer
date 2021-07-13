@@ -1,0 +1,468 @@
+Members List
+get_DoPhysics
+set_DoPhysics
+get_PlatformPhysics
+set_PlatformPhysics
+get_PlayerPhysics
+set_PlayerPhysics
+get_WaterPhysics
+set_WaterPhysics
+get_LowGravPhysics
+set_LowGravPhysics
+get_LevelMerge
+set_LevelMerge
+get_RandomizeAreaType
+set_RandomizeAreaType
+get_CRSmart
+set_CRSmart
+get_CROverlays
+set_CROverlays
+get_CRTumors
+set_CRTumors
+get_CRAddTiles
+set_CRAddTiles
+get_CRAddEnemies
+set_CRAddEnemies
+get_CRSpikeStrips
+set_CRSpikeStrips
+get_CRCrumbles
+set_CRCrumbles
+get_CRCrushers
+set_CRCrushers
+get_CRChaos
+set_CRChaos
+get_CRWaterLevels
+set_CRWaterLevels
+Save
+Load
+WriteNewSaveFunc
+get_NumLevels
+set_NumLevels
+get_NumAreas
+set_NumAreas
+get_UseDefaultMusic
+set_UseDefaultMusic
+get_UseDefaultPalettes
+set_UseDefaultPalettes
+get_PalettePerLevel
+set_PalettePerLevel
+get_MusicPerLevel
+set_MusicPerLevel
+get_DoShaders
+set_DoShaders
+get_DoParticles
+set_DoParticles
+get_DoOverlays
+set_DoOverlays
+get_DoTileGraphics
+set_DoTileGraphics
+get_DoNevermoreTilt
+set_DoNevermoreTilt
+get_DoExodusWobble
+set_DoExodusWobble
+get_DoNPCs
+set_DoNPCs
+get_UseAreaTileset
+set_UseAreaTileset
+get_CacheRuns
+set_CacheRuns
+get_AreaType
+set_AreaType
+get_RepeatTolerance
+set_RepeatTolerance
+get_AltLevel
+set_AltLevel
+get_AttachToTS
+set_AttachToTS
+get_AutoRefresh
+set_AutoRefresh
+get_GenerateCustomParticles
+set_GenerateCustomParticles
+get_MaxParticles
+set_MaxParticles
+get_GameDirectory
+set_GameDirectory
+get_ModSaveDirectory
+set_ModSaveDirectory
+get_ToolsInDirectory
+set_ToolsInDirectory
+get_ToolsOutDirectory
+set_ToolsOutDirectory
+get_MaxParticleEffects
+set_MaxParticleEffects
+get_MirrorMode
+set_MirrorMode
+get_DoCorruptions
+set_DoCorruptions
+get_ManualLoad
+set_ManualLoad
+get_DeadRacer
+set_DeadRacer
+get_CartLives
+set_CartLives
+Equals
+GetHashCode
+GetType
+ToString
+.ctor
+NumLevels
+NumAreas
+UseDefaultMusic
+UseDefaultPalettes
+PalettePerLevel
+MusicPerLevel
+DoShaders
+DoParticles
+DoOverlays
+DoTileGraphics
+DoNevermoreTilt
+DoExodusWobble
+DoNPCs
+UseAreaTileset
+CacheRuns
+AreaType
+RepeatTolerance
+AltLevel
+AttachToTS
+AutoRefresh
+GenerateCustomParticles
+MaxParticles
+GameDirectory
+ModSaveDirectory
+ToolsInDirectory
+ToolsOutDirectory
+MaxParticleEffects
+MirrorMode
+DoCorruptions
+ManualLoad
+DeadRacer
+CartLives
+DoPhysics
+PlatformPhysics
+PlayerPhysics
+WaterPhysics
+LowGravPhysics
+LevelMerge
+RandomizeAreaType
+CRSmart
+CROverlays
+CRTumors
+CRAddTiles
+CRAddEnemies
+CRSpikeStrips
+CRCrumbles
+CRCrushers
+CRChaos
+CRWaterLevels
+Save Function
+element.SetElementValue(nameof(get_DoPhysics), get_DoPhysics);
+element.SetElementValue(nameof(set_DoPhysics), set_DoPhysics);
+element.SetElementValue(nameof(get_PlatformPhysics), get_PlatformPhysics);
+element.SetElementValue(nameof(set_PlatformPhysics), set_PlatformPhysics);
+element.SetElementValue(nameof(get_PlayerPhysics), get_PlayerPhysics);
+element.SetElementValue(nameof(set_PlayerPhysics), set_PlayerPhysics);
+element.SetElementValue(nameof(get_WaterPhysics), get_WaterPhysics);
+element.SetElementValue(nameof(set_WaterPhysics), set_WaterPhysics);
+element.SetElementValue(nameof(get_LowGravPhysics), get_LowGravPhysics);
+element.SetElementValue(nameof(set_LowGravPhysics), set_LowGravPhysics);
+element.SetElementValue(nameof(get_LevelMerge), get_LevelMerge);
+element.SetElementValue(nameof(set_LevelMerge), set_LevelMerge);
+element.SetElementValue(nameof(get_RandomizeAreaType), get_RandomizeAreaType);
+element.SetElementValue(nameof(set_RandomizeAreaType), set_RandomizeAreaType);
+element.SetElementValue(nameof(get_CRSmart), get_CRSmart);
+element.SetElementValue(nameof(set_CRSmart), set_CRSmart);
+element.SetElementValue(nameof(get_CROverlays), get_CROverlays);
+element.SetElementValue(nameof(set_CROverlays), set_CROverlays);
+element.SetElementValue(nameof(get_CRTumors), get_CRTumors);
+element.SetElementValue(nameof(set_CRTumors), set_CRTumors);
+element.SetElementValue(nameof(get_CRAddTiles), get_CRAddTiles);
+element.SetElementValue(nameof(set_CRAddTiles), set_CRAddTiles);
+element.SetElementValue(nameof(get_CRAddEnemies), get_CRAddEnemies);
+element.SetElementValue(nameof(set_CRAddEnemies), set_CRAddEnemies);
+element.SetElementValue(nameof(get_CRSpikeStrips), get_CRSpikeStrips);
+element.SetElementValue(nameof(set_CRSpikeStrips), set_CRSpikeStrips);
+element.SetElementValue(nameof(get_CRCrumbles), get_CRCrumbles);
+element.SetElementValue(nameof(set_CRCrumbles), set_CRCrumbles);
+element.SetElementValue(nameof(get_CRCrushers), get_CRCrushers);
+element.SetElementValue(nameof(set_CRCrushers), set_CRCrushers);
+element.SetElementValue(nameof(get_CRChaos), get_CRChaos);
+element.SetElementValue(nameof(set_CRChaos), set_CRChaos);
+element.SetElementValue(nameof(get_CRWaterLevels), get_CRWaterLevels);
+element.SetElementValue(nameof(set_CRWaterLevels), set_CRWaterLevels);
+element.SetElementValue(nameof(Save), Save);
+element.SetElementValue(nameof(Load), Load);
+element.SetElementValue(nameof(WriteNewSaveFunc), WriteNewSaveFunc);
+element.SetElementValue(nameof(get_NumLevels), get_NumLevels);
+element.SetElementValue(nameof(set_NumLevels), set_NumLevels);
+element.SetElementValue(nameof(get_NumAreas), get_NumAreas);
+element.SetElementValue(nameof(set_NumAreas), set_NumAreas);
+element.SetElementValue(nameof(get_UseDefaultMusic), get_UseDefaultMusic);
+element.SetElementValue(nameof(set_UseDefaultMusic), set_UseDefaultMusic);
+element.SetElementValue(nameof(get_UseDefaultPalettes), get_UseDefaultPalettes);
+element.SetElementValue(nameof(set_UseDefaultPalettes), set_UseDefaultPalettes);
+element.SetElementValue(nameof(get_PalettePerLevel), get_PalettePerLevel);
+element.SetElementValue(nameof(set_PalettePerLevel), set_PalettePerLevel);
+element.SetElementValue(nameof(get_MusicPerLevel), get_MusicPerLevel);
+element.SetElementValue(nameof(set_MusicPerLevel), set_MusicPerLevel);
+element.SetElementValue(nameof(get_DoShaders), get_DoShaders);
+element.SetElementValue(nameof(set_DoShaders), set_DoShaders);
+element.SetElementValue(nameof(get_DoParticles), get_DoParticles);
+element.SetElementValue(nameof(set_DoParticles), set_DoParticles);
+element.SetElementValue(nameof(get_DoOverlays), get_DoOverlays);
+element.SetElementValue(nameof(set_DoOverlays), set_DoOverlays);
+element.SetElementValue(nameof(get_DoTileGraphics), get_DoTileGraphics);
+element.SetElementValue(nameof(set_DoTileGraphics), set_DoTileGraphics);
+element.SetElementValue(nameof(get_DoNevermoreTilt), get_DoNevermoreTilt);
+element.SetElementValue(nameof(set_DoNevermoreTilt), set_DoNevermoreTilt);
+element.SetElementValue(nameof(get_DoExodusWobble), get_DoExodusWobble);
+element.SetElementValue(nameof(set_DoExodusWobble), set_DoExodusWobble);
+element.SetElementValue(nameof(get_DoNPCs), get_DoNPCs);
+element.SetElementValue(nameof(set_DoNPCs), set_DoNPCs);
+element.SetElementValue(nameof(get_UseAreaTileset), get_UseAreaTileset);
+element.SetElementValue(nameof(set_UseAreaTileset), set_UseAreaTileset);
+element.SetElementValue(nameof(get_CacheRuns), get_CacheRuns);
+element.SetElementValue(nameof(set_CacheRuns), set_CacheRuns);
+element.SetElementValue(nameof(get_AreaType), get_AreaType);
+element.SetElementValue(nameof(set_AreaType), set_AreaType);
+element.SetElementValue(nameof(get_RepeatTolerance), get_RepeatTolerance);
+element.SetElementValue(nameof(set_RepeatTolerance), set_RepeatTolerance);
+element.SetElementValue(nameof(get_AltLevel), get_AltLevel);
+element.SetElementValue(nameof(set_AltLevel), set_AltLevel);
+element.SetElementValue(nameof(get_AttachToTS), get_AttachToTS);
+element.SetElementValue(nameof(set_AttachToTS), set_AttachToTS);
+element.SetElementValue(nameof(get_AutoRefresh), get_AutoRefresh);
+element.SetElementValue(nameof(set_AutoRefresh), set_AutoRefresh);
+element.SetElementValue(nameof(get_GenerateCustomParticles), get_GenerateCustomParticles);
+element.SetElementValue(nameof(set_GenerateCustomParticles), set_GenerateCustomParticles);
+element.SetElementValue(nameof(get_MaxParticles), get_MaxParticles);
+element.SetElementValue(nameof(set_MaxParticles), set_MaxParticles);
+element.SetElementValue(nameof(get_GameDirectory), get_GameDirectory);
+element.SetElementValue(nameof(set_GameDirectory), set_GameDirectory);
+element.SetElementValue(nameof(get_ModSaveDirectory), get_ModSaveDirectory);
+element.SetElementValue(nameof(set_ModSaveDirectory), set_ModSaveDirectory);
+element.SetElementValue(nameof(get_ToolsInDirectory), get_ToolsInDirectory);
+element.SetElementValue(nameof(set_ToolsInDirectory), set_ToolsInDirectory);
+element.SetElementValue(nameof(get_ToolsOutDirectory), get_ToolsOutDirectory);
+element.SetElementValue(nameof(set_ToolsOutDirectory), set_ToolsOutDirectory);
+element.SetElementValue(nameof(get_MaxParticleEffects), get_MaxParticleEffects);
+element.SetElementValue(nameof(set_MaxParticleEffects), set_MaxParticleEffects);
+element.SetElementValue(nameof(get_MirrorMode), get_MirrorMode);
+element.SetElementValue(nameof(set_MirrorMode), set_MirrorMode);
+element.SetElementValue(nameof(get_DoCorruptions), get_DoCorruptions);
+element.SetElementValue(nameof(set_DoCorruptions), set_DoCorruptions);
+element.SetElementValue(nameof(get_ManualLoad), get_ManualLoad);
+element.SetElementValue(nameof(set_ManualLoad), set_ManualLoad);
+element.SetElementValue(nameof(get_DeadRacer), get_DeadRacer);
+element.SetElementValue(nameof(set_DeadRacer), set_DeadRacer);
+element.SetElementValue(nameof(get_CartLives), get_CartLives);
+element.SetElementValue(nameof(set_CartLives), set_CartLives);
+element.SetElementValue(nameof(Equals), Equals);
+element.SetElementValue(nameof(GetHashCode), GetHashCode);
+element.SetElementValue(nameof(GetType), GetType);
+element.SetElementValue(nameof(ToString), ToString);
+element.SetElementValue(nameof(.ctor), .ctor);
+element.SetElementValue(nameof(NumLevels), NumLevels);
+element.SetElementValue(nameof(NumAreas), NumAreas);
+element.SetElementValue(nameof(UseDefaultMusic), UseDefaultMusic);
+element.SetElementValue(nameof(UseDefaultPalettes), UseDefaultPalettes);
+element.SetElementValue(nameof(PalettePerLevel), PalettePerLevel);
+element.SetElementValue(nameof(MusicPerLevel), MusicPerLevel);
+element.SetElementValue(nameof(DoShaders), DoShaders);
+element.SetElementValue(nameof(DoParticles), DoParticles);
+element.SetElementValue(nameof(DoOverlays), DoOverlays);
+element.SetElementValue(nameof(DoTileGraphics), DoTileGraphics);
+element.SetElementValue(nameof(DoNevermoreTilt), DoNevermoreTilt);
+element.SetElementValue(nameof(DoExodusWobble), DoExodusWobble);
+element.SetElementValue(nameof(DoNPCs), DoNPCs);
+element.SetElementValue(nameof(UseAreaTileset), UseAreaTileset);
+element.SetElementValue(nameof(CacheRuns), CacheRuns);
+element.SetElementValue(nameof(AreaType), AreaType);
+element.SetElementValue(nameof(RepeatTolerance), RepeatTolerance);
+element.SetElementValue(nameof(AltLevel), AltLevel);
+element.SetElementValue(nameof(AttachToTS), AttachToTS);
+element.SetElementValue(nameof(AutoRefresh), AutoRefresh);
+element.SetElementValue(nameof(GenerateCustomParticles), GenerateCustomParticles);
+element.SetElementValue(nameof(MaxParticles), MaxParticles);
+element.SetElementValue(nameof(GameDirectory), GameDirectory);
+element.SetElementValue(nameof(ModSaveDirectory), ModSaveDirectory);
+element.SetElementValue(nameof(ToolsInDirectory), ToolsInDirectory);
+element.SetElementValue(nameof(ToolsOutDirectory), ToolsOutDirectory);
+element.SetElementValue(nameof(MaxParticleEffects), MaxParticleEffects);
+element.SetElementValue(nameof(MirrorMode), MirrorMode);
+element.SetElementValue(nameof(DoCorruptions), DoCorruptions);
+element.SetElementValue(nameof(ManualLoad), ManualLoad);
+element.SetElementValue(nameof(DeadRacer), DeadRacer);
+element.SetElementValue(nameof(CartLives), CartLives);
+element.SetElementValue(nameof(DoPhysics), DoPhysics);
+element.SetElementValue(nameof(PlatformPhysics), PlatformPhysics);
+element.SetElementValue(nameof(PlayerPhysics), PlayerPhysics);
+element.SetElementValue(nameof(WaterPhysics), WaterPhysics);
+element.SetElementValue(nameof(LowGravPhysics), LowGravPhysics);
+element.SetElementValue(nameof(LevelMerge), LevelMerge);
+element.SetElementValue(nameof(RandomizeAreaType), RandomizeAreaType);
+element.SetElementValue(nameof(CRSmart), CRSmart);
+element.SetElementValue(nameof(CROverlays), CROverlays);
+element.SetElementValue(nameof(CRTumors), CRTumors);
+element.SetElementValue(nameof(CRAddTiles), CRAddTiles);
+element.SetElementValue(nameof(CRAddEnemies), CRAddEnemies);
+element.SetElementValue(nameof(CRSpikeStrips), CRSpikeStrips);
+element.SetElementValue(nameof(CRCrumbles), CRCrumbles);
+element.SetElementValue(nameof(CRCrushers), CRCrushers);
+element.SetElementValue(nameof(CRChaos), CRChaos);
+element.SetElementValue(nameof(CRWaterLevels), CRWaterLevels);
+Load Function
+get_DoPhysics = (bool)element.Element(nameof(get_DoPhysics));
+set_DoPhysics = (bool)element.Element(nameof(set_DoPhysics));
+get_PlatformPhysics = (bool)element.Element(nameof(get_PlatformPhysics));
+set_PlatformPhysics = (bool)element.Element(nameof(set_PlatformPhysics));
+get_PlayerPhysics = (bool)element.Element(nameof(get_PlayerPhysics));
+set_PlayerPhysics = (bool)element.Element(nameof(set_PlayerPhysics));
+get_WaterPhysics = (bool)element.Element(nameof(get_WaterPhysics));
+set_WaterPhysics = (bool)element.Element(nameof(set_WaterPhysics));
+get_LowGravPhysics = (bool)element.Element(nameof(get_LowGravPhysics));
+set_LowGravPhysics = (bool)element.Element(nameof(set_LowGravPhysics));
+get_LevelMerge = (bool)element.Element(nameof(get_LevelMerge));
+set_LevelMerge = (bool)element.Element(nameof(set_LevelMerge));
+get_RandomizeAreaType = (bool)element.Element(nameof(get_RandomizeAreaType));
+set_RandomizeAreaType = (bool)element.Element(nameof(set_RandomizeAreaType));
+get_CRSmart = (bool)element.Element(nameof(get_CRSmart));
+set_CRSmart = (bool)element.Element(nameof(set_CRSmart));
+get_CROverlays = (bool)element.Element(nameof(get_CROverlays));
+set_CROverlays = (bool)element.Element(nameof(set_CROverlays));
+get_CRTumors = (bool)element.Element(nameof(get_CRTumors));
+set_CRTumors = (bool)element.Element(nameof(set_CRTumors));
+get_CRAddTiles = (bool)element.Element(nameof(get_CRAddTiles));
+set_CRAddTiles = (bool)element.Element(nameof(set_CRAddTiles));
+get_CRAddEnemies = (bool)element.Element(nameof(get_CRAddEnemies));
+set_CRAddEnemies = (bool)element.Element(nameof(set_CRAddEnemies));
+get_CRSpikeStrips = (bool)element.Element(nameof(get_CRSpikeStrips));
+set_CRSpikeStrips = (bool)element.Element(nameof(set_CRSpikeStrips));
+get_CRCrumbles = (bool)element.Element(nameof(get_CRCrumbles));
+set_CRCrumbles = (bool)element.Element(nameof(set_CRCrumbles));
+get_CRCrushers = (bool)element.Element(nameof(get_CRCrushers));
+set_CRCrushers = (bool)element.Element(nameof(set_CRCrushers));
+get_CRChaos = (bool)element.Element(nameof(get_CRChaos));
+set_CRChaos = (bool)element.Element(nameof(set_CRChaos));
+get_CRWaterLevels = (bool)element.Element(nameof(get_CRWaterLevels));
+set_CRWaterLevels = (bool)element.Element(nameof(set_CRWaterLevels));
+Save = (bool)element.Element(nameof(Save));
+Load = (bool)element.Element(nameof(Load));
+WriteNewSaveFunc = (bool)element.Element(nameof(WriteNewSaveFunc));
+get_NumLevels = (bool)element.Element(nameof(get_NumLevels));
+set_NumLevels = (bool)element.Element(nameof(set_NumLevels));
+get_NumAreas = (bool)element.Element(nameof(get_NumAreas));
+set_NumAreas = (bool)element.Element(nameof(set_NumAreas));
+get_UseDefaultMusic = (bool)element.Element(nameof(get_UseDefaultMusic));
+set_UseDefaultMusic = (bool)element.Element(nameof(set_UseDefaultMusic));
+get_UseDefaultPalettes = (bool)element.Element(nameof(get_UseDefaultPalettes));
+set_UseDefaultPalettes = (bool)element.Element(nameof(set_UseDefaultPalettes));
+get_PalettePerLevel = (bool)element.Element(nameof(get_PalettePerLevel));
+set_PalettePerLevel = (bool)element.Element(nameof(set_PalettePerLevel));
+get_MusicPerLevel = (bool)element.Element(nameof(get_MusicPerLevel));
+set_MusicPerLevel = (bool)element.Element(nameof(set_MusicPerLevel));
+get_DoShaders = (bool)element.Element(nameof(get_DoShaders));
+set_DoShaders = (bool)element.Element(nameof(set_DoShaders));
+get_DoParticles = (bool)element.Element(nameof(get_DoParticles));
+set_DoParticles = (bool)element.Element(nameof(set_DoParticles));
+get_DoOverlays = (bool)element.Element(nameof(get_DoOverlays));
+set_DoOverlays = (bool)element.Element(nameof(set_DoOverlays));
+get_DoTileGraphics = (bool)element.Element(nameof(get_DoTileGraphics));
+set_DoTileGraphics = (bool)element.Element(nameof(set_DoTileGraphics));
+get_DoNevermoreTilt = (bool)element.Element(nameof(get_DoNevermoreTilt));
+set_DoNevermoreTilt = (bool)element.Element(nameof(set_DoNevermoreTilt));
+get_DoExodusWobble = (bool)element.Element(nameof(get_DoExodusWobble));
+set_DoExodusWobble = (bool)element.Element(nameof(set_DoExodusWobble));
+get_DoNPCs = (bool)element.Element(nameof(get_DoNPCs));
+set_DoNPCs = (bool)element.Element(nameof(set_DoNPCs));
+get_UseAreaTileset = (bool)element.Element(nameof(get_UseAreaTileset));
+set_UseAreaTileset = (bool)element.Element(nameof(set_UseAreaTileset));
+get_CacheRuns = (bool)element.Element(nameof(get_CacheRuns));
+set_CacheRuns = (bool)element.Element(nameof(set_CacheRuns));
+get_AreaType = (bool)element.Element(nameof(get_AreaType));
+set_AreaType = (bool)element.Element(nameof(set_AreaType));
+get_RepeatTolerance = (bool)element.Element(nameof(get_RepeatTolerance));
+set_RepeatTolerance = (bool)element.Element(nameof(set_RepeatTolerance));
+get_AltLevel = (bool)element.Element(nameof(get_AltLevel));
+set_AltLevel = (bool)element.Element(nameof(set_AltLevel));
+get_AttachToTS = (bool)element.Element(nameof(get_AttachToTS));
+set_AttachToTS = (bool)element.Element(nameof(set_AttachToTS));
+get_AutoRefresh = (bool)element.Element(nameof(get_AutoRefresh));
+set_AutoRefresh = (bool)element.Element(nameof(set_AutoRefresh));
+get_GenerateCustomParticles = (bool)element.Element(nameof(get_GenerateCustomParticles));
+set_GenerateCustomParticles = (bool)element.Element(nameof(set_GenerateCustomParticles));
+get_MaxParticles = (bool)element.Element(nameof(get_MaxParticles));
+set_MaxParticles = (bool)element.Element(nameof(set_MaxParticles));
+get_GameDirectory = (bool)element.Element(nameof(get_GameDirectory));
+set_GameDirectory = (bool)element.Element(nameof(set_GameDirectory));
+get_ModSaveDirectory = (bool)element.Element(nameof(get_ModSaveDirectory));
+set_ModSaveDirectory = (bool)element.Element(nameof(set_ModSaveDirectory));
+get_ToolsInDirectory = (bool)element.Element(nameof(get_ToolsInDirectory));
+set_ToolsInDirectory = (bool)element.Element(nameof(set_ToolsInDirectory));
+get_ToolsOutDirectory = (bool)element.Element(nameof(get_ToolsOutDirectory));
+set_ToolsOutDirectory = (bool)element.Element(nameof(set_ToolsOutDirectory));
+get_MaxParticleEffects = (bool)element.Element(nameof(get_MaxParticleEffects));
+set_MaxParticleEffects = (bool)element.Element(nameof(set_MaxParticleEffects));
+get_MirrorMode = (bool)element.Element(nameof(get_MirrorMode));
+set_MirrorMode = (bool)element.Element(nameof(set_MirrorMode));
+get_DoCorruptions = (bool)element.Element(nameof(get_DoCorruptions));
+set_DoCorruptions = (bool)element.Element(nameof(set_DoCorruptions));
+get_ManualLoad = (bool)element.Element(nameof(get_ManualLoad));
+set_ManualLoad = (bool)element.Element(nameof(set_ManualLoad));
+get_DeadRacer = (bool)element.Element(nameof(get_DeadRacer));
+set_DeadRacer = (bool)element.Element(nameof(set_DeadRacer));
+get_CartLives = (bool)element.Element(nameof(get_CartLives));
+set_CartLives = (bool)element.Element(nameof(set_CartLives));
+Equals = (bool)element.Element(nameof(Equals));
+GetHashCode = (bool)element.Element(nameof(GetHashCode));
+GetType = (bool)element.Element(nameof(GetType));
+ToString = (bool)element.Element(nameof(ToString));
+.ctor = (bool)element.Element(nameof(.ctor));
+NumLevels = (bool)element.Element(nameof(NumLevels));
+NumAreas = (bool)element.Element(nameof(NumAreas));
+UseDefaultMusic = (bool)element.Element(nameof(UseDefaultMusic));
+UseDefaultPalettes = (bool)element.Element(nameof(UseDefaultPalettes));
+PalettePerLevel = (bool)element.Element(nameof(PalettePerLevel));
+MusicPerLevel = (bool)element.Element(nameof(MusicPerLevel));
+DoShaders = (bool)element.Element(nameof(DoShaders));
+DoParticles = (bool)element.Element(nameof(DoParticles));
+DoOverlays = (bool)element.Element(nameof(DoOverlays));
+DoTileGraphics = (bool)element.Element(nameof(DoTileGraphics));
+DoNevermoreTilt = (bool)element.Element(nameof(DoNevermoreTilt));
+DoExodusWobble = (bool)element.Element(nameof(DoExodusWobble));
+DoNPCs = (bool)element.Element(nameof(DoNPCs));
+UseAreaTileset = (bool)element.Element(nameof(UseAreaTileset));
+CacheRuns = (bool)element.Element(nameof(CacheRuns));
+AreaType = (bool)element.Element(nameof(AreaType));
+RepeatTolerance = (bool)element.Element(nameof(RepeatTolerance));
+AltLevel = (bool)element.Element(nameof(AltLevel));
+AttachToTS = (bool)element.Element(nameof(AttachToTS));
+AutoRefresh = (bool)element.Element(nameof(AutoRefresh));
+GenerateCustomParticles = (bool)element.Element(nameof(GenerateCustomParticles));
+MaxParticles = (bool)element.Element(nameof(MaxParticles));
+GameDirectory = (bool)element.Element(nameof(GameDirectory));
+ModSaveDirectory = (bool)element.Element(nameof(ModSaveDirectory));
+ToolsInDirectory = (bool)element.Element(nameof(ToolsInDirectory));
+ToolsOutDirectory = (bool)element.Element(nameof(ToolsOutDirectory));
+MaxParticleEffects = (bool)element.Element(nameof(MaxParticleEffects));
+MirrorMode = (bool)element.Element(nameof(MirrorMode));
+DoCorruptions = (bool)element.Element(nameof(DoCorruptions));
+ManualLoad = (bool)element.Element(nameof(ManualLoad));
+DeadRacer = (bool)element.Element(nameof(DeadRacer));
+CartLives = (bool)element.Element(nameof(CartLives));
+DoPhysics = (bool)element.Element(nameof(DoPhysics));
+PlatformPhysics = (bool)element.Element(nameof(PlatformPhysics));
+PlayerPhysics = (bool)element.Element(nameof(PlayerPhysics));
+WaterPhysics = (bool)element.Element(nameof(WaterPhysics));
+LowGravPhysics = (bool)element.Element(nameof(LowGravPhysics));
+LevelMerge = (bool)element.Element(nameof(LevelMerge));
+RandomizeAreaType = (bool)element.Element(nameof(RandomizeAreaType));
+CRSmart = (bool)element.Element(nameof(CRSmart));
+CROverlays = (bool)element.Element(nameof(CROverlays));
+CRTumors = (bool)element.Element(nameof(CRTumors));
+CRAddTiles = (bool)element.Element(nameof(CRAddTiles));
+CRAddEnemies = (bool)element.Element(nameof(CRAddEnemies));
+CRSpikeStrips = (bool)element.Element(nameof(CRSpikeStrips));
+CRCrumbles = (bool)element.Element(nameof(CRCrumbles));
+CRCrushers = (bool)element.Element(nameof(CRCrushers));
+CRChaos = (bool)element.Element(nameof(CRChaos));
+CRWaterLevels = (bool)element.Element(nameof(CRWaterLevels));
