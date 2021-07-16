@@ -194,12 +194,12 @@ namespace TEiNRandomizer
 
             if (AppState == AppState.ReadyToPlay)
             {
-                if (File.Exists(EndIsNighPath + "backup/TheEndIsNigh -backup.exe")) // If backup exe exists restore regular from it
-                {
-                    File.Delete(Path.Combine(EndIsNighPath + ExeName));
-                    File.Copy(Path.Combine(EndIsNighPath + "backup/TheEndIsNigh -backup.exe"), Path.Combine(EndIsNighPath + ExeName));
-                }
-                else File.Copy(Path.Combine(EndIsNighPath + ExeName), Path.Combine(EndIsNighPath + "backup/TheEndIsNigh -backup.exe")); //Creates backup exe
+                //if (File.Exists(EndIsNighPath + "backup/TheEndIsNigh -backup.exe")) // If backup exe exists restore regular from it
+                //{
+                //    File.Delete(Path.Combine(EndIsNighPath + ExeName));
+                //    File.Copy(Path.Combine(EndIsNighPath + "backup/TheEndIsNigh -backup.exe"), Path.Combine(EndIsNighPath + ExeName));
+                //}
+                //else File.Copy(Path.Combine(EndIsNighPath + ExeName), Path.Combine(EndIsNighPath + "backup/TheEndIsNigh -backup.exe")); //Creates backup exe
 
                 var contains = FileSystem.ContainedFolders(EndIsNighPath, FileSystem.ModFolders).ToList();
                 if (contains.Count != 0)

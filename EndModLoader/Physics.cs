@@ -73,7 +73,7 @@ namespace TEiNRandomizer
 
             if (Randomizer.myRNG.rand.Next(0, 10) == 0)
             {
-                fastfall_gravity *= -1;
+                fastfall_gravity  *= -1;
                 fastfall_jerkdown *= -1;
                 fastfall_maxspeed *= -1;
             }
@@ -193,9 +193,11 @@ namespace TEiNRandomizer
             max_fallspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             maxspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             runspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            ground_friction *= Math.Min(0.99, (double)Randomizer.myRNG.rand.Next(lower, upper) / 100);
-            stop_friction *= Math.Min(0.99, (double)Randomizer.myRNG.rand.Next(lower, upper) / 100);
-            air_friction *= Math.Min(0.99, (double)Randomizer.myRNG.rand.Next(lower, upper) / 100);
+
+            ground_friction = (double)Randomizer.myRNG.rand.Next(7000, 9000) / 10000;
+            stop_friction = (double)Randomizer.myRNG.rand.Next(7000, 8500) / 10000;
+            air_friction = (double)Randomizer.myRNG.rand.Next(7000, 10000) / 10000;
+
             fastfall_gravity *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             fastfall_jerkdown *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             fastfall_maxspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
@@ -283,25 +285,27 @@ namespace TEiNRandomizer
             int lower = 50;
             int upper = 201;
 
-            gravity *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            leniency *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            max_fallspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            maxspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            runspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            ground_friction *= Math.Min(0.99, (double)Randomizer.myRNG.rand.Next(lower, upper) / 100);
-            stop_friction *= Math.Min(0.99, (double)Randomizer.myRNG.rand.Next(lower, upper) / 100);
-            air_friction *= Math.Min(0.99, (double)Randomizer.myRNG.rand.Next(lower, upper) / 100);
-            fastfall_gravity *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            fastfall_jerkdown *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            fastfall_maxspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            float_time *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            jumpheight *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            release_jumpheight *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            gravity                 *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            leniency                *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            max_fallspeed           *= (double)Randomizer.myRNG.rand.Next(75, upper) / 100;
+            maxspeed                *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            runspeed                *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+
+            ground_friction = (double)Randomizer.myRNG.rand.Next(7000, 9000) / 10000;
+            stop_friction = (double)Randomizer.myRNG.rand.Next(7000, 8500) / 10000;
+            air_friction = (double)Randomizer.myRNG.rand.Next(7000, 10000) / 10000;
+
+            fastfall_gravity        *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            fastfall_jerkdown       *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            fastfall_maxspeed       *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            float_time              *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            jumpheight              *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            release_jumpheight      *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             longjump_slidethreshold *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            longjump_speed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            longjump_height *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            longjump_airfriction *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            ledgejump_height *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            longjump_speed          *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            longjump_height         *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            longjump_airfriction    *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            ledgejump_height        *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             //enemy_bounceheight_nojump *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             //enemy_bounceheight_jump *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             //mush_bounceheight_nojump *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
@@ -374,7 +378,7 @@ namespace TEiNRandomizer
             // Lower and Upper Bounds (in %)
             double minimum = 0;
             int lower = 30;
-            int upper = 301;
+            int upper = 201;
 
             // Alter Values
             MovingPlatformSpeedLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
@@ -390,11 +394,11 @@ namespace TEiNRandomizer
             CrumblingPlatformGravitytLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             CrumblingPlatformGravitytMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             CrumblingPlatformGravitytHigh *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmasherSpeedLow = (double)Randomizer.myRNG.rand.Next(5, 60);
+            SmasherSpeedLow = (double)Randomizer.myRNG.rand.Next(5, 40);
             SmasherDelayLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmasherSpeedMed = (double)Randomizer.myRNG.rand.Next(7, 60);
+            SmasherSpeedMed = (double)Randomizer.myRNG.rand.Next(7, 48);
             SmasherDelayMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmasherSpeedHigh = (double)Randomizer.myRNG.rand.Next(10, 60);
+            SmasherSpeedHigh = (double)Randomizer.myRNG.rand.Next(10, 56);
             SmasherDelayHigh *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             WeightedPlatformSpeedLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
             WeightedPlatformSpeedMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;

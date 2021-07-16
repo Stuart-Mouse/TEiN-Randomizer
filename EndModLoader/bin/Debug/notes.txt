@@ -87,3 +87,16 @@ rules for connecting ceilings
 
 
 Noah is a big fat dumy (I love him thouugh(like really(Really love him))) but he still a dummy who doesn't give me 24/7 AtTeNtIoN!!!!!!!!
+
+
+
+
+
+NPC-vBox {
+	movieclip NPCD7
+	sound_id NPCBlob
+	text [
+      "\nwhat are you in for?"
+	]
+}
+

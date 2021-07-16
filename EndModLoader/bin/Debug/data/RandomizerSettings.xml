@@ -14,7 +14,7 @@
     <DoNevermoreTilt>true</DoNevermoreTilt>
     <DoExodusWobble>true</DoExodusWobble>
     <DoNPCs>false</DoNPCs>
-    <UseAreaTileset>false</UseAreaTileset>
+    <UseAreaTileset>true</UseAreaTileset>
     <CacheRuns>0</CacheRuns>
     <AutoRefresh>false</AutoRefresh>
     <AreaType>normal</AreaType>
@@ -25,16 +25,16 @@
     <GameDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\</GameDirectory>
     <ModSaveDirectory>[Saved Mods]/</ModSaveDirectory>
     <MaxParticleEffects>2</MaxParticleEffects>
-    <ManualLoad>false</ManualLoad>
+    <ManualLoad>true</ManualLoad>
     <DoCorruptions>true</DoCorruptions>
     <MirrorMode>false</MirrorMode>
     <DeadRacer>false</DeadRacer>
     <CartLives>19</CartLives>
-    <DoPhysics>true</DoPhysics>
-    <PlatformPhysics>false</PlatformPhysics>
-    <PlayerPhysics>false</PlayerPhysics>
-    <WaterPhysics>false</WaterPhysics>
-    <LowGravPhysics>false</LowGravPhysics>
+    <DoPhysics>false</DoPhysics>
+    <PlatformPhysics>true</PlatformPhysics>
+    <PlayerPhysics>true</PlayerPhysics>
+    <WaterPhysics>true</WaterPhysics>
+    <LowGravPhysics>true</LowGravPhysics>
     <LevelMerge>false</LevelMerge>
     <ToolsInDirectory>tools/input/</ToolsInDirectory>
     <ToolsOutDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\tilemaps\</ToolsOutDirectory>

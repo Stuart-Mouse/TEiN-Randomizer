@@ -94,6 +94,14 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="SettingsListStyle" TargetType="ListBox">
+            <Setter Property="Width" Value="240" />
+            <Setter Property="Padding" Value="0,4" />
+            <Setter Property="Margin" Value="0,2" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="ItemContainerStyle" Value="{DynamicResource ListBoxItemStyle}" />
+        </Style>
+        
         <Style x:Key="PoolListStyle" TargetType="ListBox">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"></Setter>
@@ -135,6 +143,11 @@
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
             </Style.Triggers>
+            <Setter Property="Width" Value="240" />
+            <Setter Property="Padding" Value="0,4" />
+            <Setter Property="Margin" Value="0,2" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="ItemContainerStyle" Value="{DynamicResource ListBoxItemStyle}" />
         </Style>
 
         <Style x:Key="ParticleSettings" TargetType="ListBox">
@@ -143,6 +156,11 @@
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
             </Style.Triggers>
+            <Setter Property="Width" Value="240" />
+            <Setter Property="Padding" Value="0,4" />
+            <Setter Property="Margin" Value="0,2" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="ItemContainerStyle" Value="{DynamicResource ListBoxItemStyle}" />
         </Style>
 
         <Style x:Key="PhysicsSettings" TargetType="ListBox">
@@ -151,6 +169,11 @@
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
             </Style.Triggers>
+            <Setter Property="Width" Value="240" />
+            <Setter Property="Padding" Value="0,4" />
+            <Setter Property="Margin" Value="0,2" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="ItemContainerStyle" Value="{DynamicResource ListBoxItemStyle}" />
         </Style>
 
         <Style x:Key="ShaderSettings" TargetType="ListBox">
@@ -159,6 +182,8 @@
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
             </Style.Triggers>
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0" />
         </Style>
 
         <Style x:Key="FolderSelectButton" TargetType="Button">
@@ -172,6 +197,10 @@
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
             </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SmallBoxSetting" TargetType="TextBox">
+            <Setter Property="Padding" Value="2,0" />
         </Style>
 
         <Style x:Key="PlayModButton" TargetType="Button">
@@ -276,9 +305,9 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding Name}" Style="{StaticResource TitleText}" FontSize="13" Margin="10,0,0,0"/>
+                    <TextBlock Grid.Column="0" Text="{Binding Name}"      Style="{StaticResource TitleText}"       FontSize="13" Margin="10,0,0,0"/>
                     <TextBlock Grid.Column="1" Text="{Binding NumLevels}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right"/>
-                    <CheckBox Grid.Column="2" Content="Enabled" IsChecked="{Binding Active}" Margin="10,0,10,0" HorizontalAlignment="Right"/>
+                    <CheckBox  Grid.Column="2" Content="Enabled" IsChecked="{Binding Active}" Margin="10,0,10,0"   HorizontalAlignment="Right"/>
                 </Grid>
                 <Separator Margin="2.5, 5, 2.5, 0"/>
                 <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->
@@ -299,13 +328,11 @@
                     <Canvas Grid.Row="0" Background="LightGray">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" MinWidth="130" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <CheckBox  Grid.Column="0" IsChecked="{Binding Enabled}" Margin="5,2,0,0"/>
-                            <TextBlock Grid.Column="1" Text="{Binding Name}" VerticalAlignment="Center" FontSize="11" FontFamily="Segoe UI Semibold" HorizontalAlignment="Left" Margin="5,2,0,0"/>
-                            <TextBlock Grid.Column="2" Text="{Binding Author}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right"/>
+                            <CheckBox  Grid.Column="0" Content="{Binding Name}" FontSize="11" FontFamily="Segoe UI Semibold" HorizontalAlignment="Left" IsChecked="{Binding Enabled}" Margin="5,2,0,0"/>
+                            <TextBlock Grid.Column="1" HorizontalAlignment="Center" TextAlignment="Left" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>
                         </Grid>
                     </Canvas>
                     <ListBox Grid.Row="1" Name="PoolList" MouseDown="NoClick"
