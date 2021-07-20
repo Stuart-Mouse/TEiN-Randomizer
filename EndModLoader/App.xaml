@@ -7,6 +7,8 @@
     <Application.Resources>
         <local:SettingsDisplayer x:Key="SettingsDisplayer" />
 
+        <FontFamily x:Key="TheEnd">./Data/theend.ttf#TheEnd</FontFamily>
+        
         <Style x:Key="AdvancedSettings" TargetType="ListBox">
             <Setter Property="Visibility" Value="{Binding ShowAdvancedSettings, Converter={StaticResource SettingsDisplayer}}" />
             <Style.Triggers>
@@ -23,10 +25,11 @@
         </Style>
 
         <Style x:Key="TabTitleText" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="15" />
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="VerticalAlignment" Value="Bottom" />
-            <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontFamily" Value="{StaticResource TheEnd}"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="10,10"/>
+            
         </Style>
         
         <Style x:Key="DescriptionText" TargetType="TextBlock">
@@ -99,6 +102,7 @@
             <Setter Property="Padding" Value="0,4" />
             <Setter Property="Margin" Value="0,2" />
             <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="ItemContainerStyle" Value="{DynamicResource ListBoxItemStyle}" />
         </Style>
         

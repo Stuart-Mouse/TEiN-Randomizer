@@ -144,7 +144,7 @@ namespace TEiNRandomizer
 
         public void Save(string preset)
         {
-            var doc = XDocument.Load("data/RandomizerSettings.xml");    // open levelpool file
+            var doc = XDocument.Load("Data/RandomizerSettings.xml");    // open levelpool file
             foreach (var element in doc.Root.Elements())
             {
                 if (element.Name == preset)
@@ -203,12 +203,12 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(CRWaterLevels), CRWaterLevels);
                 }
             }
-            doc.Save("data/RandomizerSettings.xml");
+            doc.Save("Data/RandomizerSettings.xml");
         }
 
         public void Load(string preset)
         {
-            var doc = XDocument.Load("data/RandomizerSettings.xml");    // open levelpool file
+            var doc = XDocument.Load("Data/RandomizerSettings.xml");    // open levelpool file
             foreach (var element in doc.Root.Elements())
             {
                 if (element.Name == preset)
@@ -266,14 +266,14 @@ namespace TEiNRandomizer
                     CRWaterLevels = (bool)element.Element(nameof(CRWaterLevels));
                 }
             }
-            AttachToTS = File.ReadAllText("data/AttachToTS.txt");
+            AttachToTS = File.ReadAllText("Data/AttachToTS.txt");
         }
 
         public void WriteNewSaveFunc()
         {
             Type SettingsType = this.GetType();
             System.Reflection.MemberInfo[] SettingsMembers = SettingsType.GetMembers();
-            using (StreamWriter sw = File.CreateText("data/newsavefunc.txt"))
+            using (StreamWriter sw = File.CreateText("Data/newsavefunc.txt"))
             {
                 sw.WriteLine("Members List");
                 for (int i = 0; i < SettingsMembers.Length; i++)

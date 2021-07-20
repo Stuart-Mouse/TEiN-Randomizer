@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pool enabled="True" source="Basic" author="Uzerro" order="0">
+  <piece name="c1" ceilingEn="False" ceilingEx="False" floorEn="True" floorEx="False" />
+  <piece name="c2" ceilingEn="False" ceilingEx="False" floorEn="False" floorEx="True" />
+  <piece name="h1" ceilingEn="True" ceilingEx="True" floorEn="True" floorEx="True" />
+  <piece name="h2" ceilingEn="False" ceilingEx="False" floorEn="True" floorEx="True" />
+  <piece name="h3" ceilingEn="True" ceilingEx="True" floorEn="True" floorEx="True" />
+  <piece name="h4" ceilingEn="True" ceilingEx="True" floorEn="True" floorEx="True" />
+  <piece name="h5" ceilingEn="True" ceilingEx="True" floorEn="True" floorEx="True" />
+  <piece name="h6" ceilingEn="True" ceilingEx="True" floorEn="True" floorEx="True" />
+  <piece name="h7" ceilingEn="True" ceilingEx="False" floorEn="True" floorEx="True" />
+  <piece name="h8" ceilingEn="False" ceilingEx="False" floorEn="True" floorEx="True" />
+  <piece name="s1" ceilingEn="False" ceilingEx="False" floorEn="True" floorEx="True" />
+  <piece name="s2" ceilingEn="False" ceilingEx="False" floorEn="True" floorEx="True" />
+  <piece name="v1" ceilingEn="False" ceilingEx="False" floorEn="False" floorEx="False" />
+  <piece name="v2" ceilingEn="False" ceilingEx="False" floorEn="False" floorEx="False" />
+</pool>

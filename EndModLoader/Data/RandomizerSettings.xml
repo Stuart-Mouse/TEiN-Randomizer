@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <default>
+    <NumLevels>10</NumLevels>
+    <NumAreas>20</NumAreas>
+    <UseDefaultMusic>false</UseDefaultMusic>
+    <UseDefaultPalettes>false</UseDefaultPalettes>
+    <MusicPerLevel>false</MusicPerLevel>
+    <PalettePerLevel>true</PalettePerLevel>
+    <DoShaders>true</DoShaders>
+    <DoParticles>true</DoParticles>
+    <DoOverlays>true</DoOverlays>
+    <DoTileGraphics>true</DoTileGraphics>
+    <DoNevermoreTilt>true</DoNevermoreTilt>
+    <DoExodusWobble>true</DoExodusWobble>
+    <DoNPCs>false</DoNPCs>
+    <UseAreaTileset>true</UseAreaTileset>
+    <CacheRuns>0</CacheRuns>
+    <AutoRefresh>false</AutoRefresh>
+    <AreaType>normal</AreaType>
+    <RepeatTolerance>0</RepeatTolerance>
+    <AltLevel>Safe</AltLevel>
+    <MaxParticles>1000</MaxParticles>
+    <GenerateCustomParticles>true</GenerateCustomParticles>
+    <GameDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\</GameDirectory>
+    <ModSaveDirectory>[Saved Mods]/</ModSaveDirectory>
+    <MaxParticleEffects>2</MaxParticleEffects>
+    <ManualLoad>true</ManualLoad>
+    <DoCorruptions>true</DoCorruptions>
+    <MirrorMode>false</MirrorMode>
+    <DeadRacer>false</DeadRacer>
+    <CartLives>19</CartLives>
+    <DoPhysics>false</DoPhysics>
+    <PlatformPhysics>true</PlatformPhysics>
+    <PlayerPhysics>true</PlayerPhysics>
+    <WaterPhysics>true</WaterPhysics>
+    <LowGravPhysics>true</LowGravPhysics>
+    <LevelMerge>false</LevelMerge>
+    <ToolsInDirectory>tools/input/</ToolsInDirectory>
+    <ToolsOutDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\tilemaps\</ToolsOutDirectory>
+    <RandomizeAreaType>false</RandomizeAreaType>
+    <CRSmart>false</CRSmart>
+    <CROverlays>false</CROverlays>
+    <CRTumors>true</CRTumors>
+    <CRAddTiles>0</CRAddTiles>
+    <CRAddEnemies>0</CRAddEnemies>
+    <CRSpikeStrips>false</CRSpikeStrips>
+    <CRCrumbles>true</CRCrumbles>
+    <CRCrushers>false</CRCrushers>
+    <CRChaos>false</CRChaos>
+    <CRWaterLevels>false</CRWaterLevels>
+  </default>
+</root>

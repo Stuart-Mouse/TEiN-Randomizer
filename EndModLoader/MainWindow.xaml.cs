@@ -18,11 +18,11 @@ namespace TEiNRandomizer
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public static string ExeName { get => "TheEndIsNigh.exe"; }
-        public static string WindowTitle { get => "The End is Nigh Randomizer BETA"; }
+        public static string WindowTitle { get => "  The End is Nigh Randomizer BETA  "; }
 
         private string ModPath { get => Path.Combine(EndIsNighPath, "mods"); }
-        private string PoolPath { get => "data/levelpools"; }
-        private string PiecePoolPath { get => "data/piecepools"; }
+        private string PoolPath { get => "Data/levelpools"; }
+        private string PiecePoolPath { get => "Data/piecepools"; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

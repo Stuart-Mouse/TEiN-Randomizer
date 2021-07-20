@@ -18,7 +18,7 @@ namespace TEiNRandomizer
 
         static Corruptors()
         {
-            var doc = XDocument.Load($"data/corruptor_tiles.xml");
+            var doc = XDocument.Load($"Data/corruptor_tiles.xml");
             activeTiles = Randomizer.ElementToArray(doc.Root.Element("active"), true);
             entityTiles = Randomizer.ElementToArray(doc.Root.Element("entity"), true);
             overlayTiles = Randomizer.ElementToArray(doc.Root.Element("overlay"), true);

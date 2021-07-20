@@ -25,9 +25,9 @@ namespace TEiNRandomizer
         {
             try
             {
-                var doc = XDocument.Load($"data/piecepools/{Name}.xml");    // open levelpool file
+                var doc = XDocument.Load($"Data/piecepools/{Name}.xml");    // open levelpool file
                 doc.Root.Attribute("enabled").Value = Active.ToString();
-                doc.Save($"data/levelpools/{Name}.xml");
+                doc.Save($"Data/levelpools/{Name}.xml");
             }
             catch (Exception)
             {
@@ -50,7 +50,7 @@ namespace TEiNRandomizer
             //this.Folder = folder;
             this.Pieces = new List<LevelPiece>();
 
-            var doc = XDocument.Load($"data/piecepools/{Name}.xml");    // open levelpool file
+            var doc = XDocument.Load($"Data/piecepools/{Name}.xml");    // open levelpool file
             this.Active = Convert.ToBoolean(doc.Root.Attribute("enabled").Value == "True");
             this.Order = Convert.ToInt16(doc.Root.Attribute("order").Value);
             this.Author = (doc.Root.Attribute("author").Value);
@@ -62,7 +62,7 @@ namespace TEiNRandomizer
                     var piece = new LevelPiece { };
                     piece.Name = element.Attribute("name").Value;
                     piece.Folder = this.Name;
-                    piece.File = LevelManip.Load($"data/levelpieces/{piece.Folder}/{piece.Name}.lvl");
+                    piece.File = LevelManip.Load($"Data/levelpieces/{piece.Folder}/{piece.Name}.lvl");
                     piece.CeilingEn = Convert.ToBoolean(element.Attribute("ceilingEn").Value);
                     piece.CeilingEx = Convert.ToBoolean(element.Attribute("ceilingEx").Value);
                     piece.FloorEn   = Convert.ToBoolean(element.Attribute("floorEn").Value);

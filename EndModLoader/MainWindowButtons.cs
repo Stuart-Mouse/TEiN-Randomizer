@@ -82,9 +82,9 @@ namespace TEiNRandomizer
         {
             try
             {
-                if (File.Exists("data/AttachToTS.txt"))
-                    Process.Start("notepad.exe", "data/AttachToTS.txt");
-                else { File.Create("data/AttachToTS.txt"); Process.Start("data/AttachToTS.txt"); }
+                if (File.Exists("Data/AttachToTS.txt"))
+                    Process.Start("notepad.exe", "Data/AttachToTS.txt");
+                else { File.Create("Data/AttachToTS.txt"); Process.Start("Data/AttachToTS.txt"); }
             }
             catch (Exception)
             {
@@ -93,7 +93,7 @@ namespace TEiNRandomizer
         }
         private void ReloadTilesetsOptionsButton_Click(object sender, RoutedEventArgs e)
         {
-            RSettings.AttachToTS = File.ReadAllText("data/AttachToTS.txt");
+            RSettings.AttachToTS = File.ReadAllText("Data/AttachToTS.txt");
             MessageBox.Show($"Tilesets options succesfully reloaded.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         private void LevelGenTestButton_Click(object sender, RoutedEventArgs e)
@@ -111,7 +111,7 @@ namespace TEiNRandomizer
 
         private void CreatePiecePools(object sender, RoutedEventArgs e)
         {
-            foreach (var folder in Directory.GetDirectories("data/levelpieces"))
+            foreach (var folder in Directory.GetDirectories("Data/levelpieces"))
             {
                 string folderName = Path.GetFileNameWithoutExtension(folder); // get folder name
                 if (folderName == "GEN") continue; // ignore GEN folder
@@ -166,7 +166,7 @@ namespace TEiNRandomizer
                 }
 
                 doc.Add(pool);
-                doc.Save($"data/piecepools/{folderName}.xml");
+                doc.Save($"Data/piecepools/{folderName}.xml");
             }
 
             MessageBox.Show($"creating piece pools complete", "Info", MessageBoxButton.OK, MessageBoxImage.Information);

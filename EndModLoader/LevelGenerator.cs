@@ -11,10 +11,10 @@ namespace TEiNRandomizer
     public static class LevelGenerator
     {
         static List<LevelPiece> Pieces;
-        static LevelPiece LTransition = new LevelPiece(LevelManip.Load("data/levelpieces/GEN/t-left.lvl")) { CeilingEx = false, FloorEx = true, CeilingEn = false, FloorEn = true };
-        static LevelPiece RTransition = new LevelPiece(LevelManip.Load("data/levelpieces/GEN/t-right.lvl")) { CeilingEx = false, FloorEx = true, CeilingEn = false, FloorEn = true };
-        static LevelPiece LTransitionC = new LevelPiece(LevelManip.Load("data/levelpieces/GEN/t-leftc.lvl")) { CeilingEx = true, FloorEx = true, CeilingEn = true, FloorEn = true };
-        static LevelPiece RTransitionC = new LevelPiece(LevelManip.Load("data/levelpieces/GEN/t-rightc.lvl")) { CeilingEx = true, FloorEx = true, CeilingEn = true, FloorEn = true };
+        static LevelPiece LTransition = new LevelPiece(LevelManip.Load("Data/levelpieces/GEN/t-left.lvl")) { CeilingEx = false, FloorEx = true, CeilingEn = false, FloorEn = true };
+        static LevelPiece RTransition = new LevelPiece(LevelManip.Load("Data/levelpieces/GEN/t-right.lvl")) { CeilingEx = false, FloorEx = true, CeilingEn = false, FloorEn = true };
+        static LevelPiece LTransitionC = new LevelPiece(LevelManip.Load("Data/levelpieces/GEN/t-leftc.lvl")) { CeilingEx = true, FloorEx = true, CeilingEn = true, FloorEn = true };
+        static LevelPiece RTransitionC = new LevelPiece(LevelManip.Load("Data/levelpieces/GEN/t-rightc.lvl")) { CeilingEx = true, FloorEx = true, CeilingEn = true, FloorEn = true };
 
 
         // These are basically constants but I might want to change them in the settings

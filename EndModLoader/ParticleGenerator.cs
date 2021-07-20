@@ -56,7 +56,7 @@ namespace TEiNRandomizer
             double friction = 1;
 
             // select particle from pool
-            var doc = XDocument.Load($"data/particles_templates.xml");    // open particle file
+            var doc = XDocument.Load($"Data/particles_templates.xml");    // open particle file
             string template = doc.Root.Element("templates").Element("MistParticle").Value;
             var particles = doc.Root.Element("particles").Elements();
             var chosen = particles.ElementAt(Randomizer.myRNG.rand.Next(0, particles.Count()));
@@ -147,7 +147,7 @@ namespace TEiNRandomizer
             string force;
 
             // select particle from pool
-            var doc = XDocument.Load($"data/particles_templates.xml");    // open particle file
+            var doc = XDocument.Load($"Data/particles_templates.xml");    // open particle file
             string template = doc.Root.Element("templates").Element("DirectionParticle").Value;
             var particles = doc.Root.Element("particles").Elements();
             var chosen = particles.ElementAt(Randomizer.myRNG.rand.Next(0, particles.Count()));
