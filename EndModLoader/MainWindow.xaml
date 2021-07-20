@@ -17,11 +17,11 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush x:Key="Item.MouseOver.Background" Color="Transparent"/>
-        <SolidColorBrush x:Key="Item.MouseOver.Border" Color="Transparent"/>
+        <SolidColorBrush x:Key="Item.MouseOver.Background"        Color="Transparent"/>
+        <SolidColorBrush x:Key="Item.MouseOver.Border"            Color="Transparent"/>
         <SolidColorBrush x:Key="Item.SelectedInactive.Background" Color="Transparent"/>
-        <SolidColorBrush x:Key="Item.SelectedInactive.Border" Color="Transparent"/>
-        <SolidColorBrush x:Key="Item.SelectedActive.Background" Color="Transparent"/>
+        <SolidColorBrush x:Key="Item.SelectedInactive.Border"     Color="Transparent"/>
+        <SolidColorBrush x:Key="Item.SelectedActive.Background"   Color="Transparent"/>
         <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="Transparent"/>
         <Style x:Key="ListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
             <Setter Property="SnapsToDevicePixels" Value="True"/>
@@ -90,13 +90,13 @@
             <TabControl Name="MenuTabs" Padding="0,0,0,0">
                 <TabItem Header="Level Pools" Padding="10,2">
                     <ScrollViewer>
-                        <Grid HorizontalAlignment="Center" Width="600">
+                        <Grid HorizontalAlignment="Center">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="auto" />
+                                <RowDefinition />
                                 <RowDefinition MinHeight="100" />
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Text="Level Pools" Style="{StaticResource TabTitleText}"/>
-                            <ListView Grid.Row="1" Name="PoolCatList"
+                            <TextBox Template="{StaticResource TabTitleTextControl}" Text="Level Pools"/>
+                            <ListView  Grid.Row="1" Name="PoolCatList"
                                 ItemTemplate="{StaticResource PoolCatListTemplate}"
                                 ItemsSource="{Binding PoolCats}"
                                 ScrollViewer.CanContentScroll="False"
@@ -110,10 +110,10 @@
                     <ScrollViewer Grid.Row="1">
                         <Grid HorizontalAlignment="Center" Width="600">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
+                                <RowDefinition />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Text="Randomizer Settings" Style="{StaticResource TabTitleText}"/>
+                            <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Randomizer Settings"/>
                             <Grid Grid.Row="1" HorizontalAlignment="Center">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -331,7 +331,7 @@
                             <!--<RowDefinition Height="30" />
                                 <RowDefinition Height="Auto" />-->
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Program Settings" Style="{StaticResource TabTitleText}"/>
+                        <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Program Settings"/>
                         <ListBox BorderBrush="Transparent" Grid.Row="1" Name="ProramSettingsList" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
                             <TextBlock Text="Game Directory: "/>
                             <TextBox Name="GameDirTextBox" Width="auto">
@@ -359,7 +359,7 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition MinHeight="100" />
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Level Generator" Style="{StaticResource TabTitleText}"/>
+                        <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Level Generator"/>
                         <ListView Grid.Row="1" Name="LevelPieceList"
                         ItemTemplate="{StaticResource PieceListTemplate}"
                         ItemsSource="{Binding PiecePools}"
@@ -376,7 +376,7 @@
                             <!--<RowDefinition Height="30" />
                                 <RowDefinition Height="Auto" />-->
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Tools and Utilities" Style="{StaticResource TabTitleText}" />
+                        <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Tools and Utilities" />
                         <ListBox BorderBrush="Transparent" Grid.Row="1" Name="ToolsList" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
                             <TextBlock Text="Randomizer Tools" FontWeight="Bold"/>
                             <Menu>
@@ -432,6 +432,17 @@
                                 </TextBox>
                             </Grid>
                             <TextBlock Text="Read the instructions in the README before using the tools!" Foreground="DarkRed"/>
+                        </ListBox>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Saved Mods" Padding="10,2">
+                    <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition MinHeight="100" />
+                        </Grid.RowDefinitions>
+                        <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Saved Mods"/>
+                        <ListBox BorderBrush="Transparent" Grid.Row="1" Name="SavedModsList" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
                         </ListBox>
                     </Grid>
                 </TabItem>

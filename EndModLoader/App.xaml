@@ -25,13 +25,27 @@
         </Style>
 
         <Style x:Key="TabTitleText" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="24" />
-            <Setter Property="FontFamily" Value="{StaticResource TheEnd}"/>
+            <Setter Property="FontSize"      Value="24" />
+            <Setter Property="FontFamily"    Value="{StaticResource TheEnd}"/>
+            <Setter Property="Padding"       Value="0,2,0,2"/>
+            <Setter Property="Margin"        Value="3,0,3,0"/>
+            <Setter Property="Background"    Value="#f2f2f2"/>
             <Setter Property="TextAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="10,10"/>
-            
         </Style>
-        
+
+        <ControlTemplate x:Key="TabTitleTextControl" TargetType="TextBox">
+            <Grid Grid.Row="0" Margin="0,6,0,4" MaxWidth="270">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Separator Grid.Row="0" Margin="0"/>
+                <TextBlock Name="TitleTextBlock" Grid.Row="1" Text="{TemplateBinding Text}" Style="{StaticResource TabTitleText}"/>
+                <Separator Grid.Row="2" Margin="0"/>
+            </Grid>
+        </ControlTemplate>
+
         <Style x:Key="DescriptionText" TargetType="TextBlock">
             <Setter Property="FontSize" Value="11" />
             <Setter Property="Foreground" Value="Gray" />
@@ -321,9 +335,11 @@
         <DataTemplate x:Key="ShadersListTemplate">
             <CheckBox Content="{Binding Name}" IsChecked="{Binding Enabled}"/>
         </DataTemplate>
-        
+
+
+
         <DataTemplate x:Key="PoolCatListTemplate" x:Name="PoolCatItem">
-            <StackPanel MouseDown="NoClick" Focusable="False" Width="350">
+            <StackPanel MouseDown="NoClick" Focusable="False" Width="420">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="20"  />
@@ -332,7 +348,7 @@
                     <Canvas Grid.Row="0" Background="LightGray">
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" MinWidth="130" />
+                                <ColumnDefinition Width="Auto" MinWidth="160" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <CheckBox  Grid.Column="0" Content="{Binding Name}" FontSize="11" FontFamily="Segoe UI Semibold" HorizontalAlignment="Left" IsChecked="{Binding Enabled}" Margin="5,2,0,0"/>

@@ -59,7 +59,6 @@ Program:
   The Mod Save Directory is the folder that randomized runs will be saved to when you click the "Save Mod" button.
   Manual Load will make the randomizer not try to boot the game automatically. if this is enabled you will need to run the game yourself after pressing "Randomize"
 
-
 Ready to Play?:
   Once you have your settings the way you like them, click the "Randomize" button at the bottom left.
   This should automatically boot the game. (Unless you have manual load on)

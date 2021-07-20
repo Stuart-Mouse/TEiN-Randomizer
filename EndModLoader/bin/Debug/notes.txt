@@ -100,3 +100,9 @@ NPC-vBox {
 	]
 }
 
+Randomizer additions:
+- saved mods page
+- re-implement mod loading
+
+create updated modloader?
+find out how to fix epic games version
