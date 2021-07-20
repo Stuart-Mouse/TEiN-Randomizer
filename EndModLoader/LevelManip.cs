@@ -17,7 +17,7 @@ namespace TEiNRandomizer
         {
             // load flips dictionary in constructor
             HFlipIndex = new List<Pair> { };
-            var file = File.ReadAllLines("Data/hflips.txt");
+            var file = File.ReadAllLines("data/hflips.txt");
             Pair pair;
             string[] temp;
             foreach (var line in file)
@@ -30,7 +30,7 @@ namespace TEiNRandomizer
             }
 
             RotationIndex = new List<Pair> { };
-            file = File.ReadAllLines("Data/rotations.txt");
+            file = File.ReadAllLines("data/rotations.txt");
             foreach (var line in file)
             {
                 if (line == "") continue;

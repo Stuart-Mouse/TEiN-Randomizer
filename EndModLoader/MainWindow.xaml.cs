@@ -21,8 +21,8 @@ namespace TEiNRandomizer
         public static string WindowTitle { get => "  The End is Nigh Randomizer BETA  "; }
 
         private string ModPath { get => Path.Combine(EndIsNighPath, "mods"); }
-        private string PoolPath { get => "Data/levelpools"; }
-        private string PiecePoolPath { get => "Data/piecepools"; }
+        private string PoolPath { get => "data/levelpools"; }
+        private string PiecePoolPath { get => "data/piecepools"; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

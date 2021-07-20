@@ -7,7 +7,7 @@
     <Application.Resources>
         <local:SettingsDisplayer x:Key="SettingsDisplayer" />
 
-        <FontFamily x:Key="TheEnd">./Data/theend.ttf#TheEnd</FontFamily>
+        <FontFamily x:Key="TheEnd">./data/theend.ttf#TheEnd</FontFamily>
         
         <Style x:Key="AdvancedSettings" TargetType="ListBox">
             <Setter Property="Visibility" Value="{Binding ShowAdvancedSettings, Converter={StaticResource SettingsDisplayer}}" />
@@ -110,27 +110,27 @@
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"></Setter>
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"></Setter>
-            <Style.Triggers>
+            <!--<Style.Triggers>
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InGame}">
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Visibile}" Value="False">
                     <Setter Property="Visibility" Value="Collapsed" />
                 </DataTrigger>
-            </Style.Triggers>
+            </Style.Triggers>-->
         </Style>
 
         <Style x:Key="PoolCatListStyle" TargetType="ListBox">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
-            <Style.Triggers>
+            <!--<Style.Triggers>
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InGame}">
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Visibile}" Value="False">
+                <DataTrigger Binding="{Binding Enabled}" Value="False">
                     <Setter Property="Visibility" Value="Collapsed" />
                 </DataTrigger>
-            </Style.Triggers>
+            </Style.Triggers>-->
         </Style>
 
         <Style x:Key="FreezeSettings" TargetType="ListBox">

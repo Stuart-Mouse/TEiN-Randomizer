@@ -30,7 +30,7 @@ namespace TEiNRandomizer
 
         //    try
         //    {
-        //        var doc = XDocument.Load("Data/art_alts.xml");
+        //        var doc = XDocument.Load("data/art_alts.xml");
         //        if (settings.AltLevel == AltLevels.Safe)
         //        {
         //            foreach (var art in doc.Root.Element("safe").Elements())
@@ -87,7 +87,7 @@ namespace TEiNRandomizer
 
             try
             {
-                var doc = XDocument.Load("Data/art_alts.xml");
+                var doc = XDocument.Load("data/art_alts.xml");
                 if (settings.AltLevel == "Safe")
                 {
                     foreach (var art in doc.Root.Element("safe").Elements())
@@ -152,7 +152,7 @@ namespace TEiNRandomizer
                 int numPalettes = 464;
                 var musicPool = new string[] { };
 
-                var doc = XDocument.Load("Data/tilesets_pools.xml");    // open levelpool file
+                var doc = XDocument.Load("data/tilesets_pools.xml");    // open levelpool file
 
                 numPalettes = Convert.ToInt32(doc.Root.Element("palettes").Value);
                 tile_graphicsPool = Randomizer.ElementToArray(doc.Root.Element("tile_graphics"));

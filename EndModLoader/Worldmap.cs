@@ -7,7 +7,7 @@ namespace TEiNRandomizer
     {
         public static void WriteWorldMap(RandomizerSettings settings)
         {
-            string file = File.ReadAllText("Data/worldmap_template.txt");
+            string file = File.ReadAllText("data/worldmap_template.txt");
             if (settings.DeadRacer) DeadRacer(ref file, settings);
             CartLives(ref file, settings);
             File.WriteAllText(Randomizer.saveDir + "data/worldmap.txt", file);

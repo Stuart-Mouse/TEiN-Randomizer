@@ -57,7 +57,7 @@ namespace TEiNRandomizer
         {
             ShadersList = new List<Shader>() { };
 
-            var doc = XDocument.Load($"Data/tilesets_pools.xml");    // open levelpool file
+            var doc = XDocument.Load($"data/tilesets_pools.xml");    // open levelpool file
             foreach (var element in doc.Root.Element("shaders").Elements())
             {
                 var shader = new Shader() { };
@@ -75,13 +75,13 @@ namespace TEiNRandomizer
         {
             if (ShadersList != null)
             {
-                var doc = XDocument.Load($"Data/tilesets_pools.xml");    // open levelpool file
+                var doc = XDocument.Load($"data/tilesets_pools.xml");    // open levelpool file
                 foreach (var shader in ShadersList)
                 {
                     doc.Root.Element("shaders").Element(shader.Name).Attribute("enabled").Value = Convert.ToString(shader.Enabled);
                 }
 
-                doc.Save($"Data/tilesets_pools.xml");
+                doc.Save($"data/tilesets_pools.xml");
             }
         }
         public static void Shuffle<T>(this IList<T> list)
@@ -169,14 +169,14 @@ namespace TEiNRandomizer
         {
             var recents = new List<string> { };
             var unCache = new List<XElement> { };
-            if (!File.Exists("Data/cache.xml"))
+            if (!File.Exists("data/cache.xml"))
             {
                 var doc = new XDocument { };
                 doc.Add(new XElement("cache"));
-                doc.Save("Data/cache.xml");
+                doc.Save("data/cache.xml");
             }
 
-            var cachedoc = XDocument.Load("Data/cache.xml");    // open cache file
+            var cachedoc = XDocument.Load("data/cache.xml");    // open cache file
             foreach (var element in cachedoc.Root.Elements())
             {
                 var t_num = int.Parse(element.Attribute("num").Value.ToString());
@@ -194,7 +194,7 @@ namespace TEiNRandomizer
                         element.Remove();
                 }
             }
-            cachedoc.Save("Data/cache.xml");
+            cachedoc.Save("data/cache.xml");
 
             // remove recently played levels
             var toRemove = new List<string> { };
@@ -234,11 +234,11 @@ namespace TEiNRandomizer
             }
             newelement.Value += "\n  ";
             cachedoc.Root.Add(newelement);
-            cachedoc.Save("Data/cache.xml");
+            cachedoc.Save("data/cache.xml");
         }
         public static void LoadNPCs()
         {
-            var doc = XDocument.Load($"Data/npcs.xml");    // open npcs file
+            var doc = XDocument.Load($"data/npcs.xml");    // open npcs file
             NPCMovieClips = ElementToArray(doc.Root.Element("movieclips"));
             NPCSoundIDs = ElementToArray(doc.Root.Element("soundids"));
             NPCTexts = new List<string>();
@@ -249,7 +249,7 @@ namespace TEiNRandomizer
         }
         static void NPCs()
         {
-            using (StreamWriter sw = File.CreateText(saveDir + "Data/npcs.txt.append"))
+            using (StreamWriter sw = File.CreateText(saveDir + "data/npcs.txt.append"))
             {
                 for (int j = 0; j < settings.NumAreas; j++) // area loop
                 {
@@ -345,7 +345,7 @@ namespace TEiNRandomizer
                     sw.WriteLine("}");
                 }
             }
-            File.Copy(saveDir + "data/tilesets.txt.append", "Data/debug/last_tilesets.txt", true);
+            File.Copy(saveDir + "data/tilesets.txt.append", "data/debug/last_tilesets.txt", true);
         }
         static void CleanFolders()
         {
@@ -371,15 +371,15 @@ namespace TEiNRandomizer
             catch (DirectoryNotFoundException) { }
             Directory.CreateDirectory(saveDir + "tilemaps"); Console.WriteLine("tilemaps");
             Directory.CreateDirectory(saveDir + "textures"); Console.WriteLine("textures");
-            File.Copy("Data/palette.png", saveDir + "textures/palette.png", true); Console.WriteLine("palette");
+            File.Copy("data/palette.png", saveDir + "textures/palette.png", true); Console.WriteLine("palette");
             Directory.CreateDirectory(saveDir + "shaders"); Console.WriteLine("shaders");
             Directory.CreateDirectory(saveDir + "swfs"); Console.WriteLine("swfs");
             Directory.CreateDirectory(saveDir + "data/platform_physics");
             Directory.CreateDirectory(saveDir + "data/water_physics");
             Directory.CreateDirectory(saveDir + "data/lowgrav_physics");
             Directory.CreateDirectory(saveDir + "data/player_physics");
-            File.Copy("Data/endnigh.swf", saveDir + "swfs/endnigh.swf", true); Console.WriteLine("swf");
-            foreach (var file in Directory.GetFiles("Data/shaders"))
+            File.Copy("data/endnigh.swf", saveDir + "swfs/endnigh.swf", true); Console.WriteLine("swf");
+            foreach (var file in Directory.GetFiles("data/shaders"))
             {
                 File.Copy(file, saveDir + $"shaders/{Path.GetFileName(file)}", true);
             }
@@ -387,7 +387,7 @@ namespace TEiNRandomizer
         }
         static void MapCSV()
         {
-            System.IO.File.Copy("Data/map_CLEAN.csv", saveDir + "data/map.csv", true);
+            System.IO.File.Copy("data/map_CLEAN.csv", saveDir + "data/map.csv", true);
             using (StreamWriter sw = File.AppendText(saveDir + "data/map.csv"))
             {
                 for (int j = 0; j < settings.NumAreas; j++)
@@ -414,7 +414,7 @@ namespace TEiNRandomizer
                 //NAME's ( ADJECTIVE ) LOCATION ( of ( ADJECTIVE ) NOUN )
                 //NAME's ( ADJECTIVE ) NOUN LOCATION
 
-                var doc = XDocument.Load("Data/area_names.xml");
+                var doc = XDocument.Load("data/area_names.xml");
                 var name = Randomizer.ElementToArray(doc.Root.Element("name"));
                 var location = Randomizer.ElementToArray(doc.Root.Element("location"));
                 var adjective = Randomizer.ElementToArray(doc.Root.Element("adjective"));
@@ -453,12 +453,12 @@ namespace TEiNRandomizer
         static void TileMaps()
         {
             string[] baseLevels = { "1-1", "1-1x", "v-connect", "v-start", "v-end" };
-            var npclevel = LevelManip.Load($"Data/tilemaps/The End is Nigh/v-npc.lvl");
+            var npclevel = LevelManip.Load($"data/tilemaps/The End is Nigh/v-npc.lvl");
 
             foreach (var level in baseLevels)
             {
-                //File.Copy($"Data/vtilemaps/The End is Nigh/{level}.lvl", saveDir + $"tilemaps/{level}.lvl", true);
-                var levelFile = LevelManip.Load($"Data/tilemaps/The End is Nigh/{level}.lvl");
+                //File.Copy($"data/vtilemaps/The End is Nigh/{level}.lvl", saveDir + $"tilemaps/{level}.lvl", true);
+                var levelFile = LevelManip.Load($"data/tilemaps/The End is Nigh/{level}.lvl");
 
                 if (settings.MirrorMode)
                     LevelManip.FlipLevelH(ref levelFile);
@@ -471,7 +471,7 @@ namespace TEiNRandomizer
                 for (int i = 0; i < settings.NumLevels; i++)
                 {
                     var level = ChosenLevels[j][i];
-                    var levelFile = LevelManip.Load($"Data/tilemaps/{level.Folder}/{level.Name}.lvl");
+                    var levelFile = LevelManip.Load($"data/tilemaps/{level.Folder}/{level.Name}.lvl");
 
                     if (level.CanReverse && myRNG.CoinFlip() || settings.MirrorMode)
                         LevelManip.FlipLevelH(ref levelFile);
@@ -490,8 +490,8 @@ namespace TEiNRandomizer
 
             foreach (var level in baseLevels)
             {
-                //File.Copy($"Data/vtilemaps/The End is Nigh/{level}.lvl", saveDir + $"tilemaps/{level}.lvl", true);
-                var levelFile = LevelManip.Load($"Data/tilemaps/The End is Nigh/{level}.lvl");
+                //File.Copy($"data/vtilemaps/The End is Nigh/{level}.lvl", saveDir + $"tilemaps/{level}.lvl", true);
+                var levelFile = LevelManip.Load($"data/tilemaps/The End is Nigh/{level}.lvl");
 
                 if (settings.MirrorMode)
                     LevelManip.FlipLevelH(ref levelFile);
@@ -505,8 +505,8 @@ namespace TEiNRandomizer
                 {
                     var level1 = ChosenLevels[j][i];
                     var level2 = ChosenLevels2[j][i];
-                    var levelFile1 = LevelManip.Load($"Data/tilemaps/{level1.Folder}/{level1.Name}.lvl");
-                    var levelFile2 = LevelManip.Load($"Data/tilemaps/{level2.Folder}/{level2.Name}.lvl");
+                    var levelFile1 = LevelManip.Load($"data/tilemaps/{level1.Folder}/{level1.Name}.lvl");
+                    var levelFile2 = LevelManip.Load($"data/tilemaps/{level2.Folder}/{level2.Name}.lvl");
 
                     var levelM = level1;
                     levelM.TSNeed += level2.TSNeed + " decoration_1 CreepingMass ";
@@ -524,7 +524,7 @@ namespace TEiNRandomizer
         }
         static void WriteDebug()
         {
-            using (StreamWriter sw = File.CreateText("Data/debug/last_levelnames.txt"))
+            using (StreamWriter sw = File.CreateText("data/debug/last_levelnames.txt"))
             {
                 sw.WriteLine("Chosen Levels");
                 for (int j = 0; j < settings.NumAreas; j++)

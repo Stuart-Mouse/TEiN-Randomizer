@@ -25,9 +25,9 @@ namespace TEiNRandomizer
         {
             try
             {
-                var doc = XDocument.Load($"Data/levelpools/{Folder}/{Name}.xml");    // open levelpool file
+                var doc = XDocument.Load($"data/levelpools/{Folder}/{Name}.xml");    // open levelpool file
                 doc.Root.Attribute("enabled").Value = Active.ToString();
-                doc.Save($"Data/levelpools/{Folder}/{Name}.xml");
+                doc.Save($"data/levelpools/{Folder}/{Name}.xml");
             }
             catch (Exception)
             {
@@ -53,7 +53,7 @@ namespace TEiNRandomizer
             string tileneed = "";
             string tileart = "";
 
-            var doc = XDocument.Load($"Data/levelpools/{Folder}/{Name}.xml");    // open levelpool file
+            var doc = XDocument.Load($"data/levelpools/{Folder}/{Name}.xml");    // open levelpool file
             this.Active = Convert.ToBoolean(doc.Root.Attribute("enabled").Value == "True");
             this.Order = Convert.ToInt16(doc.Root.Attribute("order").Value);
             this.Author = (doc.Root.Attribute("author").Value);

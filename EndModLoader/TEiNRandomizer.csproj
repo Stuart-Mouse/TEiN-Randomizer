@@ -199,7 +199,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="app.manifest" />
-    <Resource Include="Data\theend.ttf">
+    <Resource Include="data\theend.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Resource>
     <None Include="packages.config">
@@ -211,7 +211,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\**">
+    <Content Include="data/**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
