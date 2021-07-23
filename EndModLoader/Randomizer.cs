@@ -44,7 +44,7 @@ namespace TEiNRandomizer
         public static string[] LINames;
         public static string[] LILocations;
 
-        public static List<string> DeadRacerAreas;
+        public static List<string> AreaTypes;
         static void FlipCSV(string path)
         {
             var arr = File.ReadAllLines(path);
@@ -308,7 +308,9 @@ namespace TEiNRandomizer
                 {
                     var areatileset = TilesetManip.GetTileset(settings, true);
 
-                    sw.WriteLine("v" + (j + 1).ToString() + " {\n    area_name \"TEiN Randomizer\"\n    area_label_frame 0\n    background_graphics neverbg\n    area_type " + areatileset.AreaType + "\n");
+                    AreaTypes.Add(areatileset.AreaType);
+
+                    sw.WriteLine("v" + (j + 1).ToString() + " {\n    area_name \"TEiN Randomizer\"\n    area_label_frame 0\n    background_graphics neverbg\n    area_type normal\n");
                     if (settings.UseAreaTileset || (settings.DoShaders && settings.DoParticles))
                         sw.WriteLine(areatileset.All + "art_alts[" + areatileset.ArtAlts + "]");
 
@@ -429,7 +431,6 @@ namespace TEiNRandomizer
             LIAdjectives = Randomizer.ElementToArray(doc.Root.Element("adjective"));
             LINouns      = Randomizer.ElementToArray(doc.Root.Element("noun"));
         }
-
         static string GetFunnyName()
         {
             // create le funny name
@@ -444,14 +445,14 @@ namespace TEiNRandomizer
                     areaname += LIAdjectives[RNG.random.Next(0, LIAdjectives.Length)] + " ";
                 if (RNG.CoinFlip())
                     areaname += LINouns[RNG.random.Next(0, LINouns.Length)] + " ";
-                areaname += LILocations[RNG.random.Next(0, LILocations.Length)] + " ";
+                areaname += LILocations[RNG.random.Next(0, LILocations.Length)];
             }
             else
             {
                 areaname += LILocations[RNG.random.Next(0, LILocations.Length)] + " of ";
                 if (RNG.CoinFlip())
                     areaname += LIAdjectives[RNG.random.Next(0, LIAdjectives.Length)] + " ";
-                areaname += LINouns[RNG.random.Next(0, LINouns.Length)] + " ";
+                areaname += LINouns[RNG.random.Next(0, LINouns.Length)];
             }
             return areaname;
         }
@@ -469,7 +470,7 @@ namespace TEiNRandomizer
                 {
                     for (int j = 0; j < settings.NumLevels; j++)
                     {
-                        sw.WriteLine("\"v" + Convert.ToString(i + 1) + "-" + Convert.ToString(j + 1) + "\" {name=\"" + areaname + Convert.ToString(j + 1) + "\" id=-1}");
+                        sw.WriteLine("\"v" + Convert.ToString(i + 1) + "-" + Convert.ToString(j + 1) + "\" {name=\"" + areaname + " " + Convert.ToString(j + 1) + "\" id=-1}");
                     }
                 }
             }
@@ -560,36 +561,43 @@ namespace TEiNRandomizer
                 }
             }
         }       // This function is no longer used.
-
-        static void SaveRunToZip()
+        static string SaveRunPrompt()
         {
-            string title = GetFunnyName();
-            string author = "TEiN Randomizer";
+            string title       = GetFunnyName();
+            string author      = "TEiN Randomizer";
             string description = "A randomized world!";
-            string version = mainWindow.GameSeed.ToString();
-            string dir = mainWindow.SavedRunsPath + $"/{mainWindow.GameSeed}";
+            string version     = mainWindow.GameSeed.ToString();
 
             //MessageBox.Show($"Give this world a name:", "Info", MessageBoxButton.OK, MessageBoxImage.Exclamation);
 
-            TextWindow inputWindow = new TextWindow("Give this world a name: ");
+            TextWindow inputWindow = new TextWindow("Give this world a name: ", title);
             if (inputWindow.ShowDialog() == true)
                 title = inputWindow.Result;
 
-            using (StreamWriter sw = File.CreateText($"{dir}/meta.xml"))
+            string dir = mainWindow.SavedRunsPath + $"/{title}";
+
+            inputWindow = new TextWindow("Give this world a short description: ", description);
+            if (inputWindow.ShowDialog() == true)
+                description = inputWindow.Result;
+
+            if (!File.Exists(dir + ".zip"))
             {
-                sw.Write("<mod>\n  <title>");
-                sw.Write(title);
-                sw.Write("</title>\n  <author>");
-                sw.Write(author);
-                sw.Write("</author>\n  <description>");
-                sw.Write(description);
-                sw.Write("</description>\n  <version>");
-                sw.Write(version);
-                sw.Write("</version>\n</mod>");
+                Directory.CreateDirectory(dir);
+                using (StreamWriter sw = File.CreateText($"{dir}/meta.xml"))
+                {
+                    sw.Write("<mod>\n  <title>");
+                    sw.Write(title);
+                    sw.Write("</title>\n  <author>");
+                    sw.Write(author);
+                    sw.Write("</author>\n  <description>");
+                    sw.Write(description);
+                    sw.Write("</description>\n  <version>");
+                    sw.Write(version);
+                    sw.Write("</version>\n</mod>");
+                }
+                return dir + "/";
             }
-
-            ZipFile.CreateFromDirectory(dir, dir + ".zip");
-
+            else { MessageBox.Show($"A saved run with this name already exists. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); return null; }
         }
 
         public static void Randomize(MainWindow mw, string args = null)
@@ -598,9 +606,11 @@ namespace TEiNRandomizer
             settings = mw.RSettings;
             mainWindow = mw;
 
+            AreaTypes = new List<string>();
+
             saveDir = settings.GameDirectory;
-            if (args == "savemod")
-                saveDir = mw.SavedRunsPath + "/" + mw.GameSeed.ToString() + "/";
+            if (args == "savemod") saveDir = SaveRunPrompt();
+            if (saveDir == null) return;
 
             var drawpool = new List<Level> { };     // make drawpool
             try
@@ -645,17 +655,18 @@ namespace TEiNRandomizer
             // The rest of the randomization process is delegated to the functions below.
             try { /*WriteDebug();*/ CleanFolders(); }   catch (Exception ex) { Console.WriteLine($"Error cleaning folders or printing debug. Exception {ex}");  MessageBox.Show($"Error cleaning folders or printing debug. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try { LevelInfo(); }                        catch (Exception ex) { Console.WriteLine($"Error creating levelinfo. Exception {ex}");                  MessageBox.Show($"Error creating levelinfo. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try { Worldmap.WriteWorldMap(settings); }   catch (Exception ex) { Console.WriteLine($"Error creating worldmap. Exception {ex}");                   MessageBox.Show($"Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try { MapCSV(); }                           catch (Exception ex) { Console.WriteLine($"Error creating map. Exception {ex}");                        MessageBox.Show($"Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try { TileMaps(); }                         catch (Exception ex) { Console.WriteLine($"Error copying tilemaps. Exception {ex}");                    MessageBox.Show($"Error copying tilemaps. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try { Tilesets(); }                         catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}");                   MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try { NPCs(); }                             catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}");                   MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { Worldmap.WriteWorldMap(); } catch (Exception ex) { Console.WriteLine($"Error creating worldmap. Exception {ex}"); MessageBox.Show($"Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
             Console.WriteLine(mw.GameSeed);
 
             if (args == "savemod")
             {
-                SaveRunToZip();
+                saveDir = saveDir.Remove(saveDir.Length - 1);
+                ZipFile.CreateFromDirectory(saveDir, saveDir + ".zip");
             }
 
         }

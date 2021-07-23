@@ -120,7 +120,7 @@ namespace TEiNRandomizer
                 {
                     if (settings.DeadRacer) tileset.AreaType = "glitch";
                     if (settings.RandomizeAreaType)
-                        tileset.AreaType = AreaTypes[RNG.random.Next(0, 5)];
+                        tileset.AreaType = ($"    area_type {AreaTypes[RNG.random.Next(0, 5)]}");
                 }
 
                 tileset.Tile    = ($"    tile_graphics { TileGraphicsPool[RNG.random.Next(0, TileGraphicsPool.Count())] }\n");

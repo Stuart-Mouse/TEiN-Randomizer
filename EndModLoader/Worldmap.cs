@@ -5,30 +5,34 @@ namespace TEiNRandomizer
 {
     public static class Worldmap
     {
-        public static void WriteWorldMap(RandomizerSettings settings)
+        public static string WorldMapFile;
+
+        public static void WriteWorldMap()
         {
-            string file = File.ReadAllText("data/worldmap_template.txt");
-            if (settings.DeadRacer) DeadRacer(ref file, settings);
-            CartLives(ref file, settings);
-            File.WriteAllText(Randomizer.saveDir + "data/worldmap.txt", file);
+            WorldMapFile = File.ReadAllText("data/worldmap_template.txt");
+            if (Randomizer.settings.DeadRacer) DeadRacer();
+            CartLives();
+            File.WriteAllText(Randomizer.saveDir + "data/worldmap.txt", WorldMapFile);
         }
-        public static void DeadRacer(ref string file, RandomizerSettings settings)
+        public static void DeadRacer()
         {
             string timedCarts = "";
-            for (int i = 0; i < settings.NumAreas; i++)
+            for (int i = 0; i < Randomizer.settings.NumAreas; i++)
             {
-               timedCarts += "v" + Convert.ToString(i + 1) + "-1 ";
+                if (Randomizer.AreaTypes[i] == "glitch")
+                    timedCarts += "v" + Convert.ToString(i + 1) + "-1 ";
             }
-            file = file.Replace("TIMEDCARTS", timedCarts);
+            WorldMapFile = WorldMapFile.Replace("TIMEDCARTS", timedCarts);
         }
-        public static void CartLives(ref string file, RandomizerSettings settings)
+        public static void CartLives()
         {
             string cartLives = "";
-            for (int i = 0; i < settings.NumAreas; i++)
+            for (int i = 0; i < Randomizer.settings.NumAreas; i++)
             {
-                cartLives += "[v" + Convert.ToString(i + 1) + "-1 " + settings.CartLives + "] ";
+                if (Randomizer.AreaTypes[i] == "cart")
+                    cartLives += "[v" + Convert.ToString(i + 1) + "-1 " + Randomizer.settings.CartLives + "] ";
             }
-            file = file.Replace("CARTLIVES", cartLives);
+            WorldMapFile = WorldMapFile.Replace("CARTLIVES", cartLives);
         }
     }
 }
