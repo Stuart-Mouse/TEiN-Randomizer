@@ -425,6 +425,24 @@
             </StackPanel>
         </DataTemplate>
 
+        <DataTemplate x:Key="ModListTemplate">
+            <StackPanel Margin="0,3,0,3" Orientation="Vertical" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*"    />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding Title}" Style="{StaticResource TitleText}" FontSize="13" Margin="10,0,0,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Description}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right"/>
+                    <CheckBox Grid.Column="2" Content="Enabled" IsChecked="{Binding Active}" Margin="10,0,10,0" HorizontalAlignment="Right"/>
+                </Grid>
+                <Separator Margin="2.5, 5, 2.5, 0"/>
+                <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->
+            </StackPanel>
+        </DataTemplate>
+
         <Style x:Key="SavedRunsStyle" TargetType="ListBox">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"></Setter>

@@ -109,7 +109,7 @@ namespace TEiNRandomizer
                 {
                     FileSystem.SetupDir(RSettings.GameDirectory);
                     FileSystem.MakeSaveBackup(RSettings.GameDirectory);
-                    //LoadModList(FileSystem.ReadModFolder(ModPath).OrderBy(m => m));
+                    LoadModList(FileSystem.ReadModFolder(ModPath).OrderBy(m => m));
                     LoadPoolList(Randomizer.PoolLoader(PoolPath).OrderBy(p => p));
                     LoadSavedRuns(FileSystem.ReadModFolder(SavedRunsPath).OrderBy(p => p));
                     LoadPieceList(Randomizer.PieceLoader(PiecePoolPath).OrderBy(p => p));

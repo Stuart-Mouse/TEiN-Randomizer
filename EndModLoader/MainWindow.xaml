@@ -14,8 +14,8 @@
     
     <!-- MAIN WINDOW -->
     
-    <Grid Margin="10,10,10,10"> 
-        <Grid Grid.Row="0" VerticalAlignment="Stretch" Margin="0,0,0,10" >
+    <Grid Margin="10,5,10,10"> 
+        <Grid Grid.Row="0" VerticalAlignment="Stretch" >
             <TabControl Name="MenuTabs" Padding="0,0,0,0">
 
                 <!-- RANDOMIZER TABS -->
@@ -305,28 +305,51 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                
+
                 <!-- MODLOADER TABS -->
                 
                 <TabItem Header="Mod Loader" Padding="10,2">
                     <TabControl Name="ModLoaderTabs" Margin="0,3,0,0">
 
+                        <!-- MODS TAB -->
+
+                        <TabItem Header="Mods" Padding="10,2">
+                            <ScrollViewer>
+                                <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition MinHeight="100" />
+                                    </Grid.RowDefinitions>
+                                    <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Mods"/>
+                                    <ListView Grid.Row="1" Name="ModList"
+                                    ItemTemplate="{StaticResource ModListTemplate}"
+                                    ItemsSource="{Binding Mods}"
+                                    ScrollViewer.CanContentScroll="False"
+                                    SelectedItem="{Binding SelectedSavedRun}"
+                                    Style="{StaticResource PoolListStyle}"
+                                    ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
+                                </Grid>
+                            </ScrollViewer>
+                        </TabItem>
+
                         <!-- SAVED RUNS TAB -->
 
                         <TabItem Header="Saved Runs" Padding="10,2">
-                            <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto" />
-                                    <RowDefinition MinHeight="100" />
-                                </Grid.RowDefinitions>
-                                <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Saved Runs"/>
-                                <ListView Grid.Row="1" Name="SavedRunsList"
-                        ItemTemplate="{StaticResource SavedRunsTemplate}"
-                        ItemsSource="{Binding SavedRuns}"
-                        ScrollViewer.CanContentScroll="False"
-                        SelectedItem="{Binding SelectedSavedRun}"
-                        Style="{StaticResource SavedRunsStyle}"/>
-                            </Grid>
+                            <ScrollViewer>
+                                <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition MinHeight="100" />
+                                    </Grid.RowDefinitions>
+                                    <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Saved Runs"/>
+                                    <ListView Grid.Row="1" Name="SavedRunsList"
+                                    ItemTemplate="{StaticResource SavedRunsTemplate}"
+                                    ItemsSource="{Binding SavedRuns}"
+                                    ScrollViewer.CanContentScroll="False"
+                                    SelectedItem="{Binding SelectedSavedRun}"
+                                    Style="{StaticResource SavedRunsStyle}"/>
+                                </Grid>
+                            </ScrollViewer>
                         </TabItem>
 
                     </TabControl>
