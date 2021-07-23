@@ -17,66 +17,23 @@ namespace TEiNRandomizer
 {
     partial class MainWindow
     {
-        //private void AltLevelInc(object sender, RoutedEventArgs e)
-        //{
-        //    if (RSettings.AltLevel < AltLevels.Insane)
-        //        RSettings.AltLevel++;
-        //    AltLevelTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-        //}
-        //private void AltLevelDec(object sender, RoutedEventArgs e)
-        //{
-        //    if (RSettings.AltLevel > AltLevels.None)
-        //        RSettings.AltLevel--;
-        //    AltLevelTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-        //}
-
-        //private void AreaTypeInc(object sender, RoutedEventArgs e)
-        //{
-        //    if (RSettings.AreaType < AreaTypes.glitch)
-        //        RSettings.AreaType++;
-        //    AreaTypeTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-        //}
-        //private void AreaTypeDec(object sender, RoutedEventArgs e)
-        //{
-        //    if (RSettings.AreaType > AreaTypes.normal)
-        //        RSettings.AreaType--;
-        //    AreaTypeTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-        //}
-
-        //<Grid>
-        //                            <Grid.ColumnDefinitions>
-        //                                <ColumnDefinition Width = "30" />
-        //                                < ColumnDefinition Width="80"/>
-        //                                <ColumnDefinition Width = "30" />
-        //                            </ Grid.ColumnDefinitions >
-        //                            < Button Grid.Column="0"  Name="AltDownButton" Padding="5,0" Content="-" Width="25" Click="AltLevelDec" Margin="0,0" />
-        //                            <TextBox Grid.Column="1" Name= "AltLevelTextBox" Width= "70" >
-        //                                < TextBox.Text >
-        //                                    < Binding Path= "RSettings.AltLevel" UpdateSourceTrigger= "PropertyChanged" />
-        //                                </ TextBox.Text >
-        //                            </ TextBox >
-        //                            < Button Grid.Column= "2"  Name= "AltUpButton" Padding= "5,0" Content= "+" Width= "25" Click= "AltLevelInc" Margin= "0,0" />
-        //                        </ Grid >
-
-        public void WriteSettingsCodeForMe_Click(object sender, RoutedEventArgs e)
+        private void WriteSettingsCodeForMe_Click(object sender, RoutedEventArgs e)
         {
             RSettings.WriteNewSaveFunc();
         }
-
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
-            //GameSeed = Randomizer.myRNG.GetUInt32();
-            PrevRuns++;
+            //GameSeed = RNG.GetUInt32();
             GameSeed += 500;
-            Randomizer.myRNG.SeedMe((int)GameSeed);
+            RNG.SeedMe((int)GameSeed);
             SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
             Randomizer.Randomize(this);
-        }
-
+        }   // Refresh button is no longer in use.
         private void SaveModButton_Click(object sender, RoutedEventArgs e)
         {
             Randomizer.Randomize(this, "savemod");
-            MessageBox.Show($"Mod Saved to {RSettings.ModSaveDirectory}.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            LoadSavedRuns(FileSystem.ReadModFolder(SavedRunsPath).OrderBy(p => p));
+            MessageBox.Show($"Mod saved successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         private void OpenTilesetsOptionsButton_Click(object sender, RoutedEventArgs e)
         {
@@ -99,7 +56,7 @@ namespace TEiNRandomizer
         private void LevelGenTestButton_Click(object sender, RoutedEventArgs e)
         {
             LevelGenerator.LoadPieces(this);
-            //Randomizer.myRNG.SeedMe(0);
+            //RNG.SeedMe(0);
 
             for (int i = 0; i < 40; i++)
             {
@@ -108,7 +65,6 @@ namespace TEiNRandomizer
 
             MessageBox.Show($"level gen test complete", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-
         private void CreatePiecePools(object sender, RoutedEventArgs e)
         {
             foreach (var folder in Directory.GetDirectories("data/levelpieces"))
@@ -171,7 +127,6 @@ namespace TEiNRandomizer
 
             MessageBox.Show($"creating piece pools complete", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-
         private void GenerateParticles_Click(object sender, RoutedEventArgs e)
         {
             Randomizer.saveDir = RSettings.ToolsOutDirectory;
@@ -181,7 +136,6 @@ namespace TEiNRandomizer
             }
             MessageBox.Show($"Successfully Generated Particles", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-
         private void RotateLevels_Click(object sender, RoutedEventArgs e)
         {
             //var level1 = LevelManip.Load("C:\\Users\\Noah\\Documents\\GitHub\\TEiN-Randomizer\\EndModLoader\\bin\\Debug\\tools\\input\\_BGTILES.lvl");
@@ -206,7 +160,6 @@ namespace TEiNRandomizer
 
             MessageBox.Show($"Successfully Rotated Levels", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-
         private void FlipLevelsH_Click(object sender, RoutedEventArgs e)
         {
             foreach (var file in Directory.GetFiles(RSettings.ToolsInDirectory, "*.lvl", SearchOption.TopDirectoryOnly))
@@ -219,7 +172,6 @@ namespace TEiNRandomizer
             }
             MessageBox.Show($"Successfully Flipped Levels", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-
         private void SmartCorrupt_Click(object sender, RoutedEventArgs e)
         {
             foreach (var file in Directory.GetFiles(RSettings.ToolsInDirectory, "*.lvl", SearchOption.TopDirectoryOnly))

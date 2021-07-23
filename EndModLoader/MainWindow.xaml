@@ -7,322 +7,333 @@
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="740" Width="640" MinHeight="480" MinWidth="640" MaxWidth="640"
         Closing="Window_Closing" >
+    
     <Window.Resources>
-        <Style x:Key="FocusVisual">
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Rectangle Margin="2" SnapsToDevicePixels="true" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" StrokeThickness="1" StrokeDashArray="1 2"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <SolidColorBrush x:Key="Item.MouseOver.Background"        Color="Transparent"/>
-        <SolidColorBrush x:Key="Item.MouseOver.Border"            Color="Transparent"/>
-        <SolidColorBrush x:Key="Item.SelectedInactive.Background" Color="Transparent"/>
-        <SolidColorBrush x:Key="Item.SelectedInactive.Border"     Color="Transparent"/>
-        <SolidColorBrush x:Key="Item.SelectedActive.Background"   Color="Transparent"/>
-        <SolidColorBrush x:Key="Item.SelectedActive.Border" Color="Transparent"/>
-        <Style x:Key="ListBoxItemStyle" TargetType="{x:Type ListBoxItem}">
-            <Setter Property="SnapsToDevicePixels" Value="True"/>
-            <Setter Property="Padding" Value="0,1"/>
-            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
-            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                        <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" SnapsToDevicePixels="true">
-                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsMouseOver" Value="True"/>
-                                </MultiTrigger.Conditions>
-                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
-                            </MultiTrigger>
-                            <!--<MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
-                                    <Condition Property="IsSelected" Value="True"/>
-                                </MultiTrigger.Conditions>
-                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
-                            </MultiTrigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="Selector.IsSelectionActive" Value="True"/>
-                                    <Condition Property="IsSelected" Value="True"/>
-                                </MultiTrigger.Conditions>
-                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
-                            </MultiTrigger>-->
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        
     </Window.Resources>
-    <Grid Margin="10,10,10,10">
-        <Grid.RowDefinitions>
-            <!--<RowDefinition Height="12" />
-            <RowDefinition Height="20" />-->
-            <RowDefinition MinHeight="100"/>
-            <RowDefinition Height="20" />
-        </Grid.RowDefinitions>
-        <!--<TextBlock Grid.Row="0" Text="Game Path" Height="12" VerticalAlignment="Top" FontSize="9" FontFamily="Segoe UI Semibold"/>
-        <Grid Grid.Row="1" Height="20" VerticalAlignment="Top">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <TextBlock Name="PathText" Text="{Binding EndIsNighPath}" Style="{StaticResource PathText}" Grid.Column="0" />
-        </Grid>-->
+    
+    <!-- MAIN WINDOW -->
+    
+    <Grid Margin="10,10,10,10"> 
         <Grid Grid.Row="0" VerticalAlignment="Stretch" Margin="0,0,0,10" >
             <TabControl Name="MenuTabs" Padding="0,0,0,0">
-                <TabItem Header="Level Pools" Padding="10,2">
-                    <ScrollViewer>
-                        <Grid HorizontalAlignment="Center">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition MinHeight="100" />
-                            </Grid.RowDefinitions>
-                            <TextBox Template="{StaticResource TabTitleTextControl}" Text="Level Pools"/>
-                            <ListView  Grid.Row="1" Name="PoolCatList"
-                                ItemTemplate="{StaticResource PoolCatListTemplate}"
-                                ItemsSource="{Binding PoolCats}"
-                                ScrollViewer.CanContentScroll="False"
-                                Style="{StaticResource PoolCatListStyle}"
-                                ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
-                                BorderBrush="Transparent"/>
+
+                <!-- RANDOMIZER TABS -->
+                <TabItem Header="Randomizer" Padding="10,2">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="24"/>
+                        </Grid.RowDefinitions>
+                        <TabControl Grid.Row="0" Name="RandomizerTabs" Margin="0,3,0,0">
+
+                            <!-- LEVEL POOLS TAB -->
+
+                            <TabItem Header="Level Pools" Padding="10,2">
+                                <ScrollViewer>
+                                    <Grid HorizontalAlignment="Center">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition MinHeight="100" />
+                                        </Grid.RowDefinitions>
+                                        <TextBox Template="{StaticResource TabTitleTextControl}" Text="Level Pools"/>
+                                        <ListView  Grid.Row="1" Name="PoolCatList"
+                                    ItemTemplate="{StaticResource PoolCatListTemplate}"
+                                    ItemsSource="{Binding PoolCats}"
+                                    ScrollViewer.CanContentScroll="False"
+                                    Style="{StaticResource PoolCatListStyle}"
+                                    ItemContainerStyle="{DynamicResource ListBoxItemStyle}"
+                                    BorderBrush="Transparent"/>
+                                    </Grid>
+                                </ScrollViewer>
+                            </TabItem>
+
+                            <!-- SETTINGS TAB -->
+
+                            <TabItem Header="Settings" Padding="10,2">
+                                <ScrollViewer Grid.Row="1">
+                                    <Grid HorizontalAlignment="Center" Width="600">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Randomizer Settings"/>
+                                        <Grid Grid.Row="1" HorizontalAlignment="Center">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid Grid.Column="0" >
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <ListBox BorderBrush="Transparent" Grid.Row="1" HorizontalContentAlignment="Center" Name="SettingsList" Style="{StaticResource FreezeSettings}" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
+                                                    <ListBox Style="{StaticResource SettingsListStyle}">
+                                                        <TextBlock Text="Game Seed:" FontWeight="Bold" ToolTip="This is the seed used to generate the randomized world."/>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="100"/>
+                                                                <ColumnDefinition Width="100"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBox Grid.Column="0" Name="SeedTextBox" TextAlignment="Center" Width="90">
+                                                                <TextBox.Text>
+                                                                    <Binding Path="GameSeed" UpdateSourceTrigger="PropertyChanged" />
+                                                                </TextBox.Text>
+                                                            </TextBox>
+                                                            <Button Grid.Column="1" Name="SeedButton" Content="Get New Seed" Click="SeedButton_Click" Width="90" Height="20"/>
+                                                        </Grid>
+                                                    </ListBox>
+                                                    <ListBox Style="{StaticResource SettingsListStyle}">
+                                                        <TextBlock Text="Area Settings:" FontWeight="Bold" />
+                                                        <CheckBox Width="200" Content="One Tileset Per Area" ToolTip="All levels within a given area will use the same tileset info. (recommended)" IsChecked="{Binding RSettings.UseAreaTileset}" />
+                                                        <CheckBox Width="200" Content="Randomize Area Type" ToolTip="Picks a random area type for every area." IsChecked="{Binding RSettings.RandomizeAreaType}" />
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="100"/>
+                                                                <ColumnDefinition Width="100"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="Levels: " ToolTip="The number of levels in each area."/>
+                                                            <TextBox Grid.Column="1" Width="50" Margin="0,0,40,0" Padding="2,0" Name="NumLevelsTextBox">
+                                                                <TextBox.Text>
+                                                                    <Binding Path="RSettings.NumLevels" UpdateSourceTrigger="PropertyChanged"/>
+                                                                </TextBox.Text>
+                                                            </TextBox>
+                                                        </Grid>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="100"/>
+                                                                <ColumnDefinition Width="100"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="Areas: " ToolTip="The number of areas that will be generated."/>
+                                                            <TextBox Grid.Column="1" Width="50" Margin="0,0,40,0" Padding="2,0" Name="NumAreasTextBox" HorizontalAlignment="Center">
+                                                                <TextBox.Text>
+                                                                    <Binding Path="RSettings.NumAreas" UpdateSourceTrigger="PropertyChanged"/>
+                                                                </TextBox.Text>
+                                                            </TextBox>
+                                                        </Grid>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="100"/>
+                                                                <ColumnDefinition Width="100"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="Cart Lives: " ToolTip="The number of lives Ash gets for each cart area."/>
+                                                            <TextBox Grid.Column="1" Width="50" Margin="0,0,40,0" Padding="2,0" Name="CartLivesTextBox">
+                                                                <TextBox.Text>
+                                                                    <Binding Path="RSettings.CartLives" UpdateSourceTrigger="PropertyChanged"/>
+                                                                </TextBox.Text>
+                                                            </TextBox>
+                                                        </Grid>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="100"/>
+                                                                <ColumnDefinition Width="100"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="Area Type: " ToolTip="The type of area that will be generated."/>
+                                                            <ComboBox Grid.Column="1" Width="90" Name="AreaTypesBox" SelectedItem="{Binding RSettings.AreaType}" ItemsSource="{Binding AreaTypes}" Text="Area Types" IsEditable="false" IsReadOnly="false"/>
+                                                        </Grid>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="100"/>
+                                                                <ColumnDefinition Width="100"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="Art Alts: " ToolTip="This setting determines which art assets can be substituted for others."/>
+                                                            <ComboBox Grid.Column="1" Width="90" Name="AltLevelsBox" SelectedItem="{Binding RSettings.AltLevel}" ItemsSource="{Binding AltLevels}" Text="Alt Levels" IsEditable="false" IsReadOnly="false"/>
+                                                        </Grid>
+                                                    </ListBox>
+                                                    <!--<CheckBox Width="170" Content="Use Default Music" IsChecked="{Binding RSettings.UseDefaultMusic}" />
+                                        <CheckBox Width="170" Content="Use Default Palettes" IsChecked="{Binding RSettings.UseDefaultPalettes}" />-->
+                                                    <!--<CheckBox Content="Randomize Palette Per Level" IsChecked="{Binding RSettings.PalettePerLevel}" />
+                                        <CheckBox Content="Randomize Music Per Level" IsChecked="{Binding RSettings.MusicPerLevel}" />-->
+                                                    <ListBox Style="{StaticResource SettingsListStyle}">
+                                                        <TextBlock Text="Visuals:" FontWeight="Bold" />
+                                                        <CheckBox Width="200" Content="Randomize Shaders" ToolTip="Applies a random shader effect to every area." IsChecked="{Binding RSettings.DoShaders}" />
+                                                        <CheckBox Width="200" Content="Randomize Particles" ToolTip="Applies a random particle effect to every area." IsChecked="{Binding RSettings.DoParticles}" />
+                                                        <CheckBox Width="200" Content="Randomize Overlays" ToolTip="Picks a random overlay for each area." IsChecked="{Binding RSettings.DoOverlays}" />
+                                                        <CheckBox Width="200" Content="Randomize Tile Graphics" ToolTip="Picks random tile graphics for each area." IsChecked="{Binding RSettings.DoTileGraphics}" />
+                                                        <!--<CheckBox Content="Randomize NPCs" IsChecked="{Binding RSettings.DoNPCs}" />-->
+                                                        <CheckBox Width="200" Content="Can Apply Nevermore Tilt" ToolTip="Allows the Nevermore tilt to appear in areas." IsChecked="{Binding RSettings.DoNevermoreTilt}" />
+                                                        <CheckBox Width="200" Content="Can Apply Exodus Wobble" ToolTip="Allows the Exodus wobble to appear in areas." IsChecked="{Binding RSettings.DoExodusWobble}" />
+                                                    </ListBox>
+                                                    <ListBox Style="{StaticResource SettingsListStyle}">
+                                                        <TextBlock Text="Gameplay:" FontWeight="Bold" />
+                                                        <CheckBox Width="200" Content="Randomize Physics" ToolTip="Creates randomized physics files for each area." IsChecked="{Binding RSettings.DoPhysics}" />
+                                                        <CheckBox Width="200" Content="Corrupt Levels" ToolTip="Enables level corruptions." IsChecked="{Binding RSettings.DoCorruptions}" />
+                                                        <!--<CheckBox Content="Level Merge" IsChecked="{Binding RSettings.LevelMerge}" />-->
+                                                        <CheckBox Width="200" Content="Mirror Mode" ToolTip="Flips the entire game horizontally." IsChecked="{Binding RSettings.MirrorMode}" />
+                                                        <CheckBox Width="200" Content="Dead Racer Mode" ToolTip="Enables the Dear Racer timer in the generated areas. Forces the glitch cart area type." IsChecked="{Binding RSettings.DeadRacer}" />
+                                                        <!--<CheckBox Content="Auto-Refresh Levels" IsChecked="{Binding RSettings.AutoRefresh}" />-->
+                                                    </ListBox>
+                                                    <ListBox Style="{StaticResource SettingsListStyle}">
+                                                        <TextBlock Grid.Column="0" Text="Attach To Tilesets:" FontWeight="Bold"/>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="100"/>
+                                                                <ColumnDefinition Width="100"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <Button Grid.Column="0" Width="80" Content="Edit File" Name="OpenTilesetsOptionsButton" Click="OpenTilesetsOptionsButton_Click"/>
+                                                            <Button Grid.Column="1" Content="Reload File" Name="ReloadTilesetsOptionsButton" Click="ReloadTilesetsOptionsButton_Click"  Width="80" Height="20"/>
+                                                        </Grid>
+                                                    </ListBox>
+                                                </ListBox>
+                                            </Grid>
+                                            <Grid Grid.Column="1" Width="auto" HorizontalAlignment="Center">
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="auto" />
+                                                    <RowDefinition Height="auto" />
+                                                </Grid.RowDefinitions>
+                                                <ListBox BorderBrush="Transparent" Grid.Row="1" HorizontalContentAlignment="Center" Name="SubSettingsList" Style="{StaticResource FreezeSettings}" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
+
+                                                    <ListBox
+                                            Name="PhysicsListBox"
+                                            ScrollViewer.CanContentScroll="False"
+                                            Style="{StaticResource PhysicsSettings}">
+                                                        <TextBlock Text="Physics Settings:" FontWeight="Bold"/>
+                                                        <CheckBox Content="Platform Physics" Width="200" IsChecked="{Binding RSettings.PlatformPhysics}" ToolTip="Randomize the speeds at which platforms move."/>
+                                                        <CheckBox Content="Player Physics"   Width="200" IsChecked="{Binding RSettings.PlayerPhysics}"   ToolTip="Randomize the player's physics constants. May make many levels impossible."/>
+                                                        <CheckBox Content="Water Physics"    Width="200" IsChecked="{Binding RSettings.WaterPhysics}"    ToolTip="Randomize the player's water physics."/>
+                                                        <CheckBox Content="LowGrav Physics"  Width="200" IsChecked="{Binding RSettings.LowGravPhysics}"  ToolTip="Randomize the player's low-gravity beam physics."/>
+                                                    </ListBox>
+                                                    <ListBox
+                                            Name="CorruptorListBox"
+                                            ScrollViewer.CanContentScroll="False"
+                                            Style="{StaticResource CorruptionSettings}">
+                                                        <TextBlock Text="Corruptor Settings:" FontWeight="Bold" />
+                                                        <CheckBox Content="Smart Corrupt"            Width="200" IsChecked="{Binding RSettings.CRSmart}"        ToolTip="Attempts to corrupt levels in such a way that they remain playable."/>
+                                                        <CheckBox Content="Corrupt Overlays"         Width="200" IsChecked="{Binding RSettings.CROverlays}"     ToolTip="Corrupts the overlay layer. Primarily affects liquids."/>
+                                                        <CheckBox Content="Randomize Tumors / Rings" Width="200" IsChecked="{Binding RSettings.CRTumors}"       ToolTip="Places a tumor or rings in a random location in every level."/>
+                                                        <CheckBox Content="Spike Strips"             Width="200" IsChecked="{Binding RSettings.CRSpikeStrips}"  ToolTip="Embeds diagonal strips off spikes across all solid blocks in each level."/>
+                                                        <CheckBox Content="Random Crumbles"          Width="200" IsChecked="{Binding RSettings.CRCrumbles}"     ToolTip="Turns random solid tiles into crumbling blocks."/>
+                                                        <CheckBox Content="Random Crushers"          Width="200" IsChecked="{Binding RSettings.CRCrushers}"     ToolTip="Adds random crushers into levels."/>
+                                                        <CheckBox Content="Water Levels"             Width="200" IsChecked="{Binding RSettings.CRWaterLevels}"  ToolTip="Turns 50% of levels into underwater levels"/>
+                                                        <!--<CheckBox Content="Total Chaos" IsChecked="{Binding RSettings.CRChaos}" ToolTip=""/>-->
+                                                        <Grid Margin="0,0,8,0">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="100"/>
+                                                                <ColumnDefinition Width="50"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="Add Tiles: " ToolTip="Adds the given number of random tiles to the active layer."/>
+                                                            <TextBox Grid.Column="1" Style="{StaticResource SmallBoxSetting}" Name="CRAddTilesTextBox" Text="{Binding Path=RSettings.CRAddTiles, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </Grid>
+                                                        <Grid Margin="0,0,8,0">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="100"/>
+                                                                <ColumnDefinition Width="50"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="Add Enemies: " ToolTip="Adds the given number of enemies to every level."/>
+                                                            <TextBox Grid.Column="1" Style="{StaticResource SmallBoxSetting}" Name="CRAddEnemiesTextBox" Text="{Binding Path=RSettings.CRAddEnemies, UpdateSourceTrigger=PropertyChanged}"/>
+                                                        </Grid>
+                                                    </ListBox>
+                                                    <ListBox
+                                            Name="ParticlesListBox"
+                                            ScrollViewer.CanContentScroll="False"
+                                            Style="{StaticResource ParticleSettings}">
+                                                        <TextBlock Text="Particle Settings:" FontWeight="Bold" />
+                                                        <CheckBox Content="Generate Custom Particles" Width="200" IsChecked="{Binding RSettings.GenerateCustomParticles}" ToolTip="Creates a new particle effect for every area."/>
+                                                        <Grid Margin="0,0,8,0">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="100"/>
+                                                                <ColumnDefinition Width="50"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="Max Particles: " ToolTip="The maximum number of particles allowed per particle effect. Setting a lower number will decrease the density of particles generated."/>
+                                                            <TextBox Grid.Column="1" Padding="2,0" Name="MaxParticlesTextBox" Text="{Binding Path=RSettings.MaxParticles, UpdateSourceTrigger=PropertyChanged}" />
+                                                        </Grid>
+                                                        <Grid Margin="0,0,8,0">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="100"/>
+                                                                <ColumnDefinition Width="50"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="Max Effects: " ToolTip="The maximum number of particle effects that can be applied to each area."/>
+                                                            <ComboBox Grid.Column="1" Name="MaxParticleFXBox" SelectedItem="{Binding RSettings.MaxParticleEffects}" ItemsSource="{Binding MaxParticleFXList}" Text="Max Particles" IsEditable="false" IsReadOnly="false"/>
+                                                        </Grid>
+                                                    </ListBox>
+                                                    <ListBox Style="{StaticResource SettingsListStyle}">
+                                                        <TextBlock Text="Shader Settings:" FontWeight="Bold" />
+                                                        <ListBox
+                                                    Name="ShadersListBox"
+                                                    ItemsSource="{Binding ShadersList}"
+                                                    ScrollViewer.CanContentScroll="False"
+                                                    Style="{StaticResource ShaderSettings}"
+                                                    ItemTemplate="{StaticResource ShadersListTemplate}"
+                                                    Width="200"
+                                                    MinHeight="0"
+                                                    BorderBrush="Transparent"
+                                                    ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
+                                                        </ListBox>
+                                                    </ListBox>
+                                                </ListBox>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </ScrollViewer>
+                            </TabItem>
+
+                            <!-- LEVEL GENERATOR TAB -->
+
+                            <TabItem Header="Level Gen" Padding="10,2">
+                                <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="auto" />
+                                        <RowDefinition MinHeight="100" />
+                                    </Grid.RowDefinitions>
+                                    <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Level Generator"/>
+                                    <ListView Grid.Row="1" Name="LevelPieceList"
+                            ItemTemplate="{StaticResource PieceListTemplate}"
+                            ItemsSource="{Binding PiecePools}"
+                            ScrollViewer.CanContentScroll="False"
+                            Style="{StaticResource PoolListStyle}"
+                            ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+
+                        <!-- RANDOMIZER BOTTOM BUTTONS -->
+
+                        <Grid Grid.Row="1" Height="20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="120"/>
+                                <ColumnDefinition Width="120"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Name="PlayButton" Style="{StaticResource PlayModButton}" Click="PlayButton_Click" Margin="0,0,0,0" HorizontalAlignment="Center"/>
+                            <!--<Button Grid.Column="1" Name="RefreshButton" Content="Refresh" Style="{StaticResource RefreshButton}" Click="RefreshButton_Click" Margin="0,0,0,0" HorizontalAlignment="Center"/>-->
+                            <Button Grid.Column="2" Name="UnloadButton" Content="Unload" Style="{StaticResource UnloadButton}" Click="UnloadButton_Click" Margin="0,0,0,0" HorizontalAlignment="Center"/>
+                            <Button Grid.Column="3" Name="SaveMod" Content="Save Mod" Click="SaveModButton_Click" Width="110" Margin="0,0,0,0" HorizontalAlignment="Center"/>
+                            <Button Grid.Column="4" Name="SaveSettings" Content="Save Settings" Click="SaveSettings_Click" Width="110" Margin="0,0,0,0" HorizontalAlignment="Center"/>
                         </Grid>
-                    </ScrollViewer>
+                    </Grid>
                 </TabItem>
-                <TabItem Header="Settings" Padding="10,2">
-                    <ScrollViewer Grid.Row="1">
-                        <Grid HorizontalAlignment="Center" Width="600">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Randomizer Settings"/>
-                            <Grid Grid.Row="1" HorizontalAlignment="Center">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid Grid.Column="0" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <ListBox BorderBrush="Transparent" Grid.Row="1" HorizontalContentAlignment="Center" Name="SettingsList" Style="{StaticResource FreezeSettings}" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
-                                        <ListBox Style="{StaticResource SettingsListStyle}">
-                                            <TextBlock Text="Game Seed:" FontWeight="Bold" ToolTip="This is the seed used to generate the randomized world."/>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="100"/>
-                                                    <ColumnDefinition Width="100"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBox Grid.Column="0" Name="SeedTextBox" TextAlignment="Center" Width="90">
-                                                    <TextBox.Text>
-                                                        <Binding Path="GameSeed" UpdateSourceTrigger="PropertyChanged" />
-                                                    </TextBox.Text>
-                                                </TextBox>
-                                                <Button Grid.Column="1" Name="SeedButton" Content="Get New Seed" Click="SeedButton_Click" Width="90" Height="20"/>
-                                            </Grid>
-                                        </ListBox>
-                                        <ListBox Style="{StaticResource SettingsListStyle}">
-                                            <TextBlock Text="Area Settings:" FontWeight="Bold" />
-                                            <CheckBox Width="200" Content="One Tileset Per Area" ToolTip="All levels within a given area will use the same tileset info. (recommended)" IsChecked="{Binding RSettings.UseAreaTileset}" />
-                                            <CheckBox Width="200" Content="Randomize Area Type" ToolTip="Picks a random area type for every area." IsChecked="{Binding RSettings.RandomizeAreaType}" />
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="100"/>
-                                                    <ColumnDefinition Width="100"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="Levels: " ToolTip="The number of levels in each area."/>
-                                                <TextBox Grid.Column="1" Width="50" Margin="0,0,40,0" Padding="2,0" Name="NumLevelsTextBox">
-                                                    <TextBox.Text>
-                                                        <Binding Path="RSettings.NumLevels" UpdateSourceTrigger="PropertyChanged"/>
-                                                    </TextBox.Text>
-                                                </TextBox>
-                                            </Grid>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="100"/>
-                                                    <ColumnDefinition Width="100"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="Areas: " ToolTip="The number of areas that will be generated."/>
-                                                <TextBox Grid.Column="1" Width="50" Margin="0,0,40,0" Padding="2,0" Name="NumAreasTextBox" HorizontalAlignment="Center">
-                                                    <TextBox.Text>
-                                                        <Binding Path="RSettings.NumAreas" UpdateSourceTrigger="PropertyChanged"/>
-                                                    </TextBox.Text>
-                                                </TextBox>
-                                            </Grid>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="100"/>
-                                                    <ColumnDefinition Width="100"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="Cart Lives: " ToolTip="The number of lives Ash gets for each cart area."/>
-                                                <TextBox Grid.Column="1" Width="50" Margin="0,0,40,0" Padding="2,0" Name="CartLivesTextBox">
-                                                    <TextBox.Text>
-                                                        <Binding Path="RSettings.CartLives" UpdateSourceTrigger="PropertyChanged"/>
-                                                    </TextBox.Text>
-                                                </TextBox>
-                                            </Grid>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="100"/>
-                                                    <ColumnDefinition Width="100"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="Area Type: " ToolTip="The type of area that will be generated."/>
-                                                <ComboBox Grid.Column="1" Width="90" Name="AreaTypesBox" SelectedItem="{Binding RSettings.AreaType}" ItemsSource="{Binding AreaTypes}" Text="Area Types" IsEditable="false" IsReadOnly="false"/>
-                                            </Grid>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="100"/>
-                                                    <ColumnDefinition Width="100"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="Art Alts: " ToolTip="This setting determines which art assets can be substituted for others."/>
-                                                <ComboBox Grid.Column="1" Width="90" Name="AltLevelsBox" SelectedItem="{Binding RSettings.AltLevel}" ItemsSource="{Binding AltLevels}" Text="Alt Levels" IsEditable="false" IsReadOnly="false"/>
-                                            </Grid>
-                                        </ListBox>
-                                            <!--<CheckBox Width="170" Content="Use Default Music" IsChecked="{Binding RSettings.UseDefaultMusic}" />
-                                    <CheckBox Width="170" Content="Use Default Palettes" IsChecked="{Binding RSettings.UseDefaultPalettes}" />-->
-                                        <!--<CheckBox Content="Randomize Palette Per Level" IsChecked="{Binding RSettings.PalettePerLevel}" />
-                                    <CheckBox Content="Randomize Music Per Level" IsChecked="{Binding RSettings.MusicPerLevel}" />-->
-                                        <ListBox Style="{StaticResource SettingsListStyle}">
-                                            <TextBlock Text="Visuals:" FontWeight="Bold" />
-                                            <CheckBox Width="200" Content="Randomize Shaders" ToolTip="Applies a random shader effect to every area." IsChecked="{Binding RSettings.DoShaders}" />
-                                            <CheckBox Width="200" Content="Randomize Particles" ToolTip="Applies a random particle effect to every area." IsChecked="{Binding RSettings.DoParticles}" />
-                                            <CheckBox Width="200" Content="Randomize Overlays" ToolTip="Picks a random overlay for each area." IsChecked="{Binding RSettings.DoOverlays}" />
-                                            <CheckBox Width="200" Content="Randomize Tile Graphics" ToolTip="Picks random tile graphics for each area." IsChecked="{Binding RSettings.DoTileGraphics}" />
-                                            <!--<CheckBox Content="Randomize NPCs" IsChecked="{Binding RSettings.DoNPCs}" />-->
-                                            <CheckBox Width="200" Content="Can Apply Nevermore Tilt" ToolTip="Allows the Nevermore tilt to appear in areas." IsChecked="{Binding RSettings.DoNevermoreTilt}" />
-                                            <CheckBox Width="200" Content="Can Apply Exodus Wobble" ToolTip="Allows the Exodus wobble to appear in areas." IsChecked="{Binding RSettings.DoExodusWobble}" />
-                                        </ListBox>
-                                        <ListBox Style="{StaticResource SettingsListStyle}">
-                                            <TextBlock Text="Gameplay:" FontWeight="Bold" />
-                                            <CheckBox Width="200" Content="Randomize Physics" ToolTip="Creates randomized physics files for each area." IsChecked="{Binding RSettings.DoPhysics}" />
-                                            <CheckBox Width="200" Content="Corrupt Levels" ToolTip="Enables level corruptions." IsChecked="{Binding RSettings.DoCorruptions}" />
-                                            <!--<CheckBox Content="Level Merge" IsChecked="{Binding RSettings.LevelMerge}" />-->
-                                            <CheckBox Width="200" Content="Mirror Mode" ToolTip="Flips the entire game horizontally." IsChecked="{Binding RSettings.MirrorMode}" />
-                                            <CheckBox Width="200" Content="Dead Racer Mode" ToolTip="Enables the Dear Racer timer in the generated areas. Forces the glitch cart area type." IsChecked="{Binding RSettings.DeadRacer}" />
-                                            <!--<CheckBox Content="Auto-Refresh Levels" IsChecked="{Binding RSettings.AutoRefresh}" />-->
-                                        </ListBox>
-                                        <ListBox Style="{StaticResource SettingsListStyle}">
-                                            <TextBlock Grid.Column="0" Text="Attach To Tilesets:" FontWeight="Bold"/>
-                                            <Grid>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="100"/>
-                                                    <ColumnDefinition Width="100"/>
-                                                </Grid.ColumnDefinitions>
-                                                <Button Grid.Column="0" Width="80" Content="Edit File" Name="OpenTilesetsOptionsButton" Click="OpenTilesetsOptionsButton_Click"/>
-                                                <Button Grid.Column="1" Content="Reload File" Name="ReloadTilesetsOptionsButton" Click="ReloadTilesetsOptionsButton_Click"  Width="80" Height="20"/>
-                                            </Grid>
-                                        </ListBox>
-                                    </ListBox>
-                                </Grid>
-                                <Grid Grid.Column="1" Width="auto" HorizontalAlignment="Center">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition Height="auto" />
-                                    </Grid.RowDefinitions>
-                                    <ListBox BorderBrush="Transparent" Grid.Row="1" HorizontalContentAlignment="Center" Name="SubSettingsList" Style="{StaticResource FreezeSettings}" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
-                                        
-                                        <ListBox
-                                        Name="PhysicsListBox"
-                                        ScrollViewer.CanContentScroll="False"
-                                        Style="{StaticResource PhysicsSettings}">
-                                            <TextBlock Text="Physics Settings:" FontWeight="Bold"/>
-                                            <CheckBox Content="Platform Physics" Width="200" IsChecked="{Binding RSettings.PlatformPhysics}" ToolTip="Randomize the speeds at which platforms move."/>
-                                            <CheckBox Content="Player Physics"   Width="200" IsChecked="{Binding RSettings.PlayerPhysics}"   ToolTip="Randomize the player's physics constants. May make many levels impossible."/>
-                                            <CheckBox Content="Water Physics"    Width="200" IsChecked="{Binding RSettings.WaterPhysics}"    ToolTip="Randomize the player's water physics."/>
-                                            <CheckBox Content="LowGrav Physics"  Width="200" IsChecked="{Binding RSettings.LowGravPhysics}"  ToolTip="Randomize the player's low-gravity beam physics."/>
-                                        </ListBox>
-                                        <ListBox
-                                        Name="CorruptorListBox"
-                                        ScrollViewer.CanContentScroll="False"
-                                        Style="{StaticResource CorruptionSettings}">
-                                            <TextBlock Text="Corruptor Settings:" FontWeight="Bold" />
-                                            <CheckBox Content="Smart Corrupt"            Width="200" IsChecked="{Binding RSettings.CRSmart}"        ToolTip="Attempts to corrupt levels in such a way that they remain playable."/>
-                                            <CheckBox Content="Corrupt Overlays"         Width="200" IsChecked="{Binding RSettings.CROverlays}"     ToolTip="Corrupts the overlay layer. Primarily affects liquids."/>
-                                            <CheckBox Content="Randomize Tumors / Rings" Width="200" IsChecked="{Binding RSettings.CRTumors}"       ToolTip="Places a tumor or rings in a random location in every level."/>
-                                            <CheckBox Content="Spike Strips"             Width="200" IsChecked="{Binding RSettings.CRSpikeStrips}"  ToolTip="Embeds diagonal strips off spikes across all solid blocks in each level."/>
-                                            <CheckBox Content="Random Crumbles"          Width="200" IsChecked="{Binding RSettings.CRCrumbles}"     ToolTip="Turns random solid tiles into crumbling blocks."/>
-                                            <CheckBox Content="Random Crushers"          Width="200" IsChecked="{Binding RSettings.CRCrushers}"     ToolTip="Adds random crushers into levels."/>
-                                            <CheckBox Content="Water Levels"             Width="200" IsChecked="{Binding RSettings.CRWaterLevels}"  ToolTip="Turns 50% of levels into underwater levels"/>
-                                            <!--<CheckBox Content="Total Chaos" IsChecked="{Binding RSettings.CRChaos}" ToolTip=""/>-->
-                                            <Grid Margin="0,0,8,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="100"/>
-                                                    <ColumnDefinition Width="50"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="Add Tiles: " ToolTip="Adds the given number of random tiles to the active layer."/>
-                                                <TextBox Grid.Column="1" Style="{StaticResource SmallBoxSetting}" Name="CRAddTilesTextBox" Text="{Binding Path=RSettings.CRAddTiles, UpdateSourceTrigger=PropertyChanged}"/>
-                                            </Grid>
-                                            <Grid Margin="0,0,8,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="100"/>
-                                                    <ColumnDefinition Width="50"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="Add Enemies: " ToolTip="Adds the given number of enemies to every level."/>
-                                                <TextBox Grid.Column="1" Style="{StaticResource SmallBoxSetting}" Name="CRAddEnemiesTextBox" Text="{Binding Path=RSettings.CRAddEnemies, UpdateSourceTrigger=PropertyChanged}"/>
-                                            </Grid>
-                                        </ListBox>
-                                        <ListBox
-                                        Name="ParticlesListBox"
-                                        ScrollViewer.CanContentScroll="False"
-                                        Style="{StaticResource ParticleSettings}">
-                                            <TextBlock Text="Particle Settings:" FontWeight="Bold" />
-                                            <CheckBox Content="Generate Custom Particles" Width="200" IsChecked="{Binding RSettings.GenerateCustomParticles}" ToolTip="Creates a new particle effect for every area."/>
-                                            <Grid Margin="0,0,8,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="100"/>
-                                                    <ColumnDefinition Width="50"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="Max Particles: " ToolTip="The maximum number of particles allowed per particle effect. Setting a lower number will decrease the density of particles generated."/>
-                                                <TextBox Grid.Column="1" Padding="2,0" Name="MaxParticlesTextBox" Text="{Binding Path=RSettings.MaxParticles, UpdateSourceTrigger=PropertyChanged}" />
-                                            </Grid>
-                                            <Grid Margin="0,0,8,0">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="100"/>
-                                                    <ColumnDefinition Width="50"/>
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock Grid.Column="0" Text="Max Effects: " ToolTip="The maximum number of particle effects that can be applied to each area."/>
-                                                <ComboBox Grid.Column="1" Name="MaxParticleFXBox" SelectedItem="{Binding RSettings.MaxParticleEffects}" ItemsSource="{Binding MaxParticleFXList}" Text="Max Particles" IsEditable="false" IsReadOnly="false"/>
-                                            </Grid>
-                                        </ListBox>
-                                        <ListBox Style="{StaticResource SettingsListStyle}">
-                                            <TextBlock Text="Shader Settings:" FontWeight="Bold" />
-                                            <ListBox
-                                                Name="ShadersListBox"
-                                                ItemsSource="{Binding ShadersList}"
-                                                ScrollViewer.CanContentScroll="False"
-                                                Style="{StaticResource ShaderSettings}"
-                                                ItemTemplate="{StaticResource ShadersListTemplate}"
-                                                Width="200"
-                                                MinHeight="0"
-                                                BorderBrush="Transparent"
-                                                ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
-                                            </ListBox>
-                                        </ListBox>
-                                    </ListBox>
-                                </Grid>
+                
+                <!-- MODLOADER TABS -->
+                
+                <TabItem Header="Mod Loader" Padding="10,2">
+                    <TabControl Name="ModLoaderTabs" Margin="0,3,0,0">
+
+                        <!-- SAVED RUNS TAB -->
+
+                        <TabItem Header="Saved Runs" Padding="10,2">
+                            <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition MinHeight="100" />
+                                </Grid.RowDefinitions>
+                                <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Saved Runs"/>
+                                <ListView Grid.Row="1" Name="SavedRunsList"
+                        ItemTemplate="{StaticResource SavedRunsTemplate}"
+                        ItemsSource="{Binding SavedRuns}"
+                        ScrollViewer.CanContentScroll="False"
+                        SelectedItem="{Binding SelectedSavedRun}"
+                        Style="{StaticResource SavedRunsStyle}"/>
                             </Grid>
-                        </Grid>
-                    </ScrollViewer>
+                        </TabItem>
+
+                    </TabControl>
                 </TabItem>
+                
+                <!-- PROGRAM SETTINGS TAB -->
+                
                 <TabItem Header="Program" Padding="10,2">
                     <Grid Grid.Column="0" Height="Auto" HorizontalAlignment="Center" Width="420" >
                         <Grid.RowDefinitions>
@@ -341,33 +352,14 @@
                             </TextBox>
                             <Button Name="FolderButton" Style="{StaticResource FolderSelectButton}" Click="FolderButton_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>
                             <Separator Margin="0,5"/>
-                            <TextBlock Text="Mod Save Directory: "/>
-                            <TextBox Name="SaveDirTextBox" Width="160">
-                                <TextBox.Text>
-                                    <Binding Path="RSettings.ModSaveDirectory" UpdateSourceTrigger="PropertyChanged"/>
-                                </TextBox.Text>
-                            </TextBox>
-                            <Separator Margin="0,5"/>
                             <CheckBox Content="Manual Load" IsChecked="{Binding RSettings.ManualLoad}" />
                             <TextBlock Text="This may be necessary for Epic Games users." Foreground="Gray"/>
                         </ListBox>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Level Gen" Padding="10,2">
-                    <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition MinHeight="100" />
-                        </Grid.RowDefinitions>
-                        <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Level Generator"/>
-                        <ListView Grid.Row="1" Name="LevelPieceList"
-                        ItemTemplate="{StaticResource PieceListTemplate}"
-                        ItemsSource="{Binding PiecePools}"
-                        ScrollViewer.CanContentScroll="False"
-                        Style="{StaticResource PoolListStyle}"
-                        ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
-                    </Grid>
-                </TabItem>
+                
+                <!-- TOOLS AND UTILITIES TAB -->
+                
                 <TabItem Header="Tools" Padding="10,2">
                     <Grid Grid.Column="0" Width="420" >
                         <Grid.RowDefinitions>
@@ -435,32 +427,12 @@
                         </ListBox>
                     </Grid>
                 </TabItem>
-                <TabItem Header="Saved Mods" Padding="10,2">
-                    <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto" />
-                            <RowDefinition MinHeight="100" />
-                        </Grid.RowDefinitions>
-                        <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Saved Mods"/>
-                        <ListBox BorderBrush="Transparent" Grid.Row="1" Name="SavedModsList" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
-                        </ListBox>
-                    </Grid>
-                </TabItem>
+
+
+
             </TabControl>
         </Grid>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="120"/>
-                <ColumnDefinition Width="120"/>
-            </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Name="PlayButton" Style="{StaticResource PlayModButton}" Click="PlayButton_Click" Margin="0,0,0,0" HorizontalAlignment="Center"/>
-            <Button Grid.Column="1" Name="RefreshButton" Content="Refresh" Style="{StaticResource RefreshButton}" Click="RefreshButton_Click" Margin="0,0,0,0" HorizontalAlignment="Center"/>
-            <Button Grid.Column="2" Name="UnloadButton" Content="Unload" Style="{StaticResource UnloadButton}" Click="UnloadButton_Click" Margin="0,0,0,0" HorizontalAlignment="Center"/>
-            <Button Grid.Column="3" Name="SaveMod" Content="Save Mod" Click="SaveModButton_Click" Width="110" Margin="0,0,0,0" HorizontalAlignment="Center"/>
-            <Button Grid.Column="4" Name="SaveSettings" Content="Save Settings" Click="SaveSettings_Click" Width="110" Margin="0,0,0,0" HorizontalAlignment="Center"/>
-        </Grid>
+        
+        
     </Grid>
 </Window>

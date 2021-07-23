@@ -61,7 +61,7 @@ namespace TEiNRandomizer
             if (Randomizer.settings.CRCrumbles) RandomCrumbles(ref level);
             if (Randomizer.settings.CRSpikeStrips) SpikeStrips(ref level);
             if (Randomizer.settings.CRCrushers) Crushers(ref level);
-            if (Randomizer.settings.CRWaterLevels && Randomizer.myRNG.CoinFlip()) WaterLevel(ref level);
+            if (Randomizer.settings.CRWaterLevels && RNG.CoinFlip()) WaterLevel(ref level);
 
             return TSAppend;
         }
@@ -70,10 +70,10 @@ namespace TEiNRandomizer
             bool hasGas = false;
             for (int i = 0; i < num; i++)
             {
-                int index = Randomizer.myRNG.rand.Next(0, level.data.active.Length);
+                int index = RNG.random.Next(0, level.data.active.Length);
                 if (level.data.active[index] == 0 && level.data.tag[index] == 0)
                 {
-                    var tile = (TileID)entityTiles[Randomizer.myRNG.rand.Next(0, entityTiles.Length)];
+                    var tile = (TileID)entityTiles[RNG.random.Next(0, entityTiles.Length)];
                     level.data.active[index] = tile;
                     if (tile == TileID.Gasper || tile == TileID.GasCloud) hasGas = true;
 
@@ -85,9 +85,9 @@ namespace TEiNRandomizer
         {
             for (int i = 0; i < num; i++)
             {
-                int index = Randomizer.myRNG.rand.Next(0, level.data.active.Length);
+                int index = RNG.random.Next(0, level.data.active.Length);
                 if (level.data.active[index] != TileID.Solid && level.data.tag[index] == TileID.Empty)
-                    level.data.active[index] = (TileID)activeTiles[Randomizer.myRNG.rand.Next(0, activeTiles.Length)];
+                    level.data.active[index] = (TileID)activeTiles[RNG.random.Next(0, activeTiles.Length)];
             }
         }
         public static void SpikeStrips(ref LevelFile level)
@@ -108,7 +108,7 @@ namespace TEiNRandomizer
         {
             for (int i = 0; i < 100; i++)
             {
-                int index = Randomizer.myRNG.rand.Next(0, level.data.active.Length);
+                int index = RNG.random.Next(0, level.data.active.Length);
                 if (level.data.active[index] == TileID.Solid)
                     level.data.active[index] = TileID.Crumble;
             }
@@ -121,10 +121,10 @@ namespace TEiNRandomizer
         {
             for (int i = 0; i < 30; i++)
             {
-                int index = Randomizer.myRNG.rand.Next(0, level.data.active.Length);
+                int index = RNG.random.Next(0, level.data.active.Length);
                 if (level.data.active[index] == TileID.Solid && level.data.tag[index] == TileID.Empty)
                 {
-                    if (Randomizer.myRNG.CoinFlip())
+                    if (RNG.CoinFlip())
                         level.data.active[index] = TileID.CrusherEye;
                     else level.data.active[index] = TileID.CrusherGear;
 
@@ -136,10 +136,10 @@ namespace TEiNRandomizer
         {
             for (int i = 0; i < 60; i++)
             {
-                int index = Randomizer.myRNG.rand.Next(0, level.data.active.Length);
+                int index = RNG.random.Next(0, level.data.active.Length);
                 //if (level.data.tag[index] == 0)
                 //{
-                level.data.overlay[index] = (TileID)overlayTiles[Randomizer.myRNG.rand.Next(0, overlayTiles.Length)];
+                level.data.overlay[index] = (TileID)overlayTiles[RNG.random.Next(0, overlayTiles.Length)];
                 //}
             }
         }
@@ -158,8 +158,8 @@ namespace TEiNRandomizer
             {
                 bool placed = false;
                 do {
-                    int row = Randomizer.myRNG.rand.Next(bounds.Top, bounds.Bottom);
-                    int col = Randomizer.myRNG.rand.Next(bounds.Left, bounds.Right);
+                    int row = RNG.random.Next(bounds.Top, bounds.Bottom);
+                    int col = RNG.random.Next(bounds.Left, bounds.Right);
 
                     index = row * lw + col;
                     if (level.data.active[index] == TileID.Empty)
@@ -199,8 +199,8 @@ namespace TEiNRandomizer
                 bool placed = false;
                 do
                 {
-                    int row = Randomizer.myRNG.rand.Next(bounds.Top, bounds.Bottom);
-                    int col = Randomizer.myRNG.rand.Next(bounds.Left + cushion, bounds.Right - cushion);
+                    int row = RNG.random.Next(bounds.Top, bounds.Bottom);
+                    int col = RNG.random.Next(bounds.Left + cushion, bounds.Right - cushion);
 
                     index = row * lw + col;
                     if (level.data.active[index] == toReplace)
@@ -245,8 +245,8 @@ namespace TEiNRandomizer
                 bool placed = false;
                 do
                 {
-                    int row = Randomizer.myRNG.rand.Next(bounds.Top, bounds.Bottom);
-                    int col = Randomizer.myRNG.rand.Next(bounds.Left, bounds.Right);
+                    int row = RNG.random.Next(bounds.Top, bounds.Bottom);
+                    int col = RNG.random.Next(bounds.Left, bounds.Right);
 
                     index = row * lw + col;
                     if (level.data.active[index] == TileID.Empty)
@@ -346,11 +346,11 @@ namespace TEiNRandomizer
                     
                     if ((Int32)level.data.active[index] < 1000)
                     {
-                        if (Randomizer.myRNG.rand.Next(0, corruptLevel) == 0)
+                        if (RNG.random.Next(0, corruptLevel) == 0)
                         {
                             try
                             {
-                                string s = options[Randomizer.myRNG.rand.Next(0, options.Length)];
+                                string s = options[RNG.random.Next(0, options.Length)];
                                 if (s != null && s != "")
                                 {
                                     int num = Convert.ToInt32(s);
@@ -364,7 +364,7 @@ namespace TEiNRandomizer
                     {
                         try
                         {
-                            string s = options[Randomizer.myRNG.rand.Next(0, options.Length)];
+                            string s = options[RNG.random.Next(0, options.Length)];
                             if (s != null && s != "")
                             {
                                 int num = Convert.ToInt32(s);
@@ -401,11 +401,11 @@ namespace TEiNRandomizer
                     var element = smartTiles.Element(Enum.GetName(typeof(TileID), level.data.overlay[index]));
                     if (element != null)
                         options = Randomizer.ElementToArray(element);   // use index to get enum name, search for corruption options in xml
-                    if (Randomizer.myRNG.CoinFlip())
+                    if (RNG.CoinFlip())
                     {
                         try
                         {
-                            string s = options[Randomizer.myRNG.rand.Next(0, options.Length)];
+                            string s = options[RNG.random.Next(0, options.Length)];
                             if (s != null && s != "")
                             {
                                 int num = Convert.ToInt32(s);
@@ -454,9 +454,9 @@ namespace TEiNRandomizer
 
                         //levelNew.data.overlay[index] = TileID.GraityBeam;
 
-                        if (Randomizer.myRNG.CoinFlip() && Randomizer.myRNG.CoinFlip() && Randomizer.myRNG.CoinFlip())
+                        if (RNG.CoinFlip() && RNG.CoinFlip() && RNG.CoinFlip())
                         {
-                            switch (Randomizer.myRNG.rand.Next(0, 3))
+                            switch (RNG.random.Next(0, 3))
                             {
                                 case 0:
                                     levelNew.data.active[index] = TileID.Crumble;
@@ -475,10 +475,10 @@ namespace TEiNRandomizer
 
                 for (int i = 0; i < 3; i++)
                 {
-                    levelNew.data.active[Randomizer.myRNG.rand.Next(0, lw * lh)] = TileID.Switch1U;
-                    levelNew.data.active[Randomizer.myRNG.rand.Next(0, lw * lh)] = TileID.Switch2U;
-                    levelNew.data.active[Randomizer.myRNG.rand.Next(0, lw * lh)] = TileID.Switch3U;
-                    levelNew.data.active[Randomizer.myRNG.rand.Next(0, lw * lh)] = TileID.Switch4U;
+                    levelNew.data.active[RNG.random.Next(0, lw * lh)] = TileID.Switch1U;
+                    levelNew.data.active[RNG.random.Next(0, lw * lh)] = TileID.Switch2U;
+                    levelNew.data.active[RNG.random.Next(0, lw * lh)] = TileID.Switch3U;
+                    levelNew.data.active[RNG.random.Next(0, lw * lh)] = TileID.Switch4U;
                 }
 
                 levelNew.data.tag[0] = TileID.CameraBounds;

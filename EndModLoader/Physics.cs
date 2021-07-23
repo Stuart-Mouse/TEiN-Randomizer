@@ -43,14 +43,14 @@ namespace TEiNRandomizer
             int maxBonusJumps = 3;
 
             // scalar values
-            //double gravityScale = (double)Randomizer.myRNG.rand.Next(25, 401) / 100;
-            //double speedScale = (double)Randomizer.myRNG.rand.Next(30, 201) / 100;
+            //double gravityScale = (double)RNG.rand.Next(25, 401) / 100;
+            //double speedScale = (double)RNG.rand.Next(30, 201) / 100;
 
-            gravity = Randomizer.myRNG.rand.Next(10, 121);
-            max_fallspeed = -Randomizer.myRNG.rand.Next(50, 1000) / 10;
+            gravity = RNG.random.Next(10, 121);
+            max_fallspeed = -RNG.random.Next(50, 1000) / 10;
 
-            maxspeed = Randomizer.myRNG.rand.Next(50, 201) / 10;
-            runspeed = Randomizer.myRNG.rand.Next(50, 201) / 10;
+            maxspeed = RNG.random.Next(50, 201) / 10;
+            runspeed = RNG.random.Next(50, 201) / 10;
 
 
             //double speedFriction;
@@ -59,51 +59,51 @@ namespace TEiNRandomizer
             //    speedFriction = speedScale / 100;
             //}
 
-            //ground_friction *= Math.Min(0.9999, (double)Randomizer.myRNG.rand.Next(lower, upper) / 100);
-            //stop_friction *= Math.Min(0.9999, (double)Randomizer.myRNG.rand.Next(lower, upper) / 100);
-            //air_friction *= Math.Min(0.9999, (double)Randomizer.myRNG.rand.Next(lower, upper) / 100);
+            //ground_friction *= Math.Min(0.9999, (double)RNG.rand.Next(lower, upper) / 100);
+            //stop_friction *= Math.Min(0.9999, (double)RNG.rand.Next(lower, upper) / 100);
+            //air_friction *= Math.Min(0.9999, (double)RNG.rand.Next(lower, upper) / 100);
 
-            ground_friction = (double)Randomizer.myRNG.rand.Next(7000, 9000) / 10000;
-            stop_friction = (double)Randomizer.myRNG.rand.Next(7000, 8500) / 10000;
-            air_friction = (double)Randomizer.myRNG.rand.Next(7000, 10000) / 10000;
+            ground_friction = (double)RNG.random.Next(7000, 9000) / 10000;
+            stop_friction = (double)RNG.random.Next(7000, 8500) / 10000;
+            air_friction = (double)RNG.random.Next(7000, 10000) / 10000;
 
-            fastfall_gravity = Randomizer.myRNG.rand.Next(10, 121);
-            fastfall_jerkdown = -Randomizer.myRNG.rand.Next(1, 121) / 10;
-            fastfall_maxspeed = -Randomizer.myRNG.rand.Next(1, 121);
+            fastfall_gravity = RNG.random.Next(10, 121);
+            fastfall_jerkdown = -RNG.random.Next(1, 121) / 10;
+            fastfall_maxspeed = -RNG.random.Next(1, 121);
 
-            if (Randomizer.myRNG.rand.Next(0, 10) == 0)
+            if (RNG.random.Next(0, 10) == 0)
             {
                 fastfall_gravity  *= -1;
                 fastfall_jerkdown *= -1;
                 fastfall_maxspeed *= -1;
             }
 
-            //float_time *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            jumpheight = (double)Randomizer.myRNG.rand.Next(320, 751) / 100;
-            release_jumpheight = (double)Randomizer.myRNG.rand.Next(10, 70) / 100;
+            //float_time *= (double)RNG.rand.Next(lower, upper) / 100;
+            jumpheight = (double)RNG.random.Next(320, 751) / 100;
+            release_jumpheight = (double)RNG.random.Next(10, 70) / 100;
             
-            //longjump_slidethreshold *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            longjump_speed = Randomizer.myRNG.rand.Next(100, 300) / 10;
-            longjump_height = (double)Randomizer.myRNG.rand.Next(50, 601) / 100;
-            longjump_airfriction = (double)Randomizer.myRNG.rand.Next(5000, 10000) / 10000;
-            ledgejump_height = (double)Randomizer.myRNG.rand.Next(20, 60) / 10;
+            //longjump_slidethreshold *= (double)RNG.rand.Next(lower, upper) / 100;
+            longjump_speed = RNG.random.Next(100, 300) / 10;
+            longjump_height = (double)RNG.random.Next(50, 601) / 100;
+            longjump_airfriction = (double)RNG.random.Next(5000, 10000) / 10000;
+            ledgejump_height = (double)RNG.random.Next(20, 60) / 10;
 
             //longjump_slidethreshold = ;
 
-            enemy_bounceheight_nojump = (double)Randomizer.myRNG.rand.Next(2, 31) / 10;
-            enemy_bounceheight_jump = (double)Randomizer.myRNG.rand.Next(20, 81) / 10;
-            mush_bounceheight_nojump = (double)Randomizer.myRNG.rand.Next(10, 51) / 10;
-            mush_bounceheight_jump = (double)Randomizer.myRNG.rand.Next(40, 101) / 10;
-            //enemy_prebounce_time *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //enemy_postbounce_time *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //swimspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //water_exitheight *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            enemy_bounceheight_nojump = (double)RNG.random.Next(2, 31) / 10;
+            enemy_bounceheight_jump = (double)RNG.random.Next(20, 81) / 10;
+            mush_bounceheight_nojump = (double)RNG.random.Next(10, 51) / 10;
+            mush_bounceheight_jump = (double)RNG.random.Next(40, 101) / 10;
+            //enemy_prebounce_time *= (double)RNG.rand.Next(lower, upper) / 100;
+            //enemy_postbounce_time *= (double)RNG.rand.Next(lower, upper) / 100;
+            //swimspeed *= (double)RNG.rand.Next(lower, upper) / 100;
+            //water_exitheight *= (double)RNG.rand.Next(lower, upper) / 100;
 
             if (jumpheight < 3.5)
                 maxBonusJumps = 1;
-            if (Randomizer.myRNG.CoinFlip()) // bonus jumps
+            if (RNG.CoinFlip()) // bonus jumps
             {
-                double numBonusJumps = Randomizer.myRNG.rand.Next(1, maxBonusJumps + 1);
+                double numBonusJumps = RNG.random.Next(1, maxBonusJumps + 1);
                 jumpheight /= numBonusJumps + 1;
 
                 extras += "bonus_jumps " + numBonusJumps + "\n";
@@ -117,10 +117,10 @@ namespace TEiNRandomizer
                 }
                 extras += "]\n";
                 if (numBonusJumps == 0)
-                    leniency = Randomizer.myRNG.rand.NextDouble();
+                    leniency = RNG.random.NextDouble();
             }
 
-            string filename = "data/player_physics/" + Randomizer.myRNG.GetUInt32().ToString() + ".txt";
+            string filename = "data/player_physics/" + RNG.GetUInt32().ToString() + ".txt";
 
             using (StreamWriter sw = File.CreateText(Randomizer.saveDir + filename))
             {
@@ -188,37 +188,37 @@ namespace TEiNRandomizer
             int lower = 50;
             int upper = 201;
 
-            gravity *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            leniency *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            max_fallspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            maxspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            runspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            gravity *= (double)RNG.random.Next(lower, upper) / 100;
+            leniency *= (double)RNG.random.Next(lower, upper) / 100;
+            max_fallspeed *= (double)RNG.random.Next(lower, upper) / 100;
+            maxspeed *= (double)RNG.random.Next(lower, upper) / 100;
+            runspeed *= (double)RNG.random.Next(lower, upper) / 100;
 
-            ground_friction = (double)Randomizer.myRNG.rand.Next(7000, 9000) / 10000;
-            stop_friction = (double)Randomizer.myRNG.rand.Next(7000, 8500) / 10000;
-            air_friction = (double)Randomizer.myRNG.rand.Next(7000, 10000) / 10000;
+            ground_friction = (double)RNG.random.Next(7000, 9000) / 10000;
+            stop_friction = (double)RNG.random.Next(7000, 8500) / 10000;
+            air_friction = (double)RNG.random.Next(7000, 10000) / 10000;
 
-            fastfall_gravity *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            fastfall_jerkdown *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            fastfall_maxspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            float_time *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            jumpheight *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            release_jumpheight *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            longjump_slidethreshold *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            longjump_speed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            longjump_height *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            longjump_airfriction *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            ledgejump_height *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //enemy_bounceheight_nojump *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //enemy_bounceheight_jump *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //mush_bounceheight_nojump *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //mush_bounceheight_jump *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //enemy_prebounce_time *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //enemy_postbounce_time *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            swimspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            water_exitheight *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            fastfall_gravity *= (double)RNG.random.Next(lower, upper) / 100;
+            fastfall_jerkdown *= (double)RNG.random.Next(lower, upper) / 100;
+            fastfall_maxspeed *= (double)RNG.random.Next(lower, upper) / 100;
+            float_time *= (double)RNG.random.Next(lower, upper) / 100;
+            jumpheight *= (double)RNG.random.Next(lower, upper) / 100;
+            release_jumpheight *= (double)RNG.random.Next(lower, upper) / 100;
+            longjump_slidethreshold *= (double)RNG.random.Next(lower, upper) / 100;
+            longjump_speed *= (double)RNG.random.Next(lower, upper) / 100;
+            longjump_height *= (double)RNG.random.Next(lower, upper) / 100;
+            longjump_airfriction *= (double)RNG.random.Next(lower, upper) / 100;
+            ledgejump_height *= (double)RNG.random.Next(lower, upper) / 100;
+            //enemy_bounceheight_nojump *= (double)RNG.rand.Next(lower, upper) / 100;
+            //enemy_bounceheight_jump *= (double)RNG.rand.Next(lower, upper) / 100;
+            //mush_bounceheight_nojump *= (double)RNG.rand.Next(lower, upper) / 100;
+            //mush_bounceheight_jump *= (double)RNG.rand.Next(lower, upper) / 100;
+            //enemy_prebounce_time *= (double)RNG.rand.Next(lower, upper) / 100;
+            //enemy_postbounce_time *= (double)RNG.rand.Next(lower, upper) / 100;
+            swimspeed *= (double)RNG.random.Next(lower, upper) / 100;
+            water_exitheight *= (double)RNG.random.Next(lower, upper) / 100;
 
-            string filename = "data/lowgrav_physics/" + Randomizer.myRNG.GetUInt32().ToString() + ".txt";
+            string filename = "data/lowgrav_physics/" + RNG.GetUInt32().ToString() + ".txt";
 
             using (StreamWriter sw = File.CreateText(Randomizer.saveDir + filename))
             {
@@ -285,37 +285,37 @@ namespace TEiNRandomizer
             int lower = 50;
             int upper = 201;
 
-            gravity                 *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            leniency                *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            max_fallspeed           *= (double)Randomizer.myRNG.rand.Next(75, upper) / 100;
-            maxspeed                *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            runspeed                *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            gravity                 *= (double)RNG.random.Next(lower, upper) / 100;
+            leniency                *= (double)RNG.random.Next(lower, upper) / 100;
+            max_fallspeed           *= (double)RNG.random.Next(75, upper) / 100;
+            maxspeed                *= (double)RNG.random.Next(lower, upper) / 100;
+            runspeed                *= (double)RNG.random.Next(lower, upper) / 100;
 
-            ground_friction = (double)Randomizer.myRNG.rand.Next(7000, 9000) / 10000;
-            stop_friction = (double)Randomizer.myRNG.rand.Next(7000, 8500) / 10000;
-            air_friction = (double)Randomizer.myRNG.rand.Next(7000, 10000) / 10000;
+            ground_friction = (double)RNG.random.Next(7000, 9000) / 10000;
+            stop_friction = (double)RNG.random.Next(7000, 8500) / 10000;
+            air_friction = (double)RNG.random.Next(7000, 10000) / 10000;
 
-            fastfall_gravity        *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            fastfall_jerkdown       *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            fastfall_maxspeed       *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            float_time              *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            jumpheight              *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            release_jumpheight      *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            longjump_slidethreshold *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            longjump_speed          *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            longjump_height         *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            longjump_airfriction    *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            ledgejump_height        *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //enemy_bounceheight_nojump *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //enemy_bounceheight_jump *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //mush_bounceheight_nojump *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //mush_bounceheight_jump *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //enemy_prebounce_time *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            //enemy_postbounce_time *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            swimspeed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            water_exitheight *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            fastfall_gravity        *= (double)RNG.random.Next(lower, upper) / 100;
+            fastfall_jerkdown       *= (double)RNG.random.Next(lower, upper) / 100;
+            fastfall_maxspeed       *= (double)RNG.random.Next(lower, upper) / 100;
+            float_time              *= (double)RNG.random.Next(lower, upper) / 100;
+            jumpheight              *= (double)RNG.random.Next(lower, upper) / 100;
+            release_jumpheight      *= (double)RNG.random.Next(lower, upper) / 100;
+            longjump_slidethreshold *= (double)RNG.random.Next(lower, upper) / 100;
+            longjump_speed          *= (double)RNG.random.Next(lower, upper) / 100;
+            longjump_height         *= (double)RNG.random.Next(lower, upper) / 100;
+            longjump_airfriction    *= (double)RNG.random.Next(lower, upper) / 100;
+            ledgejump_height        *= (double)RNG.random.Next(lower, upper) / 100;
+            //enemy_bounceheight_nojump *= (double)RNG.rand.Next(lower, upper) / 100;
+            //enemy_bounceheight_jump *= (double)RNG.rand.Next(lower, upper) / 100;
+            //mush_bounceheight_nojump *= (double)RNG.rand.Next(lower, upper) / 100;
+            //mush_bounceheight_jump *= (double)RNG.rand.Next(lower, upper) / 100;
+            //enemy_prebounce_time *= (double)RNG.rand.Next(lower, upper) / 100;
+            //enemy_postbounce_time *= (double)RNG.rand.Next(lower, upper) / 100;
+            swimspeed *= (double)RNG.random.Next(lower, upper) / 100;
+            water_exitheight *= (double)RNG.random.Next(lower, upper) / 100;
 
-            string filename = "data/water_physics/" + Randomizer.myRNG.GetUInt32().ToString() + ".txt";
+            string filename = "data/water_physics/" + RNG.GetUInt32().ToString() + ".txt";
 
             using (StreamWriter sw = File.CreateText(Randomizer.saveDir + filename))
             {
@@ -381,31 +381,31 @@ namespace TEiNRandomizer
             int upper = 201;
 
             // Alter Values
-            MovingPlatformSpeedLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            MovingPlatformSpeedMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            MovingPlatformSpeedHigh *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmoothMovingPlatformSpeedLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmoothMovingPlatformSpeedMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmoothMovingPlatformSpeedHigh *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmoothMovingPlatformSpeedXSlow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            FallingPlatformGravitytLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            FallingPlatformGravitytMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            FallingPlatformGravitytHigh *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            CrumblingPlatformGravitytLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            CrumblingPlatformGravitytMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            CrumblingPlatformGravitytHigh *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmasherSpeedLow = (double)Randomizer.myRNG.rand.Next(5, 40);
-            SmasherDelayLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmasherSpeedMed = (double)Randomizer.myRNG.rand.Next(7, 48);
-            SmasherDelayMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            SmasherSpeedHigh = (double)Randomizer.myRNG.rand.Next(10, 56);
-            SmasherDelayHigh *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            WeightedPlatformSpeedLow *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            WeightedPlatformSpeedMed *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
-            WeightedPlatformSpeedHigh *= (double)Randomizer.myRNG.rand.Next(lower, upper) / 100;
+            MovingPlatformSpeedLow *= (double)RNG.random.Next(lower, upper) / 100;
+            MovingPlatformSpeedMed *= (double)RNG.random.Next(lower, upper) / 100;
+            MovingPlatformSpeedHigh *= (double)RNG.random.Next(lower, upper) / 100;
+            SmoothMovingPlatformSpeedLow *= (double)RNG.random.Next(lower, upper) / 100;
+            SmoothMovingPlatformSpeedMed *= (double)RNG.random.Next(lower, upper) / 100;
+            SmoothMovingPlatformSpeedHigh *= (double)RNG.random.Next(lower, upper) / 100;
+            SmoothMovingPlatformSpeedXSlow *= (double)RNG.random.Next(lower, upper) / 100;
+            FallingPlatformGravitytLow *= (double)RNG.random.Next(lower, upper) / 100;
+            FallingPlatformGravitytMed *= (double)RNG.random.Next(lower, upper) / 100;
+            FallingPlatformGravitytHigh *= (double)RNG.random.Next(lower, upper) / 100;
+            CrumblingPlatformGravitytLow *= (double)RNG.random.Next(lower, upper) / 100;
+            CrumblingPlatformGravitytMed *= (double)RNG.random.Next(lower, upper) / 100;
+            CrumblingPlatformGravitytHigh *= (double)RNG.random.Next(lower, upper) / 100;
+            SmasherSpeedLow = (double)RNG.random.Next(5, 40);
+            SmasherDelayLow *= (double)RNG.random.Next(lower, upper) / 100;
+            SmasherSpeedMed = (double)RNG.random.Next(7, 48);
+            SmasherDelayMed *= (double)RNG.random.Next(lower, upper) / 100;
+            SmasherSpeedHigh = (double)RNG.random.Next(10, 56);
+            SmasherDelayHigh *= (double)RNG.random.Next(lower, upper) / 100;
+            WeightedPlatformSpeedLow *= (double)RNG.random.Next(lower, upper) / 100;
+            WeightedPlatformSpeedMed *= (double)RNG.random.Next(lower, upper) / 100;
+            WeightedPlatformSpeedHigh *= (double)RNG.random.Next(lower, upper) / 100;
 
             // Write platformphysics.txt
-            string filename = "data/platform_physics/" + Randomizer.myRNG.GetUInt32().ToString() + ".txt";
+            string filename = "data/platform_physics/" + RNG.GetUInt32().ToString() + ".txt";
             using (StreamWriter sw = File.CreateText(Randomizer.saveDir + filename))
             {
                 sw.WriteLine(nameof(MovingPlatformSpeedLow) + " " + MovingPlatformSpeedLow);

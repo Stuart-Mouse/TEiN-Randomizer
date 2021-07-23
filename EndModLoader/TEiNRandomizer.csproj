@@ -151,7 +151,7 @@
     <Compile Include="LevelManip.cs" />
     <Compile Include="LevelPiece.cs" />
     <Compile Include="MainWindowButtons.cs" />
-    <Compile Include="MyRNG.cs" />
+    <Compile Include="RNG.cs" />
     <Compile Include="ParticleGenerator.cs" />
     <Compile Include="Physics.cs" />
     <Compile Include="PiecePool.cs" />
@@ -161,6 +161,9 @@
     <Compile Include="RandomizerSettings.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="StringManipulator.cs" />
+    <Compile Include="TextWindow.xaml.cs">
+      <DependentUpon>TextWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Tileset.cs" />
     <Compile Include="Worldmap.cs" />
     <Page Include="MainWindow.xaml">
@@ -176,6 +179,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="TextWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mod.cs" />

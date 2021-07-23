@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Xml.Linq;
 using TEiNRandomizer.Properties;
 
 namespace TEiNRandomizer
@@ -20,40 +19,30 @@ namespace TEiNRandomizer
         public static string ExeName { get => "TheEndIsNigh.exe"; }
         public static string WindowTitle { get => "  The End is Nigh Randomizer BETA  "; }
 
-        private string ModPath { get => Path.Combine(EndIsNighPath, "mods"); }
-        private string PoolPath { get => "data/levelpools"; }
-        private string PiecePoolPath { get => "data/piecepools"; }
+        public string ModPath { get => "mods"; }
+        public string SavedRunsPath { get => "saved runs"; }
+        public string PoolPath { get => "data/levelpools"; }
+        public string PiecePoolPath { get => "data/piecepools"; }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
         public List<Shader> ShadersList { get; set; } = Randomizer.GetShadersList();
-
-        public UInt32 GameSeed { get; set; }
-        public int PrevRuns { get; set; }
-        //public List<Level> AnalysisLevelList = new List<Level> { };
-        //public List<string> AnalysisPaletteList = new List<string> { };
-        //public List<string> AnalysisMusicList = new List<string> { };
-        //public List<string> AnalysisTileList = new List<string> { };
-        //public List<string> AnalysisOverlayList = new List<string> { };
-        //public List<string> AnalysisParticlesList = new List<string> { };
-        //public List<string> AnalysisShaderList = new List<string> { };
-        //public List<string> AnalysisFullSetList = new List<string> { };
-        //public UInt32 ProgressCounter;
-        //public string ProgressMessage;
-        public bool ShowAdvancedSettings { get; set; } = false;
-
-        public RandomizerSettings RSettings { get; set; } = new RandomizerSettings();
+        public UInt32 GameSeed { get; set; }    // This is the seed used to generate randomized runs.
+        public RandomizerSettings RSettings { get; set; } = new RandomizerSettings("default");
 
         protected void NotifyPropertyChanged(string property) =>
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
 
         public ObservableCollection<Mod> Mods { get; private set; } = new ObservableCollection<Mod>();
-        //public ObservableCollection<Pool> Pools { get; private set; } = new ObservableCollection<Pool>();
+        public ObservableCollection<Mod> SavedRuns { get; private set; } = new ObservableCollection<Mod>();
         public ObservableCollection<PoolCategory> PoolCats { get; private set; } = new ObservableCollection<PoolCategory>();
         public ObservableCollection<PiecePool> PiecePools { get; private set; } = new ObservableCollection<PiecePool>();
         public ObservableCollection<string> AltLevels { get; private set; } = new ObservableCollection<string>() { "None", "Safe", "Extended", "Crazy", "Insane" };
         public ObservableCollection<string> AreaTypes { get; private set; } = new ObservableCollection<string>() { "normal", "dark", "cart", "ironcart", "glitch" };
         public ObservableCollection<int> MaxParticleFXList { get; private set; } = new ObservableCollection<int>() { 1, 2, 3 };
+
+
+        public Mod SelectedSavedRun { get; set; }
+
 
         private AppState _appState;
         public AppState AppState
@@ -66,19 +55,19 @@ namespace TEiNRandomizer
             }
         }
 
-        private string _endIsNighPath;
-        public string EndIsNighPath
-        {
-            // Amazing way to display the path properly.
-            get => _endIsNighPath?.Replace('\\', '/') ?? "";
-            private set
-            {
-                _endIsNighPath = value;
-                RSettings.GameDirectory = value;
-                NotifyPropertyChanged(nameof(EndIsNighPath));
-                RSettings.Save("default");
-            }
-        }
+        //private string _endIsNighPath;
+        //public string EndIsNighPath
+        //{
+        //    // Amazing way to display the path properly.
+        //    get => _endIsNighPath?.Replace('\\', '/') ?? "";
+        //    private set
+        //    {
+        //        _endIsNighPath = value;
+        //        RSettings.GameDirectory = value;
+        //        NotifyPropertyChanged(nameof(EndIsNighPath));
+        //        RSettings.Save("default");
+        //    }
+        //}
 
         public MainWindow()
         {
@@ -86,10 +75,10 @@ namespace TEiNRandomizer
             DataContext = this;
             AppState = AppState.NoModSelected;
 
-            EndIsNighPath = RSettings.GameDirectory;
-            if (string.IsNullOrWhiteSpace(EndIsNighPath))
+            //EndIsNighPath = RSettings.GameDirectory;
+            if (string.IsNullOrWhiteSpace(RSettings.GameDirectory))
             {
-                EndIsNighPath = FileSystem.DefaultGameDirectory();
+                RSettings.GameDirectory = FileSystem.DefaultGameDirectory();
             }
             ReadyEndIsNighPath();
         }
@@ -116,15 +105,16 @@ namespace TEiNRandomizer
         {
             try
             {
-                if (FileSystem.IsGamePathCorrect(EndIsNighPath))
+                if (FileSystem.IsGamePathCorrect(RSettings.GameDirectory))
                 {
-                    FileSystem.SetupDir(EndIsNighPath);
-                    FileSystem.MakeSaveBackup(EndIsNighPath);
+                    FileSystem.SetupDir(RSettings.GameDirectory);
+                    FileSystem.MakeSaveBackup(RSettings.GameDirectory);
                     //LoadModList(FileSystem.ReadModFolder(ModPath).OrderBy(m => m));
                     LoadPoolList(Randomizer.PoolLoader(PoolPath).OrderBy(p => p));
+                    LoadSavedRuns(FileSystem.ReadModFolder(SavedRunsPath).OrderBy(p => p));
                     LoadPieceList(Randomizer.PieceLoader(PiecePoolPath).OrderBy(p => p));
                     Randomizer.LoadNPCs();
-                    GameSeed = Randomizer.myRNG.GetUInt32();
+                    GameSeed = RNG.GetUInt32();
                     FileSystem.EnableWatching(ModPath, OnAdd, OnRemove, OnRename);
                 }
                 else
@@ -190,8 +180,6 @@ namespace TEiNRandomizer
 
         private async Task PlayRandomizer()
         {
-            Console.WriteLine("play randomizer");
-
             if (AppState == AppState.ReadyToPlay)
             {
                 //if (File.Exists(EndIsNighPath + "backup/TheEndIsNigh -backup.exe")) // If backup exe exists restore regular from it
@@ -201,7 +189,8 @@ namespace TEiNRandomizer
                 //}
                 //else File.Copy(Path.Combine(EndIsNighPath + ExeName), Path.Combine(EndIsNighPath + "backup/TheEndIsNigh -backup.exe")); //Creates backup exe
 
-                var contains = FileSystem.ContainedFolders(EndIsNighPath, FileSystem.ModFolders).ToList();
+                // Check the game directory for mod folders
+                var contains = FileSystem.ContainedFolders(RSettings.GameDirectory, FileSystem.ModFolders).ToList();
                 if (contains.Count != 0)
                 {
                     // FINALLY an excuse to use tuples!
@@ -222,7 +211,7 @@ namespace TEiNRandomizer
                     {
                         try
                         {
-                            FileSystem.UnloadAll(EndIsNighPath);
+                            FileSystem.UnloadAll(RSettings.GameDirectory);
                         }
                         catch (IOException)
                         {
@@ -242,21 +231,16 @@ namespace TEiNRandomizer
                     }
                 }
 
-
                 AppState = AppState.InGame;
                 Randomizer.Randomize(this);
 
-                if (RSettings.AutoRefresh)
-                    AutoRefresh();
-
                 if (!RSettings.ManualLoad)
                 {
-                    Process.Start(Path.Combine(EndIsNighPath, ExeName));
-
+                    Process.Start(Path.Combine(RSettings.GameDirectory, ExeName));
                     await HookGameExit("TheEndIsNigh", (s, ev) =>
                     {
                         AppState = AppState.ReadyToPlay;
-                        FileSystem.UnloadAll(EndIsNighPath);
+                        FileSystem.UnloadAll(RSettings.GameDirectory);
                     });
                 }
                 else await WaitForUnload();
@@ -279,7 +263,7 @@ namespace TEiNRandomizer
             while (AppState == AppState.InGame)
             {
                 GameSeed++;
-                Randomizer.myRNG.SeedMe((int)GameSeed);
+                RNG.SeedMe((int)GameSeed);
                 SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                 Randomizer.Randomize(this);
                 await Task.Delay(7000);
@@ -291,7 +275,7 @@ namespace TEiNRandomizer
             {
                 await Task.Delay(1000);
             }
-            FileSystem.UnloadAll(EndIsNighPath);
+            FileSystem.UnloadAll(RSettings.GameDirectory);
             AppState = AppState.ReadyToPlay;
         }
 
@@ -303,14 +287,14 @@ namespace TEiNRandomizer
         private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             //ParticleRanger(); // this function is stupid and I should get rid of it later
-            Randomizer.myRNG.SeedMe((int)GameSeed);
+            RNG.SeedMe((int)GameSeed);
             await PlayRandomizer();
         }
 
         private void SeedButton_Click(object sender, RoutedEventArgs e)
         {
-            GameSeed = Randomizer.myRNG.GetUInt32();
-            Randomizer.myRNG.SeedMe((int)GameSeed);
+            GameSeed = RNG.GetUInt32();
+            RNG.SeedMe((int)GameSeed);
             SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
         }
 
@@ -375,6 +359,26 @@ namespace TEiNRandomizer
             {
                 PiecePools.Add(pool);
             }
+        }
+        private void LoadModList(IOrderedEnumerable<Mod> mods)
+        {
+            Mods.Clear();
+            foreach (var mod in mods.OrderBy(m => m))
+            {
+                Mods.Add(mod);
+            }
+
+            //if (Pools.Count == 0) AppState = AppState.NoModsFound;
+            //else if (ModList.SelectedIndex == -1) AppState = AppState.NoModSelected;
+            //AppState = AppState.ReadyToPlay;
+        }
+        private void LoadSavedRuns(IOrderedEnumerable<Mod> mods)
+        {
+            SavedRuns.Clear();
+            foreach (var mod in mods.OrderBy(m => m))
+            {
+                SavedRuns.Add(mod);
+            }
 
             //if (Pools.Count == 0) AppState = AppState.NoModsFound;
             //else if (ModList.SelectedIndex == -1) AppState = AppState.NoModSelected;
@@ -391,7 +395,7 @@ namespace TEiNRandomizer
             var result = dialog.ShowDialog();
             if (result == CommonFileDialogResult.Ok)
             {
-                EndIsNighPath = dialog.FileName + "/";
+                RSettings.GameDirectory = dialog.FileName + "/";
                 Mods.Clear();
             }
 

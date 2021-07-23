@@ -8,11 +8,12 @@ namespace TEiNRandomizer
 
     public class RandomizerSettings
     {
+        public string UserName { get; set; }
         public int NumLevels { get; set; }
         public int NumAreas { get; set; }
         public bool UseDefaultMusic { get; set; }
         public bool UseDefaultPalettes { get; set; }
-        public bool PalettePerLevel { get; set; }
+        //public bool PalettePerLevel { get; set; }
         public bool MusicPerLevel { get; set; }
         public bool DoShaders { get; set; }
         public bool DoParticles { get; set; }
@@ -23,17 +24,17 @@ namespace TEiNRandomizer
         //public bool DoArtAlts { get; set; }
         public bool DoNPCs { get; set; }
         public bool UseAreaTileset { get; set; }
-        public int CacheRuns { get; set; }
+        public int CacheRuns { get; set; }  // This is no longer used, but it is still present in one place, so I haven't removed it yet.
         //public int NumShuffles { get; set; }
         public string AreaType { get; set; }
-        public int RepeatTolerance { get; set; }
+        public int RepeatTolerance { get; set; } // This is no longer used, but it is still present in one place, so I haven't removed it yet.
         public string AltLevel { get; set; }
         public string AttachToTS { get; set; }
-        public bool AutoRefresh { get; set; }
+        //public bool AutoRefresh { get; set; }
         public bool GenerateCustomParticles { get; set; }
         public int MaxParticles { get; set; }
         public string GameDirectory { get; set; }
-        public string ModSaveDirectory { get; set; }
+        //public string ModSaveDirectory { get; set; }
         public string ToolsInDirectory { get; set; }
         public string ToolsOutDirectory { get; set; }
         public int MaxParticleEffects { get; set; }
@@ -62,7 +63,7 @@ namespace TEiNRandomizer
         public bool CRChaos { get; set; }
         public bool CRWaterLevels { get; set; }
 
-        public RandomizerSettings()
+        public RandomizerSettings(string name)
         {
             // intialize true defaults in case settings file is fucked
             NumLevels = 10;
@@ -70,14 +71,14 @@ namespace TEiNRandomizer
             UseDefaultMusic = false;
             UseDefaultPalettes = false;
             MusicPerLevel = false;
-            PalettePerLevel = true;
+            //PalettePerLevel = true;
             DoShaders = true;
             DoParticles = true;
             DoOverlays = true;
             DoTileGraphics = true;
             DoNevermoreTilt = true;
             DoExodusWobble = true;
-            AutoRefresh = false;
+            //AutoRefresh = false;
             //DoArtAlts = false;
             DoNPCs = false;
             UseAreaTileset = true;
@@ -102,7 +103,7 @@ namespace TEiNRandomizer
             LowGravPhysics = false;
             LevelMerge = false;
             GameDirectory = "C:/Program Files(x86)/Steam/steamapps/common/theendisnigh/";
-            ModSaveDirectory = "[Saved Mods]/";
+            //ModSaveDirectory = "saved runs/";
             ToolsInDirectory = "tools/input/";
             ToolsOutDirectory = "tools/output/";
             RandomizeAreaType = false;
@@ -116,16 +117,17 @@ namespace TEiNRandomizer
             CRCrushers = false;
             CRChaos = false;
             CRWaterLevels = false;
+            UserName = "Ash";
 
             try
             {
-                Load("default");
+                Load(name);
             }
             catch (Exception)
             {
                 try
                 {
-                    Save("default");
+                    Save(name);
 
                 }
                 catch (Exception)
@@ -155,7 +157,7 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(UseDefaultMusic), UseDefaultMusic);
                     element.SetElementValue(nameof(UseDefaultPalettes), UseDefaultPalettes);
                     element.SetElementValue(nameof(MusicPerLevel), MusicPerLevel);
-                    element.SetElementValue(nameof(PalettePerLevel), PalettePerLevel);
+                    //element.SetElementValue(nameof(PalettePerLevel), PalettePerLevel);
                     element.SetElementValue(nameof(DoShaders), DoShaders);
                     element.SetElementValue(nameof(DoParticles), DoParticles);
                     element.SetElementValue(nameof(DoOverlays), DoOverlays);
@@ -167,7 +169,7 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(UseAreaTileset), UseAreaTileset);
                     element.SetElementValue(nameof(CacheRuns), CacheRuns);
                     //element.SetElementValue(nameof(NumShuffles), NumShuffles);
-                    element.SetElementValue(nameof(AutoRefresh), AutoRefresh);
+                    //element.SetElementValue(nameof(AutoRefresh), AutoRefresh);
                     element.SetElementValue(nameof(AreaType), (string)AreaType);
                     element.SetElementValue(nameof(RepeatTolerance), RepeatTolerance);
                     element.SetElementValue(nameof(AltLevel), (string)AltLevel);
@@ -175,7 +177,7 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(MaxParticles), MaxParticles);
                     element.SetElementValue(nameof(GenerateCustomParticles), GenerateCustomParticles);
                     element.SetElementValue(nameof(GameDirectory), GameDirectory);
-                    element.SetElementValue(nameof(ModSaveDirectory), ModSaveDirectory);
+                    //element.SetElementValue(nameof(ModSaveDirectory), ModSaveDirectory);
                     element.SetElementValue(nameof(MaxParticleEffects), MaxParticleEffects);
                     element.SetElementValue(nameof(ManualLoad), ManualLoad);
                     element.SetElementValue(nameof(DoCorruptions), DoCorruptions);
@@ -201,6 +203,7 @@ namespace TEiNRandomizer
                     element.SetElementValue(nameof(CRCrushers), CRCrushers);
                     element.SetElementValue(nameof(CRChaos), CRChaos);
                     element.SetElementValue(nameof(CRWaterLevels), CRWaterLevels);
+                    element.SetElementValue(nameof(UserName), UserName);
                 }
             }
             doc.Save("data/RandomizerSettings.xml");
@@ -218,7 +221,7 @@ namespace TEiNRandomizer
                     UseDefaultMusic = (bool)element.Element(nameof(UseDefaultMusic));
                     UseDefaultPalettes = (bool)element.Element(nameof(UseDefaultPalettes));
                     MusicPerLevel = (bool)element.Element(nameof(MusicPerLevel));
-                    PalettePerLevel = (bool)element.Element(nameof(PalettePerLevel));
+                    //PalettePerLevel = (bool)element.Element(nameof(PalettePerLevel));
                     DoShaders = (bool)element.Element(nameof(DoShaders));
                     DoParticles = (bool)element.Element(nameof(DoParticles));
                     DoOverlays = (bool)element.Element(nameof(DoOverlays));
@@ -234,11 +237,11 @@ namespace TEiNRandomizer
                     RepeatTolerance = (int)element.Element(nameof(RepeatTolerance));
                     AltLevel = (string)element.Element(nameof(AltLevel));
                     //AttachToTS = (string)element.Element(nameof(AttachToTS));
-                    AutoRefresh = (bool)element.Element(nameof(AutoRefresh));
+                    //AutoRefresh = (bool)element.Element(nameof(AutoRefresh));
                     GenerateCustomParticles = (bool)element.Element(nameof(GenerateCustomParticles));
                     MaxParticles = (int)element.Element(nameof(MaxParticles));
                     GameDirectory = (string)element.Element(nameof(GameDirectory));
-                    ModSaveDirectory = (string)element.Element(nameof(ModSaveDirectory));
+                    //ModSaveDirectory = (string)element.Element(nameof(ModSaveDirectory));
                     MaxParticleEffects = (int)element.Element(nameof(MaxParticleEffects));
                     ManualLoad = (bool)element.Element(nameof(ManualLoad));
                     DoCorruptions = (bool)element.Element(nameof(DoCorruptions));
@@ -264,6 +267,8 @@ namespace TEiNRandomizer
                     CRCrushers = (bool)element.Element(nameof(CRCrushers));
                     CRChaos = (bool)element.Element(nameof(CRChaos));
                     CRWaterLevels = (bool)element.Element(nameof(CRWaterLevels));
+                    UserName = (string)element.Element(nameof(UserName));
+
                 }
             }
             AttachToTS = File.ReadAllText("data/AttachToTS.txt");

@@ -5,24 +5,46 @@ using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
 using System.Collections.ObjectModel;
+using System.IO.Compression;
+
 
 namespace TEiNRandomizer
 {
     public static class Randomizer
     {
+        static Randomizer()
+        {
+            // Constructor loads local assets and info.
+            // Pools, shaders, and pieces are loaded by the main window since it will need access to them.
+            LoadNPCs();
+            LoadFunnyNames();
+        }
 
-        public static MyRNG myRNG = new MyRNG();
+        public static ObservableCollection<PoolCategory> PoolCats { get; private set; }
+
+        //public static RNG RNG = new RNG();          // This has been moved to a static class since only one RNG is ever used
         public static List<List<Level>> ChosenLevels;
-        public static List<List<Level>> ChosenLevels2;
-        public static RandomizerSettings settings;
-        public static List<Shader> ShadersList;
-        public static string[] NPCMovieClips;
+        public static List<List<Level>> ChosenLevels2;  // This is only referenced in the currently unused levelmerge function.
+
+        public static List<Shader> ShadersList; // A list of all the loaded shaders is stored in this class.
+
+        //public static ObservableCollection<PoolCategory> PoolCats { get; private set; } = new ObservableCollection<PoolCategory>();
+
+        public static string[] NPCMovieClips;   // NPC Info is loaded and stored in the Randomizer class
         public static string[] NPCSoundIDs;
         public static List<string> NPCTexts;
-        public static string saveDir;
-        public static MainWindow sender;
+
+        public static string saveDir;               // The save directory is determined when starting the randomize function and stored. (Will select between game directory and save directory.)
+        public static RandomizerSettings settings;  // a copy of the settings is stored so that all of the functions within this class can read it.
+        public static MainWindow mainWindow;            // The Main Window's info is also stored, so that it can be referenced when needed.
         //static int prevRuns = 0;
 
+        public static string[] LINouns;
+        public static string[] LIAdjectives;
+        public static string[] LINames;
+        public static string[] LILocations;
+
+        public static List<string> DeadRacerAreas;
         static void FlipCSV(string path)
         {
             var arr = File.ReadAllLines(path);
@@ -90,7 +112,7 @@ namespace TEiNRandomizer
             while (n > 1)
             {
                 n--;
-                int k = myRNG.rand.Next(n + 1);
+                int k = RNG.random.Next(n + 1);
                 T value = list[k];
                 list[k] = list[n];
                 list[n] = value;
@@ -107,7 +129,7 @@ namespace TEiNRandomizer
 
             return myArray;
         }
-        public static Int32[] ElementToArray(XElement element, bool y)  // converts xml element value to a string array
+        public static Int32[]  ElementToArray(XElement element, bool y)  // converts xml element value to a string array
         {
             string t_string = Convert.ToString(element.Value).Trim();
             var myArray = t_string.Split(Convert.ToChar("\n"));
@@ -153,7 +175,7 @@ namespace TEiNRandomizer
             }
             return poolCats;
         }
-        public static IEnumerable<PiecePool> PieceLoader(string path)
+        public static IEnumerable<PiecePool>    PieceLoader(string path)
         {
             var folder = Path.GetFileNameWithoutExtension(path);
             var pools = new ObservableCollection<PiecePool>();
@@ -219,7 +241,7 @@ namespace TEiNRandomizer
                 }
             }
             return toRemove;
-        }
+        }    // This function is no longer used.
         static void SaveRecents()
         {
             var cachedoc = XDocument.Load("cache.xml");
@@ -235,7 +257,7 @@ namespace TEiNRandomizer
             newelement.Value += "\n  ";
             cachedoc.Root.Add(newelement);
             cachedoc.Save("data/cache.xml");
-        }
+        }                   // This function is no longer used.
         public static void LoadNPCs()
         {
             var doc = XDocument.Load($"data/npcs.xml");    // open npcs file
@@ -256,17 +278,17 @@ namespace TEiNRandomizer
                     for (int i = 0; i < settings.NumLevels; i++) // level loop
                     {
                         sw.WriteLine($"NPC{j}-{i} {{");
-                        sw.WriteLine($"\tmovieclip {NPCMovieClips[myRNG.rand.Next(0, NPCMovieClips.Length)]}");
-                        sw.WriteLine($"\tsound_id {NPCSoundIDs[myRNG.rand.Next(0, NPCSoundIDs.Length)]}");
+                        sw.WriteLine($"\tmovieclip {NPCMovieClips[RNG.random.Next(0, NPCMovieClips.Length)]}");
+                        sw.WriteLine($"\tsound_id {NPCSoundIDs[RNG.random.Next(0, NPCSoundIDs.Length)]}");
                         sw.WriteLine($"\ttext [");
-                        sw.WriteLine(NPCTexts[myRNG.rand.Next(0, NPCTexts.Count())]);
+                        sw.WriteLine(NPCTexts[RNG.random.Next(0, NPCTexts.Count())]);
                         sw.WriteLine("\t]\n}");
                     }
                     sw.WriteLine($"NPCv{j + 1} {{");
-                    sw.WriteLine($"\tmovieclip {NPCMovieClips[myRNG.rand.Next(0, NPCMovieClips.Length)]}");
-                    sw.WriteLine($"\tsound_id {NPCSoundIDs[myRNG.rand.Next(0, NPCSoundIDs.Length)]}");
+                    sw.WriteLine($"\tmovieclip {NPCMovieClips[RNG.random.Next(0, NPCMovieClips.Length)]}");
+                    sw.WriteLine($"\tsound_id {NPCSoundIDs[RNG.random.Next(0, NPCSoundIDs.Length)]}");
                     sw.WriteLine($"\ttext [");
-                    sw.WriteLine(NPCTexts[myRNG.rand.Next(0, NPCTexts.Count())]);
+                    sw.WriteLine(NPCTexts[RNG.random.Next(0, NPCTexts.Count())]);
                     sw.WriteLine("\t]\n}");
                 }
             }
@@ -284,22 +306,15 @@ namespace TEiNRandomizer
 
                 for (int j = 0; j < settings.NumAreas; j++) // area loop
                 {
-                    if (settings.RandomizeAreaType)
-                    { 
-                        settings.AreaType = sender.AreaTypes[myRNG.rand.Next(0, 5)];
-                        //if (settings.AreaType == "glitch")
-                        //    settings.DeadRacer = myRNG.CoinFlip();
-                    }
-                    
-                    var areatileset = new Tileset(settings, true) { };
+                    var areatileset = TilesetManip.GetTileset(settings, true);
 
-                    sw.WriteLine("v" + (j + 1).ToString() + " {\n    area_name \"TEiN Randomizer\"\n    area_label_frame 0\n    background_graphics neverbg\n    area_type " + settings.AreaType.ToString() + "\n");
+                    sw.WriteLine("v" + (j + 1).ToString() + " {\n    area_name \"TEiN Randomizer\"\n    area_label_frame 0\n    background_graphics neverbg\n    area_type " + areatileset.AreaType + "\n");
                     if (settings.UseAreaTileset || (settings.DoShaders && settings.DoParticles))
                         sw.WriteLine(areatileset.All + "art_alts[" + areatileset.ArtAlts + "]");
 
                     for (int i = 0; i < settings.NumLevels; i++) // level loop
                     {
-                        var tileset = new Tileset(settings, false) { };
+                        var tileset = TilesetManip.GetTileset(settings, false);
                         sw.WriteLine("    " + Convert.ToString(i + 1) + " {");
                         sw.WriteLine("    " + ChosenLevels[j][i].TSDefault);
 
@@ -323,7 +338,9 @@ namespace TEiNRandomizer
                             sw.WriteLine("global_particle_1 None\nglobal_particle_2 None\nglobal_particle_3 None\n");
                             sw.WriteLine(tileset.Particles);
                         }
-                            
+
+                        sw.WriteLine(tileset.DoTilt);
+                        sw.WriteLine(tileset.DoWobble);
                         sw.WriteLine(tileset.Extras);
 
                         // Art alts
@@ -404,42 +421,49 @@ namespace TEiNRandomizer
                 FlipCSV(saveDir + "data/map.csv");
 
         }
+        static void LoadFunnyNames()
+        {
+            var doc = XDocument.Load("data/area_names.xml");
+            LINames      = Randomizer.ElementToArray(doc.Root.Element("name"));
+            LILocations  = Randomizer.ElementToArray(doc.Root.Element("location"));
+            LIAdjectives = Randomizer.ElementToArray(doc.Root.Element("adjective"));
+            LINouns      = Randomizer.ElementToArray(doc.Root.Element("noun"));
+        }
+
+        static string GetFunnyName()
+        {
+            // create le funny name
+            string areaname = "";
+            if (RNG.random.Next(0, 5) == 0)
+            {
+                areaname += LINames[RNG.random.Next(0, LINames.Length)] + "s ";
+            }
+            if (RNG.CoinFlip())
+            {
+                if (RNG.CoinFlip())
+                    areaname += LIAdjectives[RNG.random.Next(0, LIAdjectives.Length)] + " ";
+                if (RNG.CoinFlip())
+                    areaname += LINouns[RNG.random.Next(0, LINouns.Length)] + " ";
+                areaname += LILocations[RNG.random.Next(0, LILocations.Length)] + " ";
+            }
+            else
+            {
+                areaname += LILocations[RNG.random.Next(0, LILocations.Length)] + " of ";
+                if (RNG.CoinFlip())
+                    areaname += LIAdjectives[RNG.random.Next(0, LIAdjectives.Length)] + " ";
+                areaname += LINouns[RNG.random.Next(0, LINouns.Length)] + " ";
+            }
+            return areaname;
+        }
         static void LevelInfo()
         {
             for (int i = 0; i < settings.NumAreas; i++)
             {
-                string areaname = null;
-
                 //STRUCTURE
                 //NAME's ( ADJECTIVE ) LOCATION ( of ( ADJECTIVE ) NOUN )
                 //NAME's ( ADJECTIVE ) NOUN LOCATION
 
-                var doc = XDocument.Load("data/area_names.xml");
-                var name = Randomizer.ElementToArray(doc.Root.Element("name"));
-                var location = Randomizer.ElementToArray(doc.Root.Element("location"));
-                var adjective = Randomizer.ElementToArray(doc.Root.Element("adjective"));
-                var noun = Randomizer.ElementToArray(doc.Root.Element("noun"));
-
-                // create le funny name
-                if (myRNG.rand.Next(0, 5) == 0)
-                {
-                    areaname += name[myRNG.rand.Next(0, name.Length)] + "s ";
-                }
-                if (myRNG.CoinFlip())
-                {
-                    if (myRNG.CoinFlip())
-                        areaname += adjective[myRNG.rand.Next(0, adjective.Length)] + " ";
-                    if (myRNG.CoinFlip())
-                        areaname += noun[myRNG.rand.Next(0, noun.Length)] + " ";
-                    areaname += location[myRNG.rand.Next(0, location.Length)] + " ";
-                }
-                else
-                {
-                    areaname += location[myRNG.rand.Next(0, location.Length)] + " of ";
-                    if (myRNG.CoinFlip())
-                        areaname += adjective[myRNG.rand.Next(0, adjective.Length)] + " ";
-                    areaname += noun[myRNG.rand.Next(0, noun.Length)] + " ";
-                }
+                string areaname = GetFunnyName();
 
                 using (StreamWriter sw = File.AppendText(saveDir + "data/levelinfo.txt.append"))
                 {
@@ -473,7 +497,7 @@ namespace TEiNRandomizer
                     var level = ChosenLevels[j][i];
                     var levelFile = LevelManip.Load($"data/tilemaps/{level.Folder}/{level.Name}.lvl");
 
-                    if (level.CanReverse && myRNG.CoinFlip() || settings.MirrorMode)
+                    if (level.CanReverse && RNG.CoinFlip() || settings.MirrorMode)
                         LevelManip.FlipLevelH(ref levelFile);
 
                     if (settings.DoCorruptions)
@@ -521,7 +545,7 @@ namespace TEiNRandomizer
                     LevelManip.Save(levelFileM, saveDir + $"tilemaps/v{j + 1}-{i + 1}.lvl");
                 }
             }
-        }
+        }   // This function is not currently used, but may be re-incorporated at a later date.
         static void WriteDebug()
         {
             using (StreamWriter sw = File.CreateText("data/debug/last_levelnames.txt"))
@@ -535,27 +559,48 @@ namespace TEiNRandomizer
                     }
                 }
             }
+        }       // This function is no longer used.
+
+        static void SaveRunToZip()
+        {
+            string title = GetFunnyName();
+            string author = "TEiN Randomizer";
+            string description = "A randomized world!";
+            string version = mainWindow.GameSeed.ToString();
+            string dir = mainWindow.SavedRunsPath + $"/{mainWindow.GameSeed}";
+
+            //MessageBox.Show($"Give this world a name:", "Info", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+
+            TextWindow inputWindow = new TextWindow("Give this world a name: ");
+            if (inputWindow.ShowDialog() == true)
+                title = inputWindow.Result;
+
+            using (StreamWriter sw = File.CreateText($"{dir}/meta.xml"))
+            {
+                sw.Write("<mod>\n  <title>");
+                sw.Write(title);
+                sw.Write("</title>\n  <author>");
+                sw.Write(author);
+                sw.Write("</author>\n  <description>");
+                sw.Write(description);
+                sw.Write("</description>\n  <version>");
+                sw.Write(version);
+                sw.Write("</version>\n</mod>");
+            }
+
+            ZipFile.CreateFromDirectory(dir, dir + ".zip");
+
         }
 
         public static void Randomize(MainWindow mw, string args = null)
         {
-
-            //var allpools = mw.Pools;            // get pools from main window
-            //gameDir = mw.EndIsNighPath;         // set game path (no longer used)
-            ShadersList = mw.ShadersList;
+            //ShadersList = mw.ShadersList;
             settings = mw.RSettings;
-            //prevRuns = mw.PrevRuns;
-            sender = mw;
-            
+            mainWindow = mw;
 
             saveDir = settings.GameDirectory;
             if (args == "savemod")
-                saveDir = settings.ModSaveDirectory + mw.GameSeed.ToString() + "/";
-
-            Console.WriteLine("start randomizer");
-
-            // This is an odd spot for this but I don't know where else to put it right now (sets areatype to glitch if dead racer mode is turned on)
-            if (settings.DeadRacer) settings.AreaType = "glitch";
+                saveDir = mw.SavedRunsPath + "/" + mw.GameSeed.ToString() + "/";
 
             var drawpool = new List<Level> { };     // make drawpool
             try
@@ -580,15 +625,14 @@ namespace TEiNRandomizer
             catch (Exception){MessageBox.Show( "Error creating drawpool.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw;}
 
             ChosenLevels = new List<List<Level>> { };   // initialize ChosenLevels
-
             try
             {
-                for (int j = 0; j < mw.RSettings.NumAreas; j++)     // select levels
+                for (int j = 0; j < settings.NumAreas; j++)     // select levels
                 {
                     var levels = new List<Level> { };
-                    for (int i = 0; i < mw.RSettings.NumLevels; i++)
+                    for (int i = 0; i < settings.NumLevels; i++)
                     {
-                        int selection = myRNG.rand.Next(0, drawpool.Count());
+                        int selection = RNG.random.Next(0, drawpool.Count());
                         levels.Add(drawpool[selection]);
                         drawpool.RemoveAt(selection);
                     }
@@ -598,94 +642,22 @@ namespace TEiNRandomizer
             }
             catch (Exception){ Console.WriteLine("Error selecting levels or saving cache."); MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
-            //if (settings.LevelMerge)
-            //{
-            //    drawpool = new List<Level> { };     // make drawpool
-            //    try
-            //    {
-            //        foreach (var cat in mw.PoolCats)
-            //        {
-            //            if (cat.Enabled)
-            //            {
-            //                foreach (var pool in cat.Pools) // push levels in all active level pools into drawpool vector
-            //                {
-            //                    if (pool.Active)
-            //                    {
-            //                        foreach (var level in pool.Levels)
-            //                        {
-            //                            drawpool.Add(level);
-            //                        }
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //    catch (Exception) { MessageBox.Show("Error creating drawpool.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-
-            //    ChosenLevels2 = new List<List<Level>> { };   // initialize ChosenLevels
-
-            //    try
-            //    {
-            //        for (int j = 0; j < mw.RSettings.NumAreas; j++)     // select levels
-            //        {
-            //            var levels = new List<Level> { };
-            //            for (int i = 0; i < mw.RSettings.NumLevels; i++)
-            //            {
-            //                int selection = myRNG.rand.Next(0, drawpool.Count());
-            //                levels.Add(drawpool[selection]);
-            //                drawpool.RemoveAt(selection);
-            //            }
-            //            ChosenLevels2.Add(levels);
-            //        }
-            //    }
-            //    catch (Exception) { Console.WriteLine("Error selecting levels 2 or saving cache."); MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            //}
-
-            try
-            {
-                WriteDebug();   //debugging output chosen levels
-                //Console.WriteLine("clean folders start");
-                CleanFolders(); // clean up folders
-                //Console.WriteLine("clean folders end");
-            }
-            catch (Exception ex) { Console.WriteLine($"Error cleaning folders or printing debug. Exception {ex}"); MessageBox.Show($"Error cleaning folders or printing debug. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try{
-                LevelInfo();    // create levelinfo.txt
-                //Console.WriteLine("level info");
-            }
-            catch (Exception ex) { Console.WriteLine($"Error creating levelinfo. Exception {ex}"); MessageBox.Show($"Error creating levelinfo. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try
-            {
-                Worldmap.WriteWorldMap(settings);   // create worldmap.txt
-                //Console.WriteLine("level info");
-            }
-            catch (Exception ex) { Console.WriteLine($"Error creating worldmap. Exception {ex}"); MessageBox.Show($"Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try
-            {
-                MapCSV();       // create map.csv
-                //Console.WriteLine("mapcsv");
-            }
-            catch (Exception ex) { Console.WriteLine($"Error creating map. Exception {ex}"); MessageBox.Show($"Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try{
-                //if (settings.LevelMerge) TileMapsMerged();
-                TileMaps();     // copy tilemaps to game folder
-                //Console.WriteLine("tilemaps");
-            }
-            catch (Exception ex) { Console.WriteLine($"Error copying tilemaps. Exception {ex}"); MessageBox.Show($"Error copying tilemaps. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try
-            {
-                Tilesets();             // create tilesets.txt
-                //Console.WriteLine("tilesets");
-            }
-            catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}"); MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try
-            {
-                NPCs();             // create npcs.txt
-                //Console.WriteLine("npcs");
-            }
-            catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}"); MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            // The rest of the randomization process is delegated to the functions below.
+            try { /*WriteDebug();*/ CleanFolders(); }   catch (Exception ex) { Console.WriteLine($"Error cleaning folders or printing debug. Exception {ex}");  MessageBox.Show($"Error cleaning folders or printing debug. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { LevelInfo(); }                        catch (Exception ex) { Console.WriteLine($"Error creating levelinfo. Exception {ex}");                  MessageBox.Show($"Error creating levelinfo. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { Worldmap.WriteWorldMap(settings); }   catch (Exception ex) { Console.WriteLine($"Error creating worldmap. Exception {ex}");                   MessageBox.Show($"Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { MapCSV(); }                           catch (Exception ex) { Console.WriteLine($"Error creating map. Exception {ex}");                        MessageBox.Show($"Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { TileMaps(); }                         catch (Exception ex) { Console.WriteLine($"Error copying tilemaps. Exception {ex}");                    MessageBox.Show($"Error copying tilemaps. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { Tilesets(); }                         catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}");                   MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { NPCs(); }                             catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}");                   MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
             Console.WriteLine(mw.GameSeed);
+
+            if (args == "savemod")
+            {
+                SaveRunToZip();
+            }
+
         }
     }
 }

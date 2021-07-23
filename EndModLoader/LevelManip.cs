@@ -122,8 +122,6 @@ namespace TEiNRandomizer
 
         public static void Save(LevelFile level, string path)
         {
-            if (level == null) { Console.WriteLine("tried to save null level"); return; }
-
             // get data layer length
             int layerLength = level.header.width * level.header.height;
             int fileLength = layerLength * 5 * 4 + 16;

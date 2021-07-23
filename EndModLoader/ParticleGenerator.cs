@@ -13,7 +13,7 @@ namespace TEiNRandomizer
         public static string GetParticle(RandomizerSettings settings)
         {
             string particle_name = "";
-            switch (Randomizer.myRNG.rand.Next(0, 2))
+            switch (RNG.random.Next(0, 2))
             {
                 case 0:
                     particle_name = DirectionParticle(settings);
@@ -26,7 +26,7 @@ namespace TEiNRandomizer
         }
         public static string MistParticle(RandomizerSettings settings)
         {
-            string particle_name = "MistParticle" + Randomizer.myRNG.GetUInt32().ToString();
+            string particle_name = "MistParticle" + RNG.GetUInt32().ToString();
 
             int layer = 4;
             int base_speed = 3;
@@ -39,11 +39,11 @@ namespace TEiNRandomizer
             int emit_spread = 0;
             string rotation_speed = "0";
             string initial_rotation = "0";
-            double particle_lifetime = Randomizer.myRNG.rand.Next(1, 5);
+            double particle_lifetime = RNG.random.Next(1, 5);
             string size_start;
-            int size_end = Randomizer.myRNG.rand.Next(50, 101);
+            int size_end = RNG.random.Next(50, 101);
 
-            string emit_direction = $"[{Randomizer.myRNG.rand.Next(-10, 11) / 10},{Randomizer.myRNG.rand.Next(-10, 11) / 10}]";
+            string emit_direction = $"[{RNG.random.Next(-10, 11) / 10},{RNG.random.Next(-10, 11) / 10}]";
             if (emit_direction == "[0,0]")
                 emit_direction = "[0,-1]";
             //string emit_box = "";
@@ -52,14 +52,14 @@ namespace TEiNRandomizer
             string force = "0";
             int emit_rate;
             int emit_amount;
-            double initial_speed = Randomizer.myRNG.rand.Next(0, 20);
+            double initial_speed = RNG.random.Next(0, 20);
             double friction = 1;
 
             // select particle from pool
             var doc = XDocument.Load($"data/particles_templates.xml");    // open particle file
             string template = doc.Root.Element("templates").Element("MistParticle").Value;
             var particles = doc.Root.Element("particles").Elements();
-            var chosen = particles.ElementAt(Randomizer.myRNG.rand.Next(0, particles.Count()));
+            var chosen = particles.ElementAt(RNG.random.Next(0, particles.Count()));
             movieclip = chosen.Attribute("name").Value;
             string face_moving_direction = chosen.Attribute("face_moving_direction").Value;
             alpha_start = Convert.ToDouble(chosen.Attribute("alpha").Value);
@@ -70,16 +70,16 @@ namespace TEiNRandomizer
             double speed_scale = Convert.ToDouble(chosen.Attribute("speed_scale").Value);
 
             int emit_density = (int)(64 * density);
-            emit_rate = Randomizer.myRNG.rand.Next(1, emit_density);
+            emit_rate = RNG.random.Next(1, emit_density);
             emit_amount = emit_density / emit_rate;
-            if (Randomizer.myRNG.CoinFlip())
-                emit_spread = Randomizer.myRNG.rand.Next(0, 46);
-            if (Randomizer.myRNG.rand.Next(0, 10) == 0)
+            if (RNG.CoinFlip())
+                emit_spread = RNG.random.Next(0, 46);
+            if (RNG.random.Next(0, 10) == 0)
                 emit_spread = 360;
 
             if (!Convert.ToBoolean(face_moving_direction))
             {
-                int temp = Randomizer.myRNG.rand.Next(0, 251);
+                int temp = RNG.random.Next(0, 251);
                 rotation_speed = $"[{temp},{temp * 1.5}]";
                 initial_rotation = "[0, 359]";
             }
@@ -116,7 +116,7 @@ namespace TEiNRandomizer
 
         public static string DirectionParticle(RandomizerSettings settings)
         {
-            string particle_name = "DirectionParticle" + Randomizer.myRNG.GetUInt32().ToString();
+            string particle_name = "DirectionParticle" + RNG.GetUInt32().ToString();
 
             int layer = 4;
             double base_speed = 3;
@@ -150,7 +150,7 @@ namespace TEiNRandomizer
             var doc = XDocument.Load($"data/particles_templates.xml");    // open particle file
             string template = doc.Root.Element("templates").Element("DirectionParticle").Value;
             var particles = doc.Root.Element("particles").Elements();
-            var chosen = particles.ElementAt(Randomizer.myRNG.rand.Next(0, particles.Count()));
+            var chosen = particles.ElementAt(RNG.random.Next(0, particles.Count()));
             movieclip = chosen.Attribute("name").Value;
             string face_moving_direction = chosen.Attribute("face_moving_direction").Value;
             alpha_start = Convert.ToDouble(chosen.Attribute("alpha").Value);
@@ -160,34 +160,34 @@ namespace TEiNRandomizer
             double density = Convert.ToDouble(chosen.Attribute("density").Value);
             double speed_scale = Convert.ToDouble(chosen.Attribute("speed_scale").Value);
 
-            speed_scale += Randomizer.myRNG.rand.Next(-2, 3) / 10;
+            speed_scale += RNG.random.Next(-2, 3) / 10;
 
             int speed_scalar = 1, force_scalar = 1;
             // set moving direction
             bool force_neg = false;
-            int direction = Randomizer.myRNG.rand.Next(0, 4);
+            int direction = RNG.random.Next(0, 4);
             switch (direction)
             {
                 case 0: // up
-                    emit_direction = $"[{Randomizer.myRNG.rand.Next(-3, 4) / 10},1]";
+                    emit_direction = $"[{RNG.random.Next(-3, 4) / 10},1]";
                     emit_box = "[54,1]";
                     emit_offset = "[27,-3]";
                     break;
                 case 1: // down
-                    emit_direction = $"[{Randomizer.myRNG.rand.Next(-3, 4) / 10},-1]";
+                    emit_direction = $"[{RNG.random.Next(-3, 4) / 10},-1]";
                     emit_box = "[54,1]";
                     emit_offset = "[27,35]";
                     force_neg = true;
                     break;
                 case 2: // right
-                    emit_direction = $"[1,{Randomizer.myRNG.rand.Next(-3, 4) / 10}]";
+                    emit_direction = $"[1,{RNG.random.Next(-3, 4) / 10}]";
                     emit_box = "[1,32]";
                     emit_offset = "[-3,16]";
                     base_speed *= 1.2;
                     base_force *= .8;
                     break;
                 case 3: // left
-                    emit_direction = $"[-1,{Randomizer.myRNG.rand.Next(-3, 4) / 10}]";
+                    emit_direction = $"[-1,{RNG.random.Next(-3, 4) / 10}]";
                     emit_box = "[1,32]";
                     emit_offset = "[57,16]";
                     base_speed *= 1.2;
@@ -198,13 +198,13 @@ namespace TEiNRandomizer
 
             //int particle_density = 100;
 
-            int emit_density = (int)(Randomizer.myRNG.rand.Next(5, 16) * density);
-            speed_scalar = Randomizer.myRNG.rand.Next(1, 5);
+            int emit_density = (int)(RNG.random.Next(5, 16) * density);
+            speed_scalar = RNG.random.Next(1, 5);
 
-            if (Randomizer.myRNG.CoinFlip())   // decide whether to accelerate, slow down, or no force
+            if (RNG.CoinFlip())   // decide whether to accelerate, slow down, or no force
             {
                 force_scalar = speed_scalar * speed_scalar;
-                if (Randomizer.myRNG.CoinFlip() && direction < 2)   // gravity
+                if (RNG.CoinFlip() && direction < 2)   // gravity
                 {
                     //force_scalar = speed_scalar * speed_scalar;
                     force_neg = !force_neg;
@@ -228,13 +228,13 @@ namespace TEiNRandomizer
 
             initial_speed = base_speed * speed_scalar;  // set initial speed
             double parallel_force = base_force * force_scalar * -(Convert.ToInt32(force_neg));  // set force
-            double perpendicular_force = base_force * force_scalar * Randomizer.myRNG.rand.Next(-10, 11) / 10;
+            double perpendicular_force = base_force * force_scalar * RNG.random.Next(-10, 11) / 10;
             //perpendicular_force = 0;
 
-            if (Randomizer.myRNG.rand.Next(0, 3) == 0)   // decide if particle fades out
+            if (RNG.random.Next(0, 3) == 0)   // decide if particle fades out
             {
                 alpha_end = 0;
-                particle_lifetime = (float)Randomizer.myRNG.rand.Next(2, 4) * (float)base_speed / (float)speed_scalar;
+                particle_lifetime = (float)RNG.random.Next(2, 4) * (float)base_speed / (float)speed_scalar;
             }
 
             if (direction > 1)  // if right or left
@@ -244,14 +244,14 @@ namespace TEiNRandomizer
             }
             else force = $"[{perpendicular_force},{parallel_force}]";
 
-            emit_rate = Randomizer.myRNG.rand.Next(1, emit_density);
+            emit_rate = RNG.random.Next(1, emit_density);
             emit_amount = emit_density / emit_rate;
-            if (Randomizer.myRNG.CoinFlip())
-                emit_spread = Randomizer.myRNG.rand.Next(0, 46);
+            if (RNG.CoinFlip())
+                emit_spread = RNG.random.Next(0, 46);
 
             if (!Convert.ToBoolean(face_moving_direction))
             {
-                int temp = Randomizer.myRNG.rand.Next(0, 251);
+                int temp = RNG.random.Next(0, 251);
                 rotation_speed = $"[{temp},{temp * 1.5}]";
                 initial_rotation = "[0, 359]";
             }

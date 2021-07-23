@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TEiNRandomizer
 {
-    public class LevelPiece
+    public struct LevelPiece
     {
         // The level file associated with the level piece.
         public LevelFile File;
@@ -16,47 +16,57 @@ namespace TEiNRandomizer
         public string Folder;
 
         // Whether or not the piece has a ceiling / floor.
-        public bool CeilingEn = false;
-        public bool CeilingEx = false;
+        public bool CeilingEn;
+        public bool CeilingEx;
 
-        public bool FloorEn = false;
-        public bool FloorEx = false;
+        public bool FloorEn;
+        public bool FloorEx;
 
-        public bool FullHeight = false;
+        public bool FullHeight;
 
         // Determines whether pieces can be placed above or below a certain piece.
-        public bool AllowBuildingAbove = true;
-        public bool AllowBuildingBelow = true;
+        public bool AllowBuildingAbove;
+        public bool AllowBuildingBelow;
 
         // The direction the entrance and exit tiles are facing. 
         // Later on these should be replaced by a list of all entrances and exits to a piece.
-        public Direction Entrance = Direction.None;
-        public Direction Exit     = Direction.None;
+        public Direction Entrance;
+        public Direction Exit;
 
         // The margin values tell the generator how many tiles on each side can be ignored when placing camera bounds.
         public Bounds Margin;
 
         // This is the offset of the exit as compared to the entrance
         //public Pair Shift;
-        
-        public LevelPiece()
-        {
-            File = new LevelFile();
-
-            Margin.Left = 0;
-            Margin.Right = 0;
-            Margin.Top = 0;
-            Margin.Bottom = 0;
-        }
 
         public LevelPiece(LevelFile file)
         {
             File = file;
 
+            Name = null;
+            Folder = null;
+
             Margin.Left = 0;
             Margin.Right = 0;
             Margin.Top = 0;
             Margin.Bottom = 0;
+
+            CeilingEn = false;
+            CeilingEx = false;
+
+            FloorEn = false;
+            FloorEx = false;
+
+            FullHeight = false;
+
+            // Determines whether pieces can be placed above or below a certain piece.
+            AllowBuildingAbove = true;
+            AllowBuildingBelow = true;
+
+            // The direction the entrance and exit tiles are facing. 
+            // Later on these should be replaced by a list of all entrances and exits to a piece.
+            Entrance = Direction.None;
+            Exit = Direction.None;
         }
     }
 }

@@ -6,7 +6,6 @@
     <UseDefaultMusic>false</UseDefaultMusic>
     <UseDefaultPalettes>false</UseDefaultPalettes>
     <MusicPerLevel>false</MusicPerLevel>
-    <PalettePerLevel>true</PalettePerLevel>
     <DoShaders>true</DoShaders>
     <DoParticles>true</DoParticles>
     <DoOverlays>true</DoOverlays>
@@ -16,14 +15,12 @@
     <DoNPCs>false</DoNPCs>
     <UseAreaTileset>true</UseAreaTileset>
     <CacheRuns>0</CacheRuns>
-    <AutoRefresh>false</AutoRefresh>
     <AreaType>normal</AreaType>
     <RepeatTolerance>0</RepeatTolerance>
     <AltLevel>Safe</AltLevel>
     <MaxParticles>1000</MaxParticles>
     <GenerateCustomParticles>true</GenerateCustomParticles>
-    <GameDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\</GameDirectory>
-    <ModSaveDirectory>[Saved Mods]/</ModSaveDirectory>
+    <GameDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh/</GameDirectory>
     <MaxParticleEffects>2</MaxParticleEffects>
     <ManualLoad>true</ManualLoad>
     <DoCorruptions>true</DoCorruptions>

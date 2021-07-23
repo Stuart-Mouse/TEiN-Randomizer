@@ -38,10 +38,10 @@ namespace TEiNRandomizer
         //    UInt32 reached = 0;
         //    for (UInt32 i = 0; i < 1000; i++)
         //    {
-        //        //GameSeed = Randomizer.myRNG.GetSeed();
+        //        //GameSeed = RNG.GetSeed();
         //        try
         //        {
-        //            Randomizer.myRNG.SeedMe((int)i);
+        //            RNG.SeedMe((int)i);
         //            Randomizer.Randomize(this, true);
         //            Console.WriteLine(i);
         //        }

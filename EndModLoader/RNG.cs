@@ -7,37 +7,37 @@ using System.Security.Cryptography;
 
 namespace TEiNRandomizer
 {
-    public class MyRNG
+    public static class RNG
     {
-        public RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider();
-        public byte[] byteArray = new byte[4];
-        public Random rand = new Random();
+        public static RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider();
+        public static byte[] byteArray = new byte[4];
+        public static Random random = new Random();
         //public Int32 CurrentSeed;
 
-        public MyRNG()
+        static RNG()
         {
-            rand = new Random();
+            random = new Random();
         }
 
-        public void SeedMe(int seed)
+        public static void SeedMe(int seed)
         {
-            rand = new Random(seed);
+            random = new Random(seed);
         }
 
-        public UInt32 GetUInt32()
+        public static UInt32 GetUInt32()
         {
             crypto.GetBytes(byteArray);
             return BitConverter.ToUInt32(byteArray, 0);
         }
 
-        public bool CoinFlip()
+        public static bool CoinFlip()
         {
-            if (rand.Next(0,2) == 0)
+            if (random.Next(0,2) == 0)
                 return true;
             else return false;
         }
 
-        public int GetFrom(int low, int high)
+        public static int GetFrom(int low, int high)
         {
             int num;
             int bound = high - low;

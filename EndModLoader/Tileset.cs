@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using System.Security;
 using System.Windows;
+using System.Xml.Linq;
 
 namespace TEiNRandomizer
 {
-    public class Tileset
+    public struct Tileset
     {
+        public string AreaType { get; set; }
         public string Tile { get; set; }
         public string Overlay { get; set; }
         public string Background { get; set; }
@@ -23,67 +20,42 @@ namespace TEiNRandomizer
         public string All { get; set; }
         public string Extras { get; set; }
         public string ArtAlts { get; set; }
+        public string DoTilt { get; set; }
+        public string DoWobble { get; set; }
+    }
 
-        //private void GetArtAltsOld(RandomizerSettings settings)
-        //{
-        //    ArtAlts = "";
+    class TilesetManip
+    {
+        static string[] TileGraphicsPool { get; set; }
+        static string[] OverlayGraphicsPool { get; set; }
+        static string[] BackgroundPool { get; set; }
+        static string[] ParticlePool { get; set; }
+        static string[] MusicPool { get; set; }
+        static int NumPalettes { get; set; }
+        static List<string> ShaderPool { get; set; }
+        static ObservableCollection<string> AreaTypes { get; set; } = Randomizer.mainWindow.AreaTypes;
 
-        //    try
-        //    {
-        //        var doc = XDocument.Load("data/art_alts.xml");
-        //        if (settings.AltLevel == AltLevels.Safe)
-        //        {
-        //            foreach (var art in doc.Root.Element("safe").Elements())
-        //            {
-        //                var alts = Randomizer.ElementToArray(art);
-        //                ArtAlts += "[" + art.Name + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
-        //            }
-        //        }
-        //        else if (settings.AltLevel == AltLevels.Extended)
-        //        {
-        //            foreach (var art in doc.Root.Element("extended").Elements())
-        //            {
-        //                var alts = Randomizer.ElementToArray(art);
-        //                ArtAlts += "[" + art.Name + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
-        //            }
-        //        }
-        //        else if (settings.AltLevel == AltLevels.Crazy)
-        //        {
-        //            foreach (var set in doc.Root.Element("crazy").Elements())
-        //            {
-        //                var alts = Randomizer.ElementToArray(set);
-        //                foreach (var alt in alts)
-        //                {
-        //                    ArtAlts += "[" + alt.Trim() + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
-        //                }
-        //            }
-        //        }
-        //        else if (settings.AltLevel == AltLevels.Insane)
-        //        {
-        //            var alts = Randomizer.ElementToArray(doc.Root.Element("insane"));
-        //            foreach (var alt in alts)
-        //            {
-        //                ArtAlts += "[" + alt.Trim() + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
-        //            }
-        //            //ArtAlts += "[ChainLink, None][ChainLink2, None]";
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        MessageBox.Show(
-        //                "Art Alt Error",
-        //                "Warning",
-        //                MessageBoxButton.OK,
-        //                MessageBoxImage.Information,
-        //                MessageBoxResult.OK
-        //            );
-        //        throw;
-        //    }
-        //    return;
-        //}
-        private void GetArtAlts(RandomizerSettings settings)
+        static TilesetManip()
         {
-            ArtAlts = "";
+            var doc = XDocument.Load("data/tilesets_pools.xml");    // open levelpool file
+
+            NumPalettes         = 464;
+            NumPalettes         = Convert.ToInt32(doc.Root.Element("palettes").Value);
+            TileGraphicsPool    = Randomizer.ElementToArray(doc.Root.Element("tile_graphics"));
+            OverlayGraphicsPool = Randomizer.ElementToArray(doc.Root.Element("overlay_graphics"));
+            ParticlePool        = Randomizer.ElementToArray(doc.Root.Element("particles"));
+            MusicPool           = Randomizer.ElementToArray(doc.Root.Element("music"));
+            ShaderPool          = new List<string> { };
+
+            foreach (var shader in Randomizer.ShadersList)
+            {
+                if (shader.Enabled)
+                    ShaderPool.Add(shader.Content);
+            }
+        }
+        private static string GetArtAlts(RandomizerSettings settings)
+        {
+            string ArtAlts = "";
 
             try
             {
@@ -93,7 +65,7 @@ namespace TEiNRandomizer
                     foreach (var art in doc.Root.Element("safe").Elements())
                     {
                         var alts = Randomizer.ElementToArray(art);
-                        ArtAlts += "[" + art.Name + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
+                        ArtAlts += "[" + art.Name + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
                     }
                 }
                 else if (settings.AltLevel == "Extended")
@@ -101,7 +73,7 @@ namespace TEiNRandomizer
                     foreach (var art in doc.Root.Element("extended").Elements())
                     {
                         var alts = Randomizer.ElementToArray(art);
-                        ArtAlts += "[" + art.Name + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
+                        ArtAlts += "[" + art.Name + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
                     }
                 }
                 else if (settings.AltLevel == "Crazy")
@@ -111,7 +83,7 @@ namespace TEiNRandomizer
                         var alts = Randomizer.ElementToArray(set);
                         foreach (var alt in alts)
                         {
-                            ArtAlts += "[" + alt.Trim() + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
+                            ArtAlts += "[" + alt.Trim() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
                         }
                     }
                 }
@@ -120,7 +92,7 @@ namespace TEiNRandomizer
                     var alts = Randomizer.ElementToArray(doc.Root.Element("insane"));
                     foreach (var alt in alts)
                     {
-                        ArtAlts += "[" + alt.Trim() + "," + alts[Randomizer.myRNG.rand.Next(0, alts.Length)].Trim() + "]";
+                        ArtAlts += "[" + alt.Trim() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
                     }
                     //ArtAlts += "[ChainLink, None][ChainLink2, None]";
                 }
@@ -136,73 +108,58 @@ namespace TEiNRandomizer
                     );
                 throw;
             }
-            return;
+            return ArtAlts;
         }
-        
-
-        public Tileset(RandomizerSettings settings, bool isAreaTS)
+        public static Tileset GetTileset(RandomizerSettings settings, bool isAreaTS)
         {
+            Tileset tileset = new Tileset();
             try
             {
-                var tile_graphicsPool = new string[] { };
-                var overlay_graphicsPool = new string[] { };
-                var background_graphicsPool = new string[] { };
-                var particlePool = new string[] { };
-                var shaderPool = new List<string> { };
-                int numPalettes = 464;
-                var musicPool = new string[] { };
-
-                var doc = XDocument.Load("data/tilesets_pools.xml");    // open levelpool file
-
-                numPalettes = Convert.ToInt32(doc.Root.Element("palettes").Value);
-                tile_graphicsPool = Randomizer.ElementToArray(doc.Root.Element("tile_graphics"));
-                overlay_graphicsPool = Randomizer.ElementToArray(doc.Root.Element("overlay_graphics"));
-                particlePool = Randomizer.ElementToArray(doc.Root.Element("particles"));
-                musicPool = Randomizer.ElementToArray(doc.Root.Element("music"));
-
-                foreach (var shader in Randomizer.ShadersList)
+                // Select Tileset Info
+                if (isAreaTS)
                 {
-                    if (shader.Enabled)
-                        shaderPool.Add(shader.Content);
+                    if (settings.DeadRacer) tileset.AreaType = "glitch";
+                    if (settings.RandomizeAreaType)
+                        tileset.AreaType = AreaTypes[RNG.random.Next(0, 5)];
                 }
 
-                Tile = ($"    tile_graphics { tile_graphicsPool[Randomizer.myRNG.rand.Next(0, tile_graphicsPool.Count())] }\n");
-                Overlay = ($"    overlay_graphics { overlay_graphicsPool[Randomizer.myRNG.rand.Next(0, overlay_graphicsPool.Count())] }\n");
-                Palette = ($"    palette { Randomizer.myRNG.rand.Next(1, numPalettes) }\n");
-                Music = ($"    music { musicPool[Randomizer.myRNG.rand.Next(0, musicPool.Count())] }\n");
+                tileset.Tile    = ($"    tile_graphics { TileGraphicsPool[RNG.random.Next(0, TileGraphicsPool.Count())] }\n");
+                tileset.Overlay = ($"    overlay_graphics { OverlayGraphicsPool[RNG.random.Next(0, OverlayGraphicsPool.Count())] }\n");
+                tileset.Palette = ($"    palette { RNG.random.Next(1, NumPalettes) }\n");
+                tileset.Music   = ($"    music { MusicPool[RNG.random.Next(0, MusicPool.Count())] }\n");
 
-                if (Randomizer.myRNG.rand.Next(0, 2) == 0)  // set shader
+                if (RNG.random.Next(0, 2) == 0)  // set shader
                 {
-                    Shader = ($"    { shaderPool[Randomizer.myRNG.rand.Next(0, shaderPool.Count())] }\n");
+                    tileset.Shader = ($"    { ShaderPool[RNG.random.Next(0, ShaderPool.Count())] }\n");
                 }
-                Shader += "shader_param " + Randomizer.myRNG.rand.NextDouble();
+                tileset.Shader += "shader_param " + RNG.random.NextDouble();
 
                 // set particles
-                if(settings.DoParticles)
+                if (settings.DoParticles)
                 {
-                    var loop = Randomizer.myRNG.rand.Next(1, settings.MaxParticleEffects);
+                    var loop = RNG.random.Next(1, settings.MaxParticleEffects);
                     if (settings.GenerateCustomParticles)
                     {
                         for (int i = 0; i < loop; i++)
                         {
-                            Particles += ("    global_particle_" + (i + 1).ToString() + $" { ParticleGenerator.GetParticle(settings) }\n");
+                            tileset.Particles += ("    global_particle_" + (i + 1).ToString() + $" { ParticleGenerator.GetParticle(settings) }\n");
                         }
                     }
                     else
                     {
                         for (int i = 0; i < loop; i++)
                         {
-                            Particles += ("    global_particle_" + (i + 1).ToString() + $" { particlePool[Randomizer.myRNG.rand.Next(0, particlePool.Count())] }\n");
+                            tileset.Particles += ("    global_particle_" + (i + 1).ToString() + $" { ParticlePool[RNG.random.Next(0, ParticlePool.Count())] }\n");
                         }
                     }
                 }
 
                 // bgsolid for auto-refresh
-                if (settings.AutoRefresh || settings.LevelMerge)
-                    Extras += "background_graphics bgsolid\n";
+                //if (settings.AutoRefresh || settings.LevelMerge)
+                //    Extras += "background_graphics bgsolid\n";
 
                 if (settings.LevelMerge)
-                    Extras += "global_particle_1 None\nglobal_particle_2 None\nglobal_particle_3 None tile_particle_1 None tile_particle_2 None tile_particle_3 None tile_particle_4 None tile_particle_5 None\n";
+                    tileset.Extras += "global_particle_1 None\nglobal_particle_2 None\nglobal_particle_3 None tile_particle_1 None tile_particle_2 None tile_particle_3 None tile_particle_4 None tile_particle_5 None\n";
 
                 // generate Art Alts
                 if (settings.AltLevel != "None")
@@ -211,31 +168,34 @@ namespace TEiNRandomizer
                 // extras and physics
                 if (settings.UseAreaTileset == isAreaTS)
                 {
-                    if (settings.DoNevermoreTilt && Randomizer.myRNG.rand.Next(0, 6) == 0 /*!(isAreaTS && !settings.UseAreaTileset)*/)
+                    if (settings.DoNevermoreTilt && RNG.random.Next(0, 6) == 0 /*!(isAreaTS && !settings.UseAreaTileset)*/)
                     {
-                        Extras += ($"    do_tilt true\n");
+                        tileset.DoTilt = ($"    do_tilt true\n");
                     }
-                    if (settings.DoExodusWobble && Randomizer.myRNG.rand.Next(0, 6) == 0 /*!(isAreaTS && !settings.UseAreaTileset)*/)
+                    if (settings.DoExodusWobble && RNG.random.Next(0, 6) == 0 /*!(isAreaTS && !settings.UseAreaTileset)*/)
                     {
-                        Extras += ($"    do_wobble true\n");
+                        tileset.DoWobble = ($"    do_wobble true\n");
                     }
                     if (settings.DoPhysics)
                     {
                         if (settings.PlatformPhysics)
-                            Extras += "    platform_physics " + Physics.PlatformPhysics() + "\n";
+                            tileset.Extras += "    platform_physics " + Physics.PlatformPhysics() + "\n";
                         if (settings.WaterPhysics)
-                            Extras += "    water_physics " + Physics.WaterPhysics() + "\n";
+                            tileset.Extras += "    water_physics " + Physics.WaterPhysics() + "\n";
                         if (settings.PlayerPhysics)
-                            Extras += "    player_physics " + Physics.PlayerPhysics() + "\n";
+                            tileset.Extras += "    player_physics " + Physics.PlayerPhysics() + "\n";
                         if (settings.LowGravPhysics)
-                            Extras += "    lowgrav_physics " + Physics.LowGravPhysics() + "\n";
+                            tileset.Extras += "    lowgrav_physics " + Physics.LowGravPhysics() + "\n";
                     }
                 }
 
                 // create "all", which is just the entire tileset in one string
-                All = Tile + "\n" + Overlay + "\n" + Particles + "\n" + Shader + "\n" + Palette + "\n" + Music + "\n" + Extras;
+                tileset.All = tileset.AreaType + "\n" + tileset.Tile + "\n" + tileset.Overlay + "\n" + tileset.Particles + "\n" + tileset.Shader + "\n" + tileset.Palette + "\n" + tileset.Music + "\n" + tileset.Extras;
             }
             catch (Exception ex) { MessageBox.Show($"Error creating tileset. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+
+            return tileset;
         }
     }
+
 }

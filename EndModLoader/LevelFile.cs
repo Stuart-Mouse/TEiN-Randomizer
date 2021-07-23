@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TEiNRandomizer
 {
-    public class LevelFile
+    public struct LevelFile
     {
         public LevelHeader header;
         public LevelData data;
@@ -32,19 +32,19 @@ namespace TEiNRandomizer
         public LevelFile(int width = 54, int height = 32)
         {
             header.version = 1;
-            header.width = width;
-            header.height = height;
-            header.layers = 5;
+            header.width   = width;
+            header.height  = height;
+            header.layers  = 5;
 
             // get data layer length
             int layerLength = header.width * header.height;
 
             // initialize data layers
-            data.back1 = new TileID[layerLength];
-            data.active = new TileID[layerLength];
-            data.tag = new TileID[layerLength];
+            data.back1   = new TileID[layerLength];
+            data.active  = new TileID[layerLength];
+            data.tag     = new TileID[layerLength];
             data.overlay = new TileID[layerLength];
-            data.back2 = new TileID[layerLength];
+            data.back2   = new TileID[layerLength];
         }
     }
     public struct LevelHeader

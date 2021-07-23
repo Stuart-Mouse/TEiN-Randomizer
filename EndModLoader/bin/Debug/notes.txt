@@ -103,6 +103,16 @@ NPC-vBox {
 Randomizer additions:
 - saved mods page
 - re-implement mod loading
+- add mod corruptions
+  - level corruptions will be easy to add
+  - write tileset parser for randomizing other things
+
+- rewrite and re-organize existing code
+
+swf work:
+- fix bgsolid seemingly breaking the end's background
+- create new menus/world map possibly
+
 
 create updated modloader?
 find out how to fix epic games version

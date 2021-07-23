@@ -16,7 +16,6 @@ namespace TEiNRandomizer
         static LevelPiece LTransitionC = new LevelPiece(LevelManip.Load("data/levelpieces/GEN/t-leftc.lvl")) { CeilingEx = true, FloorEx = true, CeilingEn = true, FloorEn = true };
         static LevelPiece RTransitionC = new LevelPiece(LevelManip.Load("data/levelpieces/GEN/t-rightc.lvl")) { CeilingEx = true, FloorEx = true, CeilingEn = true, FloorEn = true };
 
-
         // These are basically constants but I might want to change them in the settings
         static int UsableWidth = 48;
         static int UsableHeight = 32;
@@ -43,7 +42,7 @@ namespace TEiNRandomizer
             ExitDirection = Direction.Right;
             WidthRemaining = UsableWidth;
 
-            if (Randomizer.myRNG.CoinFlip()) { Canvas.FloorEx = true; Canvas.CeilingEx = true; };
+            if (RNG.CoinFlip()) { Canvas.FloorEx = true; Canvas.CeilingEx = true; };
             //CameraBounds = { }
         }
 
@@ -137,7 +136,7 @@ namespace TEiNRandomizer
             if (pool.Count == 0)
                 return false;
             else
-                NextPiece = pool[Randomizer.myRNG.rand.Next(0, pool.Count())];
+                NextPiece = pool[RNG.random.Next(0, pool.Count())];
             return true;
 
         }
@@ -149,7 +148,7 @@ namespace TEiNRandomizer
             {
                 if (!GetNextPiece(100, WidthRemaining)) return false;   // if cannot get new piece, return false and break from adding pieces
 
-                //if (Randomizer.myRNG.CoinFlip())    // random chance to place the new piece on either the left or right side
+                //if (RNG.CoinFlip())    // random chance to place the new piece on either the left or right side
                 //{                                   // Since tall pieces are more likely to be picked first, this should keep them more centered, rather than always appearing at the start of a level
                     return AppendPieceH(Canvas, NextPiece);  // return true if piece is added successfully
                 //}
@@ -163,13 +162,15 @@ namespace TEiNRandomizer
 
             InitGenInfo();  // Initialize the generator info
 
-            if (!GetNextPiece(100, 100))    // select first piece
-            { Console.WriteLine("null starting level"); return null; }
-            Canvas.File = NextPiece.File;    // initializes canvas to first piece selected
-            Canvas.CeilingEn = NextPiece.CeilingEn;
-            Canvas.CeilingEx = NextPiece.CeilingEx;
-            Canvas.FloorEn = NextPiece.FloorEn;
-            Canvas.FloorEx = NextPiece.FloorEx;
+            /*if (!*/
+            GetNextPiece(100, 100);
+            //)    // select first piece
+            //{ Console.WriteLine("null starting level"); return null; }
+            Canvas = NextPiece;    // initializes canvas to first piece selected
+            //Canvas.CeilingEn = NextPiece.CeilingEn;
+            //Canvas.CeilingEx = NextPiece.CeilingEx;
+            //Canvas.FloorEn = NextPiece.FloorEn;
+            //Canvas.FloorEx = NextPiece.FloorEx;
 
             int numPieces = 0;
             while (true)
@@ -240,7 +241,7 @@ namespace TEiNRandomizer
                             Canvas.File.data.back1[index]   = back1FillTile;
                             Canvas.File.data.back2[index]   = back2FillTile;
                             Canvas.File.data.tag[index]     = tagFillTile;
-                            //if (Randomizer.myRNG.CoinFlip())
+                            //if (RNG.CoinFlip())
                             //{
                             //    Canvas.File.data.active[index] = TileID.Kuko;
                             //    Canvas.File.data.overlay[index] = TileID.FakeSolidOver;
@@ -272,7 +273,7 @@ namespace TEiNRandomizer
                             Canvas.File.data.back1[index] = back1FillTile;
                             Canvas.File.data.back2[index] = back2FillTile;
                             Canvas.File.data.tag[index] = tagFillTile;
-                            //if (Randomizer.myRNG.CoinFlip())
+                            //if (RNG.CoinFlip())
                             //    Canvas.File.data.active[index] = TileID.Mother;
                         }
                     }
@@ -351,7 +352,7 @@ namespace TEiNRandomizer
                 transition = new LevelPiece(new LevelFile(1, ceilingHeight + 2));
                 for (int i = 1; i < ceilingHeight; i++)
                 {
-                    if (Randomizer.myRNG.CoinFlip()) transition.File.data.back1[i] = sidePiece;
+                    if (RNG.CoinFlip()) transition.File.data.back1[i] = sidePiece;
                 }
             }
 

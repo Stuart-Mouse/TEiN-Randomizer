@@ -9,11 +9,12 @@ namespace TEiNRandomizer
 {
     public class Mod : IComparable<Mod>
     {
-        public string Title { get; private set; }
-        public string Description { get; private set; }
-        public string Author { get; private set; }
-        public string Version { get; private set; }
+        public string Title { get; private set; }       // Title of Saved Runs is set by the user
+        public string Description { get; private set; } // Used for the seed of Saved Runs
+        public string Author { get; private set; }      // 
+        public string Version { get; private set; }     // Used for the date and time of Saved Runs
         public string ModPath { get; private set; }
+        public bool Active { get; set; } = false;
 
         public List<int> ExeOffset { get; private set; }
         public List<byte> ExeByteReplacement { get; private set; }
@@ -32,6 +33,11 @@ namespace TEiNRandomizer
         public override string ToString() => $"{Title} {Author} {Version}";
 
         public int CompareTo(Mod other) => Title.CompareTo(other.Title);
+
+        //public static void ExtractToFolder(string path)
+        //{
+        //    ZipFile.ExtractToDirectory();
+        //}
 
         public static Mod FromZip(string path)
         {
