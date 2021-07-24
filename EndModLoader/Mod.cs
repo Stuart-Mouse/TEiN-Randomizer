@@ -10,8 +10,8 @@ namespace TEiNRandomizer
     public class Mod : IComparable<Mod>
     {
         public string Title { get; private set; }       // Title of Saved Runs is set by the user
-        public string Description { get; private set; } // Used for the seed of Saved Runs
-        public string Author { get; private set; }      // 
+        public string Description { get; private set; } // Description of Saved Runs is set by the user
+        public string Author { get; private set; }      // Used for the Seed of saved runs
         public string Version { get; private set; }     // Used for the date and time of Saved Runs
         public string ModPath { get; private set; }
         public bool Active { get; set; } = false;
@@ -39,6 +39,37 @@ namespace TEiNRandomizer
         //    ZipFile.ExtractToDirectory();
         //}
 
+        public static Mod FromFolder(string path)
+        {
+            // Various wacky Changed, Renamed, Removed events eventually lead to this.
+            // C# Optionals when.
+            if (!Directory.Exists(path)) return null;
+
+            var mod = new Mod { ModPath = path };
+
+            if (Directory.Exists($"{path}/swfs"))
+            {
+                mod.HasSWFMod = true;
+            }
+
+            string meta = $"{path}/meta.xml";
+            if (!File.Exists(meta))
+            {
+                mod.Title = Path.GetFileName(path);
+                return mod;
+            }
+            var doc = XDocument.Load(meta);
+            foreach (var element in doc.Root.Elements())
+            {
+                if (element.Name == "title") mod.Title = element.Value;
+                else if (element.Name == "description" || element.Name == "desc") mod.Description = element.Value;
+                else if (element.Name == "author") mod.Author = element.Value;
+                else if (element.Name == "version") mod.Version = element.Value;
+            }
+
+            return mod;
+        }
+    
         public static Mod FromZip(string path)
         {
             // Various wacky Changed, Renamed, Removed events eventually lead to this.

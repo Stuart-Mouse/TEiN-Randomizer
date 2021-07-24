@@ -136,12 +136,12 @@
         </Style>
 
         <Style x:Key="TabTitleText" TargetType="TextBlock">
-            <Setter Property="FontSize"      Value="24" />
+            <Setter Property="FontSize"      Value="30" />
             <Setter Property="FontFamily"    Value="{StaticResource TheEnd}"/>
-            <Setter Property="Padding"       Value="0,2,0,2"/>
-            <Setter Property="Margin"        Value="3,0,3,0"/>
-            <Setter Property="Background"    Value="#f2f2f2"/>
-            <Setter Property="TextAlignment" Value="Center"/>
+            <!--<Setter Property="Padding"       Value="0,2,0,2"/>-->
+            <Setter Property="Margin"        Value="0,10,0,5"/>
+            <!--<Setter Property="Background"    Value="#f2f2f2"/>-->
+            <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
 
         <ControlTemplate x:Key="TabTitleTextControl" TargetType="TextBox">
@@ -245,6 +245,17 @@
             </Style.Triggers>-->
         </Style>
 
+        <Style x:Key="ModListStyle" TargetType="ListBox">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"></Setter>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"></Setter>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InGame}">
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <Style x:Key="PoolCatListStyle" TargetType="ListBox">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
@@ -334,7 +345,7 @@
 
         <Style x:Key="PlayModButton" TargetType="Button">
             <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="Margin" Value="0,10,0,0" />
+            <!--<Setter Property="Margin" Value="0,10,0,0" />-->
             <Setter Property="Width" Value="110" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.IncorrectPath}">
@@ -362,7 +373,7 @@
 
         <Style x:Key="RefreshButton" TargetType="Button">
             <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="Margin" Value="0,10,0,0" />
+            <!--<Setter Property="Margin" Value="0,10,0,0" />-->
             <Setter Property="Width" Value="110" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.IncorrectPath}">
@@ -385,7 +396,7 @@
 
         <Style x:Key="UnloadButton" TargetType="Button">
             <Setter Property="HorizontalAlignment" Value="Left" />
-            <Setter Property="Margin" Value="0,10,0,0" />
+            <!--<Setter Property="Margin" Value="0,10,0,0" />-->
             <Setter Property="Width" Value="110" />
             <Setter Property="Visibility" Value="{Binding RSettings.ManualLoad, Converter={StaticResource SettingsDisplayer}}"/>
             <Style.Triggers>
@@ -432,11 +443,17 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*"    />
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding Title}" Style="{StaticResource TitleText}" FontSize="13" Margin="10,0,0,0"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Description}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right"/>
-                    <CheckBox Grid.Column="2" Content="Enabled" IsChecked="{Binding Active}" Margin="10,0,10,0" HorizontalAlignment="Right"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <!--<RowDefinition />-->
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0"     Text="{Binding Title}"       Style="{StaticResource TitleText}"       FontSize="13" Margin="10,0,0,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Description}" Style="{StaticResource DescriptionText}" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Version}" Style="{StaticResource DescriptionText}" Margin="0,0,10,0" HorizontalAlignment="Right"/>
+                    <CheckBox  Grid.RowSpan="2" Grid.Column="2"     Content="Enabled" IsChecked="{Binding Active}" Margin="0,0,10,0"  VerticalAlignment="Center"   HorizontalAlignment="Right"/>
                 </Grid>
                 <Separator Margin="2.5, 5, 2.5, 0"/>
                 <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->
@@ -458,16 +475,20 @@
         </Style>-->
 
         <DataTemplate x:Key="SavedRunsTemplate">
-            <StackPanel Margin="0,3,0,3"   Orientation="Vertical" Tag="{Binding Title}">
+            <StackPanel Margin="0,3,0,3" Orientation="Vertical">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding Title}"       Style="{StaticResource TitleText}" FontSize="13" Margin="10,0,0,0"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Description}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding Title}"   Style="{StaticResource TitleText}" FontSize="13" Margin="10,0,0,0"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Description}" Style="{StaticResource DescriptionText}" Margin="10,0,0,0" HorizontalAlignment="Left"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Version}" Style="{StaticResource DescriptionText}" Margin="0,0,10,0" HorizontalAlignment="Right"/>
                 </Grid>
                 <Separator Margin="2.5, 5, 2.5, 0"/>
                 <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->

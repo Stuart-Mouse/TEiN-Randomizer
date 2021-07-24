@@ -16,16 +16,16 @@
     
     <Grid Margin="10,5,10,10"> 
         <Grid Grid.Row="0" VerticalAlignment="Stretch" >
-            <TabControl Name="MenuTabs" Padding="0,0,0,0">
+            <TabControl Name="MenuTabs" Padding="-1,0,-1,0">
 
                 <!-- RANDOMIZER TABS -->
                 <TabItem Header="Randomizer" Padding="10,2">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
-                            <RowDefinition Height="24"/>
+                            <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
-                        <TabControl Grid.Row="0" Name="RandomizerTabs" Margin="0,3,0,0">
+                        <TabControl Grid.Row="0" Name="RandomizerTabs" Margin="0,3,0,0" >
 
                             <!-- LEVEL POOLS TAB -->
 
@@ -36,7 +36,7 @@
                                             <RowDefinition />
                                             <RowDefinition MinHeight="100" />
                                         </Grid.RowDefinitions>
-                                        <TextBox Template="{StaticResource TabTitleTextControl}" Text="Level Pools"/>
+                                        <TextBlock Grid.Row="0" Style="{StaticResource TabTitleText}" Text="Level Pools"/>
                                         <ListView  Grid.Row="1" Name="PoolCatList"
                                     ItemTemplate="{StaticResource PoolCatListTemplate}"
                                     ItemsSource="{Binding PoolCats}"
@@ -57,7 +57,7 @@
                                             <RowDefinition />
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
-                                        <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Randomizer Settings"/>
+                                        <TextBlock Grid.Row="0" Style="{StaticResource TabTitleText}" Text="Randomizer Settings"/>
                                         <Grid Grid.Row="1" HorizontalAlignment="Center">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto"/>
@@ -71,18 +71,10 @@
                                                 <ListBox BorderBrush="Transparent" Grid.Row="1" HorizontalContentAlignment="Center" Name="SettingsList" Style="{StaticResource FreezeSettings}" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
                                                     <ListBox Style="{StaticResource SettingsListStyle}">
                                                         <TextBlock Text="Game Seed:" FontWeight="Bold" ToolTip="This is the seed used to generate the randomized world."/>
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="100"/>
-                                                                <ColumnDefinition Width="100"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <TextBox Grid.Column="0" Name="SeedTextBox" TextAlignment="Center" Width="90">
-                                                                <TextBox.Text>
-                                                                    <Binding Path="GameSeed" UpdateSourceTrigger="PropertyChanged" />
-                                                                </TextBox.Text>
-                                                            </TextBox>
-                                                            <Button Grid.Column="1" Name="SeedButton" Content="Get New Seed" Click="SeedButton_Click" Width="90" Height="20"/>
-                                                        </Grid>
+                                                        <WrapPanel>
+                                                            <TextBox Name="SeedTextBox" TextAlignment="Center" Width="90" Text="{Binding Path=GameSeed, UpdateSourceTrigger=PropertyChanged}" Margin="5,0"/>
+                                                            <Button  Name="SeedButton" Content="Get New Seed" Click="SeedButton_Click" Width="90" Height="20" Margin="5,0"/>
+                                                        </WrapPanel>
                                                     </ListBox>
                                                     <ListBox Style="{StaticResource SettingsListStyle}">
                                                         <TextBlock Text="Area Settings:" FontWeight="Bold" />
@@ -94,11 +86,7 @@
                                                                 <ColumnDefinition Width="100"/>
                                                             </Grid.ColumnDefinitions>
                                                             <TextBlock Grid.Column="0" Text="Levels: " ToolTip="The number of levels in each area."/>
-                                                            <TextBox Grid.Column="1" Width="50" Margin="0,0,40,0" Padding="2,0" Name="NumLevelsTextBox">
-                                                                <TextBox.Text>
-                                                                    <Binding Path="RSettings.NumLevels" UpdateSourceTrigger="PropertyChanged"/>
-                                                                </TextBox.Text>
-                                                            </TextBox>
+                                                            <TextBox Grid.Column="1" Width="50" Margin="0,0,40,0" Padding="2,0" Name="NumLevelsTextBox" Text="{Binding Path=RSettings.NumLevels, UpdateSourceTrigger=PropertyChanged}"/>
                                                         </Grid>
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
@@ -161,7 +149,7 @@
                                                         <CheckBox Width="200" Content="Corrupt Levels" ToolTip="Enables level corruptions." IsChecked="{Binding RSettings.DoCorruptions}" />
                                                         <!--<CheckBox Content="Level Merge" IsChecked="{Binding RSettings.LevelMerge}" />-->
                                                         <CheckBox Width="200" Content="Mirror Mode" ToolTip="Flips the entire game horizontally." IsChecked="{Binding RSettings.MirrorMode}" />
-                                                        <CheckBox Width="200" Content="Dead Racer Mode" ToolTip="Enables the Dear Racer timer in the generated areas. Forces the glitch cart area type." IsChecked="{Binding RSettings.DeadRacer}" />
+                                                        <CheckBox Width="200" Content="Dead Racer Mode" ToolTip="Enables the Dear Racer timer in the glitch cart areas." IsChecked="{Binding RSettings.DeadRacer}" />
                                                         <!--<CheckBox Content="Auto-Refresh Levels" IsChecked="{Binding RSettings.AutoRefresh}" />-->
                                                     </ListBox>
                                                     <ListBox Style="{StaticResource SettingsListStyle}">
@@ -274,85 +262,90 @@
                                 <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="auto" />
-                                        <RowDefinition MinHeight="100" />
+                                        <RowDefinition Height="Auto" MinHeight="100" />
                                     </Grid.RowDefinitions>
-                                    <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Level Generator"/>
+                                    <TextBlock Grid.Row="0" Style="{StaticResource TabTitleText}" Text="Level Generator"/>
                                     <ListView Grid.Row="1" Name="LevelPieceList"
-                            ItemTemplate="{StaticResource PieceListTemplate}"
-                            ItemsSource="{Binding PiecePools}"
-                            ScrollViewer.CanContentScroll="False"
-                            Style="{StaticResource PoolListStyle}"
-                            ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
+                                        ItemTemplate="{StaticResource PieceListTemplate}"
+                                        ItemsSource="{Binding PiecePools}"
+                                        ScrollViewer.CanContentScroll="False"
+                                        Style="{StaticResource PoolListStyle}"
+                                        ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
                                 </Grid>
                             </TabItem>
                         </TabControl>
 
                         <!-- RANDOMIZER BOTTOM BUTTONS -->
 
-                        <Grid Grid.Row="1" Height="20">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="120"/>
-                                <ColumnDefinition Width="120"/>
-                            </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Name="PlayButton" Style="{StaticResource PlayModButton}" Click="PlayButton_Click" Margin="0,0,0,0" HorizontalAlignment="Center"/>
-                            <!--<Button Grid.Column="1" Name="RefreshButton" Content="Refresh" Style="{StaticResource RefreshButton}" Click="RefreshButton_Click" Margin="0,0,0,0" HorizontalAlignment="Center"/>-->
-                            <Button Grid.Column="2" Name="UnloadButton" Content="Unload" Style="{StaticResource UnloadButton}" Click="UnloadButton_Click" Margin="0,0,0,0" HorizontalAlignment="Center"/>
-                            <Button Grid.Column="3" Name="SaveMod" Content="Save Mod" Click="SaveModButton_Click" Width="110" Margin="0,0,0,0" HorizontalAlignment="Center"/>
-                            <Button Grid.Column="4" Name="SaveSettings" Content="Save Settings" Click="SaveSettings_Click" Width="110" Margin="0,0,0,0" HorizontalAlignment="Center"/>
-                        </Grid>
+                        <WrapPanel Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <Button Name="PlayButton"                                 Click="PlayButton_Click"    Style="{StaticResource PlayModButton}"      HorizontalAlignment="Center" Margin="10,0"/>
+                            <Button Name="UnloadButton"       Content="Unload"        Click="UnloadButton_Click"  Style="{StaticResource UnloadButton}"       HorizontalAlignment="Center" Margin="10,0"/>
+                            <Button Name="SaveRunButon"       Content="Save Run"      Click="SaveModButton_Click" Width="110" HorizontalAlignment="Center" Margin="10,0"/>
+                            <Button Name="SaveSettingsButton" Content="Save Settings" Click="SaveSettings_Click"  Width="110" HorizontalAlignment="Center" Margin="10,0"/>
+                        </WrapPanel>
                     </Grid>
                 </TabItem>
 
                 <!-- MODLOADER TABS -->
                 
                 <TabItem Header="Mod Loader" Padding="10,2">
-                    <TabControl Name="ModLoaderTabs" Margin="0,3,0,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition Height="30"/>
+                        </Grid.RowDefinitions>
+                        <TabControl Name="ModLoaderTabs" Margin="0,3,0,0" SelectedItem="{Binding ModLoaderTabSelected}">
 
-                        <!-- MODS TAB -->
+                            <!-- MODS TAB -->
 
-                        <TabItem Header="Mods" Padding="10,2">
-                            <ScrollViewer>
-                                <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition MinHeight="100" />
-                                    </Grid.RowDefinitions>
-                                    <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Mods"/>
-                                    <ListView Grid.Row="1" Name="ModList"
-                                    ItemTemplate="{StaticResource ModListTemplate}"
-                                    ItemsSource="{Binding Mods}"
-                                    ScrollViewer.CanContentScroll="False"
-                                    SelectedItem="{Binding SelectedSavedRun}"
-                                    Style="{StaticResource PoolListStyle}"
-                                    ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
-                                </Grid>
-                            </ScrollViewer>
-                        </TabItem>
+                            <TabItem Name="ModsTab" Header="Mods" Padding="10,2">
+                                <ScrollViewer>
+                                    <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="Auto" MinHeight="100" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Style="{StaticResource TabTitleText}" Text="Mods"/>
+                                        <ListView Grid.Row="1" Name="ModList"
+                                        ItemTemplate="{StaticResource ModListTemplate}"
+                                        ItemsSource="{Binding Mods}"
+                                        ScrollViewer.CanContentScroll="False"
+                                        SelectedItem="{Binding SelectedSavedRun}"
+                                        Style="{StaticResource ModListStyle}"
+                                        ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
+                                    </Grid>
+                                </ScrollViewer>
+                            </TabItem>
 
-                        <!-- SAVED RUNS TAB -->
+                            <!-- SAVED RUNS TAB -->
 
-                        <TabItem Header="Saved Runs" Padding="10,2">
-                            <ScrollViewer>
-                                <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="auto" />
-                                        <RowDefinition MinHeight="100" />
-                                    </Grid.RowDefinitions>
-                                    <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Saved Runs"/>
-                                    <ListView Grid.Row="1" Name="SavedRunsList"
-                                    ItemTemplate="{StaticResource SavedRunsTemplate}"
-                                    ItemsSource="{Binding SavedRuns}"
-                                    ScrollViewer.CanContentScroll="False"
-                                    SelectedItem="{Binding SelectedSavedRun}"
-                                    Style="{StaticResource SavedRunsStyle}"/>
-                                </Grid>
-                            </ScrollViewer>
-                        </TabItem>
+                            <TabItem Name="SavedRunsTab" Header="Saved Runs" Padding="10,2">
+                                <ScrollViewer>
+                                    <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="Auto" MinHeight="100" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Style="{StaticResource TabTitleText}" Text="Saved Runs"/>
+                                        <ListView Grid.Row="1" Name="SavedRunsList"
+                                        ItemTemplate="{StaticResource SavedRunsTemplate}"
+                                        ItemsSource="{Binding SavedRuns}"
+                                        ScrollViewer.CanContentScroll="False"
+                                        SelectedItem="{Binding SelectedSavedRun}"
+                                        Style="{StaticResource SavedRunsStyle}"/>
+                                    </Grid>
+                                </ScrollViewer>
+                            </TabItem>
 
-                    </TabControl>
+                        </TabControl>
+
+                        <!-- RANDOMIZER BOTTOM BUTTONS -->
+
+                        <WrapPanel Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                            <Button Name="PlayButton2"                     Click="PlayButton2_Click"   Style="{StaticResource PlayModButton}" HorizontalAlignment="Center" Margin="10,0"/>
+                            <Button Name="UnloadButton2" Content="Unload"  Click="UnloadButton_Click"  Style="{StaticResource UnloadButton}"  HorizontalAlignment="Center" Margin="10,0"/>
+                        </WrapPanel>
+                    </Grid>
                 </TabItem>
                 
                 <!-- PROGRAM SETTINGS TAB -->
@@ -365,15 +358,14 @@
                             <!--<RowDefinition Height="30" />
                                 <RowDefinition Height="Auto" />-->
                         </Grid.RowDefinitions>
-                        <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Program Settings"/>
+                        <TextBlock Grid.Row="0" Style="{StaticResource TabTitleText}" Text="Program Settings"/>
                         <ListBox BorderBrush="Transparent" Grid.Row="1" Name="ProramSettingsList" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
                             <TextBlock Text="Game Directory: "/>
-                            <TextBox Name="GameDirTextBox" Width="auto">
-                                <TextBox.Text>
-                                    <Binding Path="RSettings.GameDirectory" UpdateSourceTrigger="PropertyChanged"/>
-                                </TextBox.Text>
-                            </TextBox>
+                            <TextBox Name="GameDirTextBox" Width="auto" Text="{Binding Path=RSettings.GameDirectory, UpdateSourceTrigger=PropertyChanged}"/>
                             <Button Name="FolderButton" Style="{StaticResource FolderSelectButton}" Click="FolderButton_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>
+                            <Separator Margin="0,5"/>
+                            <TextBlock Text="User Name: "/>
+                            <TextBox Name="UserNameTextBox" Width="200" Text="{Binding Path=RSettings.UserName, UpdateSourceTrigger=PropertyChanged}"/>
                             <Separator Margin="0,5"/>
                             <CheckBox Content="Manual Load" IsChecked="{Binding RSettings.ManualLoad}" />
                             <TextBlock Text="This may be necessary for Epic Games users." Foreground="Gray"/>
@@ -391,7 +383,7 @@
                             <!--<RowDefinition Height="30" />
                                 <RowDefinition Height="Auto" />-->
                         </Grid.RowDefinitions>
-                        <TextBox Template="{StaticResource TabTitleTextControl}" Grid.Row="0" Text="Tools and Utilities" />
+                        <TextBlock Grid.Row="0" Style="{StaticResource TabTitleText}" Text="Tools and Utilities"/>
                         <ListBox BorderBrush="Transparent" Grid.Row="1" Name="ToolsList" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
                             <TextBlock Text="Randomizer Tools" FontWeight="Bold"/>
                             <Menu>

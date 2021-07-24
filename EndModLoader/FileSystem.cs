@@ -4,6 +4,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using Microsoft.Win32;
+using System.Windows;
+
 
 namespace TEiNRandomizer
 {
@@ -13,14 +15,99 @@ namespace TEiNRandomizer
         public static readonly string[] ModFolders = { "audio", "data", "shaders", "swfs", "textures", "tilemaps" };
 
         private static FileSystemWatcher Watcher;
+        public static void CopyFilesRecursively(DirectoryInfo source, DirectoryInfo target)
+        {
+            foreach (DirectoryInfo dir in source.GetDirectories())
+                CopyFilesRecursively(dir, target.CreateSubdirectory(dir.Name));
+            foreach (FileInfo file in source.GetFiles())
+                file.CopyTo(Path.Combine(target.FullName, file.Name), true);
+        }
 
         public static IEnumerable<Mod> ReadModFolder(string path)
         {
-            foreach (var file in Directory.GetFiles(path, "*.zip", SearchOption.TopDirectoryOnly))
+            foreach (var dir in Directory.GetDirectories(path))
             {
-                var mod = Mod.FromZip(file);
-                if (mod != null) yield return Mod.FromZip(file);
+                var mod = Mod.FromFolder(dir);
+                if (mod != null) yield return mod;
             }
+        }
+
+        public static bool LoadModsZip(MainWindow mw) // Does not work correctly. Mods will need to be stored unzipped.
+        {
+            foreach(Mod mod in mw.Mods)
+            {
+                try  // will attempt to load all mods selected, but will return false if there is a conflict
+                {
+                    if (mod.Active)
+                    {
+                        ZipFile.ExtractToDirectory($"{mod.ModPath}", mw.RSettings.GameDirectory);
+                    }
+                }
+                catch (System.IO.IOException ex)
+                {
+                    MessageBox.Show($"Error loading mod: {mod.ModPath}\n There may be a file conflict between these two mods. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool LoadMods(MainWindow mw) // Does not work correctly. Mods will need to be stored unzipped.
+        {
+            foreach (Mod mod in mw.Mods)
+            {
+                try  // will attempt to load all mods selected, but will return false if there is a conflict
+                {
+                    if (mod.Active)
+                    {
+                        foreach (var folder in ModFolders)
+                        {
+                            string path = $"{mod.ModPath}/{folder}";
+                            string dest = $"{mw.RSettings.GameDirectory}/{folder}";
+                            var source = new DirectoryInfo(path);
+                            var target = new DirectoryInfo(dest);
+                            if (Directory.Exists(path))
+                            {
+                                Directory.CreateDirectory(dest);
+                                CopyFilesRecursively(source, target);
+                            }
+                        }
+                    }
+                }
+                catch (System.IO.IOException ex)
+                {
+                    MessageBox.Show($"Error loading mod: {mod.ModPath}\n There may be a file conflict between these two mods. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool LoadSavedRun(MainWindow mw) // Does not work correctly. Mods will need to be stored unzipped.
+        {
+            Mod mod = (mw.SavedRunsList.SelectedItem as Mod);
+            
+            try  // will attempt to load saved run
+            {
+                foreach (var folder in ModFolders)
+                {
+                    string path = $"{mod.ModPath}/{folder}";
+                    string dest = $"{mw.RSettings.GameDirectory}/{folder}";
+                    var source = new DirectoryInfo(path);
+                    var target = new DirectoryInfo(dest);
+                    if (Directory.Exists(path))
+                    {
+                        Directory.CreateDirectory(dest);
+                        CopyFilesRecursively(source, target);
+                    }
+                }
+            }
+            catch (System.IO.IOException ex)
+            {
+                MessageBox.Show($"Error loading : {mod.ModPath}\n There may be a file conflict between these two mods. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
         }
 
         public static void EnableWatching(

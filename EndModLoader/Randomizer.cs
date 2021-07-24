@@ -310,7 +310,7 @@ namespace TEiNRandomizer
 
                     AreaTypes.Add(areatileset.AreaType);
 
-                    sw.WriteLine("v" + (j + 1).ToString() + " {\n    area_name \"TEiN Randomizer\"\n    area_label_frame 0\n    background_graphics neverbg\n    area_type normal\n");
+                    sw.WriteLine("v" + (j + 1).ToString() + $" {{\n    area_name \"TEiN Randomizer\"\n    area_label_frame 0\n    background_graphics neverbg\n    area_type {areatileset.AreaType}\n");
                     if (settings.UseAreaTileset || (settings.DoShaders && settings.DoParticles))
                         sw.WriteLine(areatileset.All + "art_alts[" + areatileset.ArtAlts + "]");
 
@@ -564,11 +564,9 @@ namespace TEiNRandomizer
         static string SaveRunPrompt()
         {
             string title       = GetFunnyName();
-            string author      = "TEiN Randomizer";
+            string author = $"Seed: {mainWindow.GameSeed.ToString()}";
             string description = "A randomized world!";
-            string version     = mainWindow.GameSeed.ToString();
-
-            //MessageBox.Show($"Give this world a name:", "Info", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            string version     = System.DateTime.Now.ToString();
 
             TextWindow inputWindow = new TextWindow("Give this world a name: ", title);
             if (inputWindow.ShowDialog() == true)
@@ -663,11 +661,12 @@ namespace TEiNRandomizer
 
             Console.WriteLine(mw.GameSeed);
 
-            if (args == "savemod")
-            {
-                saveDir = saveDir.Remove(saveDir.Length - 1);
-                ZipFile.CreateFromDirectory(saveDir, saveDir + ".zip");
-            }
+            //if (args == "savemod")    // this is commented out bc mods will not save to zip for now
+            //{
+            //    saveDir = saveDir.Remove(saveDir.Length - 1);
+            //    ZipFile.CreateFromDirectory(saveDir, saveDir + ".zip");
+            //    Directory.Delete(saveDir, true);
+            //}
 
         }
     }

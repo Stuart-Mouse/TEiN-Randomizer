@@ -118,9 +118,9 @@ namespace TEiNRandomizer
                 // Select Tileset Info
                 if (isAreaTS)
                 {
-                    if (settings.DeadRacer) tileset.AreaType = "glitch";
+                    //if (settings.DeadRacer) tileset.AreaType = "glitch";
                     if (settings.RandomizeAreaType)
-                        tileset.AreaType = ($"    area_type {AreaTypes[RNG.random.Next(0, 5)]}");
+                        tileset.AreaType = AreaTypes[RNG.random.Next(0, 5)];
                 }
 
                 tileset.Tile    = ($"    tile_graphics { TileGraphicsPool[RNG.random.Next(0, TileGraphicsPool.Count())] }\n");
@@ -132,7 +132,7 @@ namespace TEiNRandomizer
                 {
                     tileset.Shader = ($"    { ShaderPool[RNG.random.Next(0, ShaderPool.Count())] }\n");
                 }
-                tileset.Shader += "shader_param " + RNG.random.NextDouble();
+                tileset.Shader += "shader_param " + (RNG.random.Next(0, 101) / 10);
 
                 // set particles
                 if (settings.DoParticles)

@@ -19,6 +19,8 @@ namespace TEiNRandomizer
         public static string ExeName { get => "TheEndIsNigh.exe"; }
         public static string WindowTitle { get => "  The End is Nigh Randomizer BETA  "; }
 
+        public static Object ModLoaderTabSelected { get; set; }
+
         public string ModPath { get => "mods"; }
         public string SavedRunsPath { get => "saved runs"; }
         public string PoolPath { get => "data/levelpools"; }
@@ -247,6 +249,136 @@ namespace TEiNRandomizer
             }
         }
 
+        private async Task PlayMod()
+        {
+            if (AppState == AppState.ReadyToPlay)
+            {
+                //if (File.Exists(EndIsNighPath + "backup/TheEndIsNigh -backup.exe")) // If backup exe exists restore regular from it
+                //{
+                //    File.Delete(Path.Combine(EndIsNighPath + ExeName));
+                //    File.Copy(Path.Combine(EndIsNighPath + "backup/TheEndIsNigh -backup.exe"), Path.Combine(EndIsNighPath + ExeName));
+                //}
+                //else File.Copy(Path.Combine(EndIsNighPath + ExeName), Path.Combine(EndIsNighPath + "backup/TheEndIsNigh -backup.exe")); //Creates backup exe
+
+                // Check the game directory for mod folders
+                var contains = FileSystem.ContainedFolders(RSettings.GameDirectory, FileSystem.ModFolders).ToList();
+                if (contains.Count != 0)
+                {
+                    // FINALLY an excuse to use tuples!
+                    var (isOrAre, a, folderOrFolders, itOrThem) = contains.Count == 1 ?
+                        ("is", "a ", "folder", "it") :
+                        ("are", "", "folders", "them");
+
+                    var result = MessageBox.Show(
+                        $"There {isOrAre} currently {a}modified {String.Join(", ", contains.Select(f => $"\"{f}\""))} {folderOrFolders} present in your game directory. " +
+                        $"Delete {itOrThem} to play the Randomizer?",
+                        "Warning",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Warning,
+                        MessageBoxResult.No
+                    );
+
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        try
+                        {
+                            FileSystem.UnloadAll(RSettings.GameDirectory);
+                        }
+                        catch (IOException)
+                        {
+                            MessageBox.Show(
+                                "Could not delete the modified folders because one or more of them are open in an another process.",
+                                "Error",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error
+                            );
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        // Let's not delete any more Cities of Tethys.
+                        return;
+                    }
+                }
+
+                if((ModLoaderTabSelected as TabItem).Name == "ModsTab")
+                {
+                    AppState = AppState.InGame;
+                    if (FileSystem.LoadMods(this))
+                    {
+                        if (!RSettings.ManualLoad)
+                        {
+                            Process.Start(Path.Combine(RSettings.GameDirectory, ExeName));
+                            await HookGameExit("TheEndIsNigh", (s, ev) =>
+                            {
+                                AppState = AppState.ReadyToPlay;
+                                FileSystem.UnloadAll(RSettings.GameDirectory);
+                            });
+                        }
+                        else await WaitForUnload();
+                    }
+                    else    // if the mods fail to load, try to delete all of the files copied into the game folder
+                    {
+                        try
+                        {
+                            FileSystem.UnloadAll(RSettings.GameDirectory);
+                        }
+                        catch (IOException)
+                        {
+                            MessageBox.Show(
+                                "Could not delete the modified folders because one or more of them are open in an another process.",
+                                "Error",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error
+                            );
+                        }
+                        AppState = AppState.ReadyToPlay;
+                    }
+                }
+
+                if ((ModLoaderTabSelected as TabItem).Name == "SavedRunsTab")
+                {
+                    AppState = AppState.InGame;
+                    if (FileSystem.LoadSavedRun(this))
+                    {
+                        if (!RSettings.ManualLoad)
+                        {
+                            Process.Start(Path.Combine(RSettings.GameDirectory, ExeName));
+                            await HookGameExit("TheEndIsNigh", (s, ev) =>
+                            {
+                                AppState = AppState.ReadyToPlay;
+                                FileSystem.UnloadAll(RSettings.GameDirectory);
+                            });
+                        }
+                        else await WaitForUnload();
+                    }
+                    else    // if the mods fail to load, try to delete all of the files copied into the game folder
+                    {
+                        try
+                        {
+                            FileSystem.UnloadAll(RSettings.GameDirectory);
+                        }
+                        catch (IOException)
+                        {
+                            MessageBox.Show(
+                                "Could not delete the modified folders because one or more of them are open in an another process.",
+                                "Error",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error
+                            );
+                        }
+                        AppState = AppState.ReadyToPlay;
+
+                    }
+                }
+
+
+
+
+            }
+        }
+
         private async Task HookGameExit(string process, EventHandler hook)
         {
             // Since Steam's "launching..." exits and starts the games process,
@@ -289,6 +421,12 @@ namespace TEiNRandomizer
             //ParticleRanger(); // this function is stupid and I should get rid of it later
             RNG.SeedMe((int)GameSeed);
             await PlayRandomizer();
+        }
+        private async void PlayButton2_Click(object sender, RoutedEventArgs e)
+        {
+            //ParticleRanger(); // this function is stupid and I should get rid of it later
+            RNG.SeedMe((int)GameSeed);
+            await PlayMod();
         }
 
         private void SeedButton_Click(object sender, RoutedEventArgs e)

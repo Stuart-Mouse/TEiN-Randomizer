@@ -26,7 +26,7 @@
     <DoCorruptions>true</DoCorruptions>
     <MirrorMode>false</MirrorMode>
     <DeadRacer>true</DeadRacer>
-    <CartLives>17</CartLives>
+    <CartLives>19</CartLives>
     <DoPhysics>false</DoPhysics>
     <PlatformPhysics>true</PlatformPhysics>
     <PlayerPhysics>true</PlayerPhysics>
@@ -35,7 +35,7 @@
     <LevelMerge>false</LevelMerge>
     <ToolsInDirectory>tools/input/</ToolsInDirectory>
     <ToolsOutDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\tilemaps\</ToolsOutDirectory>
-    <RandomizeAreaType>true</RandomizeAreaType>
+    <RandomizeAreaType>false</RandomizeAreaType>
     <CRSmart>false</CRSmart>
     <CROverlays>false</CROverlays>
     <CRTumors>true</CRTumors>
@@ -46,5 +46,6 @@
     <CRCrushers>false</CRCrushers>
     <CRChaos>false</CRChaos>
     <CRWaterLevels>false</CRWaterLevels>
+    <UserName>Ash</UserName>
   </default>
 </root>

@@ -34,7 +34,6 @@ namespace TEiNRandomizer
             //foreach (var mod in Mods)
         }
 
-
         private void NoClick(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
