@@ -11,8 +11,8 @@ namespace TEiNRandomizer
         public string UserName { get; set; }
         public int NumLevels { get; set; }
         public int NumAreas { get; set; }
-        public bool UseDefaultMusic { get; set; }
-        public bool UseDefaultPalettes { get; set; }
+        public bool DoMusic { get; set; }
+        public bool DoPalettes { get; set; }
         //public bool PalettePerLevel { get; set; }
         public bool MusicPerLevel { get; set; }
         public bool DoShaders { get; set; }
@@ -63,13 +63,17 @@ namespace TEiNRandomizer
         public bool CRChaos { get; set; }
         public bool CRWaterLevels { get; set; }
 
+        // Mod Randomization Settings
+
+
+
         public RandomizerSettings(string name)
         {
             // intialize true defaults in case settings file is fucked
             NumLevels = 10;
             NumAreas = 3;
-            UseDefaultMusic = false;
-            UseDefaultPalettes = false;
+            DoMusic = false;
+            DoPalettes = false;
             MusicPerLevel = false;
             //PalettePerLevel = true;
             DoShaders = true;
@@ -102,7 +106,7 @@ namespace TEiNRandomizer
             WaterPhysics = false;
             LowGravPhysics = false;
             LevelMerge = false;
-            GameDirectory = "C:/Program Files(x86)/Steam/steamapps/common/theendisnigh/";
+            GameDirectory = "C:\\Program Files(x86)\\Steam\\steamapps\\common\\theendisnigh/";
             //ModSaveDirectory = "saved runs/";
             ToolsInDirectory = "tools/input/";
             ToolsOutDirectory = "tools/output/";
@@ -154,8 +158,8 @@ namespace TEiNRandomizer
                     element.RemoveAll();
                     element.SetElementValue(nameof(NumLevels), NumLevels);
                     element.SetElementValue(nameof(NumAreas), NumAreas);
-                    element.SetElementValue(nameof(UseDefaultMusic), UseDefaultMusic);
-                    element.SetElementValue(nameof(UseDefaultPalettes), UseDefaultPalettes);
+                    element.SetElementValue(nameof(DoMusic), DoMusic);
+                    element.SetElementValue(nameof(DoPalettes), DoPalettes);
                     element.SetElementValue(nameof(MusicPerLevel), MusicPerLevel);
                     //element.SetElementValue(nameof(PalettePerLevel), PalettePerLevel);
                     element.SetElementValue(nameof(DoShaders), DoShaders);
@@ -218,8 +222,8 @@ namespace TEiNRandomizer
                 {
                     NumLevels = (int)element.Element(nameof(NumLevels));
                     NumAreas = (int)element.Element(nameof(NumAreas));
-                    UseDefaultMusic = (bool)element.Element(nameof(UseDefaultMusic));
-                    UseDefaultPalettes = (bool)element.Element(nameof(UseDefaultPalettes));
+                    DoMusic = (bool)element.Element(nameof(DoMusic));
+                    DoPalettes = (bool)element.Element(nameof(DoPalettes));
                     MusicPerLevel = (bool)element.Element(nameof(MusicPerLevel));
                     //PalettePerLevel = (bool)element.Element(nameof(PalettePerLevel));
                     DoShaders = (bool)element.Element(nameof(DoShaders));

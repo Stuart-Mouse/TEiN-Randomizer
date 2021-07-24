@@ -129,19 +129,17 @@
                                                             <ComboBox Grid.Column="1" Width="90" Name="AltLevelsBox" SelectedItem="{Binding RSettings.AltLevel}" ItemsSource="{Binding AltLevels}" Text="Alt Levels" IsEditable="false" IsReadOnly="false"/>
                                                         </Grid>
                                                     </ListBox>
-                                                    <!--<CheckBox Width="170" Content="Use Default Music" IsChecked="{Binding RSettings.UseDefaultMusic}" />
-                                        <CheckBox Width="170" Content="Use Default Palettes" IsChecked="{Binding RSettings.UseDefaultPalettes}" />-->
-                                                    <!--<CheckBox Content="Randomize Palette Per Level" IsChecked="{Binding RSettings.PalettePerLevel}" />
-                                        <CheckBox Content="Randomize Music Per Level" IsChecked="{Binding RSettings.MusicPerLevel}" />-->
                                                     <ListBox Style="{StaticResource SettingsListStyle}">
                                                         <TextBlock Text="Visuals:" FontWeight="Bold" />
-                                                        <CheckBox Width="200" Content="Randomize Shaders" ToolTip="Applies a random shader effect to every area." IsChecked="{Binding RSettings.DoShaders}" />
-                                                        <CheckBox Width="200" Content="Randomize Particles" ToolTip="Applies a random particle effect to every area." IsChecked="{Binding RSettings.DoParticles}" />
-                                                        <CheckBox Width="200" Content="Randomize Overlays" ToolTip="Picks a random overlay for each area." IsChecked="{Binding RSettings.DoOverlays}" />
-                                                        <CheckBox Width="200" Content="Randomize Tile Graphics" ToolTip="Picks random tile graphics for each area." IsChecked="{Binding RSettings.DoTileGraphics}" />
+                                                        <CheckBox Width="200" Content="Randomize Music"          ToolTip="Applies a random music track to every area."      IsChecked="{Binding RSettings.DoMusic}" />
+                                                        <CheckBox Width="200" Content="Randomize Palette"        ToolTip="Applies a random palette to every area."          IsChecked="{Binding RSettings.DoPalettes}" />
+                                                        <CheckBox Width="200" Content="Randomize Shaders"        ToolTip="Applies a random shader effect to every area."    IsChecked="{Binding RSettings.DoShaders}" />
+                                                        <CheckBox Width="200" Content="Randomize Particles"      ToolTip="Applies a random particle effect to every area."  IsChecked="{Binding RSettings.DoParticles}" />
+                                                        <CheckBox Width="200" Content="Randomize Overlays"       ToolTip="Applies a random overlay to each area."           IsChecked="{Binding RSettings.DoOverlays}" />
+                                                        <CheckBox Width="200" Content="Randomize Tile Graphics"  ToolTip="Applies a random tile graphics set to each area." IsChecked="{Binding RSettings.DoTileGraphics}" />
+                                                        <CheckBox Width="200" Content="Can Apply Nevermore Tilt" ToolTip="Allows the Nevermore tilt to appear in areas."    IsChecked="{Binding RSettings.DoNevermoreTilt}" />
+                                                        <CheckBox Width="200" Content="Can Apply Exodus Wobble"  ToolTip="Allows the Exodus wobble to appear in areas."     IsChecked="{Binding RSettings.DoExodusWobble}" />
                                                         <!--<CheckBox Content="Randomize NPCs" IsChecked="{Binding RSettings.DoNPCs}" />-->
-                                                        <CheckBox Width="200" Content="Can Apply Nevermore Tilt" ToolTip="Allows the Nevermore tilt to appear in areas." IsChecked="{Binding RSettings.DoNevermoreTilt}" />
-                                                        <CheckBox Width="200" Content="Can Apply Exodus Wobble" ToolTip="Allows the Exodus wobble to appear in areas." IsChecked="{Binding RSettings.DoExodusWobble}" />
                                                     </ListBox>
                                                     <ListBox Style="{StaticResource SettingsListStyle}">
                                                         <TextBlock Text="Gameplay:" FontWeight="Bold" />
@@ -294,7 +292,7 @@
                             <RowDefinition/>
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
-                        <TabControl Name="ModLoaderTabs" Margin="0,3,0,0" SelectedItem="{Binding ModLoaderTabSelected}">
+                        <TabControl Name="ModLoaderTabs" Margin="0,3,0,0" >
 
                             <!-- MODS TAB -->
 
@@ -307,12 +305,12 @@
                                         </Grid.RowDefinitions>
                                         <TextBlock Grid.Row="0" Style="{StaticResource TabTitleText}" Text="Mods"/>
                                         <ListView Grid.Row="1" Name="ModList"
-                                        ItemTemplate="{StaticResource ModListTemplate}"
-                                        ItemsSource="{Binding Mods}"
-                                        ScrollViewer.CanContentScroll="False"
-                                        SelectedItem="{Binding SelectedSavedRun}"
-                                        Style="{StaticResource ModListStyle}"
-                                        ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
+                                            ItemTemplate="{StaticResource ModListTemplate}"
+                                            ItemsSource="{Binding Mods}"
+                                            ScrollViewer.CanContentScroll="False"
+                                            Style="{StaticResource ModListStyle}"
+                                            MouseDoubleClick="ModList_Click"
+                                            ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
                                     </Grid>
                                 </ScrollViewer>
                             </TabItem>
@@ -331,7 +329,6 @@
                                         ItemTemplate="{StaticResource SavedRunsTemplate}"
                                         ItemsSource="{Binding SavedRuns}"
                                         ScrollViewer.CanContentScroll="False"
-                                        SelectedItem="{Binding SelectedSavedRun}"
                                         Style="{StaticResource SavedRunsStyle}"/>
                                     </Grid>
                                 </ScrollViewer>

@@ -4,17 +4,47 @@ using System.IO;
 using System.IO.Compression;
 using System.Threading;
 using System.Xml.Linq;
+using Microsoft.WindowsAPICodePack.Dialogs;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using TEiNRandomizer.Properties;
+using System.ComponentModel;
 
 namespace TEiNRandomizer
 {
-    public class Mod : IComparable<Mod>
+    public class Mod : IComparable<Mod>, INotifyPropertyChanged
     {
         public string Title { get; private set; }       // Title of Saved Runs is set by the user
         public string Description { get; private set; } // Description of Saved Runs is set by the user
         public string Author { get; private set; }      // Used for the Seed of saved runs
         public string Version { get; private set; }     // Used for the date and time of Saved Runs
         public string ModPath { get; private set; }
-        public bool Active { get; set; } = false;
+        private bool _active { get; set; }
+        public bool Active
+        {
+            get { return _active; }
+            set
+            {
+                _active = value;
+                OnPropertyChanged(nameof(Active));
+            }
+        }
+
+        protected void OnPropertyChanged(string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public List<int> ExeOffset { get; private set; }
         public List<byte> ExeByteReplacement { get; private set; }

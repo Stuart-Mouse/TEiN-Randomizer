@@ -18,9 +18,6 @@ namespace TEiNRandomizer
     {
         public static string ExeName { get => "TheEndIsNigh.exe"; }
         public static string WindowTitle { get => "  The End is Nigh Randomizer BETA  "; }
-
-        public static Object ModLoaderTabSelected { get; set; }
-
         public string ModPath { get => "mods"; }
         public string SavedRunsPath { get => "saved runs"; }
         public string PoolPath { get => "data/levelpools"; }
@@ -41,9 +38,6 @@ namespace TEiNRandomizer
         public ObservableCollection<string> AltLevels { get; private set; } = new ObservableCollection<string>() { "None", "Safe", "Extended", "Crazy", "Insane" };
         public ObservableCollection<string> AreaTypes { get; private set; } = new ObservableCollection<string>() { "normal", "dark", "cart", "ironcart", "glitch" };
         public ObservableCollection<int> MaxParticleFXList { get; private set; } = new ObservableCollection<int>() { 1, 2, 3 };
-
-
-        public Mod SelectedSavedRun { get; set; }
 
 
         private AppState _appState;
@@ -302,11 +296,12 @@ namespace TEiNRandomizer
                     }
                 }
 
-                if((ModLoaderTabSelected as TabItem).Name == "ModsTab")
+                if((ModLoaderTabs.SelectedItem as TabItem).Name == "ModsTab")
                 {
                     AppState = AppState.InGame;
                     if (FileSystem.LoadMods(this))
                     {
+                        Randomizer.RandomizeMod(this);
                         if (!RSettings.ManualLoad)
                         {
                             Process.Start(Path.Combine(RSettings.GameDirectory, ExeName));
@@ -337,7 +332,7 @@ namespace TEiNRandomizer
                     }
                 }
 
-                if ((ModLoaderTabSelected as TabItem).Name == "SavedRunsTab")
+                if ((ModLoaderTabs.SelectedItem as TabItem).Name == "SavedRunsTab")
                 {
                     AppState = AppState.InGame;
                     if (FileSystem.LoadSavedRun(this))

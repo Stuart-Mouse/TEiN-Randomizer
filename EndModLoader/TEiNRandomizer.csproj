@@ -151,6 +151,7 @@
     <Compile Include="LevelManip.cs" />
     <Compile Include="LevelPiece.cs" />
     <Compile Include="MainWindowButtons.cs" />
+    <Compile Include="ModRandomizer.cs" />
     <Compile Include="RNG.cs" />
     <Compile Include="ParticleGenerator.cs" />
     <Compile Include="Physics.cs" />
@@ -218,6 +219,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="checkmark.png" />
     <Content Include="data/**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

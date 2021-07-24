@@ -436,7 +436,7 @@
             </StackPanel>
         </DataTemplate>
 
-        <DataTemplate x:Key="ModListTemplate">
+        <DataTemplate x:Key="ModListTemplate" x:Name="ModListTemp">
             <StackPanel Margin="0,3,0,3" Orientation="Vertical" >
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -449,14 +449,13 @@
                         <RowDefinition />
                         <!--<RowDefinition />-->
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0"     Text="{Binding Title}"       Style="{StaticResource TitleText}"       FontSize="13" Margin="10,0,0,0"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right" Margin="0,0,10,0"/>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Title}"       Style="{StaticResource TitleText}"       FontSize="13" Margin="10,0,0,0"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Author}"      Style="{StaticResource DescriptionText}" HorizontalAlignment="Right" Margin="0,0,5,0"/>
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Description}" Style="{StaticResource DescriptionText}" Margin="10,0,0,0" HorizontalAlignment="Left"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Version}" Style="{StaticResource DescriptionText}" Margin="0,0,10,0" HorizontalAlignment="Right"/>
-                    <CheckBox  Grid.RowSpan="2" Grid.Column="2"     Content="Enabled" IsChecked="{Binding Active}" Margin="0,0,10,0"  VerticalAlignment="Center"   HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Version}"     Style="{StaticResource DescriptionText}" Margin="0,0,5,0" HorizontalAlignment="Right"/>
+                    <Image     Name="ModCheckImage"  Grid.RowSpan="2" Grid.Column="2" Source="checkmark.png" Height="20" Width="20" Margin="0,0,10,0"  VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding Active, Converter={StaticResource SettingsDisplayer}}"/>
                 </Grid>
                 <Separator Margin="2.5, 5, 2.5, 0"/>
-                <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->
             </StackPanel>
         </DataTemplate>
 

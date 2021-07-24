@@ -149,6 +149,7 @@ namespace TEiNRandomizer
             int index = 0;
             int lw = level.header.width;
             int lh = level.header.height;
+            int attempts = 0;
 
             Bounds bounds = GetCameraBounds(level);
             TumorRemover(ref level);
@@ -167,7 +168,8 @@ namespace TEiNRandomizer
                         level.data.active[index] = TileID.Tumor;
                         placed = true;
                     }
-
+                    if (attempts > 5) placed = true;
+                    attempts++;
                 } while (!placed);
             }
         }
@@ -263,7 +265,7 @@ namespace TEiNRandomizer
             int lw = level.header.width;
             int lh = level.header.height;
             var bounds = new Bounds { Left = lw, Top = lh, Bottom = 0, Right = 0 };
-            bool noCameraFound = false;
+            bool CameraFound = false;
 
             int index = 0;
             for (int row = 0; row < lh; row++)
@@ -277,6 +279,7 @@ namespace TEiNRandomizer
                         bounds.Bottom = Math.Max(row, bounds.Bottom);
                         bounds.Left = Math.Min(col, bounds.Left);
                         bounds.Right = Math.Max(col, bounds.Right);
+                        CameraFound = true;
                     }
                 }
             }
@@ -308,11 +311,14 @@ namespace TEiNRandomizer
             if (bounds.Right > lw) bounds.Top = lw;
             if (bounds.Bottom > lh) bounds.Bottom = lh;
 
-            if (bounds.Top > bounds.Bottom || bounds.Left > bounds.Right)
+            if (bounds.Top > bounds.Bottom || bounds.Left > bounds.Right || !CameraFound)
             {
                 Console.WriteLine("Broken Bounds");
+                bounds.Top = 0;
+                bounds.Left = 0;
+                bounds.Bottom = lh;
+                bounds.Right = lw;
             }
-
 
             return bounds;
         }

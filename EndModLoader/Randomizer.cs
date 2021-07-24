@@ -10,7 +10,7 @@ using System.IO.Compression;
 
 namespace TEiNRandomizer
 {
-    public static class Randomizer
+    public static partial class Randomizer
     {
         static Randomizer()
         {
@@ -325,9 +325,9 @@ namespace TEiNRandomizer
                         // Write Tileset info for level
                         if (settings.UseAreaTileset)
                             tileset = areatileset;
-                        if (!settings.UseDefaultMusic)
+                        if (settings.DoMusic)
                             sw.WriteLine(areatileset.Music);
-                        if (!settings.UseDefaultPalettes)
+                        if (settings.DoPalettes)
                             sw.WriteLine(tileset.Palette);
                         if (settings.DoTileGraphics)
                             sw.WriteLine(tileset.Tile);

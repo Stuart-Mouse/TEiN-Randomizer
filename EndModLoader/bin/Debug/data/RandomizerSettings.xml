@@ -3,8 +3,8 @@
   <default>
     <NumLevels>10</NumLevels>
     <NumAreas>20</NumAreas>
-    <UseDefaultMusic>false</UseDefaultMusic>
-    <UseDefaultPalettes>false</UseDefaultPalettes>
+    <DoMusic>true</DoMusic>
+    <DoPalettes>true</DoPalettes>
     <MusicPerLevel>false</MusicPerLevel>
     <DoShaders>true</DoShaders>
     <DoParticles>true</DoParticles>
@@ -34,15 +34,15 @@
     <LowGravPhysics>true</LowGravPhysics>
     <LevelMerge>false</LevelMerge>
     <ToolsInDirectory>tools/input/</ToolsInDirectory>
-    <ToolsOutDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\tilemaps\</ToolsOutDirectory>
+    <ToolsOutDirectory>tools/output/</ToolsOutDirectory>
     <RandomizeAreaType>false</RandomizeAreaType>
-    <CRSmart>false</CRSmart>
+    <CRSmart>true</CRSmart>
     <CROverlays>false</CROverlays>
     <CRTumors>true</CRTumors>
     <CRAddTiles>0</CRAddTiles>
     <CRAddEnemies>0</CRAddEnemies>
     <CRSpikeStrips>false</CRSpikeStrips>
-    <CRCrumbles>true</CRCrumbles>
+    <CRCrumbles>false</CRCrumbles>
     <CRCrushers>false</CRCrushers>
     <CRChaos>false</CRChaos>
     <CRWaterLevels>false</CRWaterLevels>

@@ -24,7 +24,7 @@ namespace TEiNRandomizer
         public string DoWobble { get; set; }
     }
 
-    class TilesetManip
+    public static class TilesetManip
     {
         static string[] TileGraphicsPool { get; set; }
         static string[] OverlayGraphicsPool { get; set; }
@@ -39,13 +39,13 @@ namespace TEiNRandomizer
         {
             var doc = XDocument.Load("data/tilesets_pools.xml");    // open levelpool file
 
-            NumPalettes         = 464;
-            NumPalettes         = Convert.ToInt32(doc.Root.Element("palettes").Value);
-            TileGraphicsPool    = Randomizer.ElementToArray(doc.Root.Element("tile_graphics"));
+            NumPalettes = 464;
+            NumPalettes = Convert.ToInt32(doc.Root.Element("palettes").Value);
+            TileGraphicsPool = Randomizer.ElementToArray(doc.Root.Element("tile_graphics"));
             OverlayGraphicsPool = Randomizer.ElementToArray(doc.Root.Element("overlay_graphics"));
-            ParticlePool        = Randomizer.ElementToArray(doc.Root.Element("particles"));
-            MusicPool           = Randomizer.ElementToArray(doc.Root.Element("music"));
-            ShaderPool          = new List<string> { };
+            ParticlePool = Randomizer.ElementToArray(doc.Root.Element("particles"));
+            MusicPool = Randomizer.ElementToArray(doc.Root.Element("music"));
+            ShaderPool = new List<string> { };
 
             foreach (var shader in Randomizer.ShadersList)
             {
@@ -53,6 +53,11 @@ namespace TEiNRandomizer
                     ShaderPool.Add(shader.Content);
             }
         }
+
+        public static int GetPalette() { return RNG.random.Next(1, NumPalettes); }
+        public static int GetTile() { return RNG.random.Next(1, NumPalettes); }
+        public static int GetOverlay() { return RNG.random.Next(1, NumPalettes); }
+
         private static string GetArtAlts(RandomizerSettings settings)
         {
             string ArtAlts = "";

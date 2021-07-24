@@ -26,6 +26,11 @@ namespace TEiNRandomizer
             //PoolList.GetBindingExpression(ListBox.VisibilityProperty).UpdateTarget();
         }
 
+        //private void Mod_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var mod = (sender as StackPanel);
+        //}
+
         private void SelectRunButton_Click(object sender, RoutedEventArgs e)
         {
             //var element = ((StackPanel)sender);
@@ -33,7 +38,7 @@ namespace TEiNRandomizer
             (sender as Mod).Active = true;
             //foreach (var mod in Mods)
         }
-
+        
         private void NoClick(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;

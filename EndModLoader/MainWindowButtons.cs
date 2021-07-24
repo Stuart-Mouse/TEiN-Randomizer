@@ -35,6 +35,11 @@ namespace TEiNRandomizer
             LoadSavedRuns(FileSystem.ReadModFolder(SavedRunsPath).OrderBy(p => p));
             MessageBox.Show($"Mod saved successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+        private void ModList_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = (sender as ListView).SelectedItem;
+            (selected as Mod).Active = !(selected as Mod).Active;
+        }
         private void OpenTilesetsOptionsButton_Click(object sender, RoutedEventArgs e)
         {
             try
