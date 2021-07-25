@@ -39,6 +39,16 @@ namespace TEiNRandomizer
         public ObservableCollection<string> AreaTypes { get; private set; } = new ObservableCollection<string>() { "normal", "dark", "cart", "ironcart", "glitch" };
         public ObservableCollection<int> MaxParticleFXList { get; private set; } = new ObservableCollection<int>() { 1, 2, 3 };
 
+        private TabItem _modLoaderTabSelected;
+        public TabItem ModLoaderTabSelected
+        {
+            get => _modLoaderTabSelected;
+            set
+            {
+                _modLoaderTabSelected = value;
+                NotifyPropertyChanged(nameof(ModLoaderTabSelected));
+            }
+        }
 
         private AppState _appState;
         public AppState AppState
@@ -243,7 +253,7 @@ namespace TEiNRandomizer
             }
         }
 
-        private async Task PlayMod()
+        private async Task PlayMod(bool randomize)
         {
             if (AppState == AppState.ReadyToPlay)
             {
@@ -301,7 +311,7 @@ namespace TEiNRandomizer
                     AppState = AppState.InGame;
                     if (FileSystem.LoadMods(this))
                     {
-                        Randomizer.RandomizeMod(this);
+                        if (randomize) Randomizer.RandomizeMod(this);
                         if (!RSettings.ManualLoad)
                         {
                             Process.Start(Path.Combine(RSettings.GameDirectory, ExeName));
@@ -411,17 +421,16 @@ namespace TEiNRandomizer
             AppState = AppState.NoModsFound;
         }
 
-        private async void PlayButton_Click(object sender, RoutedEventArgs e)
+        private async void RandomizeButton_Click(object sender, RoutedEventArgs e)
         {
-            //ParticleRanger(); // this function is stupid and I should get rid of it later
             RNG.SeedMe((int)GameSeed);
             await PlayRandomizer();
         }
-        private async void PlayButton2_Click(object sender, RoutedEventArgs e)
+        private async void PlayModButton_Click(object sender, RoutedEventArgs e)
         {
-            //ParticleRanger(); // this function is stupid and I should get rid of it later
             RNG.SeedMe((int)GameSeed);
-            await PlayMod();
+            bool arg = (sender as Button).Name.ToString() == "RandomizeModButton";
+            await PlayMod(arg);
         }
 
         private void SeedButton_Click(object sender, RoutedEventArgs e)

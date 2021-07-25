@@ -31,7 +31,7 @@ namespace TEiNRandomizer
         static string[] BackgroundPool { get; set; }
         static string[] ParticlePool { get; set; }
         static string[] MusicPool { get; set; }
-        static int NumPalettes { get; set; }
+        public static int NumPalettes { get; set; }
         static List<string> ShaderPool { get; set; }
         static ObservableCollection<string> AreaTypes { get; set; } = Randomizer.mainWindow.AreaTypes;
 
@@ -45,6 +45,9 @@ namespace TEiNRandomizer
             OverlayGraphicsPool = Randomizer.ElementToArray(doc.Root.Element("overlay_graphics"));
             ParticlePool = Randomizer.ElementToArray(doc.Root.Element("particles"));
             MusicPool = Randomizer.ElementToArray(doc.Root.Element("music"));
+        }
+        public static void MakeShaderPool()
+        {
             ShaderPool = new List<string> { };
 
             foreach (var shader in Randomizer.ShadersList)
@@ -54,9 +57,9 @@ namespace TEiNRandomizer
             }
         }
 
-        public static int GetPalette() { return RNG.random.Next(1, NumPalettes); }
-        public static int GetTile() { return RNG.random.Next(1, NumPalettes); }
-        public static int GetOverlay() { return RNG.random.Next(1, NumPalettes); }
+        public static string GetPalette() { return $"    palette { RNG.random.Next(1, NumPalettes) }"; }
+        public static string GetTile()    { return $"    tile_graphics { TileGraphicsPool[RNG.random.Next(0, TileGraphicsPool.Count())] }"; }
+        public static string GetOverlay() { return $"    overlay_graphics { OverlayGraphicsPool[RNG.random.Next(0, OverlayGraphicsPool.Count())] }"; }
 
         private static string GetArtAlts(RandomizerSettings settings)
         {
@@ -120,6 +123,8 @@ namespace TEiNRandomizer
             Tileset tileset = new Tileset();
             try
             {
+                
+
                 // Select Tileset Info
                 if (isAreaTS)
                 {

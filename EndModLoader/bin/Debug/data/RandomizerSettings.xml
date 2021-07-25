@@ -29,9 +29,9 @@
     <CartLives>19</CartLives>
     <DoPhysics>false</DoPhysics>
     <PlatformPhysics>true</PlatformPhysics>
-    <PlayerPhysics>true</PlayerPhysics>
-    <WaterPhysics>true</WaterPhysics>
-    <LowGravPhysics>true</LowGravPhysics>
+    <PlayerPhysics>false</PlayerPhysics>
+    <WaterPhysics>false</WaterPhysics>
+    <LowGravPhysics>false</LowGravPhysics>
     <LevelMerge>false</LevelMerge>
     <ToolsInDirectory>tools/input/</ToolsInDirectory>
     <ToolsOutDirectory>tools/output/</ToolsOutDirectory>

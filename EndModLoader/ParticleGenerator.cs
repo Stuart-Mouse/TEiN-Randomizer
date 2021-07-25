@@ -13,12 +13,13 @@ namespace TEiNRandomizer
         public static string GetParticle(RandomizerSettings settings)
         {
             string particle_name = "";
-            switch (RNG.random.Next(0, 2))
+            switch (RNG.random.Next(0, 3))
             {
                 case 0:
+                case 1:
                     particle_name = DirectionParticle(settings);
                     break;
-                case 1:
+                case 2:
                     particle_name = MistParticle(settings);
                     break;
             }

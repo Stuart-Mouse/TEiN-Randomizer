@@ -65,8 +65,6 @@ namespace TEiNRandomizer
 
         // Mod Randomization Settings
 
-
-
         public RandomizerSettings(string name)
         {
             // intialize true defaults in case settings file is fucked
@@ -74,7 +72,7 @@ namespace TEiNRandomizer
             NumAreas = 3;
             DoMusic = false;
             DoPalettes = false;
-            MusicPerLevel = false;
+            //MusicPerLevel = false;
             //PalettePerLevel = true;
             DoShaders = true;
             DoParticles = true;

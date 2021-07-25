@@ -54,6 +54,8 @@ namespace TEiNRandomizer
 
         public static bool LoadMods(MainWindow mw) // Does not work correctly. Mods will need to be stored unzipped.
         {
+            bool modLoaded = false; // bad way of checking if any mods were active, but it works
+            
             foreach (Mod mod in mw.Mods)
             {
                 try  // will attempt to load all mods selected, but will return false if there is a conflict
@@ -72,6 +74,7 @@ namespace TEiNRandomizer
                                 CopyFilesRecursively(source, target);
                             }
                         }
+                        modLoaded = true;
                     }
                 }
                 catch (System.IO.IOException ex)
@@ -80,6 +83,12 @@ namespace TEiNRandomizer
                     return false;
                 }
             }
+            if (modLoaded == false)
+            {
+                MessageBox.Show($"No mods selected, please select a mod to play.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
             return true;
         }
 
@@ -87,6 +96,12 @@ namespace TEiNRandomizer
         {
             Mod mod = (mw.SavedRunsList.SelectedItem as Mod);
             
+            if (mod == null)
+            {
+                MessageBox.Show($"No saved run selected. Please select a run to play.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
             try  // will attempt to load saved run
             {
                 foreach (var folder in ModFolders)

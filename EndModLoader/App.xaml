@@ -343,9 +343,8 @@
             <Setter Property="Padding" Value="2,0" />
         </Style>
 
-        <Style x:Key="PlayModButton" TargetType="Button">
+        <Style x:Key="RandomizeButton" TargetType="Button">
             <Setter Property="HorizontalAlignment" Value="Left" />
-            <!--<Setter Property="Margin" Value="0,10,0,0" />-->
             <Setter Property="Width" Value="110" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.IncorrectPath}">
@@ -368,6 +367,77 @@
                     <Setter Property="Content" Value="In Game" />
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="PlayModButton" TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Width" Value="110" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.IncorrectPath}">
+                    <Setter Property="Content" Value="Incorrect Path" />
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.NoModsFound}">
+                    <Setter Property="Content" Value="No Mods Found" />
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.NoModSelected}">
+                    <Setter Property="Content" Value="No Pools Enabled" />
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.ReadyToPlay}">
+                    <Setter Property="Content" Value="Play Mod" />
+                    <Setter Property="IsEnabled" Value="True" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InGame}">
+                    <Setter Property="Content" Value="In Game" />
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="RandomizeModButton" TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Width" Value="110" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.IncorrectPath}">
+                    <Setter Property="Content" Value="Incorrect Path" />
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.NoModsFound}">
+                    <Setter Property="Content" Value="No Mods Found" />
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.NoModSelected}">
+                    <Setter Property="Content" Value="No Pools Enabled" />
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InGame}">
+                    <Setter Property="Content" Value="In Game" />
+                    <Setter Property="IsEnabled" Value="False" />
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding AppState}" Value="{x:Static local:AppState.ReadyToPlay}"/>
+                        <Condition Binding="{Binding ModLoaderTabSelected.Name}" Value="ModsTab"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Content" Value="Randomize" />
+                        <Setter Property="IsEnabled" Value="True" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding AppState}" Value="{x:Static local:AppState.ReadyToPlay}"/>
+                        <Condition Binding="{Binding ModLoaderTabSelected.Name}" Value="SavedRunsTab"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Content" Value="Randomize" />
+                        <Setter Property="IsEnabled" Value="False" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
             </Style.Triggers>
         </Style>
 

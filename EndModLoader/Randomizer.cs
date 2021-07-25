@@ -25,6 +25,7 @@ namespace TEiNRandomizer
         //public static RNG RNG = new RNG();          // This has been moved to a static class since only one RNG is ever used
         public static List<List<Level>> ChosenLevels;
         public static List<List<Level>> ChosenLevels2;  // This is only referenced in the currently unused levelmerge function.
+        static List<Level> DrawPool;
 
         public static List<Shader> ShadersList; // A list of all the loaded shaders is stored in this class.
 
@@ -597,6 +598,52 @@ namespace TEiNRandomizer
             }
             else { MessageBox.Show($"A saved run with this name already exists. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); return null; }
         }
+        static List<Level> MakeDrawPool()
+        {
+            DrawPool = new List<Level> { };     // make drawpool
+            try
+            {
+                foreach (var cat in mainWindow.PoolCats)
+                {
+                    if (cat.Enabled)
+                    {
+                        foreach (var pool in cat.Pools) // push levels in all active level pools into drawpool vector
+                        {
+                            if (pool.Active)
+                            {
+                                foreach (var level in pool.Levels)
+                                {
+                                    DrawPool.Add(level);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception) { MessageBox.Show("Error creating drawpool.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            return DrawPool;
+        }
+
+        static void ChooseLevels()
+        {
+            ChosenLevels = new List<List<Level>> { };   // initialize ChosenLevels
+            try
+            {
+                for (int j = 0; j < settings.NumAreas; j++)     // select levels
+                {
+                    var levels = new List<Level> { };
+                    for (int i = 0; i < settings.NumLevels; i++)
+                    {
+                        int selection = RNG.random.Next(0, DrawPool.Count());
+                        levels.Add(DrawPool[selection]);
+                        DrawPool.RemoveAt(selection);
+                    }
+                    ChosenLevels.Add(levels);
+                }
+                //if (settings.CacheRuns != 0) SaveRecents();      // add chosenlevels to cache
+            }
+            catch (Exception) { Console.WriteLine("Error selecting levels or saving cache."); MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+        }
 
         public static void Randomize(MainWindow mw, string args = null)
         {
@@ -610,53 +657,18 @@ namespace TEiNRandomizer
             if (args == "savemod") saveDir = SaveRunPrompt();
             if (saveDir == null) return;
 
-            var drawpool = new List<Level> { };     // make drawpool
-            try
-            {
-                foreach (var cat in mw.PoolCats)
-                {
-                    if (cat.Enabled)
-                    {
-                        foreach (var pool in cat.Pools) // push levels in all active level pools into drawpool vector
-                        {
-                            if (pool.Active)
-                            {
-                                foreach (var level in pool.Levels)
-                                {
-                                    drawpool.Add(level);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception){MessageBox.Show( "Error creating drawpool.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw;}
+            TilesetManip.MakeShaderPool();
 
-            ChosenLevels = new List<List<Level>> { };   // initialize ChosenLevels
-            try
-            {
-                for (int j = 0; j < settings.NumAreas; j++)     // select levels
-                {
-                    var levels = new List<Level> { };
-                    for (int i = 0; i < settings.NumLevels; i++)
-                    {
-                        int selection = RNG.random.Next(0, drawpool.Count());
-                        levels.Add(drawpool[selection]);
-                        drawpool.RemoveAt(selection);
-                    }
-                    ChosenLevels.Add(levels);
-                }
-                //if (settings.CacheRuns != 0) SaveRecents();      // add chosenlevels to cache
-            }
-            catch (Exception){ Console.WriteLine("Error selecting levels or saving cache."); MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-
+            MakeDrawPool();
+            ChooseLevels();
+            
             // The rest of the randomization process is delegated to the functions below.
-            try { /*WriteDebug();*/ CleanFolders(); }   catch (Exception ex) { Console.WriteLine($"Error cleaning folders or printing debug. Exception {ex}");  MessageBox.Show($"Error cleaning folders or printing debug. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try { LevelInfo(); }                        catch (Exception ex) { Console.WriteLine($"Error creating levelinfo. Exception {ex}");                  MessageBox.Show($"Error creating levelinfo. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try { MapCSV(); }                           catch (Exception ex) { Console.WriteLine($"Error creating map. Exception {ex}");                        MessageBox.Show($"Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try { TileMaps(); }                         catch (Exception ex) { Console.WriteLine($"Error copying tilemaps. Exception {ex}");                    MessageBox.Show($"Error copying tilemaps. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try { Tilesets(); }                         catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}");                   MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try { NPCs(); }                             catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}");                   MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { CleanFolders(); }   catch (Exception ex) { Console.WriteLine($"Error cleaning folders or printing debug. Exception {ex}");  MessageBox.Show($"Error cleaning folders or printing debug. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { LevelInfo(); }      catch (Exception ex) { Console.WriteLine($"Error creating levelinfo. Exception {ex}");                  MessageBox.Show($"Error creating levelinfo. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { MapCSV(); }         catch (Exception ex) { Console.WriteLine($"Error creating map. Exception {ex}");                        MessageBox.Show($"Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { TileMaps(); }       catch (Exception ex) { Console.WriteLine($"Error copying tilemaps. Exception {ex}");                    MessageBox.Show($"Error copying tilemaps. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { Tilesets(); }       catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}");                   MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { NPCs(); }           catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}");                   MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try { Worldmap.WriteWorldMap(); } catch (Exception ex) { Console.WriteLine($"Error creating worldmap. Exception {ex}"); MessageBox.Show($"Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
             Console.WriteLine(mw.GameSeed);
@@ -669,5 +681,6 @@ namespace TEiNRandomizer
             //}
 
         }
+        
     }
 }
