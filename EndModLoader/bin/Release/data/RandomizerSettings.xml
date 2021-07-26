@@ -3,10 +3,9 @@
   <default>
     <NumLevels>10</NumLevels>
     <NumAreas>20</NumAreas>
-    <UseDefaultMusic>false</UseDefaultMusic>
-    <UseDefaultPalettes>false</UseDefaultPalettes>
+    <DoMusic>true</DoMusic>
+    <DoPalettes>true</DoPalettes>
     <MusicPerLevel>false</MusicPerLevel>
-    <PalettePerLevel>true</PalettePerLevel>
     <DoShaders>true</DoShaders>
     <DoParticles>true</DoParticles>
     <DoOverlays>true</DoOverlays>
@@ -16,27 +15,37 @@
     <DoNPCs>false</DoNPCs>
     <UseAreaTileset>true</UseAreaTileset>
     <CacheRuns>0</CacheRuns>
-    <AutoRefresh>false</AutoRefresh>
     <AreaType>normal</AreaType>
     <RepeatTolerance>0</RepeatTolerance>
-    <AltLevel>Extended</AltLevel>
+    <AltLevel>Safe</AltLevel>
     <MaxParticles>1000</MaxParticles>
     <GenerateCustomParticles>true</GenerateCustomParticles>
-    <GameDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\</GameDirectory>
-    <ModSaveDirectory>[Saved Mods]/</ModSaveDirectory>
+    <GameDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh/</GameDirectory>
     <MaxParticleEffects>2</MaxParticleEffects>
-    <ManualLoad>false</ManualLoad>
+    <ManualLoad>true</ManualLoad>
     <DoCorruptions>true</DoCorruptions>
     <MirrorMode>false</MirrorMode>
-    <DeadRacer>false</DeadRacer>
-    <CartLives>69</CartLives>
-    <DoPhysics>true</DoPhysics>
-    <PlatformPhysics>false</PlatformPhysics>
+    <DeadRacer>true</DeadRacer>
+    <CartLives>19</CartLives>
+    <DoPhysics>false</DoPhysics>
+    <PlatformPhysics>true</PlatformPhysics>
     <PlayerPhysics>false</PlayerPhysics>
     <WaterPhysics>false</WaterPhysics>
     <LowGravPhysics>false</LowGravPhysics>
     <LevelMerge>false</LevelMerge>
     <ToolsInDirectory>tools/input/</ToolsInDirectory>
     <ToolsOutDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\tilemaps\</ToolsOutDirectory>
+    <RandomizeAreaType>false</RandomizeAreaType>
+    <CRSmart>true</CRSmart>
+    <CROverlays>false</CROverlays>
+    <CRTumors>true</CRTumors>
+    <CRAddTiles>0</CRAddTiles>
+    <CRAddEnemies>0</CRAddEnemies>
+    <CRSpikeStrips>false</CRSpikeStrips>
+    <CRCrumbles>false</CRCrumbles>
+    <CRCrushers>false</CRCrushers>
+    <CRChaos>false</CRChaos>
+    <CRWaterLevels>false</CRWaterLevels>
+    <UserName>Ash</UserName>
   </default>
 </root>

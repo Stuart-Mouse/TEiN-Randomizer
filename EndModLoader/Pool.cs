@@ -1,23 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+using System.ComponentModel;
 using System.Windows;
 using System.Xml.Linq;
-using System.Collections.ObjectModel;
 
 namespace TEiNRandomizer
 {
-    public class Pool : IComparable<Pool>
+    public class Pool : IComparable<Pool>, INotifyPropertyChanged
     {
         public string Name { get; set; }
         public List<Level> Levels { get; set; }
-        public bool Active { get; set; }
         public string NumLevels { get; set; }
         public short Order { get; set; }
         public string Folder { get; set; }
         public string Author { get; set; }
         public string Source { get; set; }
+        private bool _active { get; set; }
+        public bool Active
+        {
+            get { return _active; }
+            set
+            {
+                _active = value;
+                OnPropertyChanged(nameof(Active));
+            }
+        }
+
+        protected void OnPropertyChanged(string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public int CompareTo(Pool other) => Order.CompareTo(other.Order);
 

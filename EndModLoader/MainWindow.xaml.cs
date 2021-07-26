@@ -438,6 +438,7 @@ namespace TEiNRandomizer
             GameSeed = RNG.GetUInt32();
             RNG.SeedMe((int)GameSeed);
             SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+            ModSeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
         }
 
         private void PoolCat_Click(object sender, RoutedEventArgs e)

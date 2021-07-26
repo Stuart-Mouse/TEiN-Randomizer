@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<pool enabled="True" source="The End is Nigh" author="" order="17">
+<pool enabled="False" source="The End is Nigh" author="" order="17">
   <tileset>
     <default>
 		tile_graphics TileGlitch

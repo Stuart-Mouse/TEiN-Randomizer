@@ -25,7 +25,11 @@ namespace TEiNRandomizer
             (sender as PoolCategory).Enabled = !(sender as PoolCategory).Enabled;
             //PoolList.GetBindingExpression(ListBox.VisibilityProperty).UpdateTarget();
         }
-
+        private void PoolList_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = (sender as ListBox).SelectedItem;
+            (selected as Pool).Active = !(selected as Pool).Active;
+        }
         //private void Mod_Click(object sender, RoutedEventArgs e)
         //{
         //    var mod = (sender as StackPanel);

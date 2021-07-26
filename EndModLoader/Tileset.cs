@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
@@ -34,7 +35,6 @@ namespace TEiNRandomizer
         public static int NumPalettes { get; set; }
         static List<string> ShaderPool { get; set; }
         static ObservableCollection<string> AreaTypes { get; set; } = Randomizer.mainWindow.AreaTypes;
-
         static TilesetManip()
         {
             var doc = XDocument.Load("data/tilesets_pools.xml");    // open levelpool file
@@ -53,10 +53,21 @@ namespace TEiNRandomizer
             foreach (var shader in Randomizer.ShadersList)
             {
                 if (shader.Enabled)
-                    ShaderPool.Add(shader.Content);
+                    ShaderPool.Add(shader.Content);  
             }
         }
-
+        public static void ParseTilesetsFile(string path)
+        {
+            if (File.Exists(path))
+            {
+                List<string> text = File.ReadAllLines(path).ToList();
+                int i = 0;
+                while (i < text.Count())
+                {
+                    
+                }
+            }
+        }
         public static string GetPalette() { return $"    palette { RNG.random.Next(1, NumPalettes) }"; }
         public static string GetTile()    { return $"    tile_graphics { TileGraphicsPool[RNG.random.Next(0, TileGraphicsPool.Count())] }"; }
         public static string GetOverlay() { return $"    overlay_graphics { OverlayGraphicsPool[RNG.random.Next(0, OverlayGraphicsPool.Count())] }"; }

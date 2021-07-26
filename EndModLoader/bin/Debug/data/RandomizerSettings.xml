@@ -34,15 +34,15 @@
     <LowGravPhysics>false</LowGravPhysics>
     <LevelMerge>false</LevelMerge>
     <ToolsInDirectory>tools/input/</ToolsInDirectory>
-    <ToolsOutDirectory>tools/output/</ToolsOutDirectory>
+    <ToolsOutDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\tilemaps\</ToolsOutDirectory>
     <RandomizeAreaType>false</RandomizeAreaType>
-    <CRSmart>true</CRSmart>
+    <CRSmart>false</CRSmart>
     <CROverlays>false</CROverlays>
-    <CRTumors>true</CRTumors>
+    <CRTumors>false</CRTumors>
     <CRAddTiles>0</CRAddTiles>
-    <CRAddEnemies>0</CRAddEnemies>
+    <CRAddEnemies>20</CRAddEnemies>
     <CRSpikeStrips>false</CRSpikeStrips>
-    <CRCrumbles>false</CRCrumbles>
+    <CRCrumbles>true</CRCrumbles>
     <CRCrushers>false</CRCrushers>
     <CRChaos>false</CRChaos>
     <CRWaterLevels>false</CRWaterLevels>

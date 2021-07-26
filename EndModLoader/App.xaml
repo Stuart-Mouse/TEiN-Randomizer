@@ -370,28 +370,26 @@
             </Style.Triggers>
         </Style>
         
+        
+
         <Style x:Key="PlayModButton" TargetType="Button">
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="Width" Value="110" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.IncorrectPath}">
-                    <Setter Property="Content" Value="Incorrect Path" />
-                    <Setter Property="IsEnabled" Value="False" />
+                <DataTrigger Binding="{Binding ModLoaderTabSelected.Name}" Value="ModsTab">
+                    <Setter Property="Content" Value="Play Mod"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.NoModsFound}">
-                    <Setter Property="Content" Value="No Mods Found" />
-                    <Setter Property="IsEnabled" Value="False" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.NoModSelected}">
-                    <Setter Property="Content" Value="No Pools Enabled" />
-                    <Setter Property="IsEnabled" Value="False" />
+                <DataTrigger Binding="{Binding ModLoaderTabSelected.Name}" Value="SavedRunsTab">
+                    <Setter Property="Content" Value="Play Run"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.ReadyToPlay}">
-                    <Setter Property="Content" Value="Play Mod" />
                     <Setter Property="IsEnabled" Value="True" />
                 </DataTrigger>
+                <DataTrigger Binding="{Binding ModLoaderTabSelected.Name}" Value="ModSettingsTab">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InGame}">
-                    <Setter Property="Content" Value="In Game" />
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
             </Style.Triggers>
@@ -401,43 +399,23 @@
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="Width" Value="110" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.IncorrectPath}">
-                    <Setter Property="Content" Value="Incorrect Path" />
-                    <Setter Property="IsEnabled" Value="False" />
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.ReadyToPlay}">
+                    <Setter Property="IsEnabled" Value="True" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.NoModsFound}">
-                    <Setter Property="Content" Value="No Mods Found" />
-                    <Setter Property="IsEnabled" Value="False" />
+                <DataTrigger Binding="{Binding ModLoaderTabSelected.Name}" Value="ModsTab">
+                    <Setter Property="IsEnabled" Value="True"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.NoModSelected}">
-                    <Setter Property="Content" Value="No Pools Enabled" />
-                    <Setter Property="IsEnabled" Value="False" />
+                <DataTrigger Binding="{Binding ModLoaderTabSelected.Name}" Value="SavedRunsTab">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Setter Property="Visibility" Value="Collapsed"/>
                 </DataTrigger>
-
+                <DataTrigger Binding="{Binding ModLoaderTabSelected.Name}" Value="ModSettingsTab">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InGame}">
-                    <Setter Property="Content" Value="In Game" />
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding AppState}" Value="{x:Static local:AppState.ReadyToPlay}"/>
-                        <Condition Binding="{Binding ModLoaderTabSelected.Name}" Value="ModsTab"/>
-                    </MultiDataTrigger.Conditions>
-                    <MultiDataTrigger.Setters>
-                        <Setter Property="Content" Value="Randomize" />
-                        <Setter Property="IsEnabled" Value="True" />
-                    </MultiDataTrigger.Setters>
-                </MultiDataTrigger>
-                <MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding AppState}" Value="{x:Static local:AppState.ReadyToPlay}"/>
-                        <Condition Binding="{Binding ModLoaderTabSelected.Name}" Value="SavedRunsTab"/>
-                    </MultiDataTrigger.Conditions>
-                    <MultiDataTrigger.Setters>
-                        <Setter Property="Content" Value="Randomize" />
-                        <Setter Property="IsEnabled" Value="False" />
-                    </MultiDataTrigger.Setters>
-                </MultiDataTrigger>
             </Style.Triggers>
         </Style>
 
@@ -470,6 +448,10 @@
             <Setter Property="Width" Value="110" />
             <Setter Property="Visibility" Value="{Binding RSettings.ManualLoad, Converter={StaticResource SettingsDisplayer}}"/>
             <Style.Triggers>
+                <!--<DataTrigger Binding="{Binding ModLoaderTabSelected.Name}" Value="ModSettingsTab">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </DataTrigger>-->
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.IncorrectPath}">
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
@@ -488,23 +470,7 @@
             </Style.Triggers>
         </Style>
 
-        <DataTemplate x:Key="PieceListTemplate">
-            <StackPanel Margin="0,3,0,3" Orientation="Vertical" >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*"    />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding Name}" Style="{StaticResource TitleText}" FontSize="13" Margin="10,0,0,0"/>
-                    <TextBlock Grid.Column="1" Text="{Binding NumPieces}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right"/>
-                    <CheckBox Grid.Column="2" Content="Enabled" IsChecked="{Binding Active}" Margin="10,0,10,0" HorizontalAlignment="Right"/>
-                </Grid>
-                <Separator Margin="2.5, 5, 2.5, 0"/>
-                <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->
-            </StackPanel>
-        </DataTemplate>
+        
 
         <DataTemplate x:Key="ModListTemplate" x:Name="ModListTemp">
             <StackPanel Margin="0,3,0,3" Orientation="Vertical" >
@@ -530,18 +496,10 @@
         </DataTemplate>
 
         <Style x:Key="SavedRunsStyle" TargetType="ListBox">
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"></Setter>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"></Setter>
+            <Setter Property="HorizontalContentAlignment"                 Value="Stretch" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility"   Value="Disabled"/>
         </Style>
-
-        <!--<Style x:Key="SavedRunStyle" TargetType="StackPanel">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding Active}" Value="True">
-                    <Setter Property="Background" Value="#bbffdd" />
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>-->
 
         <DataTemplate x:Key="SavedRunsTemplate">
             <StackPanel Margin="0,3,0,3" Orientation="Vertical">
@@ -549,6 +507,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition />
@@ -558,6 +517,7 @@
                     <TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right" Margin="0,0,10,0"/>
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Description}" Style="{StaticResource DescriptionText}" Margin="10,0,0,0" HorizontalAlignment="Left"/>
                     <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Version}" Style="{StaticResource DescriptionText}" Margin="0,0,10,0" HorizontalAlignment="Right"/>
+                    <Image     Name="ModCheckImage"  Grid.RowSpan="2" Grid.Column="2" Source="checkmark.png" Height="20" Width="20" Margin="0,0,10,0"  VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding Active, Converter={StaticResource SettingsDisplayer}}"/>
                 </Grid>
                 <Separator Margin="2.5, 5, 2.5, 0"/>
                 <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->
@@ -571,17 +531,34 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*"    />
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding Name}"      Style="{StaticResource TitleText}"       FontSize="13" Margin="10,0,0,0"/>
-                    <TextBlock Grid.Column="1" Text="{Binding NumLevels}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right"/>
-                    <CheckBox  Grid.Column="2" Content="Enabled" IsChecked="{Binding Active}" Margin="10,0,10,0"   HorizontalAlignment="Right"/>
+                    <TextBlock Grid.Column="0" Text="{Binding Name}"      Style="{StaticResource TitleText}"       FontSize="13" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding NumLevels}" Style="{StaticResource DescriptionText}" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                    <!--<CheckBox  Grid.Column="2" Content="Enabled" IsChecked="{Binding Active}" Margin="10,0,10,0"   HorizontalAlignment="Right"/>-->
+                    <Image     Name="ModCheckImage" Grid.Column="2" Source="checkmark.png" Height="15" Width="15" Margin="0,0,10,0"  VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding Active, Converter={StaticResource SettingsDisplayer}}"/>
                 </Grid>
                 <Separator Margin="2.5, 5, 2.5, 0"/>
                 <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->
             </StackPanel>
         </DataTemplate>
 
+        <DataTemplate x:Key="PieceListTemplate">
+            <StackPanel Margin="0,3,0,3" Orientation="Vertical" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*"    />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding Name}" Style="{StaticResource TitleText}" FontSize="13" Margin="10,0,0,0"  VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1" Text="{Binding NumPieces}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right" Margin="0,0,5,0"  VerticalAlignment="Center"/>
+                    <Image     Name="ModCheckImage"  Grid.RowSpan="2" Grid.Column="2" Source="checkmark.png" Height="15" Width="15" Margin="0,0,10,0"  VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding Active, Converter={StaticResource SettingsDisplayer}}"/>
+                </Grid>
+                <Separator Margin="2.5, 5, 2.5, 0"/>
+                <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->
+            </StackPanel>
+        </DataTemplate>
+        
         <DataTemplate x:Key="ShadersListTemplate">
             <CheckBox Content="{Binding Name}" IsChecked="{Binding Enabled}"/>
         </DataTemplate>
@@ -609,6 +586,7 @@
                     ItemTemplate="{StaticResource PoolListTemplate}"
                     ItemsSource="{Binding Pools}"
                     Style="{StaticResource PoolListStyle}"
+                    MouseDoubleClick="PoolList_Click"
                     Visibility="{Binding Enabled, Converter={StaticResource SettingsDisplayer}}" 
                     ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
                 </Grid>

@@ -40,6 +40,20 @@ namespace TEiNRandomizer
             var selected = (sender as ListView).SelectedItem;
             (selected as Mod).Active = !(selected as Mod).Active;
         }
+        private void SavedRunsList_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = (sender as ListView).SelectedItem;
+            foreach (var mod in SavedRuns)
+            {
+                mod.Active = false;
+            }
+            (selected as Mod).Active = true;
+        }
+        private void PieceList_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = (sender as ListView).SelectedItem;
+            (selected as PiecePool).Active = !(selected as PiecePool).Active;
+        }
         private void OpenTilesetsOptionsButton_Click(object sender, RoutedEventArgs e)
         {
             try

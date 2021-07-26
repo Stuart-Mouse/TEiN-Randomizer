@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TEiNRandomizer"
         mc:Ignorable="d"
-        Title="{Binding WindowTitle}" Height="740" Width="640" MinHeight="480" MinWidth="640" MaxWidth="640"
+        Title="{Binding WindowTitle}" Height="700" Width="640" MinHeight="480" MinWidth="640" MaxWidth="640"
         Closing="Window_Closing" >
     
     <Window.Resources>
@@ -15,10 +15,11 @@
     <!-- MAIN WINDOW -->
     
     <Grid Margin="10,5,10,10"> 
-        <Grid Grid.Row="0" VerticalAlignment="Stretch" >
+        <Grid Grid.Row="0" >
             <TabControl Name="MenuTabs" Padding="-1,0,-1,0">
 
                 <!-- RANDOMIZER TABS -->
+                
                 <TabItem Header="Randomizer" Padding="10,2">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -31,7 +32,7 @@
 
                             <TabItem Header="Level Pools" Padding="10,2">
                                 <ScrollViewer>
-                                    <Grid HorizontalAlignment="Center">
+                                    <Grid HorizontalAlignment="Center" VerticalAlignment="Top">
                                         <Grid.RowDefinitions>
                                             <RowDefinition />
                                             <RowDefinition MinHeight="100" />
@@ -256,6 +257,7 @@
                                         ItemsSource="{Binding PiecePools}"
                                         ScrollViewer.CanContentScroll="False"
                                         Style="{StaticResource PoolListStyle}"
+                                        MouseDoubleClick="PieceList_Click"
                                         ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
                                 </Grid>
                             </TabItem>
@@ -293,7 +295,7 @@
 
                             <TabItem Name="ModsTab" Header="Mods" Padding="10,2">
                                 <ScrollViewer>
-                                    <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
+                                    <Grid Grid.Column="0" Width="500" HorizontalAlignment="Center" >
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto" />
                                             <RowDefinition Height="Auto" MinHeight="100" />
@@ -314,7 +316,7 @@
 
                             <TabItem Name="SavedRunsTab" Header="Saved Runs" Padding="10,2">
                                 <ScrollViewer>
-                                    <Grid Grid.Column="0" Width="400" HorizontalAlignment="Center" >
+                                    <Grid Grid.Column="0" Width="500" HorizontalAlignment="Center" >
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="auto" />
                                             <RowDefinition Height="Auto" MinHeight="100" />
@@ -324,21 +326,23 @@
                                         ItemTemplate="{StaticResource SavedRunsTemplate}"
                                         ItemsSource="{Binding SavedRuns}"
                                         ScrollViewer.CanContentScroll="False"
-                                        Style="{StaticResource SavedRunsStyle}"/>
+                                        Style="{StaticResource SavedRunsStyle}"
+                                        MouseDoubleClick="SavedRunsList_Click"
+                                        ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
                                     </Grid>
                                 </ScrollViewer>
                             </TabItem>
 
                             <!-- MOD SETTINGS TAB -->
 
-                            <TabItem Header="Settings" Padding="10,2">
+                            <TabItem Name="ModSettingsTab" Header="Settings" Padding="10,2">
                                 <ScrollViewer Grid.Row="1">
                                     <Grid HorizontalAlignment="Center" Width="600">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition />
                                         </Grid.RowDefinitions>
-                                        <TextBlock Grid.Row="0" Style="{StaticResource TabTitleText}" Text="Mod Randomizations"/>
+                                        <TextBlock Grid.Row="0" Style="{StaticResource TabTitleText}" Text="Randomizer Settings"/>
                                         <Grid Grid.Row="1" HorizontalAlignment="Center">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto"/>
@@ -423,7 +427,7 @@
                                                     <!--<CheckBox Width="200" Content="Randomize Physics" ToolTip="Creates randomized physics files for each area." IsChecked="{Binding RSettings.DoPhysics}" />-->
                                                     <CheckBox Width="200" Content="Corrupt Levels" ToolTip="Enables level corruptions." IsChecked="{Binding RSettings.DoCorruptions}" />
                                                     <!--<CheckBox Content="Level Merge" IsChecked="{Binding RSettings.LevelMerge}" />-->
-                                                    <!--<CheckBox Width="200" Content="Mirror Mode" ToolTip="Flips the entire game horizontally." IsChecked="{Binding RSettings.MirrorMode}" />-->
+                                                    <CheckBox Width="200" Content="Mirror Mode" ToolTip="Flips the entire game horizontally." IsChecked="{Binding RSettings.MirrorMode}" />
                                                     <!--<CheckBox Width="200" Content="Dead Racer Mode" ToolTip="Enables the Dear Racer timer in the glitch cart areas." IsChecked="{Binding RSettings.DeadRacer}" />-->
                                                     <!--<CheckBox Content="Auto-Refresh Levels" IsChecked="{Binding RSettings.AutoRefresh}" />-->
                                                 </ListBox>
@@ -525,7 +529,7 @@
 
                         </TabControl>
 
-                        <!-- RANDOMIZER BOTTOM BUTTONS -->
+                        <!-- MODLOADER BOTTOM BUTTONS -->
 
                         <Grid Grid.Row="1" Margin="5">
                             <Grid.ColumnDefinitions>
@@ -536,7 +540,7 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <Button Grid.Column="0" Name="PlayModButton"                               Click="PlayModButton_Click" Style="{StaticResource PlayModButton}"      HorizontalAlignment="Center" />
-                            <Button Grid.Column="1" Name="RandomizeModButton"                          Click="PlayModButton_Click" Style="{StaticResource RandomizeModButton}"      HorizontalAlignment="Center" />
+                            <Button Grid.Column="1" Name="RandomizeModButton"  Content="Randomize"     Click="PlayModButton_Click" Style="{StaticResource RandomizeModButton}"      HorizontalAlignment="Center" />
                             <Button Grid.Column="2" Name="UnloadButton2"       Content="Unload"        Click="UnloadButton_Click"  Style="{StaticResource UnloadButton}"       HorizontalAlignment="Center" />
                             <Button Grid.Column="4" Name="SaveSettingsButton2" Content="Save Settings" Click="SaveSettings_Click"  Width="110" HorizontalAlignment="Center" />
                         </Grid>

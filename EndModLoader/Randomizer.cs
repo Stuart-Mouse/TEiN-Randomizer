@@ -499,7 +499,7 @@ namespace TEiNRandomizer
                     var level = ChosenLevels[j][i];
                     var levelFile = LevelManip.Load($"data/tilemaps/{level.Folder}/{level.Name}.lvl");
 
-                    if (level.CanReverse && RNG.CoinFlip() || settings.MirrorMode)
+                    if (/*level.CanReverse && RNG.CoinFlip() ||*/ settings.MirrorMode)
                         LevelManip.FlipLevelH(ref levelFile);
 
                     if (settings.DoCorruptions)

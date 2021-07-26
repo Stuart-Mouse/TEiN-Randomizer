@@ -1,16 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Xml.Linq;
-using System.Collections.ObjectModel;
-using System.IO.Compression;
-using System.Threading.Tasks;
 
 namespace TEiNRandomizer
 {
@@ -66,6 +55,11 @@ namespace TEiNRandomizer
                 foreach (var file in paths)
                 {
                     LevelFile level = LevelManip.Load(file);
+                    if(settings.MirrorMode)
+                    {
+                        LevelManip.FlipLevelH(ref level);
+                        FlipCSV(saveDir + "data/map.csv");
+                    }
                     if (settings.DoCorruptions)
                         Corruptors.CorruptLevel(ref level);
                     LevelManip.Save(level, file);
