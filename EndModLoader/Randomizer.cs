@@ -389,21 +389,25 @@ namespace TEiNRandomizer
                 }
             }
             catch (DirectoryNotFoundException) { }
-            Directory.CreateDirectory(saveDir + "tilemaps"); Console.WriteLine("tilemaps");
-            Directory.CreateDirectory(saveDir + "textures"); Console.WriteLine("textures");
-            File.Copy("data/palette.png", saveDir + "textures/palette.png", true); Console.WriteLine("palette");
-            Directory.CreateDirectory(saveDir + "shaders"); Console.WriteLine("shaders");
-            Directory.CreateDirectory(saveDir + "swfs"); Console.WriteLine("swfs");
+            Directory.CreateDirectory(saveDir + "tilemaps"); //Console.WriteLine("tilemaps");
+            Directory.CreateDirectory(saveDir + "textures"); //Console.WriteLine("textures");
+            File.Copy("data/palette.png", saveDir + "textures/palette.png", true); //Console.WriteLine("palette");
+            Directory.CreateDirectory(saveDir + "shaders"); //Console.WriteLine("shaders");
+            Directory.CreateDirectory(saveDir + "swfs"); //Console.WriteLine("swfs");
             Directory.CreateDirectory(saveDir + "data/platform_physics");
             Directory.CreateDirectory(saveDir + "data/water_physics");
             Directory.CreateDirectory(saveDir + "data/lowgrav_physics");
             Directory.CreateDirectory(saveDir + "data/player_physics");
-            File.Copy("data/endnigh.swf", saveDir + "swfs/endnigh.swf", true); Console.WriteLine("swf");
+            foreach (var file in Directory.GetFiles("data/swfs"))
+            {
+                File.Copy(file, saveDir + $"swfs/{Path.GetFileName(file)}", true);
+            }
+            //File.Copy("data/endnigh.swf", saveDir + "swfs/endnigh.swf", true); Console.WriteLine("swf");
             foreach (var file in Directory.GetFiles("data/shaders"))
             {
                 File.Copy(file, saveDir + $"shaders/{Path.GetFileName(file)}", true);
             }
-            Console.WriteLine("shaders");
+            //Console.WriteLine("shaders");
         }
         static void MapCSV()
         {
@@ -668,7 +672,7 @@ namespace TEiNRandomizer
             try { MapCSV(); }         catch (Exception ex) { Console.WriteLine($"Error creating map. Exception {ex}");                        MessageBox.Show($"Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try { TileMaps(); }       catch (Exception ex) { Console.WriteLine($"Error copying tilemaps. Exception {ex}");                    MessageBox.Show($"Error copying tilemaps. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try { Tilesets(); }       catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}");                   MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try { NPCs(); }           catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}");                   MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { NPCs(); }           catch (Exception ex) { Console.WriteLine($"Error creating npcs. Exception {ex}");                   MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try { Worldmap.WriteWorldMap(); } catch (Exception ex) { Console.WriteLine($"Error creating worldmap. Exception {ex}"); MessageBox.Show($"Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
             Console.WriteLine(mw.GameSeed);

@@ -15,7 +15,7 @@
     <DoNPCs>false</DoNPCs>
     <UseAreaTileset>true</UseAreaTileset>
     <CacheRuns>0</CacheRuns>
-    <AreaType>normal</AreaType>
+    <AreaType>cart</AreaType>
     <RepeatTolerance>0</RepeatTolerance>
     <AltLevel>Safe</AltLevel>
     <MaxParticles>1000</MaxParticles>
@@ -40,7 +40,7 @@
     <CROverlays>false</CROverlays>
     <CRTumors>false</CRTumors>
     <CRAddTiles>0</CRAddTiles>
-    <CRAddEnemies>20</CRAddEnemies>
+    <CRAddEnemies>0</CRAddEnemies>
     <CRSpikeStrips>false</CRSpikeStrips>
     <CRCrumbles>true</CRCrumbles>
     <CRCrushers>false</CRCrushers>

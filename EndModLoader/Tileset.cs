@@ -134,14 +134,13 @@ namespace TEiNRandomizer
             Tileset tileset = new Tileset();
             try
             {
-                
-
                 // Select Tileset Info
                 if (isAreaTS)
                 {
                     //if (settings.DeadRacer) tileset.AreaType = "glitch";
                     if (settings.RandomizeAreaType)
                         tileset.AreaType = AreaTypes[RNG.random.Next(0, 5)];
+                    else tileset.AreaType = settings.AreaType;
                 }
 
                 tileset.Tile    = ($"    tile_graphics { TileGraphicsPool[RNG.random.Next(0, TileGraphicsPool.Count())] }\n");

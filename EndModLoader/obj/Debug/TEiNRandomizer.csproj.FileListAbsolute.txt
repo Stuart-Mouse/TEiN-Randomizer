@@ -38,7 +38,6 @@ C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\Attac
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\corruptor_tiles.xml
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\debug\last_levelnames.txt
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\debug\last_tilesets.txt
-C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\endnigh.swf
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\hflips.txt
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\levelpieces\Arid Flats\hi1.lvl
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\levelpieces\Arid Flats\hi2.lvl
@@ -772,6 +771,9 @@ C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\world
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\worldmap_template.txt
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Debug\TEiNRandomizer.csproj.AssemblyReference.cache
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\theend.ttf
-C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\data\meta.xml.template.xml
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Debug\TextWindow.g.cs
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Debug\TextWindow.baml
+C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\data\particles.txt.append
+C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\data\swfs\MeshTileset.swf
+C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\data\swfs\endnigh.swf
+C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\data\swfs\swflist.txt.append
