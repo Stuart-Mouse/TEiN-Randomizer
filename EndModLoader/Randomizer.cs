@@ -402,7 +402,7 @@ namespace TEiNRandomizer
             {
                 File.Copy(file, saveDir + $"swfs/{Path.GetFileName(file)}", true);
             }
-            //File.Copy("data/endnigh.swf", saveDir + "swfs/endnigh.swf", true); Console.WriteLine("swf");
+            File.Copy("data/swfs/endnigh.swf", saveDir + "swfs/endnigh.swf", true); Console.WriteLine("swf");
             foreach (var file in Directory.GetFiles("data/shaders"))
             {
                 File.Copy(file, saveDir + $"shaders/{Path.GetFileName(file)}", true);
@@ -627,7 +627,6 @@ namespace TEiNRandomizer
             catch (Exception) { MessageBox.Show("Error creating drawpool.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             return DrawPool;
         }
-
         static void ChooseLevels()
         {
             ChosenLevels = new List<List<Level>> { };   // initialize ChosenLevels

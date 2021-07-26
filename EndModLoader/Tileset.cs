@@ -152,7 +152,7 @@ namespace TEiNRandomizer
                 {
                     tileset.Shader = ($"    { ShaderPool[RNG.random.Next(0, ShaderPool.Count())] }\n");
                 }
-                tileset.Shader += "shader_param " + (RNG.random.Next(0, 101) / 10);
+                tileset.Shader += "shader_param " + ((float)RNG.random.Next(0, 101) / 100);
 
                 // set particles
                 if (settings.DoParticles)
@@ -210,7 +210,7 @@ namespace TEiNRandomizer
                 }
 
                 // create "all", which is just the entire tileset in one string
-                tileset.All = tileset.AreaType + "\n" + tileset.Tile + "\n" + tileset.Overlay + "\n" + tileset.Particles + "\n" + tileset.Shader + "\n" + tileset.Palette + "\n" + tileset.Music + "\n" + tileset.Extras;
+                tileset.All = $"area_type {tileset.AreaType}\n" + tileset.Tile + "\n" + tileset.Overlay + "\n" + tileset.Particles + "\n" + tileset.Shader + "\n" + tileset.Palette + "\n" + tileset.Music + "\n" + tileset.Extras;
             }
             catch (Exception ex) { MessageBox.Show($"Error creating tileset. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 

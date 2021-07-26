@@ -15,7 +15,7 @@
     <DoNPCs>false</DoNPCs>
     <UseAreaTileset>true</UseAreaTileset>
     <CacheRuns>0</CacheRuns>
-    <AreaType>cart</AreaType>
+    <AreaType>normal</AreaType>
     <RepeatTolerance>0</RepeatTolerance>
     <AltLevel>Safe</AltLevel>
     <MaxParticles>1000</MaxParticles>
