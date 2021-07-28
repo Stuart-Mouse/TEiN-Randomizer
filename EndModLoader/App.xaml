@@ -14,7 +14,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush x:Key="Item.MouseOver.Background"        Color="Transparent"/>
+        <SolidColorBrush x:Key="Item.MouseOver.Background"        Color="#ccffcc"/>
         <SolidColorBrush x:Key="Item.MouseOver.Border"            Color="Transparent"/>
         <SolidColorBrush x:Key="Item.SelectedInactive.Background" Color="Transparent"/>
         <SolidColorBrush x:Key="Item.SelectedInactive.Border"     Color="Transparent"/>
@@ -58,10 +58,10 @@
                                 </MultiTrigger.Conditions>
                                 <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
                                 <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
-                            </MultiTrigger>-->
+                            </MultiTrigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-                            </Trigger>
+                            </Trigger>-->
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -88,28 +88,9 @@
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsMouseOver" Value="True"/>
                                 </MultiTrigger.Conditions>
-                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
+                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.MouseOver.Background}"/>
                                 <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
                             </MultiTrigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
-                                    <Condition Property="IsSelected" Value="True"/>
-                                </MultiTrigger.Conditions>
-                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
-                            </MultiTrigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="Selector.IsSelectionActive" Value="True"/>
-                                    <Condition Property="IsSelected" Value="True"/>
-                                </MultiTrigger.Conditions>
-                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource Item.SelectedInactive.Border}"/>
-                            </MultiTrigger>
-                            <Trigger Property="IsEnabled" Value="False">
-                                <Setter Property="TextElement.Foreground" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
-                            </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
@@ -119,7 +100,7 @@
         <local:SettingsDisplayer x:Key="SettingsDisplayer" />
 
         <FontFamily x:Key="TheEnd">./data/theend.ttf#TheEnd</FontFamily>
-        
+
         <Style x:Key="AdvancedSettings" TargetType="ListBox">
             <Setter Property="Visibility" Value="{Binding ShowAdvancedSettings, Converter={StaticResource SettingsDisplayer}}" />
             <Style.Triggers>
@@ -133,6 +114,7 @@
             <Setter Property="FontSize" Value="12" />
             <Setter Property="VerticalAlignment" Value="Bottom" />
             <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+            <Setter Property="FontWeight" Value="Medium" />
         </Style>
 
         <Style x:Key="TabTitleText" TargetType="TextBlock">
@@ -588,7 +570,7 @@
                     Style="{StaticResource PoolListStyle}"
                     MouseDoubleClick="PoolList_Click"
                     Visibility="{Binding Enabled, Converter={StaticResource SettingsDisplayer}}" 
-                    ItemContainerStyle="{DynamicResource ListBoxItemStyle}"/>
+                    ItemContainerStyle="{DynamicResource ListBoxItemStyle2}"/>
                 </Grid>
             </StackPanel>
         </DataTemplate>

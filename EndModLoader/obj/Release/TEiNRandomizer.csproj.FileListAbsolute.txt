@@ -51,7 +51,6 @@ C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRand
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\area_names.xml
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\art_alts.xml
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\corruptor_tiles.xml
-C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\endnigh.swf
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\hflips.txt
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\levelpieces\Arid Flats\hi1.lvl
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\levelpieces\Arid Flats\hi2.lvl
@@ -783,7 +782,6 @@ C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\lev
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\levelpools\The End is Nigh\SS Exodus.xml
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\levelpools\The End is Nigh\The End.xml
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\levelpools\The End is Nigh\Wall of Sorrow.xml
-C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\meta.xml.template.xml
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\particles.txt.append
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\RandomizerSettings.xml
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\theend.ttf
@@ -793,3 +791,6 @@ C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRand
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TextWindow.g.cs
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRandomizer_Content.g.cs
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TextWindow.baml
+C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\swfs\endnigh.swf
+C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\swfs\MeshTileset.swf
+C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\swfs\swflist.txt.append
