@@ -8,10 +8,10 @@
 
 # Build results
 
-EndModLoader/[Dd]ebug/
-EndModLoader/[Dd]ebug/[Saved Mods]/
-EndModLoader/[Rr]elease/
-EndModLoader/[Bb]in/
+EndModLoader/Debug/
+# EndModLoader/Debug/[Saved Mods]/
+EndModLoader/Release/
+EndModLoader/bin/
 EndModLoader/x64/
 EndModLoader/[Oo]bj/
 
