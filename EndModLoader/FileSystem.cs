@@ -25,6 +25,7 @@ namespace TEiNRandomizer
 
         public static IEnumerable<Mod> ReadModFolder(string path)
         {
+            if (!Directory.Exists(path)) Directory.CreateDirectory(path);
             foreach (var dir in Directory.GetDirectories(path))
             {
                 var mod = Mod.FromFolder(dir);
