@@ -37,6 +37,20 @@ namespace TEiNRandomizer
             else return false;
         }
 
+        public static bool Chances(int over, int under)
+        {
+            if (random.Next(0, under+1) > over)
+                return true;
+            else return false;
+        }
+
+        public static bool Percent(int per)
+        {
+            if (random.Next(0, 100) < per)
+                return true;
+            else return false;
+        }
+
         public static int GetFrom(int low, int high)
         {
             int num;

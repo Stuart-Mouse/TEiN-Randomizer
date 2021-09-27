@@ -289,7 +289,7 @@ namespace TEiNRandomizer
                     sw.WriteLine($"\tmovieclip {NPCMovieClips[RNG.random.Next(0, NPCMovieClips.Length)]}");
                     sw.WriteLine($"\tsound_id {NPCSoundIDs[RNG.random.Next(0, NPCSoundIDs.Length)]}");
                     sw.WriteLine($"\ttext [");
-                    sw.WriteLine(NPCTexts[RNG.random.Next(0, NPCTexts.Count())]);
+                    sw.WriteLine(NPCTexts[RNG.random.Next(0, NPCTexts.Count())].Replace("PLAYERNAME", settings.UserName));
                     sw.WriteLine("\t]\n}");
                 }
             }

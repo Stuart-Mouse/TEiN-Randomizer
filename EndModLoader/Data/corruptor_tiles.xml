@@ -843,5 +843,52 @@
     <DecorationD2 id="50055"></DecorationD2>
     <DecorationU2 id="50056"></DecorationU2>
     <DecorationL2 id="50057"></DecorationL2>
+
+    <BlueSolid id="90101">
+      1
+      10
+      26
+    </BlueSolid>
+    <BlueSpikeR id="90102">
+      2
+      11
+    </BlueSpikeR>
+    <BlueSpikeD id="90103">
+      3
+      12
+    </BlueSpikeD>
+    <BlueSpikeL id="90104">
+      4
+      13
+    </BlueSpikeL>
+    <BlueSpikeU id="90105">
+      5
+      14
+    </BlueSpikeU>
+    <BlueSmallSpikeR id="90111">
+      2
+      11
+      0
+    </BlueSmallSpikeR>
+    <BlueSmallSpikeD id="90112">
+      3
+      12
+      25
+      0
+    </BlueSmallSpikeD>
+    <BlueSmallSpikeL id="90113">
+      4
+      13
+      0
+    </BlueSmallSpikeL>
+    <BlueSmallSpikeU id="90114">
+      5
+      14
+      24
+      0
+    </BlueSmallSpikeU>
+
+    <BlueConveyor></BlueConveyor>
+
   </smart>
 </root>
