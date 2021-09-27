@@ -787,10 +787,9 @@ C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\Ran
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\theend.ttf
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\tilemaps\The End is Nigh\v-box.lvl
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\tilesets_pools.xml
-C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRandomizer.csproj.AssemblyReference.cache
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TextWindow.g.cs
-C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRandomizer_Content.g.cs
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TextWindow.baml
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\swfs\endnigh.swf
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\swfs\MeshTileset.swf
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Release\data\swfs\swflist.txt.append
+C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRandomizer.csprojAssemblyReference.cache

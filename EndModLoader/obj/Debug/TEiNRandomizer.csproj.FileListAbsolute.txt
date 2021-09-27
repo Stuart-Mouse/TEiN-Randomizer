@@ -31,7 +31,6 @@ C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Debug\TEiNRandom
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Debug\TEiNRandomizer.csproj.CoreCompileInputs.cache
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Debug\TEiNRandomizer.exe
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Debug\TEiNRandomizer.pdb
-C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Debug\TEiNRandomizer_Content.g.cs
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\area_names.xml
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\art_alts.xml
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\AttachToTS.txt
@@ -769,7 +768,6 @@ C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\tilem
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\tilesets_pools.xml
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\worldmap_CLEAN.txt
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\worldmap_template.txt
-C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Debug\TEiNRandomizer.csproj.AssemblyReference.cache
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\Data\theend.ttf
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Debug\TextWindow.g.cs
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Debug\TextWindow.baml
