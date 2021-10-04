@@ -167,6 +167,27 @@ namespace TEiNRandomizer
                 string filename = Path.GetFileName(file);
 
                 Corruptors.ReplaceColorTiles(ref level);
+                //AutoDecorator.DecorateMachine(ref level);
+
+                string savepath = RSettings.ToolsOutDirectory + filename;
+                LevelManip.Save(level, savepath);
+            }
+
+            MessageBox.Show($"Successfully De-Colored Levels", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void TestMapGen_Click(object sender, RoutedEventArgs e)
+        {
+            //var level1 = LevelManip.Load("C:\\Users\\Noah\\Documents\\GitHub\\TEiN-Randomizer\\EndModLoader\\bin\\Debug\\tools\\input\\_BGTILES.lvl");
+            //CSV.LevelToCSV(ref level1, RSettings.ToolsOutDirectory + "level.csv");
+            //CSV.RotateCSV("oldmap.csv");
+
+            foreach (var file in Directory.GetFiles(RSettings.ToolsInDirectory, "*.lvl", SearchOption.TopDirectoryOnly))
+            {
+                var level = LevelManip.Load(file);
+                string filename = Path.GetFileName(file);
+
+                //Corruptors.ReplaceColorTiles(ref level);
+                //AutoDecorator.DecorateMachine(ref level);
 
                 string savepath = RSettings.ToolsOutDirectory + filename;
                 LevelManip.Save(level, savepath);

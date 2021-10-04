@@ -8,9 +8,9 @@
 
 # Build results
 
-EndModLoader/[Dd]ebug/
+EndModLoader/Debug/
 # EndModLoader/Debug/[Saved Mods]/
-EndModLoader/[Rr]elease/
+EndModLoader/Release/
 EndModLoader/bin/
 EndModLoader/x64/
 EndModLoader/[Oo]bj/

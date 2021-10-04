@@ -844,51 +844,69 @@
     <DecorationU2 id="50056"></DecorationU2>
     <DecorationL2 id="50057"></DecorationL2>
 
-    <BlueSolid id="90101">
+  </smart>
+  <color>
+    <BlueSolid>
       1
       10
       26
     </BlueSolid>
-    <BlueSpikeR id="90102">
+    <BlueSpikeR>
       2
       11
     </BlueSpikeR>
-    <BlueSpikeD id="90103">
+    <BlueSpikeD>
       3
       12
     </BlueSpikeD>
-    <BlueSpikeL id="90104">
+    <BlueSpikeL>
       4
       13
     </BlueSpikeL>
-    <BlueSpikeU id="90105">
+    <BlueSpikeU>
       5
       14
     </BlueSpikeU>
-    <BlueSmallSpikeR id="90111">
+    <BlueSmallSpikeR>
       2
       11
       0
     </BlueSmallSpikeR>
-    <BlueSmallSpikeD id="90112">
+    <BlueSmallSpikeD>
       3
       12
-      25
       0
+      25
     </BlueSmallSpikeD>
-    <BlueSmallSpikeL id="90113">
+    <BlueSmallSpikeL>
       4
       13
       0
     </BlueSmallSpikeL>
-    <BlueSmallSpikeU id="90114">
+    <BlueSmallSpikeU>
       5
       14
-      24
       0
+      24
     </BlueSmallSpikeU>
+    <BlueConveySlow>
+      27
+      29
+    </BlueConveySlow>
+    <BlueConveyFast>
+      28
+      30
+      27
+      29
+    </BlueConveyFast>
 
-    <BlueConveyor></BlueConveyor>
+    <YellowHook>1</YellowHook>
 
-  </smart>
+    <RedHook>1</RedHook>
+
+    <GreenHook>1</GreenHook>
+  </color>
+  
+
+
 </root>

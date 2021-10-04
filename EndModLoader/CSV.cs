@@ -13,6 +13,8 @@ namespace TEiNRandomizer
 {
     class CSV
     {
+        //public string[][] file;
+        
         static void FlipCSV(string path)
         {
             var arr = File.ReadAllLines(path);

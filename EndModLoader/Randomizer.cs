@@ -436,8 +436,12 @@ namespace TEiNRandomizer
             LIAdjectives = Randomizer.ElementToArray(doc.Root.Element("adjective"));
             LINouns      = Randomizer.ElementToArray(doc.Root.Element("noun"));
         }
-        static string GetFunnyName()
+        public static string GetFunnyName()
         {
+            //STRUCTURE
+            //NAME's ( ADJECTIVE ) LOCATION ( of ( ADJECTIVE ) NOUN )
+            //NAME's ( ADJECTIVE ) NOUN LOCATION
+
             // create le funny name
             string areaname = "";
             if (RNG.random.Next(0, 5) == 0)
@@ -465,10 +469,6 @@ namespace TEiNRandomizer
         {
             for (int i = 0; i < settings.NumAreas; i++)
             {
-                //STRUCTURE
-                //NAME's ( ADJECTIVE ) LOCATION ( of ( ADJECTIVE ) NOUN )
-                //NAME's ( ADJECTIVE ) NOUN LOCATION
-
                 string areaname = GetFunnyName();
 
                 using (StreamWriter sw = File.AppendText(saveDir + "data/levelinfo.txt.append"))

@@ -146,7 +146,7 @@ namespace TEiNRandomizer
             // attempt to add a piece that does not make the level too big
             for (int a = 0; a < 5; a++) // it gives five attempts to add a piece
             {
-                if (!GetNextPiece(100, WidthRemaining)) return false;   // if cannot get new piece, return false and break from adding pieces
+                if (!GetNextPiece(100, WidthRemaining)) continue;   // if cannot get new piece, return false and break from adding pieces
 
                 //if (RNG.CoinFlip())    // random chance to place the new piece on either the left or right side
                 //{                                   // Since tall pieces are more likely to be picked first, this should keep them more centered, rather than always appearing at the start of a level

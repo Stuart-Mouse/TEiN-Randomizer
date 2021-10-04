@@ -416,72 +416,7 @@ namespace TEiNRandomizer
             AppState = AppState.ReadyToPlay;
         }
 
-        private void UnloadButton_Click(object sender, RoutedEventArgs e)
-        {
-            AppState = AppState.NoModsFound;
-        }
-
-        private async void RandomizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            RNG.SeedMe((int)GameSeed);
-            await PlayRandomizer();
-        }
-        private async void PlayModButton_Click(object sender, RoutedEventArgs e)
-        {
-            RNG.SeedMe((int)GameSeed);
-            bool arg = (sender as Button).Name.ToString() == "RandomizeModButton";
-            await PlayMod(arg);
-        }
-
-        private void SeedButton_Click(object sender, RoutedEventArgs e)
-        {
-            GameSeed = RNG.GetUInt32();
-            RNG.SeedMe((int)GameSeed);
-            SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-            ModSeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-        }
-
-        private void PoolCat_Click(object sender, RoutedEventArgs e)
-        {
-            (sender as PoolCategory).Enabled = !(sender as PoolCategory).Enabled;
-            //PoolCatList.GetBindingExpression(ListBox.VisibilityProperty).UpdateTarget();
-        }
-
-        private void SaveSettings_Click(object sender, RoutedEventArgs e)
-        {
-            //ParticleRanger();
-            RSettings.Save("default");
-            Randomizer.SaveShadersList(ShadersList);
-            foreach (PoolCategory cat in PoolCatList.Items)
-            foreach (Pool pool in cat.Pools)
-            {
-                pool.Save();
-            }
-            MessageBox.Show(
-                        "Save successful.",
-                        "FYI",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information,
-                        MessageBoxResult.OK
-                    );
-        }
-
-        private void NoClick(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
-        }
-        private void ClearCache(object sender, RoutedEventArgs e)
-        {
-            if (File.Exists("cache.xml"))
-                File.Delete("cache.xml");
-            MessageBox.Show(
-                        "Cache was cleared.",
-                        "FYI",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information,
-                        MessageBoxResult.OK
-                    );
-        }
+        
 
         private void LoadPoolList(IOrderedEnumerable<PoolCategory> cats)
         {
@@ -544,7 +479,74 @@ namespace TEiNRandomizer
 
             ReadyEndIsNighPath();
         }
-        
+
+        private void UnloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            AppState = AppState.NoModsFound;
+        }
+
+        private async void RandomizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            RNG.SeedMe((int)GameSeed);
+            await PlayRandomizer();
+        }
+        private async void PlayModButton_Click(object sender, RoutedEventArgs e)
+        {
+            RNG.SeedMe((int)GameSeed);
+            bool arg = (sender as Button).Name.ToString() == "RandomizeModButton";
+            await PlayMod(arg);
+        }
+
+        private void SeedButton_Click(object sender, RoutedEventArgs e)
+        {
+            GameSeed = RNG.GetUInt32();
+            RNG.SeedMe((int)GameSeed);
+            SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+            ModSeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+        }
+
+        private void PoolCat_Click(object sender, RoutedEventArgs e)
+        {
+            (sender as PoolCategory).Enabled = !(sender as PoolCategory).Enabled;
+            //PoolCatList.GetBindingExpression(ListBox.VisibilityProperty).UpdateTarget();
+        }
+
+        private void SaveSettings_Click(object sender, RoutedEventArgs e)
+        {
+            //ParticleRanger();
+            RSettings.Save("default");
+            Randomizer.SaveShadersList(ShadersList);
+            foreach (PoolCategory cat in PoolCatList.Items)
+                foreach (Pool pool in cat.Pools)
+                {
+                    pool.Save();
+                }
+            MessageBox.Show(
+                        "Save successful.",
+                        "FYI",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information,
+                        MessageBoxResult.OK
+                    );
+        }
+
+        private void NoClick(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+        }
+        private void ClearCache(object sender, RoutedEventArgs e)
+        {
+            if (File.Exists("cache.xml"))
+                File.Delete("cache.xml");
+            MessageBox.Show(
+                        "Cache was cleared.",
+                        "FYI",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information,
+                        MessageBoxResult.OK
+                    );
+        }
+
         //private void ParticleRanger() // this function is stupid and I should get rid of it later
         //{
         //    if (RSettings.MaxParticleEffects < 0) RSettings.MaxParticleEffects = 0;

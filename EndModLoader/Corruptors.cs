@@ -15,7 +15,13 @@ namespace TEiNRandomizer
         public static Int32[] back1Tiles { get; set; }
         public static Int32[] back2Tiles { get; set; }
         public static XElement smartTiles { get; set; }
+        public static XElement colorTiles { get; set; }
 
+        public const int BLUE_OFFSET    = 100000;
+        public const int YELLOW_OFFSET  = 200000;
+        public const int RED_OFFSET     = 300000;
+        public const int GREEN_OFFSET   = 400000;
+        
         static Corruptors()
         {
             var doc = XDocument.Load($"data/corruptor_tiles.xml");
@@ -23,6 +29,7 @@ namespace TEiNRandomizer
             entityTiles = Randomizer.ElementToArray(doc.Root.Element("entity"), true);
             overlayTiles = Randomizer.ElementToArray(doc.Root.Element("overlay"), true);
             smartTiles = doc.Root.Element("smart");
+            colorTiles = doc.Root.Element("color");
         }
         public static string CorruptLevel(ref LevelFile level)
         {
@@ -348,11 +355,26 @@ namespace TEiNRandomizer
                     var element = smartTiles.Element(Enum.GetName(typeof(TileID), level.data.active[index]));
 
                     if (element != null)
-                        options = Randomizer.ElementToArray(element);   // use index to get enum name, search for corruption options in xml
-                    
-                    if ((Int32)level.data.active[index] < 1000)
                     {
-                        if (RNG.random.Next(0, corruptLevel) == 0)
+                        options = Randomizer.ElementToArray(element);   // use index to get enum name, search for corruption options in xml
+
+                        if ((Int32)level.data.active[index] < 1000)
+                        {
+                            if (RNG.random.Next(0, corruptLevel) == 0)
+                            {
+                                try
+                                {
+                                    string s = options[RNG.random.Next(0, options.Length)];
+                                    if (s != null && s != "")
+                                    {
+                                        int num = Convert.ToInt32(s);
+                                        level.data.active[index] = (TileID)num;
+                                    }
+                                }
+                                catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
+                            }
+                        }
+                        else
                         {
                             try
                             {
@@ -360,25 +382,12 @@ namespace TEiNRandomizer
                                 if (s != null && s != "")
                                 {
                                     int num = Convert.ToInt32(s);
+                                    if (num == 40003 || num == 40047) { hasGas = true; }
                                     level.data.active[index] = (TileID)num;
                                 }
                             }
                             catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                         }
-                    }
-                    else
-                    {
-                        try
-                        {
-                            string s = options[RNG.random.Next(0, options.Length)];
-                            if (s != null && s != "")
-                            {
-                                int num = Convert.ToInt32(s);
-                                if (num == 40003 || num == 40047) { hasGas = true; }
-                                level.data.active[index] = (TileID)num;
-                            }
-                        }
-                        catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                     }
                 }
             }
@@ -430,8 +439,6 @@ namespace TEiNRandomizer
             int lw = level.header.width;
             int lh = level.header.height;
 
-            var options = new string[] { };
-
             // loop over entire level
             for (int i = 0; i < lh; i++)
             {
@@ -440,42 +447,95 @@ namespace TEiNRandomizer
                     int index = i * lw + j;
 
                     int tile = (int)level.data.active[index];
-                    if (tile > 90100 && tile < 90200)   // blue tiles
+
+                    //// SPECIAL RULES (these gotta go first so it all works right)
+
+                    // BLUE CONVEYORS
+                    if (tile == 100027 || tile == 100028)
                     {
-                        var element = smartTiles.Element(Enum.GetName(typeof(TileID), level.data.active[index]));
+                        string t = Enum.GetName(typeof(TileID), level.data.active[index]);
+                        var element = colorTiles.Element(t);
 
                         if (element != null)
-                            options = Randomizer.ElementToArray(element);   // use index to get enum name, search for corruption options in xml
-
-                        try
                         {
-                            string s = options[RNG.random.Next(0, options.Length)];
-                            if (s != null && s != "")
+                            var options = Randomizer.ElementToArray(element);
+                            string s = options[RNG.random.Next(0, options.Length)]; // select one option for all tiles
+
+                            var adjacents = new HashSet<int>();
+                            adjacents.Add(index);
+
+                            int numTile = 1, numTileX = 1;
+                            GetAdjacentTiles(ref level, level.data.active[index], BLUE_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
+
+                            int[] contiguous = new int[adjacents.Count];
+
+                            adjacents.CopyTo(contiguous);
+
+                            try
                             {
-                                int num = Convert.ToInt32(s);
-                                level.data.active[index] = (TileID)num;
+                                if (s != null && s != "")
+                                {
+                                    int num = Convert.ToInt32(s);
+                                    for (int k = 0; k < contiguous.Length; k++)
+                                        level.data.active[contiguous[k]] = (TileID)num;
+                                }
                             }
+                            catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                         }
-                        catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
+                    }
+
+                    // BLUE TILES
+                    else if (tile > BLUE_OFFSET && tile < YELLOW_OFFSET)
+                    {
+                        var element = colorTiles.Element(Enum.GetName(typeof(TileID), level.data.active[index]));
+
+                        if (element != null)
+                        {
+                            var options = Randomizer.ElementToArray(element);
+                            try
+                            {
+                                string s = options[RNG.random.Next(0, options.Length)];
+                                if (s != null && s != "")
+                                {
+                                    int num = Convert.ToInt32(s);
+                                    level.data.active[index] = (TileID)num;
+                                }
+                            }
+                            catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
+                        }
                     }
 
                     // YELLOW TILES
-                    if (tile > 90200 && tile < 90300)
+                    else if (tile > YELLOW_OFFSET && tile < YELLOW_OFFSET + 50)
                     {
-                        var adjacents = new HashSet<int>();
-                        adjacents.Add(index);
-                        int numTile = GetAllAdjacent(ref level, level.data.active[index], index, ref adjacents);
+                        // create hash set and get adjacent tiles
+                        var adjacents = new HashSet<int>(); // create hash set for adjacents
+                        adjacents.Add(index);               // add first tile to adjacents
+                        
+                        int numTile = 1, numTileX = 1;
+                        GetAdjacentTiles(ref level, level.data.active[index], YELLOW_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
 
+                        // create array from adjacents
                         int[] contiguous = new int[adjacents.Count];
+                        adjacents.CopyTo(contiguous);
 
+                        // get tile to place in "empty" spots
+                        //string s = colorTiles.Element(Enum.GetName(typeof(TileID), level.data.active[index])).ToString();
+                        TileID noTile = TileID.Empty;   // default is empty tile
+                        if (tile - YELLOW_OFFSET == 7)  // empty tile is solid when tile value is a hook
+                            noTile = TileID.Solid;
+                        //if (s != null && s != "")
+                        //    noTile = (TileID)Convert.ToInt32(s);
 
                         // pick out the ones to make into actual tiles
-                        adjacents.CopyTo(contiguous);
-                        for (int k = 0; k < numTile; k++)
+                        for (int k = 0; k < numTile; )
                         {
-                            int n = RNG.random.Next(0, contiguous.Length);
-                            level.data.active[contiguous[n]] = (TileID)(tile - 90200);
-                            adjacents.Remove(contiguous[n]);
+                            int n = RNG.random.Next(0, contiguous.Length);  // get random tile from contiguous
+                            if (adjacents.Remove(contiguous[n]))            // if it can be removed (i.e. hasn't been selected yet)
+                            {
+                                level.data.active[contiguous[n]] = (TileID)(tile - YELLOW_OFFSET);  // place the tile
+                                k++;                                                                // increment loop counter
+                            }
                         }
 
                         // replace the rest with empty tiles
@@ -484,72 +544,211 @@ namespace TEiNRandomizer
                         for (int k = 0; k < alltherest.Length; k++)
                         {
                             int n = alltherest[k];
-                            level.data.active[n] = TileID.Empty;
+                            level.data.active[n] = noTile;
                         }
-
                     }
 
                     // RED TILES
-                    if (tile > 90300 && tile < 90400)
+                    else if (tile > RED_OFFSET && tile < RED_OFFSET + 50)
                     {
                         var adjacents = new HashSet<int>();
                         adjacents.Add(index);
-                        int numTile = GetAllAdjacent(ref level, level.data.active[index], index, ref adjacents);
+
+                        int numTile = 1, numTileX = 1;
+                        GetAdjacentTiles(ref level, level.data.active[index], RED_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
 
                         int[] contiguous = new int[adjacents.Count];
-
                         adjacents.CopyTo(contiguous);
 
-                        int per = 60 + numTile * 2;
-                        int inARow = 0;
-                        for (int k = 0; k < contiguous.Length; k++)
+                        TileID noTile = TileID.Empty;   // default is empty tile
+                        if (tile - RED_OFFSET == 7)  // empty tile is solid when tile value is a hook
+                            noTile = TileID.Solid;
+
+                        bool placeTile = RNG.CoinFlip();    // true = placing blanks, false = placing tiles
+                        for (int k = 0; k < contiguous.Length;)
                         {
-                            if (inARow < numTile && RNG.Percent(per))      // if not exceeding the max amount in a row, get chances for placing tile
+                            if (placeTile)
                             {
-                                level.data.active[contiguous[k]] = (TileID)(tile - 90300);  // place the next tile
-                                inARow++;                                                   // increment the inARow counter
+                                int loop = RNG.random.Next(0, numTile) + 1;
+                                for (int p = 0; p < loop; p++)
+                                {
+                                    if (k + p >= contiguous.Length) break;
+                                    level.data.active[contiguous[k]] = (TileID)(tile - RED_OFFSET);  // place the next tile
+                                    k++;
+                                }
+                                placeTile = !placeTile;
                             }
                             else
                             {
-                                level.data.active[contiguous[k]] = TileID.Empty;            // place a blank space
-                                inARow = 0;                                                 // reset the inARow counter
+                                int loop = RNG.random.Next(0, numTileX) + 1;
+                                for (int p = 0; p < loop; p++)
+                                {
+                                    if (k + p >= contiguous.Length) break;
+                                    level.data.active[contiguous[k]] = noTile;
+                                    k++;
+                                }
+                                placeTile = !placeTile;
                             }
                         }
                     }
 
                     // GREEN TILES
-                    if (tile > 90400 && tile < 90500)
+                    else if (tile > GREEN_OFFSET && tile < GREEN_OFFSET + 50)
                     {
                         var adjacents = new HashSet<int>();
                         adjacents.Add(index);
-                        int numTile = GetAllAdjacent(ref level, level.data.active[index], index, ref adjacents);
+
+                        int numTile = 1, numTileX = 1;
+                        GetAdjacentColor(ref level, level.data.active[index], GREEN_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
 
                         int[] contiguous = new int[adjacents.Count];
-
                         adjacents.CopyTo(contiguous);
 
-                        int per = 55 + numTile * 2;
-                        int inARow = 0;
-                        for (int k = 0; k < contiguous.Length; k++)
+                        /*TileID noTile = TileID.Empty;   // default is empty tile
+                        if (tile - GREEN_OFFSET == 7)   // empty tile is solid when tile value is a hook
+                            noTile = TileID.Solid;*/
+
+                        bool placeTile = RNG.CoinFlip();    // true = placing blanks, false = placing tiles
+                        for (int k = 0; k < contiguous.Length;)
                         {
-                            if (inARow < numTile && RNG.Percent(per))      // if not exceeding the max amount in a row, get chances for placing tile
+                            if (placeTile)
                             {
-                                level.data.active[contiguous[k]] = TileID.Empty;            // place a blank space
-                                inARow++;                                                   // increment the inARow counter
+                                int loop = RNG.random.Next(0, numTile) + 1;
+                                for (int p = 0; p < loop; p++)
+                                {
+                                    if (k + p >= contiguous.Length) break;
+                                    level.data.active[contiguous[k]] = (TileID)((int)level.data.active[contiguous[k]] - GREEN_OFFSET);  // place the next tile
+                                    k++;
+                                }
+                                placeTile = !placeTile;
                             }
                             else
                             {
-                                level.data.active[contiguous[k]] = (TileID)(tile - 90400);  // place the next tile
-                                inARow = 0;                                                 // reset the inARow counter
+                                int loop = RNG.random.Next(0, numTileX) + 1;
+                                for (int p = 0; p < loop; p++)
+                                {
+                                    if (k + p >= contiguous.Length) break;
+                                    level.data.active[contiguous[k]] = TileID.Empty;
+                                    k++;
+                                }
+                                placeTile = !placeTile;
                             }
                         }
                     }
+
+                    // COLOR ENTITIES
+                    // YELLOW
+                    else if (tile >= YELLOW_OFFSET + 40000 && tile < YELLOW_OFFSET + 50000)
+                    {
+                        var adjacents = new HashSet<int>();
+                        adjacents.Add(index);
+
+                        int numTile = 1, numTileX = 1;
+                        GetAdjacentEntity(ref level, level.data.active[index], YELLOW_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
+
+                        int[] contiguous = new int[adjacents.Count];
+                        adjacents.CopyTo(contiguous);
+                        
+                        // pick out the ones to make into actual tiles
+                        for (int k = 0; k < numTile;)
+                        {
+                            int n = RNG.random.Next(0, contiguous.Length);  // get random tile from contiguous
+                            if (adjacents.Remove(contiguous[n]))            // if it can be removed (i.e. hasn't been selected yet)
+                            {
+                                level.data.active[contiguous[n]] = (TileID)((int)level.data.active[contiguous[n]] - YELLOW_OFFSET);  // place the tile
+                                k++;                                                                // increment loop counter
+                            }
+                        }
+                        // replace the rest with empty tiles
+                        int[] alltherest = new int[adjacents.Count];
+                        adjacents.CopyTo(alltherest);
+                        for (int k = 0; k < alltherest.Length; k++)
+                        {
+                            int n = alltherest[k];
+                            level.data.active[n] = TileID.Empty;
+                        }
+                    }
+                    // RED
+                    else if (tile >= RED_OFFSET + 40000 && tile < RED_OFFSET + 50000)
+                    {
+                        var adjacents = new HashSet<int>();
+                        adjacents.Add(index);
+
+                        int numTile = 1, numTileX = 1;
+                        GetAdjacentEntity(ref level, level.data.active[index], RED_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
+                        
+                        int[] contiguous = new int[adjacents.Count];
+                        adjacents.CopyTo(contiguous);
+
+                        bool placeTile = RNG.CoinFlip();    // true = placing blanks, false = placing tiles
+                        for (int k = 0; k < contiguous.Length;)
+                        {
+                            if (placeTile)
+                            {
+                                int loop = RNG.random.Next(0, numTile) + 1;
+                                for (int p = 0; p < loop; p++)
+                                {
+                                    if (k + p >= contiguous.Length) break;
+                                    level.data.active[contiguous[k]] = (TileID)((int)level.data.active[contiguous[k]] - RED_OFFSET);  // place the next tile
+                                    k++;
+                                }
+                                placeTile = !placeTile;
+                            }
+                            else
+                            {
+                                int loop = RNG.random.Next(0, numTileX) + 1;
+                                for (int p = 0; p < loop; p++)
+                                {
+                                    if (k + p >= contiguous.Length) break;
+                                    level.data.active[contiguous[k]] = TileID.Empty;
+                                    k++;
+                                }
+                                placeTile = !placeTile;
+                            }
+                        }
+                    }
+                    // GREEN
+                    else if (tile >= GREEN_OFFSET + 40000 && tile < GREEN_OFFSET + 50000)
+                    {
+                        var adjacents = new HashSet<int>();
+                        adjacents.Add(index);
+                        int numTile = 1, numTileX = 1;
+                        GetAdjacentEntity(ref level, level.data.active[index], GREEN_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
+                        int[] contiguous = new int[adjacents.Count];
+                        adjacents.CopyTo(contiguous);
+
+                        bool placeTile = RNG.CoinFlip();    // true = placing blanks, false = placing tiles
+                        for (int k = 0; k < contiguous.Length;)
+                        {
+                            if (placeTile)
+                            {
+                                int loop = RNG.random.Next(0, numTile) + 1;
+                                for (int p = 0; p < loop; p++)
+                                {
+                                    if (k + p >= contiguous.Length) break;
+                                    level.data.active[contiguous[k]] = (TileID)((int)level.data.active[contiguous[k]] - GREEN_OFFSET);  // place the next tile
+                                    k++;
+                                }
+                                placeTile = !placeTile;
+                            }
+                            else
+                            {
+                                int loop = RNG.random.Next(0, numTileX) + 1;
+                                for (int p = 0; p < loop; p++)
+                                {
+                                    if (k + p >= contiguous.Length) break;
+                                    level.data.active[contiguous[k]] = TileID.Empty;
+                                    k++;
+                                }
+                                placeTile = !placeTile;
+                            }
+                        }
+                    }
+
                 }
             }
         }
-
-
-        public static int GetAllAdjacent(ref LevelFile level, TileID id, int index, ref HashSet<int> adjacents)
+        public static void GetAdjacentTiles(ref LevelFile level, TileID id, int color_offset, int index, ref HashSet<int> adjacents, ref int numTile, ref int numTileX)
         {
             int lw = level.header.width;
             int lh = level.header.height;
@@ -559,26 +758,130 @@ namespace TEiNRandomizer
             // put all neighbors in array.
             int[] a = { index + 1, index - 1, index + lw, index - lw };
 
-            int numTile = 1;
-
             // loop through neighbors
             for (int k=0; k<4; k++)
             {
                 if ( a[k] > 0 && a[k] < size )  // check if in bounds
                 {
+                    int tileValue = (int)level.data.active[a[k]] - color_offset;
+
                     if (level.data.active[a[k]] == id)  // check if tile id matches
                     {
                         if (adjacents.Add(a[k]))            // add to adjacents
-                            numTile = Math.Max(numTile, GetAllAdjacent(ref level, level.data.active[index], a[k], ref adjacents));   //look for adjecents to next set of tiles, if it was a new entry
+                            GetAdjacentTiles(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
                     }
-                    else if ((int)level.data.active[a[k]] > 90 && (int)level.data.active[a[k]] < 100)
+                    else if (tileValue > 90 && tileValue < 100)
+                    {
+                        if (adjacents.Add(a[k]))
+                        {
+                            numTile = Math.Max(numTile, tileValue - 90);
+                            GetAdjacentTiles(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);   //look for adjecents to next set of tiles
+                        }
+                    }
+                    else if (tileValue > 80 && tileValue < 90)  // X Number tiles
                     {
                         if (adjacents.Add(a[k]))            // add to adjacents
-                            numTile = Math.Max(numTile, (int)level.data.active[a[k]] - 90);
+                        {
+                            numTileX = Math.Max(numTileX, tileValue - 80);
+                            GetAdjacentTiles(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);   //look for adjecents to next set of tiles
+                        }
+                    }
+                    else if (tileValue == 0)    // null tile
+                    {
+                        level.data.active[a[k]] = TileID.Empty;
+                        GetAdjacentTiles(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);   //look for adjecents to next set of tiles
                     }
                 }
             }
-            return numTile;
+        }
+        public static void GetAdjacentEntity(ref LevelFile level, TileID id, int color_offset, int index, ref HashSet<int> adjacents, ref int numTile, ref int numTileX)
+        {
+            int lw = level.header.width;
+            int lh = level.header.height;
+
+            int size = lw * lh;
+
+            // put all neighbors in array.
+            int[] a = { index + 1, index - 1, index + lw, index - lw };
+
+            // loop through neighbors
+            for (int k = 0; k < 4; k++)
+            {
+                if (a[k] > 0 && a[k] < size)  // check if in bounds
+                {
+                    int tileValue = (int)level.data.active[a[k]] - color_offset;
+
+                    if (tileValue >= 40000 && tileValue < 50000)  // check if tile value is in correct range
+                    {
+                        if (adjacents.Add(a[k]))            // add to adjacents
+                            GetAdjacentEntity(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
+                    }
+                    else if (tileValue > 90 && tileValue < 100) // Number tiles
+                    {
+                        //if (adjacents.Add(a[k]))            // add to adjacents
+                        level.data.active[a[k]] = TileID.Empty;
+                        numTile = Math.Max(numTile, tileValue - 90);
+                        GetAdjacentEntity(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
+                    }
+                    else if (tileValue > 80 && tileValue < 90)  // X Number tiles
+                    {
+                        //if (adjacents.Add(a[k]))            // add to adjacents
+                        level.data.active[a[k]] = TileID.Empty;
+                        numTileX = Math.Max(numTileX, tileValue - 80);
+                        GetAdjacentEntity(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
+                    }
+                    else if (tileValue == 0)    // null tile
+                    {
+                        level.data.active[a[k]] = TileID.Empty;
+                        GetAdjacentEntity(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
+                    }
+                }
+            }
+        }
+
+        public static void GetAdjacentColor(ref LevelFile level, TileID id, int color_offset, int index, ref HashSet<int> adjacents, ref int numTile, ref int numTileX)
+        {
+            int lw = level.header.width;
+            int lh = level.header.height;
+
+            int size = lw * lh;
+
+            // put all neighbors in array.
+            int[] a = { index + 1, index - 1, index + lw, index - lw };
+
+            // loop through neighbors
+            for (int k = 0; k < 4; k++)
+            {
+                if (a[k] > 0 && a[k] < size)  // check if in bounds
+                {
+                    int tileValue = (int)level.data.active[a[k]] - color_offset;
+
+                    if (tileValue > 0 && tileValue < 50000)  // check if tile value is in correct range
+                    {
+                        if (adjacents.Add(a[k]))            // add to adjacents
+                            GetAdjacentColor(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
+                    }
+                    else if (tileValue > 90 && tileValue < 100) // Number tiles
+                    {
+                        //if (adjacents.Add(a[k]))            // add to adjacents
+                        numTile = Math.Max(numTile, tileValue - 90);
+                        level.data.active[a[k]] = TileID.Empty;
+                        GetAdjacentColor(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
+                    }
+                    else if (tileValue > 80 && tileValue < 90)  // X Number tiles
+                    {
+                        //if (adjacents.Add(a[k]))            // add to adjacents
+                        numTile = Math.Max(numTileX, tileValue - 80);
+                        level.data.active[a[k]] = TileID.Empty;
+                        GetAdjacentColor(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
+                    }
+                    else if (tileValue == 0)    // null tile
+                    {
+                        level.data.active[a[k]] = TileID.Empty;
+                        GetAdjacentColor(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
+                    }
+                }
+            }
         }
 
         // These need to be updated or removed

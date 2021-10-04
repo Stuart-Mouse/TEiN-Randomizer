@@ -70,11 +70,12 @@ If you get any crashes just hmu (stuart_mouse@protonmail.com)
 
 CREDITS:
 
-Stuart Mouse   - main developer of the randomizer
+Uzerro         - main developer of the randomizer
 portal-chan    - created the endmodloader (which this program is built upon)
 ButcherBerries - playtesting
 Aurielle       - SWF modding
 Hapax          - come on and finish the endonighzer already, geez
+Hinge          - Helped with Haval support
 
 ~ and ~
 the rest of the TEiN modding community

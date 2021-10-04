@@ -775,3 +775,5 @@ C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\data\parti
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\data\swfs\MeshTileset.swf
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\data\swfs\endnigh.swf
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\bin\Debug\data\swfs\swflist.txt.append
+C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Debug\TEiNRandomizer_Content.g.cs
+C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Debug\TEiNRandomizer.csprojAssemblyReference.cache

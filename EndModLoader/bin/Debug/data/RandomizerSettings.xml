@@ -33,8 +33,8 @@
     <WaterPhysics>false</WaterPhysics>
     <LowGravPhysics>false</LowGravPhysics>
     <LevelMerge>false</LevelMerge>
-    <ToolsInDirectory>tools/input/</ToolsInDirectory>
-    <ToolsOutDirectory>tools/output/</ToolsOutDirectory>
+    <ToolsInDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\tein-modding\randoColors\tilemaps</ToolsInDirectory>
+    <ToolsOutDirectory>C:\Program Files (x86)\Steam\steamapps\common\theendisnigh\tilemaps\</ToolsOutDirectory>
     <RandomizeAreaType>false</RandomizeAreaType>
     <CRSmart>false</CRSmart>
     <CROverlays>false</CROverlays>

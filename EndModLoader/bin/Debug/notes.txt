@@ -116,3 +116,38 @@ swf work:
 
 create updated modloader?
 find out how to fix epic games version
+
+
+
+Color Tiles:
+
+add null color tiles
+  these are able to connect color tiles without being themselves added to the set of contiguous tiles
+
+reduce color tile brightness, will help visibility
+  decor color tiles?
+
+redefine no-place values for yellow, red, green tiles in corruptor tiles
+
+special rules for conveyors, tumors
+
+add springs, kukos
+
+work out how enemies will work
+  ignore specifc enemy type when finding contiguous tiles
+  place the enemy type of the specific enemy being replaced
+  can 
+
+put color tiles into their own section in editor?
+
+
+
+
+
+Auto-decorator:
+
+start with machine decorating
+
+basically just fug up the windows and add the blinky bits
+
+create some algorithm for adding holes into solid backgrounds?
