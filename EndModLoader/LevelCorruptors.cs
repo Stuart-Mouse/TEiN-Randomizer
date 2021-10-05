@@ -6,30 +6,30 @@ using System.Threading.Tasks;
 
 namespace TEiNRandomizer
 {
-    public static class Corruptors
+    public static class LevelCorruptors
     {
-        public static Int32[] activeTiles { get; set; }
-        public static Int32[] entityTiles { get; set; }
-        public static Int32[] overlayTiles { get; set; }
-        public static Int32[] tagTiles { get; set; }
-        public static Int32[] back1Tiles { get; set; }
-        public static Int32[] back2Tiles { get; set; }
-        public static XElement smartTiles { get; set; }
-        public static XElement colorTiles { get; set; }
+        public static Int32[] ActiveTiles { get; set; }
+        public static Int32[] EntityTiles { get; set; }
+        public static Int32[] OverlayTiles { get; set; }
+        public static Int32[] TagTiles { get; set; }
+        public static Int32[] Back1Tiles { get; set; }
+        public static Int32[] Back2Tiles { get; set; }
+        public static XElement SmartTiles { get; set; }
+        public static XElement ColorTiles { get; set; }
 
         public const int BLUE_OFFSET    = 100000;
         public const int YELLOW_OFFSET  = 200000;
         public const int RED_OFFSET     = 300000;
         public const int GREEN_OFFSET   = 400000;
         
-        static Corruptors()
+        static LevelCorruptors()
         {
-            var doc = XDocument.Load($"data/corruptor_tiles.xml");
-            activeTiles = Randomizer.ElementToArray(doc.Root.Element("active"), true);
-            entityTiles = Randomizer.ElementToArray(doc.Root.Element("entity"), true);
-            overlayTiles = Randomizer.ElementToArray(doc.Root.Element("overlay"), true);
-            smartTiles = doc.Root.Element("smart");
-            colorTiles = doc.Root.Element("color");
+            var doc      = XDocument.Load($"data/corruptor_tiles.xml");
+            ActiveTiles  = Utility.ElementToArray(doc.Root.Element("active" ), true);
+            EntityTiles  = Utility.ElementToArray(doc.Root.Element("entity" ), true);
+            OverlayTiles = Utility.ElementToArray(doc.Root.Element("overlay"), true);
+            SmartTiles   = doc.Root.Element("smart");
+            ColorTiles   = doc.Root.Element("color");
         }
         public static string CorruptLevel(ref LevelFile level)
         {
@@ -80,7 +80,7 @@ namespace TEiNRandomizer
                 int index = RNG.random.Next(0, level.data.active.Length);
                 if (level.data.active[index] == 0 && level.data.tag[index] == 0)
                 {
-                    var tile = (TileID)entityTiles[RNG.random.Next(0, entityTiles.Length)];
+                    var tile = (TileID)EntityTiles[RNG.random.Next(0, EntityTiles.Length)];
                     level.data.active[index] = tile;
                     if (tile == TileID.Gasper || tile == TileID.GasCloud) hasGas = true;
 
@@ -94,7 +94,7 @@ namespace TEiNRandomizer
             {
                 int index = RNG.random.Next(0, level.data.active.Length);
                 if (level.data.active[index] != TileID.Solid && level.data.tag[index] == TileID.Empty)
-                    level.data.active[index] = (TileID)activeTiles[RNG.random.Next(0, activeTiles.Length)];
+                    level.data.active[index] = (TileID)ActiveTiles[RNG.random.Next(0, ActiveTiles.Length)];
             }
         }
         public static void SpikeStrips(ref LevelFile level)
@@ -120,10 +120,6 @@ namespace TEiNRandomizer
                     level.data.active[index] = TileID.Crumble;
             }
         }
-        public static void TotalChaos(ref LevelFile level)
-        {
-
-        }
         public static void Crushers(ref LevelFile level)
         {
             for (int i = 0; i < 30; i++)
@@ -146,7 +142,7 @@ namespace TEiNRandomizer
                 int index = RNG.random.Next(0, level.data.active.Length);
                 //if (level.data.tag[index] == 0)
                 //{
-                level.data.overlay[index] = (TileID)overlayTiles[RNG.random.Next(0, overlayTiles.Length)];
+                level.data.overlay[index] = (TileID)OverlayTiles[RNG.random.Next(0, OverlayTiles.Length)];
                 //}
             }
         }
@@ -352,11 +348,11 @@ namespace TEiNRandomizer
                     int index = i * lw + j;
 
                     // active layer
-                    var element = smartTiles.Element(Enum.GetName(typeof(TileID), level.data.active[index]));
+                    var element = SmartTiles.Element(Enum.GetName(typeof(TileID), level.data.active[index]));
 
                     if (element != null)
                     {
-                        options = Randomizer.ElementToArray(element);   // use index to get enum name, search for corruption options in xml
+                        options = Utility.ElementToArray(element);   // use index to get enum name, search for corruption options in xml
 
                         if ((Int32)level.data.active[index] < 1000)
                         {
@@ -403,8 +399,6 @@ namespace TEiNRandomizer
             int lh = level.header.height;
 
             var options = new string[] { };
-            bool hasGas = false;
-            int corruptLevel = 3;
 
             // loop over entire level
             for (int i = 0; i < lh; i++)
@@ -413,9 +407,9 @@ namespace TEiNRandomizer
                 {
                     int index = i * lw + j;
                     // overlay layer
-                    var element = smartTiles.Element(Enum.GetName(typeof(TileID), level.data.overlay[index]));
+                    var element = SmartTiles.Element(Enum.GetName(typeof(TileID), level.data.overlay[index]));
                     if (element != null)
-                        options = Randomizer.ElementToArray(element);   // use index to get enum name, search for corruption options in xml
+                        options = Utility.ElementToArray(element);   // use index to get enum name, search for corruption options in xml
                     if (RNG.CoinFlip())
                     {
                         try
@@ -454,11 +448,11 @@ namespace TEiNRandomizer
                     if (tile == 100027 || tile == 100028)
                     {
                         string t = Enum.GetName(typeof(TileID), level.data.active[index]);
-                        var element = colorTiles.Element(t);
+                        var element = ColorTiles.Element(t);
 
                         if (element != null)
                         {
-                            var options = Randomizer.ElementToArray(element);
+                            var options = Utility.ElementToArray(element);
                             string s = options[RNG.random.Next(0, options.Length)]; // select one option for all tiles
 
                             var adjacents = new HashSet<int>();
@@ -487,11 +481,11 @@ namespace TEiNRandomizer
                     // BLUE TILES
                     else if (tile > BLUE_OFFSET && tile < YELLOW_OFFSET)
                     {
-                        var element = colorTiles.Element(Enum.GetName(typeof(TileID), level.data.active[index]));
+                        var element = ColorTiles.Element(Enum.GetName(typeof(TileID), level.data.active[index]));
 
                         if (element != null)
                         {
-                            var options = Randomizer.ElementToArray(element);
+                            var options = Utility.ElementToArray(element);
                             try
                             {
                                 string s = options[RNG.random.Next(0, options.Length)];
@@ -884,371 +878,7 @@ namespace TEiNRandomizer
             }
         }
 
-        // These need to be updated or removed
-        public static LevelFile CombineLevels2(LevelFile level1, LevelFile level2)
-        {
-            var levelNew = level1;
-
-            if (level1.header.height == 32 && level2.header.height == 32 && level1.header.width == 54 && level2.header.width == 54)
-            {
-                int index = 0;
-                int lw = 54;
-                int lh = 32;
-                for (int i = 0; i < lh; i++)
-                {
-                    for (int j = 0; j < lw / 2; j++)
-                    {
-                        index = i * lw + j;
-                        index += 27;
-                        //if (j % 4 < 2)
-                        //{
-                            levelNew.data.active[index] = level2.data.active[index];
-                            levelNew.data.back1[index] = level2.data.back1[index];
-                            levelNew.data.back2[index] = level2.data.back2[index];
-                            levelNew.data.tag[index] = level2.data.tag[index];
-                            levelNew.data.overlay[index] = level2.data.overlay[index];
-                        //}
-                    }
-                }
-
-                for (int i = 0; i < lh; i++)
-                {
-                    for (int j = 25; j < 29; j++)
-                    {
-                        index = i * lw + j;
-
-                        //levelNew.data.overlay[index] = TileID.GraityBeam;
-
-                        if (RNG.CoinFlip() && RNG.CoinFlip() && RNG.CoinFlip())
-                        {
-                            switch (RNG.random.Next(0, 3))
-                            {
-                                case 0:
-                                    levelNew.data.active[index] = TileID.Crumble;
-                                    break;
-                                case 1:
-                                    levelNew.data.active[index] = TileID.Platform;
-                                    break;
-                                case 2:
-                                    levelNew.data.active[index] = TileID.Solid;
-                                    break;
-                            }
-                        }
-                        else if (levelNew.data.active[index] == TileID.Solid) levelNew.data.active[index] = TileID.Empty;
-                    }
-                }
-
-                for (int i = 0; i < 3; i++)
-                {
-                    levelNew.data.active[RNG.random.Next(0, lw * lh)] = TileID.Switch1U;
-                    levelNew.data.active[RNG.random.Next(0, lw * lh)] = TileID.Switch2U;
-                    levelNew.data.active[RNG.random.Next(0, lw * lh)] = TileID.Switch3U;
-                    levelNew.data.active[RNG.random.Next(0, lw * lh)] = TileID.Switch4U;
-                }
-
-                levelNew.data.tag[0] = TileID.CameraBounds;
-                levelNew.data.tag[1727] = TileID.CameraBounds;
-                //for (int i = 0; i < lh; i++)
-                //{
-                //    for (int j = 0; j < 27; j++)
-                //    {
-                //        index = i * lw + j;
-                //        index += 16;
-                //        levelNew.data.active[index] = level2.data.active[index];
-                //        levelNew.data.back1[index] = level2.data.back1[index];
-                //        levelNew.data.back2[index] = level2.data.back2[index];
-                //        levelNew.data.tag[index] = level2.data.tag[index];
-                //        levelNew.data.overlay[index] = level2.data.overlay[index];
-                //    }
-                //}
-            }
-
-            return levelNew;
-        }
-        public static LevelFile MergeLevels(LevelFile level1, LevelFile level2)
-        {
-            // find right edge of first level and actual camera bounds
-            // find left edge of second level and actual camera bounds
-            // Coordinate pairs have row first, column second
-            Pair L1ExitCoord = new Pair(0, 0), L2EntryCoord = new Pair(0, 0);
-            Bounds L1Bounds = GetCameraBounds(level1), L2Bounds = GetCameraBounds(level2);
-
-            int index = 0;
-            int lw = level1.header.width;
-            int lh = level1.header.height;
-            for (int i = 0; i < lh; i++)
-            {
-                for (int j = 0; j < lw; j++)
-                {
-                    index = i * lw + j;
-                    if (level1.data.tag[index] == TileID.GreenTransitionR)
-                    { level1.data.tag[index] = TileID.Empty; L1ExitCoord.First = i; L1ExitCoord.Second = j; }
-                    if (level2.data.tag[index] == TileID.GreenTransitionL)
-                    { level2.data.tag[index] = TileID.Empty; L2EntryCoord.First = i; L2EntryCoord.Second = j; }
-                }
-            }
-            for (int i = 0; i < lh; i++)
-            {
-                for (int j = 0; j < lw; j++)
-                {
-                    index = i * lw + j;
-                    if (level1.data.tag[index] == TileID.MergeMarkerR)
-                    { L1ExitCoord.First = i; L1ExitCoord.Second = j; }
-                    if (level2.data.tag[index] == TileID.MergeMarkerL)
-                    { L2EntryCoord.First = i; L2EntryCoord.Second = j; }
-                }
-            }
-            // establish level boundaries and new level size
-            Pair L1Origin = new Pair(0, 0); // find vertical offset of L1 (originOffset = L2EntryCoord.height - L1ExitCoord.height)
-            Pair L2Origin = new Pair(0, 0); // level 2 origin point = originOffset + L1ExitCoord - L2EntryCoord
-
-            if (L1ExitCoord.First < L2EntryCoord.First)
-            {
-                L1Origin.First = L2EntryCoord.First - L1ExitCoord.First;
-            }
-            else
-            {
-                L1Origin.First = L1ExitCoord.First - L2EntryCoord.First;
-            }
-            L2Origin = L1Origin + L1ExitCoord - L2EntryCoord;
-
-            Console.WriteLine($"L1ExitCoord: {L1ExitCoord.First}, {L1ExitCoord.Second}");
-            Console.WriteLine($"L2EntryCoord: {L2EntryCoord.First}, {L2EntryCoord.Second}");
-            Console.WriteLine($"L1Origin: {L1Origin.First}, {L1Origin.Second}");
-            Console.WriteLine($"L2Origin: {L2Origin.First}, {L2Origin.Second}");
-
-            // create new level
-            // size is doubled in both dimensions
-            int width = L1ExitCoord.Second + level2.header.width - L2EntryCoord.Second;
-            int height = Math.Max(L1Origin.First + level1.header.height, L2Origin.First + level2.header.height);
-            var levelNew = new LevelFile(width, height);
-
-            // copy first level into new level
-            // copies from left edge of canvas to L1ExitCoord column
-            int copyIndex = 0;
-            int pasteIndex = 0;
-            int copylw = level1.header.width;
-            int copylh = level1.header.height;
-            int pastelw = levelNew.header.width;
-            int pastelh = levelNew.header.height;
-            // copy first level
-            for (int i = 0; i < copylh; i++)
-            {
-                for (int j = 0; j < L1ExitCoord.Second; j++)
-                {
-                    copyIndex = i * copylw + j;
-                    pasteIndex = (i + L1Origin.First) * pastelw + (j + L1Origin.Second);
-                    levelNew.data.active[pasteIndex] = level1.data.active[copyIndex];
-                    levelNew.data.back1[pasteIndex] = level1.data.back1[copyIndex];
-                    levelNew.data.back2[pasteIndex] = level1.data.back2[copyIndex];
-                    levelNew.data.tag[pasteIndex] = level1.data.tag[copyIndex];
-                    levelNew.data.overlay[pasteIndex] = level1.data.overlay[copyIndex];
-                }
-            }
-
-            // copy second level into new level
-            // align L2EntryCoord to L1ExitCoord
-            // copy from L2EntryCoord to right edge of canvas
-            copyIndex = 0;
-            pasteIndex = 0;
-            copylw = level2.header.width;
-            copylh = level2.header.height;
-            pastelw = levelNew.header.width;
-            pastelh = levelNew.header.height;
-            for (int i = 0; i < copylh; i++)
-            {
-                for (int j = L2EntryCoord.Second; j < copylw; j++)
-                {
-                    copyIndex = i * copylw + j;
-                    pasteIndex = (i + L2Origin.First) * pastelw + (j + L2Origin.Second);
-
-                    //Console.WriteLine($"copyIndex: {i},{j}");
-                    //Console.WriteLine($"pasteIndex: {i + L2Origin.First},{j + L2Origin.Second}");
-
-                    levelNew.data.active[pasteIndex] = level2.data.active[copyIndex];
-                    levelNew.data.back1[pasteIndex] = level2.data.back1[copyIndex];
-                    levelNew.data.back2[pasteIndex] = level2.data.back2[copyIndex];
-                    levelNew.data.tag[pasteIndex] = level2.data.tag[copyIndex];
-                    levelNew.data.overlay[pasteIndex] = level2.data.overlay[copyIndex];
-                }
-            }
-
-            // place new camera bounds based on original viewable area
-            int bottomLeftCamera = (Math.Max(L1Bounds.Bottom, L2Bounds.Bottom)) * levelNew.header.width + (Math.Min(L1Bounds.Left, L2Bounds.Left));
-            int topRightCamera = (Math.Min(L1Bounds.Top, L2Bounds.Top)) * levelNew.header.width + (Math.Max(L1Bounds.Right, L2Bounds.Right));
-            levelNew.data.tag[bottomLeftCamera] = TileID.CameraBounds;
-            levelNew.data.tag[topRightCamera] = TileID.CameraBounds;
-
-            return levelNew;
-        }
-        public static LevelFile CombineLevels(LevelFile level1, LevelFile level2)
-        {
-            // find right edge of first level and actual camera bounds
-            // find left edge of second level and actual camera bounds
-            // Coordinate pairs have row first, column second
-            Pair L1ExitCoord = new Pair(0, 0), L2EntryCoord = new Pair(0, 0);
-            Bounds L1Bounds = GetCameraBounds(level1), L2Bounds = GetCameraBounds(level2);
-
-            int index = 0;
-            int lw = level1.header.width;
-            int lh = level1.header.height;
-            for (int i = 0; i < lh; i++)
-            {
-                for (int j = 0; j < lw; j++)
-                {
-                    index = i * lw + j;
-                    if (level1.data.tag[index] == TileID.GreenTransitionR)
-                    { level1.data.tag[index] = TileID.Empty; L1ExitCoord.First = i; L1ExitCoord.Second = j; }
-                    if (level2.data.tag[index] == TileID.GreenTransitionL)
-                    { level2.data.tag[index] = TileID.Empty; L2EntryCoord.First = i; L2EntryCoord.Second = j; }
-                }
-            }
-            //for (int i = 0; i < lh; i++)
-            //{
-            //    for (int j = 0; j < lw; j++)
-            //    {
-            //        index = i * lw + j;
-            //        if (level1.data.tag[index] == TileID.MergeMarkerR)
-            //        { L1ExitCoord.First = i; L1ExitCoord.Second = j; }
-            //        if (level2.data.tag[index] == TileID.MergeMarkerL)
-            //        { L2EntryCoord.First = i; L2EntryCoord.Second = j; }
-            //    }
-            //}
-            // establish level boundaries and new level size
-            Pair L1Origin = new Pair(0, 0); // find vertical offset of L1 (originOffset = L2EntryCoord.height - L1ExitCoord.height)
-            Pair L2Origin = new Pair(0, 0); // level 2 origin point = originOffset + L1ExitCoord - L2EntryCoord
-
-            if (L1ExitCoord.First < L2EntryCoord.First)
-            {
-                L1Origin.First = L2EntryCoord.First - L1ExitCoord.First;
-            }
-            else
-            {
-                L1Origin.First = L1ExitCoord.First - L2EntryCoord.First;
-            }
-            L2Origin = L1Origin + L1ExitCoord - L2EntryCoord;
-
-            Console.WriteLine($"L1ExitCoord: {L1ExitCoord.First}, {L1ExitCoord.Second}");
-            Console.WriteLine($"L2EntryCoord: {L2EntryCoord.First}, {L2EntryCoord.Second}");
-            Console.WriteLine($"L1Origin: {L1Origin.First}, {L1Origin.Second}");
-            Console.WriteLine($"L2Origin: {L2Origin.First}, {L2Origin.Second}");
-
-            // create new level
-            // size is doubled in both dimensions
-            int width = L1ExitCoord.Second + level2.header.width - L2EntryCoord.Second;
-            int height = Math.Max(L1Origin.First + level1.header.height, L2Origin.First + level2.header.height);
-            var levelNew = new LevelFile(width, height);
-
-            // copy first level into new level
-            // copies from left edge of canvas to L1ExitCoord column
-            int copyIndex = 0;
-            int pasteIndex = 0;
-            int copylw = level1.header.width;
-            int copylh = level1.header.height;
-            int pastelw = levelNew.header.width;
-            int pastelh = levelNew.header.height;
-            // copy first level
-            for (int i = 0; i < copylh; i++)
-            {
-                for (int j = 0; j < L1ExitCoord.Second; j++)
-                {
-                    copyIndex = i * copylw + j;
-                    pasteIndex = (i + L1Origin.First) * pastelw + (j + L1Origin.Second);
-                    levelNew.data.active[pasteIndex] = level1.data.active[copyIndex];
-                    levelNew.data.back1[pasteIndex] = level1.data.back1[copyIndex];
-                    levelNew.data.back2[pasteIndex] = level1.data.back2[copyIndex];
-                    levelNew.data.tag[pasteIndex] = level1.data.tag[copyIndex];
-                    levelNew.data.overlay[pasteIndex] = level1.data.overlay[copyIndex];
-                }
-            }
-
-            // copy second level into new level
-            // align L2EntryCoord to L1ExitCoord
-            // copy from L2EntryCoord to right edge of canvas
-            copyIndex = 0;
-            pasteIndex = 0;
-            copylw = level2.header.width;
-            copylh = level2.header.height;
-            pastelw = levelNew.header.width;
-            pastelh = levelNew.header.height;
-            for (int i = 0; i < copylh; i++)
-            {
-                for (int j = L2EntryCoord.Second; j < copylw; j++)
-                {
-                    copyIndex = i * copylw + j;
-                    pasteIndex = (i + L2Origin.First) * pastelw + (j + L2Origin.Second);
-
-                    //Console.WriteLine($"copyIndex: {i},{j}");
-                    //Console.WriteLine($"pasteIndex: {i + L2Origin.First},{j + L2Origin.Second}");
-
-                    levelNew.data.active[pasteIndex]    = level2.data.active[copyIndex];
-                    levelNew.data.back1[pasteIndex]     = level2.data.back1[copyIndex];
-                    levelNew.data.back2[pasteIndex]     = level2.data.back2[copyIndex];
-                    levelNew.data.tag[pasteIndex]       = level2.data.tag[copyIndex];
-                    levelNew.data.overlay[pasteIndex]   = level2.data.overlay[copyIndex];
-                }
-            }
-
-            //// fill in blank at topL1
-            //for (int i = 0; i < L1Origin.First; i++)
-            //{
-            //    for (int j = 0; j < L1ExitCoord.Second; j++)
-            //    {
-            //        //copyIndex = j;
-            //        pasteIndex = i * pastelw + (j + L1Origin.Second);
-            //        levelNew.data.active[pasteIndex] = TileID.Decoration1;
-            //        //levelNew.data.active[pasteIndex]    = level1.data.active[copyIndex];
-            //        //levelNew.data.back1[pasteIndex]     = level1.data.back1[copyIndex];
-            //        //levelNew.data.back2[pasteIndex]     = level1.data.back2[copyIndex];
-            //        //levelNew.data.tag[pasteIndex]       = level1.data.tag[copyIndex];
-            //        //levelNew.data.overlay[pasteIndex]   = level1.data.overlay[copyIndex];
-            //    }
-            //}
-            //// fill in blank at bottomL1
-            //for (int i = L1Origin.First + level1.header.height; i < pastelh; i++)
-            //{
-            //    for (int j = 0; j < L1ExitCoord.Second; j++)
-            //    {
-            //        //copyIndex = (L1Origin.First + level1.header.height) * copylw + j;
-            //        pasteIndex = i * pastelw + (j + L1Origin.Second);
-            //        levelNew.data.active[pasteIndex] = TileID.Decoration1;
-            //    }
-            //}
-            //// fill in blank at topL2
-            //for (int i = 0; i < L2Origin.First; i++)
-            //{
-            //    for (int j = L2EntryCoord.Second; j < pastelw; j++)
-            //    {
-            //        pasteIndex = i * pastelw + (j + L2Origin.Second);
-            //        levelNew.data.active[pasteIndex] = TileID.Decoration1;
-            //    }
-            //}
-            //// fill in blank at bottomL2
-            //for (int i = L2Origin.First + level2.header.height; i < pastelh; i++)
-            //{
-            //    for (int j = L2EntryCoord.Second; j < pastelw; j++)
-            //    {
-            //        pasteIndex = i * pastelw + (j + L2Origin.Second);
-            //        levelNew.data.active[pasteIndex] = TileID.Decoration1;
-            //    }
-            //}
-
-            // place new camera bounds based on original viewable area
-            int bottomLeftCamera = (Math.Max(L1Bounds.Bottom, L2Bounds.Bottom)) * levelNew.header.width + (Math.Min(L1Bounds.Left, L2Bounds.Left));
-            int topRightCamera = (Math.Min(L1Bounds.Top, L2Bounds.Top)) * levelNew.header.width + (Math.Max(L1Bounds.Right, L2Bounds.Right));
-            //levelNew.data.tag[bottomLeftCamera] = TileID.CameraBounds;
-            //levelNew.data.tag[topRightCamera] = TileID.CameraBounds;
-
-            int last = levelNew.header.height * levelNew.header.width;
-            levelNew.data.tag[0] = TileID.CameraBounds;
-            levelNew.data.tag[last - 1] = TileID.CameraBounds;
-
-            // trim level
-
-
-
-            return levelNew;
-        }
+        
 
     }
 }

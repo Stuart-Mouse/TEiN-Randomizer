@@ -1,21 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.WindowsAPICodePack.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using TEiNRandomizer.Properties;
+﻿using System.Collections.Generic;
 
 namespace TEiNRandomizer
 {
@@ -39,7 +22,6 @@ namespace TEiNRandomizer
             numScreens = 0;
             tileset = new Tileset();
         }
-
     }
     public static class MapGenerator
     {
@@ -70,7 +52,9 @@ namespace TEiNRandomizer
                 arr[i] = new string[Map[i].Count];
                 for (int j = 0; j < Map[i].Count; j++)
                 {
-                    arr[i][j] = Map[i][j].fileName;
+                    if (Map[i][j] != null)
+                        arr[i][j] = Map[i][j].outFile;
+                    else arr[i][j] = "";
                 }
             }
 

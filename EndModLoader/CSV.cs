@@ -13,11 +13,11 @@ namespace TEiNRandomizer
 {
     class CSV
     {
-        //public string[][] file;
+        public string[][] file;
         
-        static void FlipCSV(string path)
+        /*void FlipH()
         {
-            var arr = File.ReadAllLines(path);
+            int length = 0;
             int length = 0;
             var file = new List<string[]>();
             foreach (var str in arr)
@@ -46,7 +46,7 @@ namespace TEiNRandomizer
             File.WriteAllLines("flip.csv", newfile);
         }
 
-        public static void RotateCSV(string path)
+        void RotateCSV(string path)
         {
             var arr = File.ReadAllLines(path);
             int length = 0;
@@ -81,78 +81,6 @@ namespace TEiNRandomizer
             }
             
             File.WriteAllLines("rotate.csv", newFile);
-        }
-
-        public static void LevelToCSV(ref LevelFile level, string path)
-        {
-            int lw = level.header.width;
-            int lh = level.header.height;
-
-            //File.Create(path);
-
-            TileID temp;
-            using (StreamWriter sw = File.CreateText(path))
-            {
-                for (int row = 0; row < lh; row++)
-                {
-                    for (int col = 0; col < lw; col++)
-                    {
-                        int index = row * lw + col;
-                        temp = level.data.back1[index];
-                        sw.Write((int)temp + ",");
-                    }
-                    sw.Write("\n");
-                }
-
-                sw.Write("\n\n\n\n");
-
-                for (int row = 0; row < lh; row++)
-                {
-                    for (int col = 0; col < lw; col++)
-                    {
-                        int index = row * lw + col;
-                        temp = level.data.back2[index];
-                        sw.Write((int)temp + ",");
-                    }
-                    sw.Write("\n");
-                }
-            }
-
-            //StreamWriter sw = File.AppendText(path);
-
-            //sw.WriteLine("\n\nBack1\n");
-            //LevelLayerToCSV(ref level.data.back1, path, lw, lh);
-            //sw.WriteLine("\n\nActive\n");
-            //LevelLayerToCSV(ref level.data.active, path, lw, lh);
-            //sw.WriteLine("\n\nTag\n");
-            //LevelLayerToCSV(ref level.data.tag, path, lw, lh);
-            //sw.WriteLine("\n\nOverlay\n");
-            //LevelLayerToCSV(ref level.data.overlay, path, lw, lh);
-            //sw.WriteLine("\n\nBack2\n");
-            //LevelLayerToCSV(ref level.data.back2, path, lw, lh);
-            
-        }
-
-        static void LevelLayerToCSV(ref TileID[] layer, string path, Int32 lw, Int32 lh)
-        {
-            TileID temp;
-            using (StreamWriter sw = File.AppendText(path))
-            {
-                for (int row = 0; row < lh; row++)
-                {
-                    for (int col = 0; col < lw; col++)
-                    {
-                        int index = row * lw + col;
-
-                        temp = layer[index];
-
-                        sw.WriteLine(nameof(temp) + ",");
-
-                    }
-                    sw.WriteLine("\n");
-                }
-            }
-        }
-
+        }*/
     }
 }

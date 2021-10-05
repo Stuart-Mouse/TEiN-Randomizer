@@ -5,271 +5,71 @@ using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
 using System.Collections.ObjectModel;
-using System.IO.Compression;
 
 
 namespace TEiNRandomizer
 {
     public static partial class Randomizer
     {
+        // CONSTRUCTOR
         static Randomizer()
         {
-            // Constructor loads local assets and info.
-            // Pools, shaders, and pieces are loaded by the main window since it will need access to them.
             LoadNPCs();
             LoadFunnyNames();
         }
 
-        public static ObservableCollection<PoolCategory> PoolCats { get; private set; }
 
-        //public static RNG RNG = new RNG();          // This has been moved to a static class since only one RNG is ever used
-        public static List<List<Level>> ChosenLevels;
-        public static List<List<Level>> ChosenLevels2;  // This is only referenced in the currently unused levelmerge function.
+        // MEMBERS
+
+        public static ObservableCollection<LevelPoolCategory> LevelPoolCategories = AppResources.LevelPoolCategories;
+        public static ObservableCollection<PiecePool> PiecePools = AppResources.PiecePools;
+
+        static List<List<Level>> ChosenLevels;
         static List<Level> DrawPool;
 
-        public static List<Shader> ShadersList; // A list of all the loaded shaders is stored in this class.
+        public static string saveDir;         // The save directory is determined when starting the randomize function and stored. (Will select between game directory and save directory.)
+        public static SettingsFile settings = AppResources.MainSettings;  // a copy of the settings is stored so that all of the functions within this class can read it.
+        public static MainWindow mainWindow;  // The Main Window's info is also stored, so that it can be referenced when needed.
 
-        //public static ObservableCollection<PoolCategory> PoolCats { get; private set; } = new ObservableCollection<PoolCategory>();
+        public static List<string> AreaTypes;
 
-        public static string[] NPCMovieClips;   // NPC Info is loaded and stored in the Randomizer class
+        // NPC Stuff
+        public static string[] NPCMovieClips;
         public static string[] NPCSoundIDs;
         public static List<string> NPCTexts;
 
-        public static string saveDir;               // The save directory is determined when starting the randomize function and stored. (Will select between game directory and save directory.)
-        public static RandomizerSettings settings;  // a copy of the settings is stored so that all of the functions within this class can read it.
-        public static MainWindow mainWindow;            // The Main Window's info is also stored, so that it can be referenced when needed.
-        //static int prevRuns = 0;
-
+        // Funny Name Stuff
         public static string[] LINouns;
         public static string[] LIAdjectives;
         public static string[] LINames;
         public static string[] LILocations;
 
-        public static List<string> AreaTypes;
-        static void FlipCSV(string path)
+
+        // METHODS
+
+        // resource loading functions
+        static void LoadFunnyNames()
         {
-            var arr = File.ReadAllLines(path);
-            int length = 0;
-            var file = new List<string[]>();
-            foreach (var str in arr)
-            {
-                var line = str.Split(Convert.ToChar(","));
-                if (line.Length > length)
-                    length = line.Length;
-                line = line.Reverse().ToArray();
-                file.Add(line);
-            }
-            var newfile = new string[arr.Length];
-            for (int j = 0; j < file.Count; j++)
-            {
-                string newline = "";
-                int offset = length - file[j].Length;
-                for (int i = 0; i < offset; i++)
-                {
-                    newline += ",";
-                }
-                for (int i = 0; i < file[j].Length; i++)
-                {
-                    newline += file[j][i] + ",";
-                }
-                newfile[j] = newline;
-            }
-            File.WriteAllLines(path, newfile);
+            var doc = XDocument.Load("data/area_names.xml");
+            LINames = Utility.ElementToArray(doc.Root.Element("name"));
+            LILocations = Utility.ElementToArray(doc.Root.Element("location"));
+            LIAdjectives = Utility.ElementToArray(doc.Root.Element("adjective"));
+            LINouns = Utility.ElementToArray(doc.Root.Element("noun"));
         }
-        public static List<Shader> GetShadersList()
-        {
-            ShadersList = new List<Shader>() { };
-
-            var doc = XDocument.Load($"data/tilesets_pools.xml");    // open levelpool file
-            foreach (var element in doc.Root.Element("shaders").Elements())
-            {
-                var shader = new Shader() { };
-
-                shader.Name = element.Name.ToString();
-                shader.Enabled = Convert.ToBoolean(element.Attribute("enabled").Value);
-                shader.Content = element.Attribute("content").Value;
-
-                ShadersList.Add(shader);
-            }
-
-            return ShadersList;
-        }
-        public static void SaveShadersList(List<Shader> ShadersList)
-        {
-            if (ShadersList != null)
-            {
-                var doc = XDocument.Load($"data/tilesets_pools.xml");    // open levelpool file
-                foreach (var shader in ShadersList)
-                {
-                    doc.Root.Element("shaders").Element(shader.Name).Attribute("enabled").Value = Convert.ToString(shader.Enabled);
-                }
-
-                doc.Save($"data/tilesets_pools.xml");
-            }
-        }
-        public static void Shuffle<T>(this IList<T> list)
-        {
-            int n = list.Count;
-            while (n > 1)
-            {
-                n--;
-                int k = RNG.random.Next(n + 1);
-                T value = list[k];
-                list[k] = list[n];
-                list[n] = value;
-            }
-        }
-        public static string[] ElementToArray(XElement element)         // converts xml element value to a string array
-        {
-            string t_string = Convert.ToString(element.Value).Trim();
-            var myArray = t_string.Split(Convert.ToChar("\n"));
-            for (int i = 0; i < myArray.Count(); i++)
-            {
-                myArray[i] = myArray[i].Trim(Convert.ToChar("\t"), Convert.ToChar(" "));
-            }
-
-            return myArray;
-        }
-        public static Int32[]  ElementToArray(XElement element, bool y)  // converts xml element value to a string array
-        {
-            string t_string = Convert.ToString(element.Value).Trim();
-            var myArray = t_string.Split(Convert.ToChar("\n"));
-            int[] intArray = new int[myArray.Count()];
-            for (int i = 0; i < myArray.Count(); i++)
-            {
-                intArray[i] = Convert.ToInt32(myArray[i].Trim(Convert.ToChar("\t"), Convert.ToChar(" ")));
-            }
-
-            return intArray;
-        }
-        public static IEnumerable<PoolCategory> PoolLoader(string path)
-        {
-            var poolCats = new ObservableCollection<PoolCategory>();
-            foreach (var dir in Directory.GetDirectories(path, "*",SearchOption.TopDirectoryOnly))
-            {
-                var folder = Path.GetFileNameWithoutExtension(dir);
-                var cat = new PoolCategory() { Name = folder, Pools = new ObservableCollection<Pool>() { } };
-                var tempList = new List<Pool>() { };
-                string author = null;
-                bool enabled = false;
-                foreach (var file in Directory.GetFiles($"{path}/{folder}", "*.xml", SearchOption.TopDirectoryOnly))
-                {
-                    var pool = new Pool(Path.GetFileNameWithoutExtension(file), folder);    // pool creation done in Pool constructor
-                    if (pool != null)
-                    {
-                        if (pool.Author != null)        // set category author
-                        {
-                            if (author == null)         // if author not already set, set it
-                                author = pool.Author;
-                            else if (author != pool.Author)  // if there is more than one pool author in the category, set to V.A.
-                                author = "V.A.";
-                        }
-                        if (pool.Active == true)
-                            enabled = true;
-                        tempList.Add(pool);
-                    }
-                }
-                cat.Enabled = enabled;
-                cat.Author = author;
-                cat.Pools = tempList.OrderBy(p => p.Order);
-                poolCats.Add(cat);
-            }
-            return poolCats;
-        }
-        public static IEnumerable<PiecePool>    PieceLoader(string path)
-        {
-            var folder = Path.GetFileNameWithoutExtension(path);
-            var pools = new ObservableCollection<PiecePool>();
-            foreach (var file in Directory.GetFiles(path, "*.xml", SearchOption.TopDirectoryOnly))
-            {
-                var pool = new PiecePool(Path.GetFileNameWithoutExtension(file), folder);    // pool creation done in Pool constructor
-                if (pool != null)
-                    pools.Add(pool);
-            }
-            return pools;
-        }
-        static IEnumerable<string> LoadRecents()
-        {
-            var recents = new List<string> { };
-            var unCache = new List<XElement> { };
-            if (!File.Exists("data/cache.xml"))
-            {
-                var doc = new XDocument { };
-                doc.Add(new XElement("cache"));
-                doc.Save("data/cache.xml");
-            }
-
-            var cachedoc = XDocument.Load("data/cache.xml");    // open cache file
-            foreach (var element in cachedoc.Root.Elements())
-            {
-                var t_num = int.Parse(element.Attribute("num").Value.ToString());
-                recents.AddRange(ElementToArray(element));
-                t_num++;
-                element.Attribute("num").Value = (t_num).ToString();
-                if (t_num > settings.CacheRuns)         // removing from element.Elements() does a yeild break, so the elements are added to a list to be removed later instead
-                    unCache.Add(element);
-            }
-            foreach (var deleteMe in unCache)   // remove excess runs from cache
-            {
-                foreach (var element in cachedoc.Root.Elements())   // this may be a weird solution, but it seems to work so I'm going with it.
-                {
-                    if (element.Equals(deleteMe))   // since the only need here is to delete the one matching element, breaking from the foreach doesn't hurt
-                        element.Remove();
-                }
-            }
-            cachedoc.Save("data/cache.xml");
-
-            // remove recently played levels
-            var toRemove = new List<string> { };
-            if (settings.RepeatTolerance == 0)
-                toRemove = recents;
-            else
-            {
-                for (int i = 0; i < recents.Count(); i++)   // build toRemove based on recents and repeatTolerance
-                {
-                    int matches = 0;
-                    for (int j = 0; j < recents.Count(); j++)
-                    {
-                        if (recents[i] == recents[j] && i != j)
-                        {
-                            matches++;
-                            recents.RemoveAt(j);
-                            j--;
-                        }
-                    }
-                    if (matches > settings.RepeatTolerance)
-                        toRemove.Add(recents[i]);
-                }
-            }
-            return toRemove;
-        }    // This function is no longer used.
-        static void SaveRecents()
-        {
-            var cachedoc = XDocument.Load("cache.xml");
-            var newelement = new XElement("run");
-            for (int j = 0; j < settings.NumAreas; j++)
-            {
-                for (int i = 0; i < settings.NumLevels; i++)
-                {
-                    newelement.SetAttributeValue("num", 1);
-                    newelement.Value += "\n\t\t" + ChosenLevels[j][i].Name;
-                }
-            }
-            newelement.Value += "\n  ";
-            cachedoc.Root.Add(newelement);
-            cachedoc.Save("data/cache.xml");
-        }                   // This function is no longer used.
-        public static void LoadNPCs()
+        static void LoadNPCs()
         {
             var doc = XDocument.Load($"data/npcs.xml");    // open npcs file
-            NPCMovieClips = ElementToArray(doc.Root.Element("movieclips"));
-            NPCSoundIDs = ElementToArray(doc.Root.Element("soundids"));
+            NPCMovieClips = Utility.ElementToArray(doc.Root.Element("movieclips"));
+            NPCSoundIDs = Utility.ElementToArray(doc.Root.Element("soundids"));
             NPCTexts = new List<string>();
+
             foreach (XElement item in doc.Root.Element("text").Elements())
             {
                 NPCTexts.Add(item.Value);
             }
         }
+
+        // Randomize() subfunctions (separated out for readability)
         static void NPCs()
         {
             using (StreamWriter sw = File.CreateText(saveDir + "data/npcs.txt.append"))
@@ -293,6 +93,35 @@ namespace TEiNRandomizer
                     sw.WriteLine("\t]\n}");
                 }
             }
+        }
+        public static string GetFunnyName()
+        {
+            //STRUCTURE
+            //NAME's ( ADJECTIVE ) LOCATION ( of ( ADJECTIVE ) NOUN )
+            //NAME's ( ADJECTIVE ) NOUN LOCATION
+
+            // create le funny name
+            string areaname = "";
+            if (RNG.random.Next(0, 5) == 0)
+            {
+                areaname += LINames[RNG.random.Next(0, LINames.Length)] + "s ";
+            }
+            if (RNG.CoinFlip())
+            {
+                if (RNG.CoinFlip())
+                    areaname += LIAdjectives[RNG.random.Next(0, LIAdjectives.Length)] + " ";
+                if (RNG.CoinFlip())
+                    areaname += LINouns[RNG.random.Next(0, LINouns.Length)] + " ";
+                areaname += LILocations[RNG.random.Next(0, LILocations.Length)];
+            }
+            else
+            {
+                areaname += LILocations[RNG.random.Next(0, LILocations.Length)] + " of ";
+                if (RNG.CoinFlip())
+                    areaname += LIAdjectives[RNG.random.Next(0, LIAdjectives.Length)] + " ";
+                areaname += LINouns[RNG.random.Next(0, LINouns.Length)];
+            }
+            return areaname;
         }
         static void Tilesets()
         {
@@ -424,46 +253,9 @@ namespace TEiNRandomizer
                 }
                 sw.Write("v-end.lvl");
             }
-            if (settings.MirrorMode)
-                FlipCSV(saveDir + "data/map.csv");
+            /*if (settings.MirrorMode)
+                FlipCSV(saveDir + "data/map.csv");*/
 
-        }
-        static void LoadFunnyNames()
-        {
-            var doc = XDocument.Load("data/area_names.xml");
-            LINames      = Randomizer.ElementToArray(doc.Root.Element("name"));
-            LILocations  = Randomizer.ElementToArray(doc.Root.Element("location"));
-            LIAdjectives = Randomizer.ElementToArray(doc.Root.Element("adjective"));
-            LINouns      = Randomizer.ElementToArray(doc.Root.Element("noun"));
-        }
-        public static string GetFunnyName()
-        {
-            //STRUCTURE
-            //NAME's ( ADJECTIVE ) LOCATION ( of ( ADJECTIVE ) NOUN )
-            //NAME's ( ADJECTIVE ) NOUN LOCATION
-
-            // create le funny name
-            string areaname = "";
-            if (RNG.random.Next(0, 5) == 0)
-            {
-                areaname += LINames[RNG.random.Next(0, LINames.Length)] + "s ";
-            }
-            if (RNG.CoinFlip())
-            {
-                if (RNG.CoinFlip())
-                    areaname += LIAdjectives[RNG.random.Next(0, LIAdjectives.Length)] + " ";
-                if (RNG.CoinFlip())
-                    areaname += LINouns[RNG.random.Next(0, LINouns.Length)] + " ";
-                areaname += LILocations[RNG.random.Next(0, LILocations.Length)];
-            }
-            else
-            {
-                areaname += LILocations[RNG.random.Next(0, LILocations.Length)] + " of ";
-                if (RNG.CoinFlip())
-                    areaname += LIAdjectives[RNG.random.Next(0, LIAdjectives.Length)] + " ";
-                areaname += LINouns[RNG.random.Next(0, LINouns.Length)];
-            }
-            return areaname;
         }
         static void LevelInfo()
         {
@@ -507,69 +299,17 @@ namespace TEiNRandomizer
                         LevelManip.FlipLevelH(ref levelFile);
 
                     if (settings.DoCorruptions)
-                        level.TSNeed += Corruptors.CorruptLevel(ref levelFile);
+                        level.TSNeed += LevelCorruptors.CorruptLevel(ref levelFile);
 
                     LevelManip.Save(levelFile, saveDir + $"tilemaps/v{j + 1}-{i + 1}.lvl");
                 }
                 LevelManip.Save(npclevel, saveDir + $"tilemaps/v-npc{j + 1}.lvl");
             }
         }
-        static void TileMapsMerged()
-        {
-            string[] baseLevels = { "1-1", "1-1x", "v-connect", "v-start", "v-end" };
-
-            foreach (var level in baseLevels)
-            {
-                //File.Copy($"data/vtilemaps/The End is Nigh/{level}.lvl", saveDir + $"tilemaps/{level}.lvl", true);
-                var levelFile = LevelManip.Load($"data/tilemaps/The End is Nigh/{level}.lvl");
-
-                if (settings.MirrorMode)
-                    LevelManip.FlipLevelH(ref levelFile);
-
-                LevelManip.Save(levelFile, saveDir + $"tilemaps/{level}.lvl");
-            }
-
-            for (int j = 0; j < settings.NumAreas; j++)
-            {
-                for (int i = 0; i < settings.NumLevels; i++)
-                {
-                    var level1 = ChosenLevels[j][i];
-                    var level2 = ChosenLevels2[j][i];
-                    var levelFile1 = LevelManip.Load($"data/tilemaps/{level1.Folder}/{level1.Name}.lvl");
-                    var levelFile2 = LevelManip.Load($"data/tilemaps/{level2.Folder}/{level2.Name}.lvl");
-
-                    var levelM = level1;
-                    levelM.TSNeed += level2.TSNeed + " decoration_1 CreepingMass ";
-                    var levelFileM = Corruptors.CombineLevels(levelFile1, levelFile2);
-
-                    if (settings.MirrorMode)
-                        LevelManip.FlipLevelH(ref levelFileM);
-
-                    if (settings.DoCorruptions)
-                        levelM.TSNeed += Corruptors.CorruptLevel(ref levelFileM);
-
-                    LevelManip.Save(levelFileM, saveDir + $"tilemaps/v{j + 1}-{i + 1}.lvl");
-                }
-            }
-        }   // This function is not currently used, but may be re-incorporated at a later date.
-        static void WriteDebug()
-        {
-            using (StreamWriter sw = File.CreateText("data/debug/last_levelnames.txt"))
-            {
-                sw.WriteLine("Chosen Levels");
-                for (int j = 0; j < settings.NumAreas; j++)
-                {
-                    for (int i = 0; i < settings.NumLevels; i++)
-                    {
-                        sw.WriteLine((j+1).ToString() + "-" + (i + 1).ToString() + ": " + ChosenLevels[j][i].Name);
-                    }
-                }
-            }
-        }       // This function is no longer used.
         static string SaveRunPrompt()
         {
             string title       = GetFunnyName();
-            string author = $"Seed: {mainWindow.GameSeed.ToString()}";
+            string author      = $"Seed: {mainWindow.GameSeed.ToString()}";
             string description = "A randomized world!";
             string version     = System.DateTime.Now.ToString();
 
@@ -662,7 +402,9 @@ namespace TEiNRandomizer
 
             TilesetManip.MakeShaderPool();
 
+            // make the draw pool based on which level pools are enabled
             MakeDrawPool();
+            // make randomized selections from drawpool
             ChooseLevels();
             
             // The rest of the randomization process is delegated to the functions below.
@@ -671,8 +413,8 @@ namespace TEiNRandomizer
             try { MapCSV(); }         catch (Exception ex) { Console.WriteLine($"Error creating map. Exception {ex}");                        MessageBox.Show($"Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try { TileMaps(); }       catch (Exception ex) { Console.WriteLine($"Error copying tilemaps. Exception {ex}");                    MessageBox.Show($"Error copying tilemaps. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try { Tilesets(); }       catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}");                   MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try { NPCs(); }           catch (Exception ex) { Console.WriteLine($"Error creating npcs. Exception {ex}");                   MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            try { Worldmap.WriteWorldMap(); } catch (Exception ex) { Console.WriteLine($"Error creating worldmap. Exception {ex}"); MessageBox.Show($"Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { NPCs(); }           catch (Exception ex) { Console.WriteLine($"Error creating npcs. Exception {ex}");                       MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { Worldmap.WriteWorldMap(); } catch (Exception ex) { Console.WriteLine($"Error creating worldmap. Exception {ex}");           MessageBox.Show($"Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
             Console.WriteLine(mw.GameSeed);
 

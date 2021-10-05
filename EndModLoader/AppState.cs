@@ -5,7 +5,7 @@
         IncorrectPath,
         NoModsFound,
         NoModSelected,
-        ReadyToPlay,
+        InMenus,
         InGame
     }
 }

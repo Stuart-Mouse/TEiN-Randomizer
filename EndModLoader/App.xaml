@@ -341,7 +341,7 @@
                     <Setter Property="Content" Value="No Pools Enabled" />
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.ReadyToPlay}">
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InMenus}">
                     <Setter Property="Content" Value="Randomize" />
                     <Setter Property="IsEnabled" Value="True" />
                 </DataTrigger>
@@ -364,7 +364,7 @@
                 <DataTrigger Binding="{Binding ModLoaderTabSelected.Name}" Value="SavedRunsTab">
                     <Setter Property="Content" Value="Play Run"/>
                 </DataTrigger>
-                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.ReadyToPlay}">
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InMenus}">
                     <Setter Property="IsEnabled" Value="True" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding ModLoaderTabSelected.Name}" Value="ModSettingsTab">
@@ -381,7 +381,7 @@
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="Width" Value="110" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.ReadyToPlay}">
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InMenus}">
                     <Setter Property="IsEnabled" Value="True" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding ModLoaderTabSelected.Name}" Value="ModsTab">
@@ -415,7 +415,7 @@
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.NoModSelected}">
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.ReadyToPlay}">
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InMenus}">
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InGame}">
@@ -443,7 +443,7 @@
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.NoModSelected}">
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.ReadyToPlay}">
+                <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InMenus}">
                     <Setter Property="IsEnabled" Value="False" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding AppState}" Value="{x:Static local:AppState.InGame}">

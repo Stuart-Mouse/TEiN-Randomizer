@@ -27,7 +27,6 @@ namespace TEiNRandomizer
                     // BACKGROUND 1 TILES
                     {
                         TileID tile = level.data.back1[index];
-                        TileID toPlace;
                         // decorate windows
                         if (tile == TileID.Back1Deco2 && (level.data.back1[index - lw] == TileID.WholePiece || level.data.back1[index - lw] == TileID.Back1Deco2)) // this if statement could cause a vector error if you place a window on the first row. So just don't do that!
                         {

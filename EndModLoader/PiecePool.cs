@@ -58,24 +58,25 @@ namespace TEiNRandomizer
         }
 
 
-        public PiecePool(string fileName, string folder)
+        public static PiecePool LoadPiecePool(string fileName, string folder)
         {
-            this.Name = fileName;
-            //this.Folder = folder;
-            this.Pieces = new List<LevelPiece>();
+            PiecePool pool = new PiecePool();
+            pool.Name = fileName;
+            //pool.Folder = folder;
+            pool.Pieces = new List<LevelPiece>();
 
-            var doc = XDocument.Load($"data/piecepools/{Name}.xml");    // open levelpool file
-            this.Active = Convert.ToBoolean(doc.Root.Attribute("enabled").Value == "True");
-            this.Order = Convert.ToInt16(doc.Root.Attribute("order").Value);
-            this.Author = (doc.Root.Attribute("author").Value);
-            this.Source = doc.Root.Attribute("source").Value;
+            var doc = XDocument.Load($"data/piecepools/{pool.Name}.xml");    // open levelpool file
+            pool.Active = Convert.ToBoolean(doc.Root.Attribute("enabled").Value == "True");
+            pool.Order = Convert.ToInt16(doc.Root.Attribute("order").Value);
+            pool.Author = (doc.Root.Attribute("author").Value);
+            pool.Source = doc.Root.Attribute("source").Value;
             foreach (var element in doc.Root.Elements())
             {
                 if (element.Name == "piece")
                 {
                     var piece = new LevelPiece { };
                     piece.Name = element.Attribute("name").Value;
-                    piece.Folder = this.Name;
+                    piece.Folder = pool.Name;
                     piece.File = LevelManip.Load($"data/levelpieces/{piece.Folder}/{piece.Name}.lvl");
                     piece.CeilingEn = Convert.ToBoolean(element.Attribute("ceilingEn").Value);
                     piece.CeilingEx = Convert.ToBoolean(element.Attribute("ceilingEx").Value);
@@ -87,10 +88,11 @@ namespace TEiNRandomizer
                     if (element.Attribute("marginBottom") != null)
                         piece.Margin.Bottom = Convert.ToInt32(element.Attribute("marginTop").Value);
 
-                    this.Pieces.Add(piece);
+                    pool.Pieces.Add(piece);
                 }
             }
-            NumPieces = this.Pieces.Count.ToString() + " pieces";
+            pool.NumPieces = pool.Pieces.Count.ToString() + " pieces";
+            return pool;
         }
     }
 }

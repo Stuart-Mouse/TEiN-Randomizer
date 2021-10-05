@@ -154,20 +154,22 @@
     <Compile Include="MainWindowButtons.cs" />
     <Compile Include="MapGenerator.cs" />
     <Compile Include="ModRandomizer.cs" />
+    <Compile Include="AppResources.cs" />
     <Compile Include="RNG.cs" />
     <Compile Include="ParticleGenerator.cs" />
     <Compile Include="Physics.cs" />
     <Compile Include="PiecePool.cs" />
-    <Compile Include="Pool.cs" />
-    <Compile Include="PoolCategory.cs" />
+    <Compile Include="LevelPool.cs" />
+    <Compile Include="LevelPoolCategory.cs" />
     <Compile Include="Randomizer.cs" />
-    <Compile Include="RandomizerSettings.cs" />
+    <Compile Include="SettingsFile.cs" />
     <Compile Include="Shader.cs" />
     <Compile Include="StringManipulator.cs" />
     <Compile Include="TextWindow.xaml.cs">
       <DependentUpon>TextWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Tileset.cs" />
+    <Compile Include="Utility.cs" />
     <Compile Include="Worldmap.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -221,6 +223,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="REMOVED.txt" />
     <Resource Include="checkmark.png" />
     <Content Include="data/**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

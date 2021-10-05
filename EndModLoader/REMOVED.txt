@@ -1,0 +1,492 @@
+
+
+=== Randomizer.cs ===
+
+static void WriteDebug()
+{
+    using (StreamWriter sw = File.CreateText("data/debug/last_levelnames.txt"))
+    {
+        sw.WriteLine("Chosen Levels");
+        for (int j = 0; j < settings.NumAreas; j++)
+        {
+            for (int i = 0; i < settings.NumLevels; i++)
+            {
+                sw.WriteLine((j+1).ToString() + "-" + (i + 1).ToString() + ": " + ChosenLevels[j][i].Name);
+            }
+        }
+    }
+}
+
+static IEnumerable<string> LoadRecents()
+{
+    var recents = new List<string> { };
+    var unCache = new List<XElement> { };
+    if (!File.Exists("data/cache.xml"))
+    {
+        var doc = new XDocument { };
+        doc.Add(new XElement("cache"));
+        doc.Save("data/cache.xml");
+    }
+
+    var cachedoc = XDocument.Load("data/cache.xml");    // open cache file
+    foreach (var element in cachedoc.Root.Elements())
+    {
+        var t_num = int.Parse(element.Attribute("num").Value.ToString());
+        recents.AddRange(Utility.ElementToArray(element));
+        t_num++;
+        element.Attribute("num").Value = (t_num).ToString();
+        if (t_num > settings.CacheRuns)         // removing from element.Elements() does a yeild break, so the elements are added to a list to be removed later instead
+            unCache.Add(element);
+    }
+    foreach (var deleteMe in unCache)   // remove excess runs from cache
+    {
+        foreach (var element in cachedoc.Root.Elements())   // this may be a weird solution, but it seems to work so I'm going with it.
+        {
+            if (element.Equals(deleteMe))   // since the only need here is to delete the one matching element, breaking from the foreach doesn't hurt
+                element.Remove();
+        }
+    }
+    cachedoc.Save("data/cache.xml");
+
+    // remove recently played levels
+    var toRemove = new List<string> { };
+    if (settings.RepeatTolerance == 0)
+        toRemove = recents;
+    else
+    {
+        for (int i = 0; i < recents.Count(); i++)   // build toRemove based on recents and repeatTolerance
+        {
+            int matches = 0;
+            for (int j = 0; j < recents.Count(); j++)
+            {
+                if (recents[i] == recents[j] && i != j)
+                {
+                    matches++;
+                    recents.RemoveAt(j);
+                    j--;
+                }
+            }
+            if (matches > settings.RepeatTolerance)
+                toRemove.Add(recents[i]);
+        }
+    }
+    return toRemove;
+}    // This function is no longer used.
+static void SaveRecents()
+{
+    var cachedoc = XDocument.Load("cache.xml");
+    var newelement = new XElement("run");
+    for (int j = 0; j < settings.NumAreas; j++)
+    {
+        for (int i = 0; i < settings.NumLevels; i++)
+        {
+            newelement.SetAttributeValue("num", 1);
+            newelement.Value += "\n\t\t" + ChosenLevels[j][i].Name;
+        }
+    }
+    newelement.Value += "\n  ";
+    cachedoc.Root.Add(newelement);
+    cachedoc.Save("data/cache.xml");
+}                   // This function is no longer used.
+
+
+=== MainWindow.xaml.cs ===
+
+private void NoClick(object sender, MouseButtonEventArgs e)
+{
+    e.Handled = true;
+}
+private void ClearCache(object sender, RoutedEventArgs e)
+{
+    if (File.Exists("cache.xml"))
+        File.Delete("cache.xml");
+    MessageBox.Show(
+                "Cache was cleared.",
+                "FYI",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information,
+                MessageBoxResult.OK
+            );
+}
+
+private async Task AutoRefresh()
+        {
+            while (AppState == AppState.InGame)
+            {
+                GameSeed++;
+                RNG.SeedMe((int)GameSeed);
+                SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                Randomizer.Randomize(this);
+                await Task.Delay(7000);
+            }
+        }
+
+
+
+=== Corruptors.cs ===
+
+// These need to be updated or removed
+public static LevelFile CombineLevels2(LevelFile level1, LevelFile level2)
+{
+    var levelNew = level1;
+
+    if (level1.header.height == 32 && level2.header.height == 32 && level1.header.width == 54 && level2.header.width == 54)
+    {
+        int index = 0;
+        int lw = 54;
+        int lh = 32;
+        for (int i = 0; i < lh; i++)
+        {
+            for (int j = 0; j < lw / 2; j++)
+            {
+                index = i * lw + j;
+                index += 27;
+                //if (j % 4 < 2)
+                //{
+                    levelNew.data.active[index] = level2.data.active[index];
+                    levelNew.data.back1[index] = level2.data.back1[index];
+                    levelNew.data.back2[index] = level2.data.back2[index];
+                    levelNew.data.tag[index] = level2.data.tag[index];
+                    levelNew.data.overlay[index] = level2.data.overlay[index];
+                //}
+            }
+        }
+
+        for (int i = 0; i < lh; i++)
+        {
+            for (int j = 25; j < 29; j++)
+            {
+                index = i * lw + j;
+
+                //levelNew.data.overlay[index] = TileID.GraityBeam;
+
+                if (RNG.CoinFlip() && RNG.CoinFlip() && RNG.CoinFlip())
+                {
+                    switch (RNG.random.Next(0, 3))
+                    {
+                        case 0:
+                            levelNew.data.active[index] = TileID.Crumble;
+                            break;
+                        case 1:
+                            levelNew.data.active[index] = TileID.Platform;
+                            break;
+                        case 2:
+                            levelNew.data.active[index] = TileID.Solid;
+                            break;
+                    }
+                }
+                else if (levelNew.data.active[index] == TileID.Solid) levelNew.data.active[index] = TileID.Empty;
+            }
+        }
+
+        for (int i = 0; i < 3; i++)
+        {
+            levelNew.data.active[RNG.random.Next(0, lw * lh)] = TileID.Switch1U;
+            levelNew.data.active[RNG.random.Next(0, lw * lh)] = TileID.Switch2U;
+            levelNew.data.active[RNG.random.Next(0, lw * lh)] = TileID.Switch3U;
+            levelNew.data.active[RNG.random.Next(0, lw * lh)] = TileID.Switch4U;
+        }
+
+        levelNew.data.tag[0] = TileID.CameraBounds;
+        levelNew.data.tag[1727] = TileID.CameraBounds;
+        //for (int i = 0; i < lh; i++)
+        //{
+        //    for (int j = 0; j < 27; j++)
+        //    {
+        //        index = i * lw + j;
+        //        index += 16;
+        //        levelNew.data.active[index] = level2.data.active[index];
+        //        levelNew.data.back1[index] = level2.data.back1[index];
+        //        levelNew.data.back2[index] = level2.data.back2[index];
+        //        levelNew.data.tag[index] = level2.data.tag[index];
+        //        levelNew.data.overlay[index] = level2.data.overlay[index];
+        //    }
+        //}
+    }
+
+    return levelNew;
+}
+public static LevelFile MergeLevels(LevelFile level1, LevelFile level2)
+{
+    // find right edge of first level and actual camera bounds
+    // find left edge of second level and actual camera bounds
+    // Coordinate pairs have row first, column second
+    Pair L1ExitCoord = new Pair(0, 0), L2EntryCoord = new Pair(0, 0);
+    Bounds L1Bounds = GetCameraBounds(level1), L2Bounds = GetCameraBounds(level2);
+
+    int index = 0;
+    int lw = level1.header.width;
+    int lh = level1.header.height;
+    for (int i = 0; i < lh; i++)
+    {
+        for (int j = 0; j < lw; j++)
+        {
+            index = i * lw + j;
+            if (level1.data.tag[index] == TileID.GreenTransitionR)
+            { level1.data.tag[index] = TileID.Empty; L1ExitCoord.First = i; L1ExitCoord.Second = j; }
+            if (level2.data.tag[index] == TileID.GreenTransitionL)
+            { level2.data.tag[index] = TileID.Empty; L2EntryCoord.First = i; L2EntryCoord.Second = j; }
+        }
+    }
+    for (int i = 0; i < lh; i++)
+    {
+        for (int j = 0; j < lw; j++)
+        {
+            index = i * lw + j;
+            if (level1.data.tag[index] == TileID.MergeMarkerR)
+            { L1ExitCoord.First = i; L1ExitCoord.Second = j; }
+            if (level2.data.tag[index] == TileID.MergeMarkerL)
+            { L2EntryCoord.First = i; L2EntryCoord.Second = j; }
+        }
+    }
+    // establish level boundaries and new level size
+    Pair L1Origin = new Pair(0, 0); // find vertical offset of L1 (originOffset = L2EntryCoord.height - L1ExitCoord.height)
+    Pair L2Origin = new Pair(0, 0); // level 2 origin point = originOffset + L1ExitCoord - L2EntryCoord
+
+    if (L1ExitCoord.First < L2EntryCoord.First)
+    {
+        L1Origin.First = L2EntryCoord.First - L1ExitCoord.First;
+    }
+    else
+    {
+        L1Origin.First = L1ExitCoord.First - L2EntryCoord.First;
+    }
+    L2Origin = L1Origin + L1ExitCoord - L2EntryCoord;
+
+    Console.WriteLine($"L1ExitCoord: {L1ExitCoord.First}, {L1ExitCoord.Second}");
+    Console.WriteLine($"L2EntryCoord: {L2EntryCoord.First}, {L2EntryCoord.Second}");
+    Console.WriteLine($"L1Origin: {L1Origin.First}, {L1Origin.Second}");
+    Console.WriteLine($"L2Origin: {L2Origin.First}, {L2Origin.Second}");
+
+    // create new level
+    // size is doubled in both dimensions
+    int width = L1ExitCoord.Second + level2.header.width - L2EntryCoord.Second;
+    int height = Math.Max(L1Origin.First + level1.header.height, L2Origin.First + level2.header.height);
+    var levelNew = new LevelFile(width, height);
+
+    // copy first level into new level
+    // copies from left edge of canvas to L1ExitCoord column
+    int copyIndex = 0;
+    int pasteIndex = 0;
+    int copylw = level1.header.width;
+    int copylh = level1.header.height;
+    int pastelw = levelNew.header.width;
+    int pastelh = levelNew.header.height;
+    // copy first level
+    for (int i = 0; i < copylh; i++)
+    {
+        for (int j = 0; j < L1ExitCoord.Second; j++)
+        {
+            copyIndex = i * copylw + j;
+            pasteIndex = (i + L1Origin.First) * pastelw + (j + L1Origin.Second);
+            levelNew.data.active[pasteIndex] = level1.data.active[copyIndex];
+            levelNew.data.back1[pasteIndex] = level1.data.back1[copyIndex];
+            levelNew.data.back2[pasteIndex] = level1.data.back2[copyIndex];
+            levelNew.data.tag[pasteIndex] = level1.data.tag[copyIndex];
+            levelNew.data.overlay[pasteIndex] = level1.data.overlay[copyIndex];
+        }
+    }
+
+    // copy second level into new level
+    // align L2EntryCoord to L1ExitCoord
+    // copy from L2EntryCoord to right edge of canvas
+    copyIndex = 0;
+    pasteIndex = 0;
+    copylw = level2.header.width;
+    copylh = level2.header.height;
+    pastelw = levelNew.header.width;
+    pastelh = levelNew.header.height;
+    for (int i = 0; i < copylh; i++)
+    {
+        for (int j = L2EntryCoord.Second; j < copylw; j++)
+        {
+            copyIndex = i * copylw + j;
+            pasteIndex = (i + L2Origin.First) * pastelw + (j + L2Origin.Second);
+
+            //Console.WriteLine($"copyIndex: {i},{j}");
+            //Console.WriteLine($"pasteIndex: {i + L2Origin.First},{j + L2Origin.Second}");
+
+            levelNew.data.active[pasteIndex] = level2.data.active[copyIndex];
+            levelNew.data.back1[pasteIndex] = level2.data.back1[copyIndex];
+            levelNew.data.back2[pasteIndex] = level2.data.back2[copyIndex];
+            levelNew.data.tag[pasteIndex] = level2.data.tag[copyIndex];
+            levelNew.data.overlay[pasteIndex] = level2.data.overlay[copyIndex];
+        }
+    }
+
+    // place new camera bounds based on original viewable area
+    int bottomLeftCamera = (Math.Max(L1Bounds.Bottom, L2Bounds.Bottom)) * levelNew.header.width + (Math.Min(L1Bounds.Left, L2Bounds.Left));
+    int topRightCamera = (Math.Min(L1Bounds.Top, L2Bounds.Top)) * levelNew.header.width + (Math.Max(L1Bounds.Right, L2Bounds.Right));
+    levelNew.data.tag[bottomLeftCamera] = TileID.CameraBounds;
+    levelNew.data.tag[topRightCamera] = TileID.CameraBounds;
+
+    return levelNew;
+}
+public static LevelFile CombineLevels(LevelFile level1, LevelFile level2)
+{
+    // find right edge of first level and actual camera bounds
+    // find left edge of second level and actual camera bounds
+    // Coordinate pairs have row first, column second
+    Pair L1ExitCoord = new Pair(0, 0), L2EntryCoord = new Pair(0, 0);
+    Bounds L1Bounds = GetCameraBounds(level1), L2Bounds = GetCameraBounds(level2);
+
+    int index = 0;
+    int lw = level1.header.width;
+    int lh = level1.header.height;
+    for (int i = 0; i < lh; i++)
+    {
+        for (int j = 0; j < lw; j++)
+        {
+            index = i * lw + j;
+            if (level1.data.tag[index] == TileID.GreenTransitionR)
+            { level1.data.tag[index] = TileID.Empty; L1ExitCoord.First = i; L1ExitCoord.Second = j; }
+            if (level2.data.tag[index] == TileID.GreenTransitionL)
+            { level2.data.tag[index] = TileID.Empty; L2EntryCoord.First = i; L2EntryCoord.Second = j; }
+        }
+    }
+    //for (int i = 0; i < lh; i++)
+    //{
+    //    for (int j = 0; j < lw; j++)
+    //    {
+    //        index = i * lw + j;
+    //        if (level1.data.tag[index] == TileID.MergeMarkerR)
+    //        { L1ExitCoord.First = i; L1ExitCoord.Second = j; }
+    //        if (level2.data.tag[index] == TileID.MergeMarkerL)
+    //        { L2EntryCoord.First = i; L2EntryCoord.Second = j; }
+    //    }
+    //}
+    // establish level boundaries and new level size
+    Pair L1Origin = new Pair(0, 0); // find vertical offset of L1 (originOffset = L2EntryCoord.height - L1ExitCoord.height)
+    Pair L2Origin = new Pair(0, 0); // level 2 origin point = originOffset + L1ExitCoord - L2EntryCoord
+
+    if (L1ExitCoord.First < L2EntryCoord.First)
+    {
+        L1Origin.First = L2EntryCoord.First - L1ExitCoord.First;
+    }
+    else
+    {
+        L1Origin.First = L1ExitCoord.First - L2EntryCoord.First;
+    }
+    L2Origin = L1Origin + L1ExitCoord - L2EntryCoord;
+
+    Console.WriteLine($"L1ExitCoord: {L1ExitCoord.First}, {L1ExitCoord.Second}");
+    Console.WriteLine($"L2EntryCoord: {L2EntryCoord.First}, {L2EntryCoord.Second}");
+    Console.WriteLine($"L1Origin: {L1Origin.First}, {L1Origin.Second}");
+    Console.WriteLine($"L2Origin: {L2Origin.First}, {L2Origin.Second}");
+
+    // create new level
+    // size is doubled in both dimensions
+    int width = L1ExitCoord.Second + level2.header.width - L2EntryCoord.Second;
+    int height = Math.Max(L1Origin.First + level1.header.height, L2Origin.First + level2.header.height);
+    var levelNew = new LevelFile(width, height);
+
+    // copy first level into new level
+    // copies from left edge of canvas to L1ExitCoord column
+    int copyIndex = 0;
+    int pasteIndex = 0;
+    int copylw = level1.header.width;
+    int copylh = level1.header.height;
+    int pastelw = levelNew.header.width;
+    int pastelh = levelNew.header.height;
+    // copy first level
+    for (int i = 0; i < copylh; i++)
+    {
+        for (int j = 0; j < L1ExitCoord.Second; j++)
+        {
+            copyIndex = i * copylw + j;
+            pasteIndex = (i + L1Origin.First) * pastelw + (j + L1Origin.Second);
+            levelNew.data.active[pasteIndex] = level1.data.active[copyIndex];
+            levelNew.data.back1[pasteIndex] = level1.data.back1[copyIndex];
+            levelNew.data.back2[pasteIndex] = level1.data.back2[copyIndex];
+            levelNew.data.tag[pasteIndex] = level1.data.tag[copyIndex];
+            levelNew.data.overlay[pasteIndex] = level1.data.overlay[copyIndex];
+        }
+    }
+
+    // copy second level into new level
+    // align L2EntryCoord to L1ExitCoord
+    // copy from L2EntryCoord to right edge of canvas
+    copyIndex = 0;
+    pasteIndex = 0;
+    copylw = level2.header.width;
+    copylh = level2.header.height;
+    pastelw = levelNew.header.width;
+    pastelh = levelNew.header.height;
+    for (int i = 0; i < copylh; i++)
+    {
+        for (int j = L2EntryCoord.Second; j < copylw; j++)
+        {
+            copyIndex = i * copylw + j;
+            pasteIndex = (i + L2Origin.First) * pastelw + (j + L2Origin.Second);
+
+            //Console.WriteLine($"copyIndex: {i},{j}");
+            //Console.WriteLine($"pasteIndex: {i + L2Origin.First},{j + L2Origin.Second}");
+
+            levelNew.data.active[pasteIndex]    = level2.data.active[copyIndex];
+            levelNew.data.back1[pasteIndex]     = level2.data.back1[copyIndex];
+            levelNew.data.back2[pasteIndex]     = level2.data.back2[copyIndex];
+            levelNew.data.tag[pasteIndex]       = level2.data.tag[copyIndex];
+            levelNew.data.overlay[pasteIndex]   = level2.data.overlay[copyIndex];
+        }
+    }
+
+    //// fill in blank at topL1
+    //for (int i = 0; i < L1Origin.First; i++)
+    //{
+    //    for (int j = 0; j < L1ExitCoord.Second; j++)
+    //    {
+    //        //copyIndex = j;
+    //        pasteIndex = i * pastelw + (j + L1Origin.Second);
+    //        levelNew.data.active[pasteIndex] = TileID.Decoration1;
+    //        //levelNew.data.active[pasteIndex]    = level1.data.active[copyIndex];
+    //        //levelNew.data.back1[pasteIndex]     = level1.data.back1[copyIndex];
+    //        //levelNew.data.back2[pasteIndex]     = level1.data.back2[copyIndex];
+    //        //levelNew.data.tag[pasteIndex]       = level1.data.tag[copyIndex];
+    //        //levelNew.data.overlay[pasteIndex]   = level1.data.overlay[copyIndex];
+    //    }
+    //}
+    //// fill in blank at bottomL1
+    //for (int i = L1Origin.First + level1.header.height; i < pastelh; i++)
+    //{
+    //    for (int j = 0; j < L1ExitCoord.Second; j++)
+    //    {
+    //        //copyIndex = (L1Origin.First + level1.header.height) * copylw + j;
+    //        pasteIndex = i * pastelw + (j + L1Origin.Second);
+    //        levelNew.data.active[pasteIndex] = TileID.Decoration1;
+    //    }
+    //}
+    //// fill in blank at topL2
+    //for (int i = 0; i < L2Origin.First; i++)
+    //{
+    //    for (int j = L2EntryCoord.Second; j < pastelw; j++)
+    //    {
+    //        pasteIndex = i * pastelw + (j + L2Origin.Second);
+    //        levelNew.data.active[pasteIndex] = TileID.Decoration1;
+    //    }
+    //}
+    //// fill in blank at bottomL2
+    //for (int i = L2Origin.First + level2.header.height; i < pastelh; i++)
+    //{
+    //    for (int j = L2EntryCoord.Second; j < pastelw; j++)
+    //    {
+    //        pasteIndex = i * pastelw + (j + L2Origin.Second);
+    //        levelNew.data.active[pasteIndex] = TileID.Decoration1;
+    //    }
+    //}
+
+    // place new camera bounds based on original viewable area
+    int bottomLeftCamera = (Math.Max(L1Bounds.Bottom, L2Bounds.Bottom)) * levelNew.header.width + (Math.Min(L1Bounds.Left, L2Bounds.Left));
+    int topRightCamera = (Math.Min(L1Bounds.Top, L2Bounds.Top)) * levelNew.header.width + (Math.Max(L1Bounds.Right, L2Bounds.Right));
+    //levelNew.data.tag[bottomLeftCamera] = TileID.CameraBounds;
+    //levelNew.data.tag[topRightCamera] = TileID.CameraBounds;
+
+    int last = levelNew.header.height * levelNew.header.width;
+    levelNew.data.tag[0] = TileID.CameraBounds;
+    levelNew.data.tag[last - 1] = TileID.CameraBounds;
+
+    // trim level
+
+
+
+    return levelNew;
+}

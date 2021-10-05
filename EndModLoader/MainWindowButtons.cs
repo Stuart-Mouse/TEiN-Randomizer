@@ -17,60 +17,10 @@ namespace TEiNRandomizer
 {
     partial class MainWindow
     {
+        // Tools Buttons
         private void WriteSettingsCodeForMe_Click(object sender, RoutedEventArgs e)
         {
             RSettings.WriteNewSaveFunc();
-        }
-        private void RefreshButton_Click(object sender, RoutedEventArgs e)
-        {
-            //GameSeed = RNG.GetUInt32();
-            GameSeed += 500;
-            RNG.SeedMe((int)GameSeed);
-            SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-            Randomizer.Randomize(this);
-        }   // Refresh button is no longer in use.
-        private void SaveModButton_Click(object sender, RoutedEventArgs e)
-        {
-            Randomizer.Randomize(this, "savemod");
-            LoadSavedRuns(FileSystem.ReadModFolder(SavedRunsPath).OrderBy(p => p));
-            MessageBox.Show($"Mod saved successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
-        private void ModList_Click(object sender, RoutedEventArgs e)
-        {
-            var selected = (sender as ListView).SelectedItem;
-            (selected as Mod).Active = !(selected as Mod).Active;
-        }
-        private void SavedRunsList_Click(object sender, RoutedEventArgs e)
-        {
-            var selected = (sender as ListView).SelectedItem;
-            foreach (var mod in SavedRuns)
-            {
-                mod.Active = false;
-            }
-            (selected as Mod).Active = true;
-        }
-        private void PieceList_Click(object sender, RoutedEventArgs e)
-        {
-            var selected = (sender as ListView).SelectedItem;
-            (selected as PiecePool).Active = !(selected as PiecePool).Active;
-        }
-        private void OpenTilesetsOptionsButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                if (File.Exists("data/AttachToTS.txt"))
-                    Process.Start("notepad.exe", "data/AttachToTS.txt");
-                else { File.Create("data/AttachToTS.txt"); Process.Start("data/AttachToTS.txt"); }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show($"Error opening or creating AttachToTS.txt.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-        private void ReloadTilesetsOptionsButton_Click(object sender, RoutedEventArgs e)
-        {
-            RSettings.AttachToTS = File.ReadAllText("data/AttachToTS.txt");
-            MessageBox.Show($"Tilesets options succesfully reloaded.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         private void LevelGenTestButton_Click(object sender, RoutedEventArgs e)
         {
@@ -166,7 +116,7 @@ namespace TEiNRandomizer
                 var level = LevelManip.Load(file);
                 string filename = Path.GetFileName(file);
 
-                Corruptors.ReplaceColorTiles(ref level);
+                LevelCorruptors.ReplaceColorTiles(ref level);
                 //AutoDecorator.DecorateMachine(ref level);
 
                 string savepath = RSettings.ToolsOutDirectory + filename;
@@ -186,7 +136,7 @@ namespace TEiNRandomizer
                 var level = LevelManip.Load(file);
                 string filename = Path.GetFileName(file);
 
-                Corruptors.ReplaceColorTiles(ref level);
+                LevelCorruptors.ReplaceColorTiles(ref level);
                 AutoDecorator.DecorateMachine(ref level);
 
                 string savepath = RSettings.ToolsOutDirectory + filename;
@@ -257,13 +207,128 @@ namespace TEiNRandomizer
             {
                 var level = LevelManip.Load(file);
                 string filename = Path.GetFileName(file);
-                Corruptors.SmartCorruptActive(ref level);
-                Corruptors.SmartCorruptOverlay(ref level);
+                LevelCorruptors.SmartCorruptActive(ref level);
+                LevelCorruptors.SmartCorruptOverlay(ref level);
                 string savepath = RSettings.ToolsOutDirectory + filename;
                 LevelManip.Save(level, savepath);
             }
             MessageBox.Show($"Successfully Corrupted Levels", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
+
+        // Main Interface Buttons
+        private void FolderButton_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = true,
+                Title = "Select The End Is Nigh Folder"
+            };
+
+            var result = dialog.ShowDialog();
+            if (result == CommonFileDialogResult.Ok)
+            {
+                RSettings.GameDirectory = dialog.FileName + "/";
+                Mods.Clear();
+            }
+
+            ReadyEndIsNighPath();
+        }
+        private void UnloadButton_Click(object sender, RoutedEventArgs e)
+        {
+            AppState = AppState.NoModsFound;
+        }
+        private async void RandomizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            RNG.SeedMe((int)GameSeed);
+            await PlayRandomizer();
+        }
+        private async void PlayModButton_Click(object sender, RoutedEventArgs e)
+        {
+            RNG.SeedMe((int)GameSeed);
+            bool arg = (sender as Button).Name.ToString() == "RandomizeModButton";
+            await PlayMod(arg);
+        }
+        private void SeedButton_Click(object sender, RoutedEventArgs e)
+        {
+            GameSeed = RNG.GetUInt32();
+            RNG.SeedMe((int)GameSeed);
+            SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+            ModSeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+        }
+        private void PoolCat_Click(object sender, RoutedEventArgs e)
+        {
+            (sender as LevelPoolCategory).Enabled = !(sender as LevelPoolCategory).Enabled;
+            //PoolCatList.GetBindingExpression(ListBox.VisibilityProperty).UpdateTarget();
+        }
+        private void SaveSettings_Click(object sender, RoutedEventArgs e)
+        {
+            //ParticleRanger();
+            RSettings.Save("default");
+            AppResources.SaveShadersList(ShadersList);
+            foreach (LevelPoolCategory cat in PoolCatList.Items)
+                foreach (LevelPool pool in cat.Pools)
+                {
+                    pool.Save();
+                }
+            MessageBox.Show(
+                        "Save successful.",
+                        "FYI",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information,
+                        MessageBoxResult.OK
+                    );
+        }
+        private void RefreshButton_Click(object sender, RoutedEventArgs e)
+        {
+            //GameSeed = RNG.GetUInt32();
+            GameSeed += 500;
+            RNG.SeedMe((int)GameSeed);
+            SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+            Randomizer.Randomize(this);
+        }   // Refresh button is no longer in use.
+        private void SaveModButton_Click(object sender, RoutedEventArgs e)
+        {
+            Randomizer.Randomize(this, "savemod");
+            LoadSavedRuns(FileSystem.ReadModFolder(SavedRunsPath).OrderBy(p => p));
+            MessageBox.Show($"Mod saved successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void ModList_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = (sender as ListView).SelectedItem;
+            (selected as Mod).Active = !(selected as Mod).Active;
+        }
+        private void SavedRunsList_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = (sender as ListView).SelectedItem;
+            foreach (var mod in SavedRuns)
+            {
+                mod.Active = false;
+            }
+            (selected as Mod).Active = true;
+        }
+        private void PieceList_Click(object sender, RoutedEventArgs e)
+        {
+            var selected = (sender as ListView).SelectedItem;
+            (selected as PiecePool).Active = !(selected as PiecePool).Active;
+        }
+        private void OpenTilesetsOptionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                if (File.Exists("data/AttachToTS.txt"))
+                    Process.Start("notepad.exe", "data/AttachToTS.txt");
+                else { File.Create("data/AttachToTS.txt"); Process.Start("data/AttachToTS.txt"); }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show($"Error opening or creating AttachToTS.txt.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        private void ReloadTilesetsOptionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            RSettings.AttachToTS = File.ReadAllText("data/AttachToTS.txt");
+            MessageBox.Show($"Tilesets options succesfully reloaded.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
     }
 }

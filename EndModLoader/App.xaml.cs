@@ -22,13 +22,13 @@ namespace TEiNRandomizer
         private void PoolCat_Click(object sender, RoutedEventArgs e)
         {
             //var parent = (ListView)((TextBox)sender).Parent;
-            (sender as PoolCategory).Enabled = !(sender as PoolCategory).Enabled;
+            (sender as LevelPoolCategory).Enabled = !(sender as LevelPoolCategory).Enabled;
             //PoolList.GetBindingExpression(ListBox.VisibilityProperty).UpdateTarget();
         }
         private void PoolList_Click(object sender, RoutedEventArgs e)
         {
             var selected = (sender as ListBox).SelectedItem;
-            (selected as Pool).Active = !(selected as Pool).Active;
+            (selected as LevelPool).Active = !(selected as LevelPool).Active;
         }
         //private void Mod_Click(object sender, RoutedEventArgs e)
         //{
@@ -54,7 +54,7 @@ namespace TEiNRandomizer
             var list = (ListBox)grid.Children[1];
             foreach (var pool in list.ItemsSource)
             {
-                (pool as Pool).Active = false;
+                (pool as LevelPool).Active = false;
                 //(pool as ListBoxItem).GetBindingExpression(ListBox.).UpdateTarget();
             }
         }

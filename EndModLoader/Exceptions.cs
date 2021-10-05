@@ -19,18 +19,4 @@ namespace TEiNRandomizer
 
         }
     }
-
-    class LevelSizeException : Exception
-    {
-        public LevelSizeException()
-        {
-
-        }
-
-        public LevelSizeException(int v, int h)
-            : base(String.Format("Collision Detected in Level Generation:", v, h))
-        {
-
-        }
-    }
 }

@@ -11,7 +11,8 @@
         public bool CanReverse;
         public Connections connections;
 
-        public string fileName { get => $"data/tilemaps/{Folder}/{Name}.lvl"; }
+        public string inFile { get => $"data/tilemaps/{Folder}/{Name}.lvl"; }
+        public string outFile;
         //public LevelFile File;
     }
 }

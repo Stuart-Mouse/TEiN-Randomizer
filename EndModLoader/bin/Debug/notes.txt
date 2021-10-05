@@ -151,3 +151,26 @@ start with machine decorating
 basically just fug up the windows and add the blinky bits
 
 create some algorithm for adding holes into solid backgrounds?
+
+
+
+
+
+=== CLEANING UP THE PROJECT ===
+
+I should probably write up a design doc or at least something formally outlining the purpose behind each class
+FileSystem's purpose needs to be more well defined.
+Appstate needs to be reworked
+
+corruptors, levelmanip, level generator all need more well-definied boundaries/purpose
+
+LevelManip:
+  performs basic functions on level files (loading, saving, flips, rotations)
+Corruptors:
+  used to perform level corruptions, advanced level manipulations. also used for removing color tiles
+Level Generator:
+  works with level pieces to algorithmically create level files "from scratch"
+
+CSV class: could be used for storing an instance of a map.csv and for basic manipulations of the csv
+
+it would be nice to implement gon support and convert xml data files to gon

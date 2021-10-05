@@ -10,7 +10,7 @@ namespace TEiNRandomizer
 {
     public static class ParticleGenerator
     {
-        public static string GetParticle(RandomizerSettings settings)
+        public static string GetParticle(SettingsFile settings)
         {
             string particle_name = "";
             switch (RNG.random.Next(0, 3))
@@ -25,7 +25,7 @@ namespace TEiNRandomizer
             }
             return particle_name;
         }
-        public static string MistParticle(RandomizerSettings settings)
+        public static string MistParticle(SettingsFile settings)
         {
             string particle_name = "MistParticle" + RNG.GetUInt32().ToString();
 
@@ -115,7 +115,7 @@ namespace TEiNRandomizer
             return particle_name;
         }
 
-        public static string DirectionParticle(RandomizerSettings settings)
+        public static string DirectionParticle(SettingsFile settings)
         {
             string particle_name = "DirectionParticle" + RNG.GetUInt32().ToString();
 

@@ -1,5 +1,4 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,35 +8,47 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using TEiNRandomizer.Properties;
 
 namespace TEiNRandomizer
 {
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        // string values used by the Main Window
         public static string ExeName { get => "TheEndIsNigh.exe"; }
         public static string WindowTitle { get => "  The End is Nigh Randomizer BETA  "; }
         public string ModPath { get => "mods"; }
         public string SavedRunsPath { get => "saved runs"; }
-        public string PoolPath { get => "data/levelpools"; }
-        public string PiecePoolPath { get => "data/piecepools"; }
+        
+        // shader list and settings list are references to those stored in the AppResources
+        public List<Shader> ShadersList { get; set; } = AppResources.ShadersList;
+        public SettingsFile RSettings { get; set; } = AppResources.MainSettings;
+        // This is the seed used to generate randomized runs. Acts as a reference to the gameseed stored in AppResources
+        public UInt32 GameSeed
+        {
+            get => AppResources.GameSeed;
+            set
+            {
+                AppResources.GameSeed = value;
+            }
+        }    
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public List<Shader> ShadersList { get; set; } = Randomizer.GetShadersList();
-        public UInt32 GameSeed { get; set; }    // This is the seed used to generate randomized runs.
-        public RandomizerSettings RSettings { get; set; } = new RandomizerSettings("default");
 
-        protected void NotifyPropertyChanged(string property) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
-
+        // Main observable collections used for lists
         public ObservableCollection<Mod> Mods { get; private set; } = new ObservableCollection<Mod>();
         public ObservableCollection<Mod> SavedRuns { get; private set; } = new ObservableCollection<Mod>();
-        public ObservableCollection<PoolCategory> PoolCats { get; private set; } = new ObservableCollection<PoolCategory>();
+        public ObservableCollection<LevelPoolCategory> PoolCats { get; private set; } = new ObservableCollection<LevelPoolCategory>();
         public ObservableCollection<PiecePool> PiecePools { get; private set; } = new ObservableCollection<PiecePool>();
+
+        // these collections are basically just used as enums for the possible values for certain settings (dropdown boxes bind to them)
         public ObservableCollection<string> AltLevels { get; private set; } = new ObservableCollection<string>() { "None", "Safe", "Extended", "Crazy", "Insane" };
         public ObservableCollection<string> AreaTypes { get; private set; } = new ObservableCollection<string>() { "normal", "dark", "cart", "ironcart", "glitch" };
         public ObservableCollection<int> MaxParticleFXList { get; private set; } = new ObservableCollection<int>() { 1, 2, 3 };
+
+        // Incorporate property change events
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void NotifyPropertyChanged(string property) =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
 
         private TabItem _modLoaderTabSelected;
         public TabItem ModLoaderTabSelected
@@ -79,7 +90,7 @@ namespace TEiNRandomizer
         {
             InitializeComponent();
             DataContext = this;
-            AppState = AppState.NoModSelected;
+            AppState = AppState.InMenus;
 
             //EndIsNighPath = RSettings.GameDirectory;
             if (string.IsNullOrWhiteSpace(RSettings.GameDirectory))
@@ -106,7 +117,6 @@ namespace TEiNRandomizer
                 e.Cancel = result != MessageBoxResult.Yes;
             }
         }
-
         private void ReadyEndIsNighPath()
         {
             try
@@ -116,12 +126,11 @@ namespace TEiNRandomizer
                     FileSystem.SetupDir(RSettings.GameDirectory);
                     FileSystem.MakeSaveBackup(RSettings.GameDirectory);
                     LoadModList(FileSystem.ReadModFolder(ModPath).OrderBy(m => m));
-                    LoadPoolList(Randomizer.PoolLoader(PoolPath).OrderBy(p => p));
+                    LoadPoolList(Randomizer.LevelPoolCategories.OrderBy(p => p));
                     LoadSavedRuns(FileSystem.ReadModFolder(SavedRunsPath).OrderBy(p => p));
-                    LoadPieceList(Randomizer.PieceLoader(PiecePoolPath).OrderBy(p => p));
-                    Randomizer.LoadNPCs();
+                    LoadPieceList(Randomizer.PiecePools.OrderBy(p => p));
                     GameSeed = RNG.GetUInt32();
-                    FileSystem.EnableWatching(ModPath, OnAdd, OnRemove, OnRename);
+                    //FileSystem.EnableWatching(ModPath, OnAdd, OnRemove, OnRename);
                 }
                 else
                 {
@@ -140,6 +149,7 @@ namespace TEiNRandomizer
             }
         }
 
+        // FileSystemWatcher Stuff, mostly unused now
         private void OnAdd(object sender, FileSystemEventArgs e)
         {
             var added = Mod.FromZip(e.FullPath);
@@ -155,7 +165,6 @@ namespace TEiNRandomizer
                 });
             }
         }
-
         private void OnRemove(object sender, FileSystemEventArgs e)
         {
             var find = Mods.Where(m => m.ModPath == e.FullPath).FirstOrDefault();
@@ -164,7 +173,6 @@ namespace TEiNRandomizer
                 Dispatcher.Invoke(() => Mods.Remove(find));
             }
         }
-
         private void OnRename(object sender, RenamedEventArgs e)
         {
             var find = Mods.Where(m => m.ModPath == e.OldFullPath).FirstOrDefault();
@@ -184,9 +192,10 @@ namespace TEiNRandomizer
             }
         }
 
+        // Async tasks, used while the game is running
         private async Task PlayRandomizer()
         {
-            if (AppState == AppState.ReadyToPlay)
+            if (AppState == AppState.InMenus)
             {
                 //if (File.Exists(EndIsNighPath + "backup/TheEndIsNigh -backup.exe")) // If backup exe exists restore regular from it
                 //{
@@ -196,46 +205,7 @@ namespace TEiNRandomizer
                 //else File.Copy(Path.Combine(EndIsNighPath + ExeName), Path.Combine(EndIsNighPath + "backup/TheEndIsNigh -backup.exe")); //Creates backup exe
 
                 // Check the game directory for mod folders
-                var contains = FileSystem.ContainedFolders(RSettings.GameDirectory, FileSystem.ModFolders).ToList();
-                if (contains.Count != 0)
-                {
-                    // FINALLY an excuse to use tuples!
-                    var (isOrAre, a, folderOrFolders, itOrThem) = contains.Count == 1 ?
-                        ("is", "a ", "folder", "it") :
-                        ("are", "", "folders", "them");
-
-                    var result = MessageBox.Show(
-                        $"There {isOrAre} currently {a}modified {String.Join(", ", contains.Select(f => $"\"{f}\""))} {folderOrFolders} present in your game directory. " +
-                        $"Delete {itOrThem} to play the Randomizer?",
-                        "Warning",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Warning,
-                        MessageBoxResult.No
-                    );
-
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        try
-                        {
-                            FileSystem.UnloadAll(RSettings.GameDirectory);
-                        }
-                        catch (IOException)
-                        {
-                            MessageBox.Show(
-                                "Could not delete the modified folders because one or more of them are open in an another process.",
-                                "Error",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error
-                            );
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        // Let's not delete any more Cities of Tethys.
-                        return;
-                    }
-                }
+                if (!CheckForModFolders()) return;
 
                 AppState = AppState.InGame;
                 Randomizer.Randomize(this);
@@ -245,71 +215,23 @@ namespace TEiNRandomizer
                     Process.Start(Path.Combine(RSettings.GameDirectory, ExeName));
                     await HookGameExit("TheEndIsNigh", (s, ev) =>
                     {
-                        AppState = AppState.ReadyToPlay;
+                        AppState = AppState.InMenus;
                         FileSystem.UnloadAll(RSettings.GameDirectory);
                     });
                 }
                 else await WaitForUnload();
             }
         }
-
         private async Task PlayMod(bool randomize)
         {
-            if (AppState == AppState.ReadyToPlay)
+            if (AppState == AppState.InMenus)
             {
-                //if (File.Exists(EndIsNighPath + "backup/TheEndIsNigh -backup.exe")) // If backup exe exists restore regular from it
-                //{
-                //    File.Delete(Path.Combine(EndIsNighPath + ExeName));
-                //    File.Copy(Path.Combine(EndIsNighPath + "backup/TheEndIsNigh -backup.exe"), Path.Combine(EndIsNighPath + ExeName));
-                //}
-                //else File.Copy(Path.Combine(EndIsNighPath + ExeName), Path.Combine(EndIsNighPath + "backup/TheEndIsNigh -backup.exe")); //Creates backup exe
-
-                // Check the game directory for mod folders
-                var contains = FileSystem.ContainedFolders(RSettings.GameDirectory, FileSystem.ModFolders).ToList();
-                if (contains.Count != 0)
-                {
-                    // FINALLY an excuse to use tuples!
-                    var (isOrAre, a, folderOrFolders, itOrThem) = contains.Count == 1 ?
-                        ("is", "a ", "folder", "it") :
-                        ("are", "", "folders", "them");
-
-                    var result = MessageBox.Show(
-                        $"There {isOrAre} currently {a}modified {String.Join(", ", contains.Select(f => $"\"{f}\""))} {folderOrFolders} present in your game directory. " +
-                        $"Delete {itOrThem} to play the Randomizer?",
-                        "Warning",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Warning,
-                        MessageBoxResult.No
-                    );
-
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        try
-                        {
-                            FileSystem.UnloadAll(RSettings.GameDirectory);
-                        }
-                        catch (IOException)
-                        {
-                            MessageBox.Show(
-                                "Could not delete the modified folders because one or more of them are open in an another process.",
-                                "Error",
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error
-                            );
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        // Let's not delete any more Cities of Tethys.
-                        return;
-                    }
-                }
+                if (!CheckForModFolders()) return;
 
                 if((ModLoaderTabs.SelectedItem as TabItem).Name == "ModsTab")
                 {
                     AppState = AppState.InGame;
-                    if (FileSystem.LoadMods(this))
+                    if (FileSystem.LoadMods(Mods, RSettings.GameDirectory))
                     {
                         if (randomize) Randomizer.RandomizeMod(this);
                         if (!RSettings.ManualLoad)
@@ -317,7 +239,7 @@ namespace TEiNRandomizer
                             Process.Start(Path.Combine(RSettings.GameDirectory, ExeName));
                             await HookGameExit("TheEndIsNigh", (s, ev) =>
                             {
-                                AppState = AppState.ReadyToPlay;
+                                AppState = AppState.InMenus;
                                 FileSystem.UnloadAll(RSettings.GameDirectory);
                             });
                         }
@@ -338,21 +260,21 @@ namespace TEiNRandomizer
                                 MessageBoxImage.Error
                             );
                         }
-                        AppState = AppState.ReadyToPlay;
+                        AppState = AppState.InMenus;
                     }
                 }
 
                 if ((ModLoaderTabs.SelectedItem as TabItem).Name == "SavedRunsTab")
                 {
                     AppState = AppState.InGame;
-                    if (FileSystem.LoadSavedRun(this))
+                    if (FileSystem.LoadSavedRun(SavedRunsList.SelectedItem as Mod, RSettings.GameDirectory))
                     {
                         if (!RSettings.ManualLoad)
                         {
                             Process.Start(Path.Combine(RSettings.GameDirectory, ExeName));
                             await HookGameExit("TheEndIsNigh", (s, ev) =>
                             {
-                                AppState = AppState.ReadyToPlay;
+                                AppState = AppState.InMenus;
                                 FileSystem.UnloadAll(RSettings.GameDirectory);
                             });
                         }
@@ -373,17 +295,57 @@ namespace TEiNRandomizer
                                 MessageBoxImage.Error
                             );
                         }
-                        AppState = AppState.ReadyToPlay;
+                        AppState = AppState.InMenus;
 
                     }
                 }
-
-
-
-
             }
         }
+        private bool CheckForModFolders()
+        {
+            // Check the game directory for mod folders
+            var contains = FileSystem.ContainedFolders(RSettings.GameDirectory, FileSystem.ModFolders).ToList();
+            if (contains.Count != 0)
+            {
+                // FINALLY an excuse to use tuples!
+                var (isOrAre, a, folderOrFolders, itOrThem) = contains.Count == 1 ?
+                    ("is", "a ", "folder", "it") :
+                    ("are", "", "folders", "them");
 
+                var result = MessageBox.Show(
+                    $"There {isOrAre} currently {a}modified {String.Join(", ", contains.Select(f => $"\"{f}\""))} {folderOrFolders} present in your game directory. " +
+                    $"Delete {itOrThem} to play the Randomizer?",
+                    "Warning",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning,
+                    MessageBoxResult.No
+                );
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        FileSystem.UnloadAll(RSettings.GameDirectory);
+                    }
+                    catch (IOException)
+                    {
+                        MessageBox.Show(
+                            "Could not delete the modified folders because one or more of them are open in an another process.",
+                            "Error",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error
+                        );
+                        return false;
+                    }
+                }
+                else
+                {
+                    // Let's not delete any more Cities of Tethys.
+                    return false;
+                }
+            }
+            return true;
+        }
         private async Task HookGameExit(string process, EventHandler hook)
         {
             // Since Steam's "launching..." exits and starts the games process,
@@ -395,17 +357,6 @@ namespace TEiNRandomizer
             end.EnableRaisingEvents = true;
             end.Exited += hook;
         }
-        private async Task AutoRefresh()
-        {
-            while (AppState == AppState.InGame)
-            {
-                GameSeed++;
-                RNG.SeedMe((int)GameSeed);
-                SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-                Randomizer.Randomize(this);
-                await Task.Delay(7000);
-            }
-        }
         private async Task WaitForUnload()
         {
             while (AppState == AppState.InGame)
@@ -413,22 +364,17 @@ namespace TEiNRandomizer
                 await Task.Delay(1000);
             }
             FileSystem.UnloadAll(RSettings.GameDirectory);
-            AppState = AppState.ReadyToPlay;
+            AppState = AppState.InMenus;
         }
-
         
-
-        private void LoadPoolList(IOrderedEnumerable<PoolCategory> cats)
+        // Resource loading functions
+        private void LoadPoolList(IOrderedEnumerable<LevelPoolCategory> cats)
         {
             PoolCats.Clear();
             foreach (var cat in cats.OrderBy(m => m))
             {
                 PoolCats.Add(cat);
             }
-
-            if (PoolCats.Count == 0) AppState = AppState.NoModsFound;
-            //else if (ModList.SelectedIndex == -1) AppState = AppState.NoModSelected;
-            else AppState = AppState.ReadyToPlay;
         }
         private void LoadPieceList(IOrderedEnumerable<PiecePool> pools)
         {
@@ -445,10 +391,6 @@ namespace TEiNRandomizer
             {
                 Mods.Add(mod);
             }
-
-            //if (Pools.Count == 0) AppState = AppState.NoModsFound;
-            //else if (ModList.SelectedIndex == -1) AppState = AppState.NoModSelected;
-            //AppState = AppState.ReadyToPlay;
         }
         private void LoadSavedRuns(IOrderedEnumerable<Mod> mods)
         {
@@ -457,102 +399,7 @@ namespace TEiNRandomizer
             {
                 SavedRuns.Add(mod);
             }
-
-            //if (Pools.Count == 0) AppState = AppState.NoModsFound;
-            //else if (ModList.SelectedIndex == -1) AppState = AppState.NoModSelected;
-            //AppState = AppState.ReadyToPlay;
         }
-        private void FolderButton_Click(object sender, RoutedEventArgs e)
-        {
-            var dialog = new CommonOpenFileDialog
-            {
-                IsFolderPicker = true,
-                Title = "Select The End Is Nigh Folder"
-            };
-
-            var result = dialog.ShowDialog();
-            if (result == CommonFileDialogResult.Ok)
-            {
-                RSettings.GameDirectory = dialog.FileName + "/";
-                Mods.Clear();
-            }
-
-            ReadyEndIsNighPath();
-        }
-
-        private void UnloadButton_Click(object sender, RoutedEventArgs e)
-        {
-            AppState = AppState.NoModsFound;
-        }
-
-        private async void RandomizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            RNG.SeedMe((int)GameSeed);
-            await PlayRandomizer();
-        }
-        private async void PlayModButton_Click(object sender, RoutedEventArgs e)
-        {
-            RNG.SeedMe((int)GameSeed);
-            bool arg = (sender as Button).Name.ToString() == "RandomizeModButton";
-            await PlayMod(arg);
-        }
-
-        private void SeedButton_Click(object sender, RoutedEventArgs e)
-        {
-            GameSeed = RNG.GetUInt32();
-            RNG.SeedMe((int)GameSeed);
-            SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-            ModSeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-        }
-
-        private void PoolCat_Click(object sender, RoutedEventArgs e)
-        {
-            (sender as PoolCategory).Enabled = !(sender as PoolCategory).Enabled;
-            //PoolCatList.GetBindingExpression(ListBox.VisibilityProperty).UpdateTarget();
-        }
-
-        private void SaveSettings_Click(object sender, RoutedEventArgs e)
-        {
-            //ParticleRanger();
-            RSettings.Save("default");
-            Randomizer.SaveShadersList(ShadersList);
-            foreach (PoolCategory cat in PoolCatList.Items)
-                foreach (Pool pool in cat.Pools)
-                {
-                    pool.Save();
-                }
-            MessageBox.Show(
-                        "Save successful.",
-                        "FYI",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information,
-                        MessageBoxResult.OK
-                    );
-        }
-
-        private void NoClick(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
-        }
-        private void ClearCache(object sender, RoutedEventArgs e)
-        {
-            if (File.Exists("cache.xml"))
-                File.Delete("cache.xml");
-            MessageBox.Show(
-                        "Cache was cleared.",
-                        "FYI",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information,
-                        MessageBoxResult.OK
-                    );
-        }
-
-        //private void ParticleRanger() // this function is stupid and I should get rid of it later
-        //{
-        //    if (RSettings.MaxParticleEffects < 0) RSettings.MaxParticleEffects = 0;
-        //    else if (RSettings.MaxParticleEffects > 3) RSettings.MaxParticleEffects = 3;
-        //    MaxParticleEffectsTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-        //}
-
+        
     }
 }

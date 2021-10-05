@@ -443,40 +443,6 @@ namespace TEiNRandomizer
          * 920xx - tag markers   (not sure what to use for)
          * 921xx - merge markers (probably going to remove)
          * 
-         * -----
-         * 
-         * Randomizer Colored Tile Variants:
-         * 
-         * NUMBER TAGS
-         *  used to indicate the X value for the colored tiles below
-         *  must be contiguous with the colored tiles
-         *  will adopt the tile id of the first tile in the contiguous group
-         * 
-         * BLUE     "alt me"
-         *  the randomizer will randomly convert the tile into one of its variants
-         *  this tile conversion will be applied even if level corruptions are not
-         *  e.g. blue ceiling spikes have a chance to turn into ceiling decor, small spikes, or be deleted
-         * 
-         * YELLOW   "place X tiles in range"
-         *  operates on a set of contiguous tiles
-         *  places X number of tiles in the given contiguous range
-         *  (((the remaining tiles wilt be alted, if applicable))) no they wont but maybe for another color
-         * 
-         * RED      "no more than X in a row"
-         *  operates on a set of contiguous tiles (best to be used horizontally xor vertically, not both)
-         *  will flip a coin on whether to place a tile, keeping count of how many have been placed in a row
-         *  once the length of tiles placed in a row = X, the next tile must be empty
-         *  e.g. create a row of spikes in random locations, ensuring that player will always be able to make the jump
-         * 
-         * 
-         * How are contiguous tiles found?
-         * 
-         * level is iterated upon by column within row iteration
-         * upon finding first colored tile or number tile, create a list of contiguous tiles and add the first tile to it (probably best to use a hash set, since we do not want any repeats)
-         * increment along the list
-         * check all neighboring tiles, if they are of the same type, add them to the list
-         *
-         * -----
          * 
          * Custom Movement Tags:
          * 
@@ -484,10 +450,6 @@ namespace TEiNRandomizer
          *  bi-directional arrow tag (gets replaced with a random speed movement tag going either direction)
          *  four-direction arrow tag (gets replaced by a random movement tag going any direction)
          *  no-accel variants of above tags (similar to the above tags, but it makes sure they do not select an accelerating movement type)
-         * 
-         * 
-         * 
-         * 
         */
 
         // Entity Placers

@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using Microsoft.Win32;
 using System.Windows;
-
 
 namespace TEiNRandomizer
 {
@@ -53,11 +53,11 @@ namespace TEiNRandomizer
             return true;
         }
 
-        public static bool LoadMods(MainWindow mw) // Does not work correctly. Mods will need to be stored unzipped.
+        public static bool LoadMods(ObservableCollection<Mod> mods, string gamePath)
         {
-            bool modLoaded = false; // bad way of checking if any mods were active, but it works
+            bool modLoaded = false; // probably not the best way of checking if any mods were active, but it works
             
-            foreach (Mod mod in mw.Mods)
+            foreach (Mod mod in mods)
             {
                 try  // will attempt to load all mods selected, but will return false if there is a conflict
                 {
@@ -65,11 +65,11 @@ namespace TEiNRandomizer
                     {
                         foreach (var folder in ModFolders)
                         {
-                            string path = $"{mod.ModPath}/{folder}";
-                            string dest = $"{mw.RSettings.GameDirectory}/{folder}";
-                            var source = new DirectoryInfo(path);
+                            string modPath = $"{mod.ModPath}/{folder}";
+                            string dest = $"{gamePath}/{folder}";
+                            var source = new DirectoryInfo(modPath);
                             var target = new DirectoryInfo(dest);
-                            if (Directory.Exists(path))
+                            if (Directory.Exists(modPath))
                             {
                                 Directory.CreateDirectory(dest);
                                 CopyFilesRecursively(source, target);
@@ -92,10 +92,9 @@ namespace TEiNRandomizer
 
             return true;
         }
-
-        public static bool LoadSavedRun(MainWindow mw) // Does not work correctly. Mods will need to be stored unzipped.
+        public static bool LoadSavedRun(Mod mod, string gamePath) // Does not work correctly. Mods will need to be stored unzipped.
         {
-            Mod mod = (mw.SavedRunsList.SelectedItem as Mod);
+            //Mod mod = (mw.SavedRunsList.SelectedItem as Mod);
             
             if (mod == null)
             {
@@ -108,7 +107,7 @@ namespace TEiNRandomizer
                 foreach (var folder in ModFolders)
                 {
                     string path = $"{mod.ModPath}/{folder}";
-                    string dest = $"{mw.RSettings.GameDirectory}/{folder}";
+                    string dest = $"{gamePath}/{folder}";
                     var source = new DirectoryInfo(path);
                     var target = new DirectoryInfo(dest);
                     if (Directory.Exists(path))

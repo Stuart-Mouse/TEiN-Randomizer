@@ -36,7 +36,6 @@ namespace TEiNRandomizer
                     File.Create(dir);
             }
         }
-        
         public static void RandomizeMod(MainWindow mw)
         {
             //ShadersList = mw.ShadersList;
@@ -55,13 +54,13 @@ namespace TEiNRandomizer
                 foreach (var file in paths)
                 {
                     LevelFile level = LevelManip.Load(file);
-                    if(settings.MirrorMode)
-                    {
-                        LevelManip.FlipLevelH(ref level);
-                        FlipCSV(saveDir + "data/map.csv");
-                    }
+                    //if(settings.MirrorMode)
+                    //{
+                    //    LevelManip.FlipLevelH(ref level);
+                    //    FlipCSV(saveDir + "data/map.csv");
+                    //}
                     if (settings.DoCorruptions)
-                        Corruptors.CorruptLevel(ref level);
+                        LevelCorruptors.CorruptLevel(ref level);
                     LevelManip.Save(level, file);
                 }
             }

@@ -14,12 +14,12 @@ using TEiNRandomizer.Properties;
 
 namespace TEiNRandomizer
 {
-    public class PoolCategory : IComparable<PoolCategory>
+    public class LevelPoolCategory : IComparable<LevelPoolCategory>
     {
         public string Name { get; set; }
         public string Author { get; set; }
         public bool Enabled { get; set; } = true;
-        public int CompareTo(PoolCategory other) => Name.CompareTo(other.Name);
-        public IEnumerable<Pool> Pools { get; set; }
+        public int CompareTo(LevelPoolCategory other) => Name.CompareTo(other.Name);
+        public IEnumerable<LevelPool> Pools { get; set; }
     }
 }

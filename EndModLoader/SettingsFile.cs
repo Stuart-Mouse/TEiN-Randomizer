@@ -6,7 +6,7 @@ using System.Xml.Linq;
 namespace TEiNRandomizer
 {
 
-    public class RandomizerSettings
+    public class SettingsFile
     {
         public string UserName { get; set; }
         public int NumLevels { get; set; }
@@ -65,7 +65,7 @@ namespace TEiNRandomizer
 
         // Mod Randomization Settings
 
-        public RandomizerSettings(string name)
+        public SettingsFile(string name)
         {
             // intialize true defaults in case settings file is fucked
             NumLevels = 10;
@@ -130,7 +130,6 @@ namespace TEiNRandomizer
                 try
                 {
                     Save(name);
-
                 }
                 catch (Exception)
                 {
