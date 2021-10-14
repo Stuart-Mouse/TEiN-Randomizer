@@ -39,8 +39,6 @@ namespace TEiNRandomizer
         public static void RandomizeMod(MainWindow mw)
         {
             //ShadersList = mw.ShadersList;
-            settings = mw.RSettings;
-            mainWindow = mw;
 
             saveDir = settings.GameDirectory;
 

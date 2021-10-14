@@ -14,8 +14,8 @@ namespace TEiNRandomizer
         public static Int32[] TagTiles { get; set; }
         public static Int32[] Back1Tiles { get; set; }
         public static Int32[] Back2Tiles { get; set; }
-        public static XElement SmartTiles { get; set; }
-        public static XElement ColorTiles { get; set; }
+        public static Dictionary<int, int[]> SmartTiles { get; set; }
+        public static Dictionary<int, int[]> ColorTiles { get; set; }
 
         public const int BLUE_OFFSET    = 100000;
         public const int YELLOW_OFFSET  = 200000;
@@ -24,12 +24,25 @@ namespace TEiNRandomizer
         
         static LevelCorruptors()
         {
-            var doc      = XDocument.Load($"data/corruptor_tiles.xml");
-            ActiveTiles  = Utility.ElementToArray(doc.Root.Element("active" ), true);
-            EntityTiles  = Utility.ElementToArray(doc.Root.Element("entity" ), true);
-            OverlayTiles = Utility.ElementToArray(doc.Root.Element("overlay"), true);
-            SmartTiles   = doc.Root.Element("smart");
-            ColorTiles   = doc.Root.Element("color");
+            var gon      = GonObject.Load($"data/text/corruptor_tiles.gon");
+            ActiveTiles  = GonObject.Manip.GonToIntArray(gon["active"]);
+            EntityTiles  = GonObject.Manip.GonToIntArray(gon["entity"]);
+            OverlayTiles = GonObject.Manip.GonToIntArray(gon["overlay"]);
+            SmartTiles = LoadDictionary(gon["smart"]);
+            ColorTiles = LoadDictionary(gon["color"]);
+        }
+        static Dictionary<int, int[]> LoadDictionary(GonObject gon)
+        {
+            var dict = new Dictionary<int, int[]>();
+            for (int i = 0; i < gon.Size(); i++)
+            {
+                var item = gon[i];
+                int id = item["id"].Int();
+                int[] alts = GonObject.Manip.GonToIntArray(item["alts"]);
+
+                dict.Add(id, alts);
+            }
+            return dict;
         }
         public static string CorruptLevel(ref LevelFile level)
         {
@@ -347,25 +360,16 @@ namespace TEiNRandomizer
                 {
                     int index = i * lw + j;
 
-                    // active layer
-                    var element = SmartTiles.Element(Enum.GetName(typeof(TileID), level.data.active[index]));
-
-                    if (element != null)
+                    if (SmartTiles.TryGetValue((int)level.data.active[index], out int[] alts) && alts.Length > 0)
                     {
-                        options = Utility.ElementToArray(element);   // use index to get enum name, search for corruption options in xml
-
-                        if ((Int32)level.data.active[index] < 1000)
+                        if ((int)level.data.active[index] < 1000)
                         {
                             if (RNG.random.Next(0, corruptLevel) == 0)
                             {
                                 try
                                 {
-                                    string s = options[RNG.random.Next(0, options.Length)];
-                                    if (s != null && s != "")
-                                    {
-                                        int num = Convert.ToInt32(s);
-                                        level.data.active[index] = (TileID)num;
-                                    }
+                                    int num = alts[RNG.random.Next(0, alts.Length)];
+                                    level.data.active[index] = (TileID)num;
                                 }
                                 catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                             }
@@ -374,13 +378,9 @@ namespace TEiNRandomizer
                         {
                             try
                             {
-                                string s = options[RNG.random.Next(0, options.Length)];
-                                if (s != null && s != "")
-                                {
-                                    int num = Convert.ToInt32(s);
-                                    if (num == 40003 || num == 40047) { hasGas = true; }
-                                    level.data.active[index] = (TileID)num;
-                                }
+                                int num = alts[RNG.random.Next(0, options.Length)];
+                                if (num == 40003 || num == 40047) { hasGas = true; }
+                                level.data.active[index] = (TileID)num;
                             }
                             catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                         }
@@ -406,22 +406,18 @@ namespace TEiNRandomizer
                 for (int j = 0; j < lw; j++)
                 {
                     int index = i * lw + j;
-                    // overlay layer
-                    var element = SmartTiles.Element(Enum.GetName(typeof(TileID), level.data.overlay[index]));
-                    if (element != null)
-                        options = Utility.ElementToArray(element);   // use index to get enum name, search for corruption options in xml
-                    if (RNG.CoinFlip())
+
+                    if(SmartTiles.TryGetValue((int)level.data.active[index], out int[] alts) && alts.Length > 0)
                     {
-                        try
+                        if (RNG.CoinFlip())
                         {
-                            string s = options[RNG.random.Next(0, options.Length)];
-                            if (s != null && s != "")
+                            try
                             {
-                                int num = Convert.ToInt32(s);
+                                int num = alts[RNG.random.Next(0, options.Length)];
                                 level.data.overlay[index] = (TileID)num;
                             }
+                            catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                         }
-                        catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                     }
                 }
             }
@@ -447,13 +443,9 @@ namespace TEiNRandomizer
                     // BLUE CONVEYORS
                     if (tile == 100027 || tile == 100028)
                     {
-                        string t = Enum.GetName(typeof(TileID), level.data.active[index]);
-                        var element = ColorTiles.Element(t);
-
-                        if (element != null)
+                        if (ColorTiles.TryGetValue(tile, out int[] alts))
                         {
-                            var options = Utility.ElementToArray(element);
-                            string s = options[RNG.random.Next(0, options.Length)]; // select one option for all tiles
+                            int num = alts[RNG.random.Next(0, alts.Length)]; // select one option for all tiles
 
                             var adjacents = new HashSet<int>();
                             adjacents.Add(index);
@@ -467,12 +459,8 @@ namespace TEiNRandomizer
 
                             try
                             {
-                                if (s != null && s != "")
-                                {
-                                    int num = Convert.ToInt32(s);
-                                    for (int k = 0; k < contiguous.Length; k++)
-                                        level.data.active[contiguous[k]] = (TileID)num;
-                                }
+                                for (int k = 0; k < contiguous.Length; k++)
+                                    level.data.active[contiguous[k]] = (TileID)num;
                             }
                             catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                         }
@@ -481,19 +469,12 @@ namespace TEiNRandomizer
                     // BLUE TILES
                     else if (tile > BLUE_OFFSET && tile < YELLOW_OFFSET)
                     {
-                        var element = ColorTiles.Element(Enum.GetName(typeof(TileID), level.data.active[index]));
-
-                        if (element != null)
+                        if (ColorTiles.TryGetValue(tile, out int[] alts))
                         {
-                            var options = Utility.ElementToArray(element);
                             try
                             {
-                                string s = options[RNG.random.Next(0, options.Length)];
-                                if (s != null && s != "")
-                                {
-                                    int num = Convert.ToInt32(s);
-                                    level.data.active[index] = (TileID)num;
-                                }
+                                int num = alts[RNG.random.Next(0, alts.Length)];
+                                level.data.active[index] = (TileID)num;
                             }
                             catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                         }

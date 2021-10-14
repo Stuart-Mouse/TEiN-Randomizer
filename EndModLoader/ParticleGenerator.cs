@@ -56,20 +56,25 @@ namespace TEiNRandomizer
             double initial_speed = RNG.random.Next(0, 20);
             double friction = 1;
 
-            // select particle from pool
-            var doc = XDocument.Load($"data/particles_templates.xml");    // open particle file
-            string template = doc.Root.Element("templates").Element("MistParticle").Value;
-            var particles = doc.Root.Element("particles").Elements();
-            var chosen = particles.ElementAt(RNG.random.Next(0, particles.Count()));
-            movieclip = chosen.Attribute("name").Value;
-            string face_moving_direction = chosen.Attribute("face_moving_direction").Value;
-            alpha_start = Convert.ToDouble(chosen.Attribute("alpha").Value);
-            double size = Convert.ToDouble(chosen.Attribute("size").Value) * .03;
-            size_start = $"[{size - size * .25},{size + size * .25}]";
-            layer = Convert.ToInt32(chosen.Attribute("layer").Value);
-            double density = Convert.ToDouble(chosen.Attribute("density").Value);
-            double speed_scale = Convert.ToDouble(chosen.Attribute("speed_scale").Value);
+            // open particles file
+            var gon = GonObject.Load($"data/text/particles_templates.gon");      // open particle file
+            string template = gon["templates"]["MistParticle"].String();    // load particle template
 
+            // select particle from pool
+            var particles = gon["particles"];
+            var chosen = particles[RNG.random.Next(0, particles.Size())];
+
+            // get particle variables from file
+            movieclip = chosen["name"].String();
+            string face_moving_direction = chosen["face_moving_direction"].String();
+            alpha_start = chosen["alpha"].Number();
+            double size = chosen["size"].Number() * .03;
+            size_start = $"[{size * .75},{size * 1.25}]";
+            layer = chosen["layer"].Int();
+            double density = chosen["density"].Number();
+            double speed_scale = chosen["speed_scale"].Number();
+
+            // calculate emitter properties
             int emit_density = (int)(64 * density);
             emit_rate = RNG.random.Next(1, emit_density);
             emit_amount = emit_density / emit_rate;
@@ -147,19 +152,23 @@ namespace TEiNRandomizer
             double friction = 1;
             string force;
 
+            // open particles file
+            var gon = GonObject.Load($"data/text/particles_templates.gon");      // open particle file
+            string template = gon["templates"]["DirectionParticle"].String();    // load particle template
+
             // select particle from pool
-            var doc = XDocument.Load($"data/particles_templates.xml");    // open particle file
-            string template = doc.Root.Element("templates").Element("DirectionParticle").Value;
-            var particles = doc.Root.Element("particles").Elements();
-            var chosen = particles.ElementAt(RNG.random.Next(0, particles.Count()));
-            movieclip = chosen.Attribute("name").Value;
-            string face_moving_direction = chosen.Attribute("face_moving_direction").Value;
-            alpha_start = Convert.ToDouble(chosen.Attribute("alpha").Value);
-            double size = Convert.ToDouble(chosen.Attribute("size").Value);
-            size_start = $"[{size - size * .25},{size + size * .25}]";
-            layer = Convert.ToInt32(chosen.Attribute("layer").Value);
-            double density = Convert.ToDouble(chosen.Attribute("density").Value);
-            double speed_scale = Convert.ToDouble(chosen.Attribute("speed_scale").Value);
+            var particles = gon["particles"];
+            var chosen = particles[RNG.random.Next(0, particles.Size())];
+
+            // get particle variables from file
+            movieclip = chosen["name"].String();
+            string face_moving_direction = chosen["face_moving_direction"].String();
+            alpha_start = chosen["alpha"].Number();
+            double size = chosen["size"].Number();
+            size_start = $"[{size * .75},{size * 1.25}]";
+            layer = chosen["layer"].Int();
+            double density = chosen["density"].Number();
+            double speed_scale = chosen["speed_scale"].Number();
 
             speed_scale += RNG.random.Next(-2, 3) / 10;
 

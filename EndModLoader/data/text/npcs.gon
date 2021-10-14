@@ -1,0 +1,410 @@
+# NPC Definitions
+# used for generating randomized NPCs
+
+# Array of all usable movieclips
+movieclips [
+  NPC0,
+  NPC1,
+  NPC2,
+  NPC3,
+  NPC4,
+  NPC5,
+  NPC6,
+  NPC7,
+  NPC8,
+  NPC9,
+  NPC10,
+  NPC11,
+  NPC12,
+  NPC13,
+  NPC14,
+  NPC15,
+  NPC16,
+  NPC17,
+  NPCB1,
+  NPCB2,
+  NPCB3,
+  NPCB4,
+  NPCB5,
+  NPCB6,
+  NPCB7,
+  NPCG1,
+  NPCG2,
+  NPCG3,
+  NPCG4,
+  NPCG5,
+  NPCG6,
+  NPCG7,
+  NPCD1,
+  NPCD2,
+  NPCD3,
+  NPCD4,
+  NPCD5,
+  NPCD6,
+  NPCD7,
+  NPCX1,
+  NPCX2,
+  NPCX3,
+  NPCX4,
+  NPCX5,
+  NPCH1,
+  NPCH2,
+  NPCH3,
+  NPCH4
+]
+
+soundids [
+    NPCSkull,
+    NPCBlob,
+    NPCGhost,
+    NPCIsaac,
+    NPCStevenCameo,
+    NPCGish,
+    NPCGuppy,
+    NPCAether,
+    NPCSteven
+]
+
+text {
+  lines [
+    "I'd be careful\nif you plan on\nclimbing that mountain,",
+    "it's got some\nweird shit happening\naround it."
+  ]
+  lines [
+    "You ever wonder\nto yourself",
+    "why piles of\nrotting bones\ncan talk?",
+    "\nNo?",
+    "\nReally?"
+  ]
+  lines [
+    "\ndude....",
+    "\nduuuuude....",
+    "\nDUDE"
+  ]
+  lines [
+    "heyyy...\nyeahh, you over there....",
+    "\nmr funny cancerman...",
+    "gimme a kiss.\nright there, yeah.\ndo it.",
+    "... Drunk?\nwho's drunk?",
+    "i'm not drunk,\ni'm just highly\nlascivious..."
+  ]
+  lines [
+    "\nWhy?",
+    "\nWhy did you do that?",
+    "Did you derive some\nsick pleasure from\nwhat you did to me?"
+  ]
+  lines [
+    "FUCK DUDE OH GOD,\nmy boss is going\nto KILL ME.",
+    "I'm five years\nlate for work...",
+    "That hotel ain't\ngonna finish itself!"
+  ]
+  lines [
+    "oh, hey.",
+    "Normally i'd be\npissed that you're\ntalking to me,",
+    "but unfortunately\ni'm all outta salt.",
+    "The factory closed\ndown so everyone's\nout of salt.",
+    "Sad days..."
+  ]
+  lines [
+    "geez, what was\nthat guy's problem?",
+    "some wacko in\na suit and a top\nhat just ran by",
+    "carrying a giant\npile of sawblades.",
+    "Had a banana\non him too.\nWhat a weirdo..."
+  ]
+  lines [
+    "\n..."
+  ]
+  lines [
+    "I AM A\nSYNTHETIC MAN!",
+    "\nBEHOLD!",
+    "SYNTHESIZED\nSYNAPSES\nSYNCHRONOUSLY",
+    "SYNDICATED\nTO SALIVATING\nSPECTATORS!",
+    "A CYNICAL SYNDICATE,",
+    "SUBLIME IN\nITS SIMPLICITY,",
+    "IS SYNTACTICALLY\nSYNCOPATED,",
+    "FUEL FOR A\nSYNAGOGUE OF\nPSYCHOPATHY!",
+    "\n...",
+    "\nALSO,",
+    "\nS Y N E R G Y",
+    "thank you,\nthat will be all"
+  ]
+  lines [
+    "I don't actually\nexist, you know.",
+    "I'm simply a\nproduct of your\noverstressed psyche",
+    "and hyperactive\nimagination."
+  ]
+  lines [
+    "\ni'm dead dude.",
+    "ever wondered what\ndeath is like?",
+    "well then\ni'm your man.\nit SUCKS ASS"
+  ]
+  lines [
+    "Watch it there,\nbuddy.",
+    "Dying is statistically\nthe #1 cause of\ndeath...",
+    "\nspooky."
+  ]
+  lines [
+    "mmmmmmm....\ntumor"
+  ]
+  lines [
+    "WOW dude that\njump you just did\nwas SUPER POGGERS.",
+    "I mean I was\nall monkaS and\nresidentSleeper",
+    "before you did\nit but i'm\nnot gonna lie",
+    "i'm chungus pogchamp\nwholesome 100ing\nright now.",
+    "SICK TRICKS DUUUDE"
+  ]
+  lines [
+    "Did you know",
+    "you can press\nthe talk button to\ninteract with NPCS?"
+  ]
+  lines [
+    "that deadly nuclear\nshockwave was the\nonly warmth i've felt",
+    "in my life\nsince my wife died."
+  ]
+  lines [
+    "You're looking mad\nsussy now dude.",
+    "how do I know you\naren't part of that\nweird tumor hivemind",
+    "that's running amok?\nYou are extremely sus.",
+    "\nMaybe even the impostor."
+  ]
+  lines [
+    "Congratulations!!!!"
+    "You just found the\nSUPER SECRET PRIZE NPC.",
+    "Now behold,\nas I present you\nwith a NEW CART",
+    "that contains super\nfun alternate versions",
+    "of every normal chapter\nin the base game!!",
+    "oh shit whoops\nsorry dude i dropped it,",
+    "haha i'm sure\nit still works...",
+    "oh. Nope,\nit's definitely dead."
+  ]
+  lines [
+    "\nI....",
+    "\nfucking....",
+    "\nHATE....",
+    "\nretinaras"
+  ]
+  lines [
+    "ever played this\ngame called\n",
+    "The End is Nigh?",
+    "I think you might like it."
+  ]
+  lines [
+    "\nwatch it dude,",
+    "in this world\nyou're either a\nsmart fella....",
+    "\nor....",
+    "\na fart smella"
+  ]
+  lines [
+    "dude"
+  ]
+  lines [
+    "Maybe you can't\nsave yourself,",
+    "but perhaps\nwith the time you\ndo have left,",
+    "you can save\nsomething else.",
+    "Ha.\nJust kidding,\nwe're all fucked."
+  ]
+  lines [
+    "if you think your\nlife is lame",
+    "just remember that\nsomeone had to\nwrite this text out."
+  ]
+  lines [
+    "\nsolid, liquid, gas.",
+    "\nall comes out my ass"
+  ]
+  lines [
+    "OY YOU THERE,\nMISTER CHEEKY CANCER BLOKE.",
+    "GET OVER ERE\nAND FOIGHT ME\nRIGHT NOW, YEH?"
+  ]
+  lines [
+    "\nAAAHAHAHAHA, FOOOOOL!",
+    "You've fallen right\ninto my trap!\nPrepare to DIE!",
+    "\n...",
+    "shit wait i forgot\nto set the trap,",
+    "sorry man\nthis is really\nreally awkward,",
+    "just go\nahead past ok"
+  ]
+  lines [
+    "gonna give you some\nlife advice, kid.",
+    "\nNever try, and die early.",
+    "\nThere you go, that's it."
+  ]
+  lines [
+    "Beep beep bop skidoop boop ske bep blop boop."
+  ]
+  lines [
+    "We've been trying\nto call you\nabout your car's",
+    "\ne x t e n d e d",
+    "\nwarranty."
+  ]
+  lines [
+    "i got killed by\na falling rock.",
+    "of all the\nways to die\nin the apocalypse,",
+    "I got the lame\nass blunt force\ntrauma death.",
+    "Life sucks, man.\nSo does death."
+  ]
+  lines [
+    "dude i would\nliterally give\nlike $100",
+    "for a box of\ncheese crackers\nright now.",
+    "GIVE THEM TO ME."
+  ]
+  lines [
+    "all these flies are\nreally fucking\nannoying dude.",
+    "Even though i'm\nbasically dead they're\nstill absolutely insufferable"
+  ]
+  lines [
+    "skibby dibby\ndib yo dododo,\nyo dododo,",
+    "skibby dibby\ndib yo dododo,",
+    "I'm the scatman"
+  ]
+  lines [
+    "the glove compartment\nis inaccurately named"
+  ]
+  lines [
+    "Why do the innocent\nhave to die?\nwell, they don't.",
+    "Everyone is guilty\nof everything."
+  ]
+  lines [
+    "have you bought\nskyrim today?"
+  ]
+  lines [
+    "\ndid you hear",
+    "they've got skulls\nin the water",
+    "\nand it's poisoned",
+    "actually i\nremember hearing",
+    "that last part\nwas a hoax",
+    "\nwell",
+    "you'd better watch\nout i guess"
+  ]
+  lines [
+    "\nlook behind you!",
+    "\nheh, did i getcha?",
+    "tricked you into\nlooking back at\nyour mess of a life!!"
+  ]
+  lines [
+    "\nbefore the whole",
+    "\napocalypse thing",
+    "i used to post\non the internet",
+    "\nfor fun",
+    "\nbut now i cant",
+    "what more do you\nwant me to say,\nit sucks"
+  ]
+  lines [
+    "\ngo! speedboy!",
+    "\ncatch that timer",
+    "\ngrab the car",
+    "\neat those hurdles",
+    "choke on\nmy FUCKING cock",
+    "\nhit the finish line",
+    "\nWOOO! big win!"
+  ]
+  lines [
+    "wow!\nyou're a hot one\nain't ya",
+    "\nwhoooo-eee",
+    "jaw flops\nto the floor",
+    "\ntongue rolls out",
+    "\negregious breast shots",
+    "omitted for\nyour safety"
+  ]
+  lines [
+    "hey!\nyour SOUL meter\nis running low!",
+    "hit enemies\nwith your body",
+    "\nto recharge it!"
+  ]
+  lines [
+    "please don't leave me."
+  ]
+  lines [
+    "indie darling\nedmund mcmillen\ndies in home, age 53.",
+    "\nfans are enraged",
+    "that the latest\nisaac update will have\nto be rescheduled"
+  ]
+  lines [
+    "wow, aren't you\nso special,",
+    "playing video games\nand being unhappy\nat the same time,",
+    "\ni love your confidence"
+  ]
+  lines [
+    "undefined"
+  ]
+  lines [
+    "\ndo you hear it too?",
+    "a gurgling,\nwrithing sound",
+    "\ncoming from above"
+  ]
+  lines [
+    "given a grid\nof dimensions x,y",
+    "and a set of z-size\nrotatable ominoes",
+    "which can fill\nthe grid without gaps",
+    "how small must\nthe grid be,",
+    "or how large\nmust the objects be",
+    "such that each object\ncan have a space within\nthe grid in which",
+    "it specifically\ncannot occupy in\nany valid setup"
+  ]
+  lines [
+    "just look at\nall these sheep",
+    "shambling around\nwith glassy eyes",
+    "eating up whatever\nis fed to them",
+    "\nits despicable...",
+    "they do be lookin\npretty fluffy tho"
+  ]
+  lines [
+    "\nmama mia!",
+    "\nhere i go again!",
+    "my, my,\nI cannot resist ya!"
+  ]
+  lines [
+    "down with the\nnuclear family!",
+    "i want three moms\nand two dads!",
+    "\nand fifteen grandmas!",
+    "just imagine all\nthe birthday gifts!",
+    "\ni'll be so spoiled!"
+  ]
+  lines [
+    "to the tune\nof the scooby doo\ntheme song:",
+    "stinky shitty poo,\nwhere are you?",
+    "\ni really wanna slurp ya"
+  ]
+  lines [
+    "i planted a\nseed over there\na while back",
+    "its been about\na year now",
+    "and i think i\ncan see a tiny\nsprout coming up",
+    "its really\nturning me on"
+  ]
+  lines [
+    "do you ever feel",
+    "like the world\nis always shifting\naround you?",
+    "one moment youre\nin one place...",
+    "in the next,\nyoure in another.",
+    "\n...",
+    "\nthat just me?"
+  ]
+  lines [
+    "mother,\nmother,\neverywhere",
+    "mother,\nmother,\nin my hair",
+    "get it out,\nor i will cry",
+    "curl right up\nand wait to die"
+  ]
+  lines [
+    "having trouble\nnavigating down here?",
+    "\nyeah?",
+    "well you must be\npretty stupid then"
+  ]
+  lines [
+    "im actually glad\nmother swallowed\nup the whole world",
+    "\nSAID NO ONE EVER",
+    "\nthis shit SUCKS"
+  ]
+  lines [
+    "im actually glad\nmother swallowed\nup the whole world",
+    "im a bit\nof a recluse,\nand this makes it",
+    "really easy to\nget out of\nseeing people"
+  ]
+  lines [
+    "so ive been\ncatfishing this\nguy online",
+    "he thinks im\nthis hot\nlittle package",
+    "\nbig ass tumors",
+    "\nthick oozing gills",
+    "and more holes\nthan swiss cheese.",
+    "just imagine the look\non his stupid face when\nhe sees the real me!"
+  ]
+}

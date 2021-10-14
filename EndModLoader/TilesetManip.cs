@@ -19,14 +19,13 @@ namespace TEiNRandomizer
         static string[] AreaTypes { get; set; } = AppResources.AreaTypes;
         static TilesetManip()
         {
-            var doc = XDocument.Load("data/tilesets_pools.xml");    // open levelpool file
-
-            NumPalettes = 464;
-            NumPalettes = Convert.ToInt32(doc.Root.Element("palettes").Value);
-            TileGraphicsPool = Utility.ElementToArray(doc.Root.Element("tile_graphics"));
-            OverlayGraphicsPool = Utility.ElementToArray(doc.Root.Element("overlay_graphics"));
-            ParticlePool = Utility.ElementToArray(doc.Root.Element("particles"));
-            MusicPool = Utility.ElementToArray(doc.Root.Element("music"));
+            // Load Resources
+            var gon = GonObject.Load("data/text/tilesets_pools.gon");
+            NumPalettes         = Convert.ToInt32(gon["palettes"].Int());
+            TileGraphicsPool    = GonObject.Manip.GonToStringArray(gon["tile_graphics"]);
+            OverlayGraphicsPool = GonObject.Manip.GonToStringArray(gon["overlay_graphics"]);
+            ParticlePool        = GonObject.Manip.GonToStringArray(gon["particles"]);
+            MusicPool           = GonObject.Manip.GonToStringArray(gon["music"]);
         }
         public static void MakeShaderPool()
         {
@@ -49,40 +48,53 @@ namespace TEiNRandomizer
 
             try
             {
-                var doc = XDocument.Load("data/art_alts.xml");
+                var gon = GonObject.Load("data/text/art_alts.gon");
                 if (settings.AltLevel == "Safe")
                 {
-                    foreach (var art in doc.Root.Element("safe").Elements())
+                    for (int i = 0; i < gon["safe"].Size(); i++)
                     {
-                        var alts = Utility.ElementToArray(art);
-                        ArtAlts += "[" + art.Name + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
+                        var art = gon["safe"][i];
+
+                        for (int j = 0; j < art.Size(); j++)
+                        {
+                            var alts = GonObject.Manip.GonToStringArray(art);
+                            ArtAlts += "[" + art.GetName() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
+                        }
                     }
                 }
                 else if (settings.AltLevel == "Extended")
                 {
-                    foreach (var art in doc.Root.Element("extended").Elements())
+                    for (int i = 0; i < gon["extended"].Size(); i++)
                     {
-                        var alts = Utility.ElementToArray(art);
-                        ArtAlts += "[" + art.Name + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
+                        var art = gon["extended"][i];
+
+                        for (int j = 0; j < art.Size(); j++)
+                        {
+                            var alts = GonObject.Manip.GonToStringArray(art);
+                            ArtAlts += "[" + art.GetName() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
+                        }
                     }
                 }
                 else if (settings.AltLevel == "Crazy")
                 {
-                    foreach (var set in doc.Root.Element("crazy").Elements())
+                    for (int i = 0; i < gon["crazy"].Size(); i++)
                     {
-                        var alts = Utility.ElementToArray(set);
-                        foreach (var alt in alts)
+                        var art = gon["crazy"][i];
+
+                        for (int j = 0; j < art.Size(); j++)
                         {
-                            ArtAlts += "[" + alt.Trim() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
+                            var alts = GonObject.Manip.GonToStringArray(art);
+                            ArtAlts += "[" + art.GetName() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
                         }
                     }
                 }
                 else if (settings.AltLevel == "Insane")
                 {
-                    var alts = Utility.ElementToArray(doc.Root.Element("insane"));
-                    foreach (var alt in alts)
+                    var art = gon["insane"];
+                    for (int i = 0; i < art.Size(); i++)
                     {
-                        ArtAlts += "[" + alt.Trim() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
+                        var alts = GonObject.Manip.GonToStringArray(gon["insane"]);
+                        ArtAlts += "[" + art[i].String() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
                     }
                     //ArtAlts += "[ChainLink, None][ChainLink2, None]";
                 }
@@ -154,7 +166,7 @@ namespace TEiNRandomizer
 
                 // generate Art Alts
                 if (settings.AltLevel != "None")
-                    GetArtAlts(settings);
+                    tileset.ArtAlts = GetArtAlts(settings);
 
                 // extras and physics
                 if (settings.UseAreaTileset == isAreaTS)

@@ -29,14 +29,14 @@ namespace TEiNRandomizer
 
         public static string saveDir;         // The save directory is determined when starting the randomize function and stored. (Will select between game directory and save directory.)
         public static SettingsFile settings = AppResources.MainSettings;  // a copy of the settings is stored so that all of the functions within this class can read it.
-        public static MainWindow mainWindow;  // The Main Window's info is also stored, so that it can be referenced when needed.
+        //public static MainWindow mainWindow;  // The Main Window's info is also stored, so that it can be referenced when needed.
 
-        public static List<string> AreaTypes;
+        public static List<string> AreaTypesChosen;
 
         // NPC Stuff
         public static string[] NPCMovieClips;
         public static string[] NPCSoundIDs;
-        public static List<string> NPCTexts;
+        public static List<string[]> NPCTexts;
 
         // Funny Name Stuff
         public static string[] LINouns;
@@ -50,22 +50,23 @@ namespace TEiNRandomizer
         // resource loading functions
         static void LoadFunnyNames()
         {
-            var doc = XDocument.Load("data/area_names.xml");
-            LINames = Utility.ElementToArray(doc.Root.Element("name"));
-            LILocations = Utility.ElementToArray(doc.Root.Element("location"));
-            LIAdjectives = Utility.ElementToArray(doc.Root.Element("adjective"));
-            LINouns = Utility.ElementToArray(doc.Root.Element("noun"));
+            var gon         = GonObject.Load("data/text/area_names.gon");
+            LINames         = GonObject.Manip.GonToStringArray(gon["name"]);
+            LILocations     = GonObject.Manip.GonToStringArray(gon["location"]);
+            LIAdjectives    = GonObject.Manip.GonToStringArray(gon["adjective"]);
+            LINouns         = GonObject.Manip.GonToStringArray(gon["noun"]);
         }
         static void LoadNPCs()
         {
-            var doc = XDocument.Load($"data/npcs.xml");    // open npcs file
-            NPCMovieClips = Utility.ElementToArray(doc.Root.Element("movieclips"));
-            NPCSoundIDs = Utility.ElementToArray(doc.Root.Element("soundids"));
-            NPCTexts = new List<string>();
+            var gon = GonObject.Load($"data/text/npcs.gon");    // open npcs file
+            NPCMovieClips = GonObject.Manip.GonToStringArray(gon["movieclips"]);
+            NPCSoundIDs = GonObject.Manip.GonToStringArray(gon["movieclips"]);
+            NPCTexts = new List<string[]>();
 
-            foreach (XElement item in doc.Root.Element("text").Elements())
+            var text = gon["text"];
+            for (int i = 0; i < text.Size(); i++)
             {
-                NPCTexts.Add(item.Value);
+                NPCTexts.Add(GonObject.Manip.GonToStringArray(text[i]));
             }
         }
 
@@ -76,21 +77,33 @@ namespace TEiNRandomizer
             {
                 for (int j = 0; j < settings.NumAreas; j++) // area loop
                 {
+                    // Write npc data for every level
                     for (int i = 0; i < settings.NumLevels; i++) // level loop
                     {
                         sw.WriteLine($"NPC{j}-{i} {{");
                         sw.WriteLine($"\tmovieclip {NPCMovieClips[RNG.random.Next(0, NPCMovieClips.Length)]}");
                         sw.WriteLine($"\tsound_id {NPCSoundIDs[RNG.random.Next(0, NPCSoundIDs.Length)]}");
                         sw.WriteLine($"\ttext [");
-                        sw.WriteLine(NPCTexts[RNG.random.Next(0, NPCTexts.Count())]);
+                        var lines = NPCTexts[RNG.random.Next(0, NPCTexts.Count())];
+                        for (int k = 0; k < lines.Count(); k++)
+                        {
+                            sw.WriteLine($"\"{lines[k].Replace("PLAYERNAME", settings.UserName)}\"");
+                        }
                         sw.WriteLine("\t]\n}");
                     }
-                    sw.WriteLine($"NPCv{j + 1} {{");
-                    sw.WriteLine($"\tmovieclip {NPCMovieClips[RNG.random.Next(0, NPCMovieClips.Length)]}");
-                    sw.WriteLine($"\tsound_id {NPCSoundIDs[RNG.random.Next(0, NPCSoundIDs.Length)]}");
-                    sw.WriteLine($"\ttext [");
-                    sw.WriteLine(NPCTexts[RNG.random.Next(0, NPCTexts.Count())].Replace("PLAYERNAME", settings.UserName));
-                    sw.WriteLine("\t]\n}");
+                    // write npc data for transition levels
+                    {
+                        sw.WriteLine($"NPCv{j + 1} {{");
+                        sw.WriteLine($"\tmovieclip {NPCMovieClips[RNG.random.Next(0, NPCMovieClips.Length)]}");
+                        sw.WriteLine($"\tsound_id {NPCSoundIDs[RNG.random.Next(0, NPCSoundIDs.Length)]}");
+                        sw.WriteLine($"\ttext [");
+                        var lines = NPCTexts[RNG.random.Next(0, NPCTexts.Count())];
+                        for (int i = 0; i < lines.Count(); i++)
+                        {
+                            sw.WriteLine($"\"{lines[i].Replace("PLAYERNAME", settings.UserName)}\"");
+                        }
+                        sw.WriteLine("\t]\n}");
+                    }
                 }
             }
         }
@@ -138,7 +151,7 @@ namespace TEiNRandomizer
                 {
                     var areatileset = TilesetManip.GetTileset(settings, true);
 
-                    AreaTypes.Add(areatileset.AreaType);
+                    AreaTypesChosen.Add(areatileset.AreaType);
 
                     sw.WriteLine("v" + (j + 1).ToString() + $" {{\n    area_name \"TEiN Randomizer\"\n    area_label_frame 0\n    background_graphics neverbg\n    area_type {areatileset.AreaType}\n");
                     if (settings.UseAreaTileset || (settings.DoShaders && settings.DoParticles))
@@ -185,7 +198,10 @@ namespace TEiNRandomizer
                         sw.WriteLine("     # TS Needs");
                         sw.WriteLine("    " + ChosenLevels[j][i].TSNeed);
 
-                        sw.WriteLine(settings.AttachToTS);
+                        foreach(var line in AppResources.AttachToTS)
+                        {
+                            sw.WriteLine(line);
+                        }
 
                         // NPCs
                         sw.WriteLine($"     npc_1 NPC{j}-{i}\n");
@@ -199,26 +215,20 @@ namespace TEiNRandomizer
         static void CleanFolders()
         {
 
-            Console.WriteLine("del data");
-            try
+            
+            /*foreach (var file in Directory.GetFiles(saveDir + "data"))
             {
-                foreach (var file in Directory.GetFiles(saveDir + "data"))
-                {
+                if (File.Exists(file))
                     File.Delete(file);
-                }
             }
-            catch (DirectoryNotFoundException) { }
             Directory.CreateDirectory(saveDir + "data");
-            Console.WriteLine("del tilemaps");
-            try
+            foreach (var file in Directory.GetFiles(saveDir + "tilemaps"))
             {
-                foreach (var file in Directory.GetFiles(saveDir + "tilemaps"))
-                {
+                if (File.Exists(file))
                     File.Delete(file);
-                }
             }
-            catch (DirectoryNotFoundException) { }
-            Directory.CreateDirectory(saveDir + "tilemaps"); //Console.WriteLine("tilemaps");
+            Directory.CreateDirectory(saveDir + "tilemaps"); //Console.WriteLine("tilemaps");*/
+
             Directory.CreateDirectory(saveDir + "textures"); //Console.WriteLine("textures");
             File.Copy("data/palette.png", saveDir + "textures/palette.png", true); //Console.WriteLine("palette");
             Directory.CreateDirectory(saveDir + "shaders"); //Console.WriteLine("shaders");
@@ -309,15 +319,15 @@ namespace TEiNRandomizer
         static string SaveRunPrompt()
         {
             string title       = GetFunnyName();
-            string author      = $"Seed: {mainWindow.GameSeed.ToString()}";
+            string author      = $"Seed: {AppResources.GameSeed}";
             string description = "A randomized world!";
-            string version     = System.DateTime.Now.ToString();
+            string version     = DateTime.Now.ToString();
 
             TextWindow inputWindow = new TextWindow("Give this world a name: ", title);
             if (inputWindow.ShowDialog() == true)
                 title = inputWindow.Result;
 
-            string dir = mainWindow.SavedRunsPath + $"/{title}";
+            string dir = AppResources.SavedRunsPath + title;
 
             inputWindow = new TextWindow("Give this world a short description: ", description);
             if (inputWindow.ShowDialog() == true)
@@ -347,7 +357,7 @@ namespace TEiNRandomizer
             DrawPool = new List<Level> { };     // make drawpool
             try
             {
-                foreach (var cat in mainWindow.PoolCats)
+                foreach (var cat in AppResources.LevelPoolCategories)
                 {
                     if (cat.Enabled)
                     {
@@ -388,13 +398,10 @@ namespace TEiNRandomizer
             catch (Exception) { Console.WriteLine("Error selecting levels or saving cache."); MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
         }
 
-        public static void Randomize(MainWindow mw, string args = null)
+        public static void Randomize(string args = null)
         {
-            //ShadersList = mw.ShadersList;
-            settings = mw.RSettings;
-            mainWindow = mw;
-
-            AreaTypes = new List<string>();
+            // Randomize maintains a list of the chosen area types for the purposes of passing on to WriteWorldMap()
+            AreaTypesChosen = new List<string>();
 
             saveDir = settings.GameDirectory;
             if (args == "savemod") saveDir = SaveRunPrompt();
@@ -416,7 +423,7 @@ namespace TEiNRandomizer
             try { NPCs(); }           catch (Exception ex) { Console.WriteLine($"Error creating npcs. Exception {ex}");                       MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             try { Worldmap.WriteWorldMap(); } catch (Exception ex) { Console.WriteLine($"Error creating worldmap. Exception {ex}");           MessageBox.Show($"Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
-            Console.WriteLine(mw.GameSeed);
+            Console.WriteLine(AppResources.GameSeed);
 
             //if (args == "savemod")    // this is commented out bc mods will not save to zip for now
             //{
@@ -426,6 +433,34 @@ namespace TEiNRandomizer
             //}
 
         }
-        
+
+        public static void RandomizeMap(string args = null)
+        {
+            // Randomize maintains a list of the chosen area types for the purposes of passing on to WriteWorldMap()
+            AreaTypesChosen = new List<string>();
+
+            saveDir = settings.GameDirectory;
+            if (args == "savemod") saveDir = SaveRunPrompt();
+            if (saveDir == null) return;
+
+            TilesetManip.MakeShaderPool();
+
+            // make the draw pool based on which level pools are enabled
+            MakeDrawPool();
+            // make randomized selections from drawpool
+            ChooseLevels();
+
+            // The rest of the randomization process is delegated to the functions below.
+            try { CleanFolders(); } catch (Exception ex) { Console.WriteLine($"Error cleaning folders or printing debug. Exception {ex}"); MessageBox.Show($"Error cleaning folders or printing debug. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { LevelInfo(); } catch (Exception ex) { Console.WriteLine($"Error creating levelinfo. Exception {ex}"); MessageBox.Show($"Error creating levelinfo. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { MapCSV(); } catch (Exception ex) { Console.WriteLine($"Error creating map. Exception {ex}"); MessageBox.Show($"Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { TileMaps(); } catch (Exception ex) { Console.WriteLine($"Error copying tilemaps. Exception {ex}"); MessageBox.Show($"Error copying tilemaps. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { Tilesets(); } catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}"); MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { NPCs(); } catch (Exception ex) { Console.WriteLine($"Error creating npcs. Exception {ex}"); MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            try { Worldmap.WriteWorldMap(); } catch (Exception ex) { Console.WriteLine($"Error creating worldmap. Exception {ex}"); MessageBox.Show($"Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+
+            Console.WriteLine(AppResources.GameSeed);
+        }
+
     }
 }

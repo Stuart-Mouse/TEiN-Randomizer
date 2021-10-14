@@ -17,8 +17,8 @@ namespace TEiNRandomizer
         // string values used by the Main Window
         public static string ExeName { get => "TheEndIsNigh.exe"; }
         public static string WindowTitle { get => "  The End is Nigh Randomizer BETA  "; }
-        public string ModPath { get => "mods"; }
-        public string SavedRunsPath { get => "saved runs"; }
+        public string ModPath { get => AppResources.ModPath; }
+        public string SavedRunsPath { get => AppResources.SavedRunsPath; }
         
         // shader list and settings list are references to those stored in the AppResources
         public List<Shader> ShadersList { get; set; } = AppResources.ShadersList;
@@ -31,8 +31,10 @@ namespace TEiNRandomizer
             {
                 AppResources.GameSeed = value;
             }
-        }    
+        }
 
+        // AttachToTS is copied from AppResources
+        public ObservableCollection<string> AttachToTS { get; set; } = AppResources.AttachToTS;
 
         // Main observable collections used for lists
         public ObservableCollection<Mod> Mods { get; private set; } = new ObservableCollection<Mod>();
@@ -208,7 +210,7 @@ namespace TEiNRandomizer
                 if (!CheckForModFolders()) return;
 
                 AppState = AppState.InGame;
-                Randomizer.Randomize(this);
+                Randomizer.Randomize();
 
                 if (!RSettings.ManualLoad)
                 {
@@ -307,14 +309,14 @@ namespace TEiNRandomizer
             var contains = FileSystem.ContainedFolders(RSettings.GameDirectory, FileSystem.ModFolders).ToList();
             if (contains.Count != 0)
             {
-                // FINALLY an excuse to use tuples!
+                /*// FINALLY an excuse to use tuples!
                 var (isOrAre, a, folderOrFolders, itOrThem) = contains.Count == 1 ?
                     ("is", "a ", "folder", "it") :
-                    ("are", "", "folders", "them");
+                    ("are", "", "folders", "them");*/
 
                 var result = MessageBox.Show(
-                    $"There {isOrAre} currently {a}modified {String.Join(", ", contains.Select(f => $"\"{f}\""))} {folderOrFolders} present in your game directory. " +
-                    $"Delete {itOrThem} to play the Randomizer?",
+                    $"There are currently modified {String.Join(", ", contains.Select(f => $"\"{f}\""))} folders present in your game directory. " +
+                    $"Delete them to play the Randomizer?",
                     "Warning",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Warning,

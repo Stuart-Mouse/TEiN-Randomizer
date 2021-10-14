@@ -1,0 +1,1376 @@
+# Corruptor Tiles
+# This file specifies how the corruptor alts each tile or layer of tiles
+
+
+# These arrays are just a simple list of every tile id in the given layer
+active [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 40036, 40108, 40109 ]
+entity [ 40096, 40097, 40098, 40074, 40099, 40000, 40001, 40002, 40085, 40004, 40003, 40005, 40006, 40007, 40008, 40009, 40010, 40012, 40013, 40014, 40015, 40016, 40017, 40018, 40019, 40020, 40021, 40027, 40045, 40026, 40029, 40046, 40028, 40030, 40032, 40033, 40034, 40035, 40037, 40073, 40047, 40048, 40022, 40025, 40023, 40024, 40049, 40065, 40068, 40066, 40067, 40069, 40070, 40071, 40078, 40080, 40082, 40084, 40086, 40087, 40089, 40090, 40091, 40092, 40093, 40100, 40107, 40112, 40114, 40115, 40116, 40117, 40118, 40119, 40120 ]
+overlay [ 0, 30000, 30001, 30002, 30003, 30004, 30006, 30007, 30008 ]
+
+# The smart corrupt object gives the id and alts of each tile that can be corrupted
+# When the program loads this file the tile names will be ignore, the id and alt fields will be used to create a lookup map.
+smart {
+  Solid {
+    id 1
+    alts [ 1, 6, 7, 10, 26, 33, 34, 40108, 40109 ]
+  }
+  SpikeR {
+    id 2
+    alts [ ]
+  }
+  SpikeD {
+    id 3
+    alts [ ]
+  }
+  SpikeL {
+    id 4
+    alts [ ]
+  }
+  SpikeU {
+    id 5
+    alts [ ]
+  }
+  Platform {
+    id 6
+    alts [ 6, 10 ]
+  }
+  Crumble {
+    id 10
+    alts [ 6, 10 ]
+  }
+  SmallSpikeR {
+    id 11
+    alts [ ]
+  }
+  SmallSpikeD {
+    id 12
+    alts [ ]
+  }
+  SmallSpikeL {
+    id 13
+    alts [ ]
+  }
+  SmallSpikeU {
+    id 14
+    alts [ ]
+  }
+  Drill {
+    id 15
+    alts [ ]
+  }
+  Switch1U {
+    id 16
+    alts [ ]
+  }
+  Switch2U {
+    id 17
+    alts [ ]
+  }
+  Switch3U {
+    id 18
+    alts [ ]
+  }
+  Switch4U {
+    id 19
+    alts [ ]
+  }
+  Switch1P {
+    id 20
+    alts [ ]
+  }
+  Switch2P {
+    id 21
+    alts [ ]
+  }
+  Switch3P {
+    id 22
+    alts [ ]
+  }
+  Switch4P {
+    id 23
+    alts [ ]
+  }
+  Decor1 {
+    id 24
+    alts [ ]
+  }
+  Decor2 {
+    id 25
+    alts [ ]
+  }
+  Breakable {
+    id 26
+    alts [ 26, 10 ]
+  }
+  ConveySlowR {
+    id 27
+    alts [ ]
+  }
+  ConveyFastR {
+    id 28
+    alts [ ]
+  }
+  ConveySlowL {
+    id 29
+    alts [ ]
+  }
+  ConveyFastL {
+    id 30
+    alts [ ]
+  }
+  ConveySlowU {
+    id 31
+    alts [ ]
+  }
+  ConveyFastU {
+    id 32
+    alts [ ]
+  }
+  Lock {
+    id 33
+    alts [ ]
+  }
+  LockBarrier {
+    id 34
+    alts [ ]
+  }
+  ParticleEmit1 {
+    id 35
+    alts [ ]
+  }
+  ParticleEmit2 {
+    id 36
+    alts [ ]
+  }
+  ParticleEmit3 {
+    id 37
+    alts [ ]
+  }
+  ParticleEmit4 {
+    id 38
+    alts [ ]
+  }
+  PipeAlt {
+    id 39
+    alts [ ]
+  }
+  Invisible {
+    id 40
+    alts [ ]
+  }
+  CameraBounds {
+    id 20000
+    alts [ ]
+  }
+  DebugSpawn {
+    id 20001
+    alts [ ]
+  }
+  GreenTransitionL {
+    id 20003
+    alts [ ]
+  }
+  GreenTransitionU {
+    id 20004
+    alts [ ]
+  }
+  DirectionRight {
+    id 20006
+    alts [ ]
+  }
+  DirectionLeft {
+    id 20007
+    alts [ ]
+  }
+  DirectionUp {
+    id 20008
+    alts [ ]
+  }
+  DirectionDown {
+    id 20009
+    alts [ ]
+  }
+  MoveExtension {
+    id 20010
+    alts [ ]
+  }
+  FallingSlow {
+    id 20011
+    alts [ ]
+  }
+  FallingMed {
+    id 20012
+    alts [ ]
+  }
+  FallingFast {
+    id 20013
+    alts [ ]
+  }
+  FallTriggerSlow {
+    id 20014
+    alts [ ]
+  }
+  FallTriggerMed {
+    id 20015
+    alts [ ]
+  }
+  FallTriggerFast {
+    id 20016
+    alts [ ]
+  }
+  NoAccelSlowR {
+    id 20017
+    alts [ ]
+  }
+  NoAccelSlowL {
+    id 20018
+    alts [ ]
+  }
+  NoAccelSlowU {
+    id 20019
+    alts [ ]
+  }
+  NoAccelSlowD {
+    id 20020
+    alts [ ]
+  }
+  NoAccelMedR {
+    id 20021
+    alts [ ]
+  }
+  NoAccelMedL {
+    id 20022
+    alts [ ]
+  }
+  NoAccelMedU {
+    id 20023
+    alts [ ]
+  }
+  NoAccelMedD {
+    id 20024
+    alts [ ]
+  }
+  NoAccelFastR {
+    id 20025
+    alts [ ]
+  }
+  NoAccelFastL {
+    id 20026
+    alts [ ]
+  }
+  NoAccelFastU {
+    id 20027
+    alts [ ]
+  }
+  NoAccelFastD {
+    id 20028
+    alts [ ]
+  }
+  MoveWPauseSlowR {
+    id 20029
+    alts [ ]
+  }
+  MoveWPauseSlowL {
+    id 20030
+    alts [ ]
+  }
+  MoveWPauseSlowU {
+    id 20031
+    alts [ ]
+  }
+  MoveWPauseSlowD {
+    id 20032
+    alts [ ]
+  }
+  MoveWPauseMedR {
+    id 20033
+    alts [ ]
+  }
+  MoveWPauseMedL {
+    id 20034
+    alts [ ]
+  }
+  MoveWPauseMedU {
+    id 20035
+    alts [ ]
+  }
+  MoveWPauseMedD {
+    id 20036
+    alts [ ]
+  }
+  MoveWPauseFastR {
+    id 20037
+    alts [ ]
+  }
+  MoveWPauseFastL {
+    id 20038
+    alts [ ]
+  }
+  MoveWPauseFastU {
+    id 20039
+    alts [ ]
+  }
+  MoveWPauseFastD {
+    id 20040
+    alts [ ]
+  }
+  AccelSlowR {
+    id 20041
+    alts [ ]
+  }
+  AccelSlowL {
+    id 20042
+    alts [ ]
+  }
+  AccelSlowU {
+    id 20043
+    alts [ ]
+  }
+  AccelSlowD {
+    id 20044
+    alts [ ]
+  }
+  AccelMedR {
+    id 20045
+    alts [ ]
+  }
+  AccelMedL {
+    id 20046
+    alts [ ]
+  }
+  AccelMedU {
+    id 20047
+    alts [ ]
+  }
+  AccelMedD {
+    id 20048
+    alts [ ]
+  }
+  AccelFastR {
+    id 20049
+    alts [ ]
+  }
+  AccelFastL {
+    id 20050
+    alts [ ]
+  }
+  AccelFastU {
+    id 20051
+    alts [ ]
+  }
+  AccelFastD {
+    id 20052
+    alts [ ]
+  }
+  NoBack {
+    id 20053
+    alts [ ]
+  }
+  YellowTransitionR {
+    id 20054
+    alts [ ]
+  }
+  YellowTransitionL {
+    id 20055
+    alts [ ]
+  }
+  YellowTransitionU {
+    id 20056
+    alts [ ]
+  }
+  YellowTransitionD {
+    id 20057
+    alts [ ]
+  }
+  Stop {
+    id 20058
+    alts [ ]
+  }
+  Destroy {
+    id 20059
+    alts [ ]
+  }
+  Spawner1 {
+    id 20060
+    alts [ ]
+  }
+  Spawner2 {
+    id 20061
+    alts [ ]
+  }
+  Spawner3 {
+    id 20062
+    alts [ ]
+  }
+  Spawner4 {
+    id 20063
+    alts [ ]
+  }
+  Despawner1 {
+    id 20064
+    alts [ ]
+  }
+  Despawner2 {
+    id 20065
+    alts [ ]
+  }
+  Despawner3 {
+    id 20066
+    alts [ ]
+  }
+  Despawner4 {
+    id 20067
+    alts [ ]
+  }
+  Unused {
+    id 20068
+    alts [ ]
+  }
+  Warp {
+    id 20069
+    alts [ ]
+  }
+  Wrap {
+    id 20070
+    alts [ ]
+  }
+  NoTile {
+    id 20071
+    alts [ ]
+  }
+  NoOver {
+    id 20072
+    alts [ ]
+  }
+  AscendSlow {
+    id 20073
+    alts [ ]
+  }
+  AscendMed {
+    id 20074
+    alts [ ]
+  }
+  AscendFast {
+    id 20075
+    alts [ ]
+  }
+  WeightedSlow {
+    id 20076
+    alts [ ]
+  }
+  WeightedMed {
+    id 20077
+    alts [ ]
+  }
+  WeightedFast {
+    id 20078
+    alts [ ]
+  }
+  Sine1 {
+    id 20079
+    alts [ ]
+  }
+  Sine2 {
+    id 20080
+    alts [ ]
+  }
+  Sine3 {
+    id 20081
+    alts [ ]
+  }
+  CrusherR {
+    id 20082
+    alts [ ]
+  }
+  CrusherL {
+    id 20083
+    alts [ ]
+  }
+  CrusherU {
+    id 20084
+    alts [ ]
+  }
+  CrusherD {
+    id 20085
+    alts [ ]
+  }
+  Crusher {
+    id 20086
+    alts [ ]
+  }
+  WindR {
+    id 20087
+    alts [ ]
+  }
+  WindL {
+    id 20088
+    alts [ ]
+  }
+  Background {
+    id 20089
+    alts [ ]
+  }
+  Foreground {
+    id 20090
+    alts [ ]
+  }
+  AccelXSlowR {
+    id 20091
+    alts [ ]
+  }
+  AccelXSlowL {
+    id 20092
+    alts [ ]
+  }
+  AccelXSlowU {
+    id 20093
+    alts [ ]
+  }
+  AccelXSlowD {
+    id 20094
+    alts [ ]
+  }
+  YellowTransitionUR {
+    id 20095
+    alts [ ]
+  }
+  YellowTransitionDR {
+    id 20096
+    alts [ ]
+  }
+  YellowTransitionUL {
+    id 20097
+    alts [ ]
+  }
+  YellowTransitionDL {
+    id 20098
+    alts [ ]
+  }
+  GreenTransitionUR {
+    id 20099
+    alts [ ]
+  }
+  GreenTransitionDR {
+    id 20100
+    alts [ ]
+  }
+  GreenTransitionUL {
+    id 20101
+    alts [ ]
+  }
+  Savepoint {
+    id 20102
+    alts [ ]
+  }
+  CheckPoint {
+    id 20103
+    alts [ ]
+  }
+  Unused1 {
+    id 20104
+    alts [ ]
+  }
+  GreenTransitionDL {
+    id 20105
+    alts [ ]
+  }
+  Water {
+    id 30000
+    alts [ 30000, 30001, 30007 ]
+  }
+  Pollution {
+    id 30001
+    alts [ 30000, 30001, 30007 ]
+  }
+  Lava {
+    id 30002
+    alts [ 30000, 30001, 30002, 30007 ]
+  }
+  WaterUB {
+    id 30003
+    alts [ 30003, 30004 ]
+  }
+  PollutionUB {
+    id 30004
+    alts [ 30003, 30004 ]
+  }
+  LavaUB {
+    id 30005
+    alts [ 30003, 30004, 30005 ]
+  }
+  SolidOver {
+    id 30006
+    alts [ ]
+  }
+  GraityBeam {
+    id 30007
+    alts [ 30000, 30001, 30007 ]
+  }
+  ParticleEmit5 {
+    id 30008
+    alts [ ]
+  }
+  FakeSolidOver {
+    id 30009
+    alts [ ]
+  }
+  HoastL {
+    id 40000
+    alts [ 40000, 40001 ]
+  }
+  HoastR {
+    id 40001
+    alts [ 40000, 40001 ]
+  }
+  Floast {
+    id 40002
+    alts [ 40085, 40002, 40003 ]
+  }
+  Gasper {
+    id 40003
+    alts [ 40003, 40002 ]
+  }
+  Toast {
+    id 40004
+    alts [ ]
+  }
+  SlagDR {
+    id 40005
+    alts [ 40005, 40006, 40007, 40008 ]
+  }
+  SlagDL {
+    id 40006
+    alts [ 40005, 40006, 40007, 40008 ]
+  }
+  SlagUR {
+    id 40007
+    alts [ 40005, 40006, 40007, 40008 ]
+  }
+  SlagUL {
+    id 40008
+    alts [ 40005, 40006, 40007, 40008 ]
+  }
+  ParaslagD {
+    id 40009
+    alts [ 40009, 40010 ]
+  }
+  ParaslagU {
+    id 40010
+    alts [ 40009, 40010 ]
+  }
+  Kuko {
+    id 40011
+    alts [ 40011, 40072 ]
+  }
+  EdemaUR {
+    id 40012
+    alts [ 40012, 40013, 40014, 40015 ]
+  }
+  EdemaDR {
+    id 40013
+    alts [ 40012, 40013, 40014, 40015 ]
+  }
+  EdemaDL {
+    id 40014
+    alts [ 40012, 40013, 40014, 40015 ]
+  }
+  EdemaUL {
+    id 40015
+    alts [ 40012, 40013, 40014, 40015 ]
+  }
+  AnchorFishSR {
+    id 40016
+    alts [ 40016, 40017, 40018, 40019, 40020, 40021 ]
+  }
+  AnchorFishMR {
+    id 40017
+    alts [ 40016, 40017, 40018, 40019, 40020, 40021 ]
+  }
+  AnchorFishLR {
+    id 40018
+    alts [ 40016, 40017, 40018, 40019, 40020, 40021 ]
+  }
+  AnchorFishSL {
+    id 40019
+    alts [ 40016, 40017, 40018, 40019, 40020, 40021 ]
+  }
+  AnchorFishML {
+    id 40020
+    alts [ 40016, 40017, 40018, 40019, 40020, 40021 ]
+  }
+  AnchorFishLL {
+    id 40021
+    alts [ 40016, 40017, 40018, 40019, 40020, 40021 ]
+  }
+  SingleTurretR {
+    id 40022
+    alts [ 40022, 40065, 40049, 40069 ]
+  }
+  SingleTurretL {
+    id 40023
+    alts [ 40023, 40066, 40049, 40069 ]
+  }
+  SingleTurretU {
+    id 40024
+    alts [ 40024, 40067, 40049, 40069 ]
+  }
+  SingleTurretD {
+    id 40025
+    alts [ 40025, 40068, 40049, 40069 ]
+  }
+  FissureRA {
+    id 40026
+    alts [ 40027, 40045, 40026, 40029, 40046, 40028 ]
+  }
+  FissureLA {
+    id 40027
+    alts [ 40027, 40045, 40026, 40029, 40046, 40028 ]
+  }
+  FissureRB {
+    id 40028
+    alts [ 40027, 40045, 40026, 40029, 40046, 40028 ]
+  }
+  FissureLB {
+    id 40029
+    alts [ 40027, 40045, 40026, 40029, 40046, 40028 ]
+  }
+  Musk {
+    id 40030
+    alts [ 40112, 40030 ]
+  }
+  CrunchS {
+    id 40031
+    alts [ 40031, 40032, 40033 ]
+  }
+  CrunchM {
+    id 40032
+    alts [ 40031, 40032, 40033 ]
+  }
+  CrunchL {
+    id 40033
+    alts [ 40031, 40032, 40033 ]
+  }
+  CroastR {
+    id 40034
+    alts [ 40034, 40035 ]
+  }
+  CroastL {
+    id 40035
+    alts [ 40034, 40035 ]
+  }
+  Spring {
+    id 40036
+    alts [ ]
+  }
+  Tumor {
+    id 40037
+    alts [ ]
+  }
+  Cartridge {
+    id 40038
+    alts [ ]
+  }
+  Unused5 {
+    id 40039
+    alts [ ]
+  }
+  Unused6 {
+    id 40040
+    alts [ ]
+  }
+  Unused7 {
+    id 40041
+    alts [ ]
+  }
+  Unused8 {
+    id 40042
+    alts [ ]
+  }
+  Unused9 {
+    id 40043
+    alts [ ]
+  }
+  Unused10 {
+    id 40044
+    alts [ ]
+  }
+  FissureMA {
+    id 40045
+    alts [ 40027, 40045, 40026, 40029, 40046, 40028 ]
+  }
+  FissureMB {
+    id 40046
+    alts [ 40027, 40045, 40026, 40029, 40046, 40028 ]
+  }
+  PollutionCloud {
+    id 40047
+    alts [ ]
+  }
+  Mother {
+    id 40048
+    alts [ ]
+  }
+  SightTurret {
+    id 40049
+    alts [ 40049, 40069, 40071 ]
+  }
+  CannonRA {
+    id 40050
+    alts [ 40050, 40051 ]
+  }
+  CannonRB {
+    id 40051
+    alts [ 40050, 40051 ]
+  }
+  CannonGA {
+    id 40052
+    alts [ 40052, 40053 ]
+  }
+  CannonGB {
+    id 40053
+    alts [ 40052, 40053 ]
+  }
+  CannonBA {
+    id 40054
+    alts [ 40054, 40055 ]
+  }
+  CannonBB {
+    id 40055
+    alts [ 40054, 40055 ]
+  }
+  FireballRA {
+    id 40056
+    alts [ 40056, 40057 ]
+  }
+  FireballRB {
+    id 40057
+    alts [ 40056, 40057 ]
+  }
+  FireballGA {
+    id 40058
+    alts [ 40058, 40059 ]
+  }
+  FireballGB {
+    id 40059
+    alts [ 40058, 40059 ]
+  }
+  FireballBA {
+    id 40060
+    alts [ 40060, 40061 ]
+  }
+  FireballBB {
+    id 40061
+    alts [ 40060, 40061 ]
+  }
+  TargetR {
+    id 40062
+    alts [ ]
+  }
+  TargetG {
+    id 40063
+    alts [ ]
+  }
+  TargetB {
+    id 40064
+    alts [ ]
+  }
+  BurstTurretR {
+    id 40065
+    alts [ 40022, 40065, 40049, 40069 ]
+  }
+  BurstTurretL {
+    id 40066
+    alts [ 40023, 40066, 40049, 40069 ]
+  }
+  BurstTurretU {
+    id 40067
+    alts [ 40024, 40067, 40049, 40069 ]
+  }
+  BurstTurretD {
+    id 40068
+    alts [ 40025, 40068, 40049, 40069 ]
+  }
+  SightVTurret {
+    id 40069
+    alts [ 40049, 40069, 40071 ]
+  }
+  RapidTurret {
+    id 40070
+    alts [ 40049, 40069, 40070, 40071 ]
+  }
+  PredictTurret {
+    id 40071
+    alts [ 40049, 40069, 40071 ]
+  }
+  KukoBig {
+    id 40072
+    alts [ 40011, 40072 ]
+  }
+  Key {
+    id 40073
+    alts [ ]
+  }
+  GlowMushroom {
+    id 40074
+    alts [ 40074, 40099 ]
+  }
+  AgonS {
+    id 40075
+    alts [ ]
+  }
+  Feral {
+    id 40076
+    alts [ 40075, 40076 ]
+  }
+  AgonM {
+    id 40077
+    alts [ 40075, 40076, 40077, 40088, 40089, 40090 ]
+  }
+  Charger {
+    id 40078
+    alts [ 40078, 40005, 40006 ]
+  }
+  Unused2 {
+    id 40079
+    alts [ ]
+  }
+  Drooper {
+    id 40080
+    alts [ 40080, 40082 ]
+  }
+  Unused3 {
+    id 40081
+    alts [ ]
+  }
+  Gorger {
+    id 40082
+    alts [ 40080, 40082 ]
+  }
+  Unused4 {
+    id 40083
+    alts [ ]
+  }
+  Retinara {
+    id 40084
+    alts [ 40084, 40049, 40069, 40070, 40071 ]
+  }
+  XFloast {
+    id 40085
+    alts [ 40003, 40002, 40085 ]
+  }
+  Thistlefish {
+    id 40086
+    alts [ 40086, 40087 ]
+  }
+  Thistlefish2 {
+    id 40087
+    alts [ 40086, 40087 ]
+  }
+  WailerC {
+    id 40088
+    alts [ 40088, 40089, 40090 ]
+  }
+  WailerA {
+    id 40089
+    alts [ 40089, 40090 ]
+  }
+  WailerB {
+    id 40090
+    alts [ 40089, 40090 ]
+  }
+  Mine {
+    id 40091
+    alts [ ]
+  }
+  ExitWarp {
+    id 40092
+    alts [ ]
+  }
+  NPC1 {
+    id 40093
+    alts [ ]
+  }
+  NPC2 {
+    id 40094
+    alts [ ]
+  }
+  NPC3 {
+    id 40095
+    alts [ ]
+  }
+  Decoration1 {
+    id 40096
+    alts [ ]
+  }
+  Decoration2 {
+    id 40097
+    alts [ ]
+  }
+  Decoration3 {
+    id 40098
+    alts [ ]
+  }
+  GlowMushroom2 {
+    id 40099
+    alts [ 40074, 40099 ]
+  }
+  FriendPieces1 {
+    id 40101
+    alts [ ]
+  }
+  FriendPieces2 {
+    id 40102
+    alts [ ]
+  }
+  FriendPieces3 {
+    id 40103
+    alts [ ]
+  }
+  FriendStand {
+    id 40104
+    alts [ ]
+  }
+  AcceptanceTrigger {
+    id 40105
+    alts [ ]
+  }
+  Unused11 {
+    id 40106
+    alts [ ]
+  }
+  TVConsole {
+    id 40107
+    alts [ ]
+  }
+  CrusherGear {
+    id 40108
+    alts [ 40108, 40109 ]
+  }
+  CrusherEye {
+    id 40109
+    alts [ 40108, 40109 ]
+  }
+  Ring {
+    id 40110
+    alts [ ]
+  }
+  MegaTumor {
+    id 40111
+    alts [ ]
+  }
+  Watcher {
+    id 40112
+    alts [ 40112, 40076, 40030 ]
+  }
+  AgonL {
+    id 40113
+    alts [ 40077, 40113, 40048, 40048 ]
+  }
+  Critters1 {
+    id 40114
+    alts [ ]
+  }
+  Critters2 {
+    id 40115
+    alts [ ]
+  }
+  Critters3 {
+    id 40116
+    alts [ ]
+  }
+  Critters4 {
+    id 40117
+    alts [ ]
+  }
+  Critters5 {
+    id 40118
+    alts [ ]
+  }
+  Critters6 {
+    id 40119
+    alts [ ]
+  }
+  WholePiece {
+    id 50000
+    alts [ ]
+  }
+  LargeSideR {
+    id 50001
+    alts [ ]
+  }
+  LargeSideD {
+    id 50002
+    alts [ ]
+  }
+  LargeSideU {
+    id 50003
+    alts [ ]
+  }
+  LargeSideL {
+    id 50004
+    alts [ ]
+  }
+  SmallSideR {
+    id 50005
+    alts [ ]
+  }
+  SmallSideD {
+    id 50006
+    alts [ ]
+  }
+  SmallSideU {
+    id 50007
+    alts [ ]
+  }
+  SmallSideL {
+    id 50008
+    alts [ ]
+  }
+  SmallCornerR {
+    id 50009
+    alts [ ]
+  }
+  SmallCornerD {
+    id 50010
+    alts [ ]
+  }
+  SmallCornerU {
+    id 50011
+    alts [ ]
+  }
+  SmallCornerL {
+    id 50012
+    alts [ ]
+  }
+  LargeCornerR {
+    id 50013
+    alts [ ]
+  }
+  LargeCornerD {
+    id 50014
+    alts [ ]
+  }
+  LargeCornerU {
+    id 50015
+    alts [ ]
+  }
+  LargeCornerL {
+    id 50016
+    alts [ ]
+  }
+  DiagonalR {
+    id 50017
+    alts [ ]
+  }
+  DiagonalD {
+    id 50018
+    alts [ ]
+  }
+  DiagonalU {
+    id 50019
+    alts [ ]
+  }
+  DiagonalL {
+    id 50020
+    alts [ ]
+  }
+  DecorationR {
+    id 50021
+    alts [ ]
+  }
+  DecorationD {
+    id 50022
+    alts [ ]
+  }
+  DecorationU {
+    id 50023
+    alts [ ]
+  }
+  DecorationL {
+    id 50024
+    alts [ ]
+  }
+  Unused13 {
+    id 50025
+    alts [ ]
+  }
+  Unused14 {
+    id 50026
+    alts [ ]
+  }
+  Unused15 {
+    id 50027
+    alts [ ]
+  }
+  Unused16 {
+    id 50028
+    alts [ ]
+  }
+  Unused17 {
+    id 50029
+    alts [ ]
+  }
+  Unused18 {
+    id 50030
+    alts [ ]
+  }
+  Unused19 {
+    id 50031
+    alts [ ]
+  }
+  Unused20 {
+    id 50032
+    alts [ ]
+  }
+  WholePiece2 {
+    id 50033
+    alts [ ]
+  }
+  LargeSideR2 {
+    id 50034
+    alts [ ]
+  }
+  LargeSideD2 {
+    id 50035
+    alts [ ]
+  }
+  LargeSideU2 {
+    id 50036
+    alts [ ]
+  }
+  LargeSideL2 {
+    id 50037
+    alts [ ]
+  }
+  SmallSideR2 {
+    id 50038
+    alts [ ]
+  }
+  SmallSideD2 {
+    id 50039
+    alts [ ]
+  }
+  SmallSideU2 {
+    id 50040
+    alts [ ]
+  }
+  SmallSideL2 {
+    id 50041
+    alts [ ]
+  }
+  SmallCornerR2 {
+    id 50042
+    alts [ ]
+  }
+  SmallCornerD2 {
+    id 50043
+    alts [ ]
+  }
+  SmallCornerU2 {
+    id 50044
+    alts [ ]
+  }
+  SmallCornerL2 {
+    id 50045
+    alts [ ]
+  }
+  LargeCornerR2 {
+    id 50046
+    alts [ ]
+  }
+  LargeCornerD2 {
+    id 50047
+    alts [ ]
+  }
+  LargeCornerU2 {
+    id 50048
+    alts [ ]
+  }
+  LargeCornerL2 {
+    id 50049
+    alts [ ]
+  }
+  DiagonalR2 {
+    id 50050
+    alts [ ]
+  }
+  DiagonalD2 {
+    id 50051
+    alts [ ]
+  }
+  DiagonalU2 {
+    id 50052
+    alts [ ]
+  }
+  DiagonalL2 {
+    id 50053
+    alts [ ]
+  }
+  DecorationR2 {
+    id 50054
+    alts [ ]
+  }
+  DecorationD2 {
+    id 50055
+    alts [ ]
+  }
+  DecorationU2 {
+    id 50056
+    alts [ ]
+  }
+  DecorationL2 {
+    id 50057
+    alts [ ]
+  }
+}
+
+# Color Tile Definitions
+# Blue tiles act the same as smart corrupt tiles
+# Yellow/Red/Green Tiles can be given a default value (this deifines what to place in "blanks")
+# It would be nice to have a color that acts like red and green, but can also specify alts (may just change green to do this)
+color {
+  BlueSolid {
+    id 100001
+    alts [ 1, 10, 26 ]
+  }
+  BlueSpikeR {
+    id 100002
+    alts [ 2, 11 ]
+  }
+  BlueSpikeD {
+    id 100003
+    alts [ 3, 12 ]
+  }
+  BlueSpikeL {
+    id 100004
+    alts [ 4, 13 ]
+  }
+  BlueSpikeU {
+    id 100005
+    alts [ 5, 14 ]
+  }
+  BlueSmallSpikeR {
+    id 100011
+    alts [ 2, 11, 0 ]
+  }
+  BlueSmallSpikeD {
+    id 100012
+    alts [ 3, 12, 0, 25 ]
+  }
+  BlueSmallSpikeL {
+    id 100013
+    alts [ 4, 13, 0 ]
+  }
+  BlueSmallSpikeU {
+    id 100014
+    alts [ 5, 14, 0, 24 ]
+  }
+  BlueConveySlow {
+    id 100027
+    alts [ 27, 29 ]
+  }
+  BlueConveyFast {
+    id 100028
+    alts [ 28, 30, 27, 29 ]
+  }
+}

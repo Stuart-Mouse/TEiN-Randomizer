@@ -149,6 +149,15 @@
                                                 </ListBox>
                                                 <ListBox Style="{StaticResource SettingsListStyle}">
                                                     <TextBlock Grid.Column="0" Text="Attach To Tilesets:" FontWeight="Bold"/>
+                                                    <ListView Name="AttachToTSPreview"
+                                                        Width="220"
+                                                        MinHeight="20"
+                                                        MaxHeight="150"
+                                                        ItemsSource="{Binding AttachToTS}"
+                                                        ScrollViewer.CanContentScroll="False"
+                                                        Style="{StaticResource FreezeSettings}"
+                                                        MouseDoubleClick="PieceList_Click"
+                                                        ItemContainerStyle="{DynamicResource ListBoxItemStyle2}"/>
                                                     <Grid>
                                                         <Grid.ColumnDefinitions>
                                                             <ColumnDefinition Width="100"/>
@@ -587,20 +596,30 @@
                         <TextBlock Grid.Row="0" Style="{StaticResource TabTitleText}" Text="Tools and Utilities"/>
                         <ListBox BorderBrush="Transparent" Grid.Row="1" Name="ToolsList" Style="{StaticResource FreezeSettings}" ScrollViewer.CanContentScroll="False" ItemContainerStyle="{DynamicResource ListBoxItemStyle}">
                             <TextBlock Text="Randomizer Tools" FontWeight="Bold"/>
-                            <Menu>
-                                <MenuItem Header="Level Gen Test" Click="LevelGenTestButton_Click" Padding="5,0" Height="20"/>
-                                <MenuItem Header="Create Piece Pools" Click="CreatePiecePools" Padding="5,0" Height="20"/>
-                                <MenuItem Header="Write Settings Code" Click="WriteSettingsCodeForMe_Click" Padding="5,0" Height="20"/>
-                            </Menu>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="130"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Button Margin="2" Padding="5,0" Height="20" Grid.Column="0" Grid.Row="0" Content="Level Gen Test"       Click="LevelGenTestButton_Click"/>
+                                <Button Margin="2" Padding="5,0" Height="20" Grid.Column="1" Grid.Row="0" Content="Create Piece Pools"   Click="CreatePiecePools"/>
+                                <Button Margin="2" Padding="5,0" Height="20" Grid.Column="2" Grid.Row="0" Content="Write Settings Code"  Click="WriteSettingsCodeForMe_Click"/>
+                                <Button Margin="2" Padding="5,0" Height="20" Grid.Column="0" Grid.Row="1" Content="Test Map Gen"         Click="TestMapGen_Click"/>
+                                <Button Margin="2" Padding="5,0" Height="20" Grid.Column="1" Grid.Row="1" Content="Test Gon Loading"     Click="TestGon_Click"/>
+                                <Button Margin="2" Padding="5,0" Height="20" Grid.Column="2" Grid.Row="1" Content="Do Latest Thing"      Click="DoLatestThing_Click"/>
+                            </Grid>
+                                
                             <Separator Margin="0,5"/>
                             <TextBlock Text="Modding Tools" FontWeight="Bold"/>
                             <Menu>
                                 <MenuItem Header="Level Corruptors">
-                                    <MenuItem Header="Smart Corrupt" Click="SmartCorrupt_Click" Padding="5,0" Margin="0,0,0,0" Height="20">
-                                        <!--<MenuItem.Icon>
-                                            <Image Source="icons/floater2.png" Stretch="Fill"/>
-                                        </MenuItem.Icon>-->
-                                    </MenuItem>
+                                    <MenuItem Header="Smart Corrupt" Click="SmartCorrupt_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>
                                     <MenuItem Header="Replace Color Tiles" Click="ColorLevels_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>
                                     <MenuItem Header="Replace Color Tiles / AutoDecorate Machine" Click="ColorLevelsAndDecorateMachine_Click" Padding="5,0" Margin="0,0,0,0" Height="20"/>
                                 </MenuItem>

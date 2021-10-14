@@ -9,7 +9,7 @@ namespace TEiNRandomizer
 
         public static void WriteWorldMap()
         {
-            WorldMapFile = File.ReadAllText("data/worldmap_template.txt");
+            WorldMapFile = File.ReadAllText("data/text/worldmap_template.txt");
             if (Randomizer.settings.DeadRacer) DeadRacer();
             CartLives();
             File.WriteAllText(Randomizer.saveDir + "data/worldmap.txt", WorldMapFile);
@@ -19,7 +19,7 @@ namespace TEiNRandomizer
             string timedCarts = "";
             for (int i = 0; i < Randomizer.settings.NumAreas; i++)
             {
-                if (Randomizer.AreaTypes[i] == "glitch")
+                if (Randomizer.AreaTypesChosen[i] == "glitch")
                     timedCarts += "v" + Convert.ToString(i + 1) + "-1 ";
             }
             WorldMapFile = WorldMapFile.Replace("TIMEDCARTS", timedCarts);
@@ -29,7 +29,7 @@ namespace TEiNRandomizer
             string cartLives = "";
             for (int i = 0; i < Randomizer.settings.NumAreas; i++)
             {
-                if (Randomizer.AreaTypes[i] == "cart")
+                if (Randomizer.AreaTypesChosen[i] == "cart")
                     cartLives += "[v" + Convert.ToString(i + 1) + "-1 " + Randomizer.settings.CartLives + "] ";
             }
             WorldMapFile = WorldMapFile.Replace("CARTLIVES", cartLives);

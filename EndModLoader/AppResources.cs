@@ -12,17 +12,22 @@ namespace TEiNRandomizer
         // CONSTRUCTOR
         static AppResources()
         {
-            LoadLevelPools();
+            LoadLevelPoolCategories();
             LoadPiecePools();
             LoadShadersList();
-            MainSettings = new SettingsFile("default");
+            MainSettings = new SettingsFile();
+            AttachToTS = new ObservableCollection<string>(File.ReadAllLines("data/text/AttachToTS.txt"));
         }
 
         // MEMBERS
 
+        // Paths for saving and loading mods
+        public const string ModPath = "mods/";
+        public const string SavedRunsPath = "saved runs/";
+
         // Paths for loading resources
-        const string LevelPoolPath = "data/levelpools";
-        const string PiecePoolPath = "data/piecepools";
+        public const string LevelPoolPath = "data/levelpools/";
+        public const string PiecePoolPath = "data/piecepools/";
 
         // Pool Categories and Piece Pools are loaded here first
         public static ObservableCollection<LevelPoolCategory> LevelPoolCategories;
@@ -40,6 +45,9 @@ namespace TEiNRandomizer
         // List of area types, used in multiple places
         public static string[] AreaTypes = { "normal", "dark", "cart", "ironcart", "glitch" };
 
+        // AttachToTS stored as a List<string> so that it is a refence type and doesn't need to be passed around
+        public static ObservableCollection<string> AttachToTS;
+
         // METHODS
 
         // Resource loading functions
@@ -47,14 +55,15 @@ namespace TEiNRandomizer
         {
             ShadersList = new List<Shader>() { };
 
-            var doc = XDocument.Load($"data/tilesets_pools.xml");    // open levelpool file
-            foreach (var element in doc.Root.Element("shaders").Elements())
+            var gon = GonObject.Load($"data/text/shaders.gon");    // open levelpool file
+            for (int i = 0; i < gon.Size(); i++)
             {
                 var shader = new Shader() { };
+                var item = gon[i];
 
-                shader.Name = element.Name.ToString();
-                shader.Enabled = Convert.ToBoolean(element.Attribute("enabled").Value);
-                shader.Content = element.Attribute("content").Value;
+                shader.Name = item.GetName();
+                shader.Enabled = item["enabled"].Bool();
+                shader.Content = item["content"].String();
 
                 ShadersList.Add(shader);
             }
@@ -63,16 +72,19 @@ namespace TEiNRandomizer
         {
             if (ShadersList != null)
             {
-                var doc = XDocument.Load($"data/tilesets_pools.xml");    // open levelpool file
+                var gon = new GonObject();
                 foreach (var shader in ShadersList)
                 {
-                    doc.Root.Element("shaders").Element(shader.Name).Attribute("enabled").Value = Convert.ToString(shader.Enabled);
+                    var item = new GonObject();
+                    item.InsertChild(GonObject.Manip.FromBool(shader.Enabled, "enabled"));
+                    item.InsertChild(GonObject.Manip.FromString(shader.Content, "content"));
+                    gon.InsertChild(shader.Name, item);
                 }
 
-                doc.Save($"data/tilesets_pools.xml");
+                gon.Save($"data/text/shaders.gon");
             }
         }
-        static void LoadLevelPools()
+        static void LoadLevelPoolCategories()
         {
             LevelPoolCategories = new ObservableCollection<LevelPoolCategory>();
             foreach (var dir in Directory.GetDirectories(LevelPoolPath, "*", SearchOption.TopDirectoryOnly))
@@ -84,7 +96,7 @@ namespace TEiNRandomizer
                 bool enabled = false;
                 foreach (var file in Directory.GetFiles($"{LevelPoolPath}/{folder}", "*.xml", SearchOption.TopDirectoryOnly))
                 {
-                    var pool = LevelPool.LoadPool(Path.GetFileNameWithoutExtension(file), folder);    // pool creation done in Pool constructor
+                    var pool = LevelPool.LoadPool(file);    // pool creation done in Pool constructor
                     if (pool != null)
                     {
                         if (pool.Author != null)        // set category author

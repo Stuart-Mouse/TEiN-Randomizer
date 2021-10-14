@@ -7,12 +7,15 @@
         public string TSNeed;
         public string Art;
         public string Folder;
-        public bool HasSecret;
-        public bool CanReverse;
-        public Connections connections;
 
-        public string inFile { get => $"data/tilemaps/{Folder}/{Name}.lvl"; }
-        public string outFile;
-        //public LevelFile File;
+        public bool HasNPC;
+
+        public Connections MapConnections;
+        public Connections Entrances;
+        public Connections Exits;
+        public Connections Secrets;
+
+        public string InFile { get => $"{Folder}/{Name}.lvl"; }
+        public string OutFile;
     }
-}
+} 

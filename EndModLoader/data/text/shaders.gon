@@ -1,0 +1,75 @@
+heatwave2 {
+enabled true
+content "fx_shader_mid heatwave2  midfx_graphics SolidBox"
+}
+
+lighting {
+enabled true
+content "fx_shader_mid lighting  midfx_graphics ShadeBox  midfx_layer 2  shader_param 0.1"
+}
+
+radiation {
+enabled true
+content "fx_shader_mid radiation  midfx_graphics SolidBox  midfx_layer 2"
+}
+
+heatwave {
+enabled true
+content "fx_shader_mid heatwave  midfx_graphics SolidBox"
+}
+
+eightbit {
+enabled false
+content "fx_shader_mid 8bit  midfx_graphics ShadeBox  midfx_layer 2"
+}
+
+eightbit_lighting {
+enabled false
+content "fx_shader_mid 8bit_lighting  midfx_graphics ShadeBox  midfx_layer 2"
+}
+
+chromatic {
+enabled false
+content "fx_shader_mid chromatic  midfx_graphics SolidBox  midfx_layer 2"
+}
+
+chromatic_pulse {
+enabled true
+content "fx_shader_mid chromatic_pulse  midfx_graphics SolidBox  midfx_layer 2"
+}
+
+colorpulse {
+enabled false
+content "fx_shader_mid colorpulse  midfx_graphics SolidBox  midfx_layer 2"
+}
+
+pixelate {
+enabled false
+content "fx_shader_mid pixelate  midfx_graphics SolidBox  midfx_layer 2"
+}
+
+pixelate_pulse {
+enabled false
+content "fx_shader_mid pixelate_pulse  midfx_graphics SolidBox  midfx_layer 2"
+}
+
+screenshake {
+enabled false
+content "fx_shader_mid screenshake  midfx_graphics SolidBox  midfx_layer 2"
+}
+
+staticpixel {
+enabled false
+content "fx_shader_mid staticpixel  midfx_graphics SolidBox  midfx_layer 2"
+}
+
+staticpixel_pulse {
+enabled false
+content "fx_shader_mid staticpixel_pulse midfx_graphics SolidBox  midfx_layer 2"
+}
+
+verticalflip {
+enabled false
+content "fx_shader_mid verticalflip  midfx_graphics SolidBox  midfx_layer 2"
+}
+

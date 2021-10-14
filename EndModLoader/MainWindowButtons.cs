@@ -18,6 +18,23 @@ namespace TEiNRandomizer
     partial class MainWindow
     {
         // Tools Buttons
+        private void DoLatestThing_Click(object sender, RoutedEventArgs e)
+        {
+            //Utility.XML2GON("C:/Users/Noah/Documents/GitHub/TEiN-Randomizer/EndModLoader/bin/Debug/data/levelpools/The End is Nigh/Overflow.xml");
+            //var gon = GonObject.Load("data/text/particles_templates.gon");
+            //Utility.FixAltsFile();
+            //gon.DebugOut();
+            //gon.Save("data/text/testout.gon");
+            Utility.TilesetTest();
+        }
+        private void TestGon_Click(object sender, RoutedEventArgs e)
+        {
+            //GonObject.GonManip.LoadTilesetFile("tools/tilesets.txt");
+        }
+        private void TestMapGen_Click(object sender, RoutedEventArgs e)
+        {
+            MapGenerator.GenerateMap();
+        }
         private void WriteSettingsCodeForMe_Click(object sender, RoutedEventArgs e)
         {
             RSettings.WriteNewSaveFunc();
@@ -145,26 +162,8 @@ namespace TEiNRandomizer
 
             MessageBox.Show($"Successfully De-Colored Levels", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
-        private void TestMapGen_Click(object sender, RoutedEventArgs e)
-        {
-            //var level1 = LevelManip.Load("C:\\Users\\Noah\\Documents\\GitHub\\TEiN-Randomizer\\EndModLoader\\bin\\Debug\\tools\\input\\_BGTILES.lvl");
-            //CSV.LevelToCSV(ref level1, RSettings.ToolsOutDirectory + "level.csv");
-            //CSV.RotateCSV("oldmap.csv");
 
-            foreach (var file in Directory.GetFiles(RSettings.ToolsInDirectory, "*.lvl", SearchOption.TopDirectoryOnly))
-            {
-                var level = LevelManip.Load(file);
-                string filename = Path.GetFileName(file);
 
-                //Corruptors.ReplaceColorTiles(ref level);
-                //AutoDecorator.DecorateMachine(ref level);
-
-                string savepath = RSettings.ToolsOutDirectory + filename;
-                LevelManip.Save(level, savepath);
-            }
-
-            MessageBox.Show($"Successfully De-Colored Levels", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-        }
         private void RotateLevels_Click(object sender, RoutedEventArgs e)
         {
             //var level1 = LevelManip.Load("C:\\Users\\Noah\\Documents\\GitHub\\TEiN-Randomizer\\EndModLoader\\bin\\Debug\\tools\\input\\_BGTILES.lvl");
@@ -228,7 +227,7 @@ namespace TEiNRandomizer
             var result = dialog.ShowDialog();
             if (result == CommonFileDialogResult.Ok)
             {
-                RSettings.GameDirectory = dialog.FileName + "/";
+                RSettings.GameDirectory = dialog.FileName + "\\";
                 Mods.Clear();
             }
 
@@ -264,7 +263,7 @@ namespace TEiNRandomizer
         private void SaveSettings_Click(object sender, RoutedEventArgs e)
         {
             //ParticleRanger();
-            RSettings.Save("default");
+            RSettings.Save();
             AppResources.SaveShadersList(ShadersList);
             foreach (LevelPoolCategory cat in PoolCatList.Items)
                 foreach (LevelPool pool in cat.Pools)
@@ -285,11 +284,11 @@ namespace TEiNRandomizer
             GameSeed += 500;
             RNG.SeedMe((int)GameSeed);
             SeedTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-            Randomizer.Randomize(this);
+            Randomizer.Randomize();
         }   // Refresh button is no longer in use.
         private void SaveModButton_Click(object sender, RoutedEventArgs e)
         {
-            Randomizer.Randomize(this, "savemod");
+            Randomizer.Randomize("savemod");
             LoadSavedRuns(FileSystem.ReadModFolder(SavedRunsPath).OrderBy(p => p));
             MessageBox.Show($"Mod saved successfully.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -316,19 +315,20 @@ namespace TEiNRandomizer
         {
             try
             {
-                if (File.Exists("data/AttachToTS.txt"))
-                    Process.Start("notepad.exe", "data/AttachToTS.txt");
-                else { File.Create("data/AttachToTS.txt"); Process.Start("data/AttachToTS.txt"); }
+                if (File.Exists("data/text/AttachToTS.txt"))
+                    Process.Start("notepad.exe", "data/text/AttachToTS.txt");
+                else { File.Create("data/text/AttachToTS.txt"); Process.Start("data/text/AttachToTS.txt"); }
             }
             catch (Exception)
             {
-                MessageBox.Show($"Error opening or creating AttachToTS.txt.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Error opening or creating text/AttachToTS.txt.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private void ReloadTilesetsOptionsButton_Click(object sender, RoutedEventArgs e)
         {
-            RSettings.AttachToTS = File.ReadAllText("data/AttachToTS.txt");
-            MessageBox.Show($"Tilesets options succesfully reloaded.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            AttachToTS = new ObservableCollection<string>(File.ReadAllLines("data/text/AttachToTS.txt"));
+            AttachToTSPreview.GetBindingExpression(ListBox.ItemsSourceProperty).UpdateTarget();
+            //MessageBox.Show($"Tilesets options succesfully reloaded.", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

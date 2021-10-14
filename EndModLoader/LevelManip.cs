@@ -11,37 +11,49 @@ namespace TEiNRandomizer
     public static class LevelManip
     {
         public static List<Pair> HFlipIndex;
+        public static List<Pair> VFlipIndex;
         public static List<Pair> RotationIndex;
 
         static LevelManip()
         {
             // load flips dictionary in constructor
             HFlipIndex = new List<Pair> { };
-            var file = File.ReadAllLines("data/hflips.txt");
+            VFlipIndex = new List<Pair> { };
+            var gon = GonObject.Load("data/text/tile_flips.gon");
             Pair pair;
-            string[] temp;
-            foreach (var line in file)
+
+            // load horizontal flips
+            var child = gon["horz"];
+            for (int i = 0; i < child.Size(); i++)
             {
-                if (line == "") continue;
-                temp = line.Split(Convert.ToChar(" "));
-                pair.First  = Convert.ToInt32(temp[0]);
-                pair.Second = Convert.ToInt32(temp[1]);
+                // We can safely index both the first and second item directly since we know they will always be present
+                pair.First  = child[i][0].Int();
+                pair.Second = child[i][1].Int();
                 HFlipIndex.Add(pair);
             }
 
-            RotationIndex = new List<Pair> { };
-            file = File.ReadAllLines("data/rotations.txt");
-            foreach (var line in file)
+            // load vertical flips
+            child = gon["vert"];
+            for (int i = 0; i < child.Size(); i++)
             {
-                if (line == "") continue;
-                temp = line.Split(Convert.ToChar(" "));
-                pair.First = Convert.ToInt32(temp[0]);
-                pair.Second = Convert.ToInt32(temp[1]);
+                pair.First  = child[i][0].Int();
+                pair.Second = child[i][1].Int();
+                VFlipIndex.Add(pair);
+            }
+
+            // load rotations
+            gon = GonObject.Load("data/text/tile_rotations.gon");
+            RotationIndex = new List<Pair> { };
+            child = gon["rotate"];
+            for (int i = 0; i < child.Size(); i++)
+            {
+                pair.First  = child[i][0].Int();
+                pair.Second = child[i][1].Int();
                 RotationIndex.Add(pair);
             }
         }
 
-        public static void LoadLayer(ref byte[] filedata, ref TileID[] layer, ref int offset)
+        static void LoadLayer(ref byte[] filedata, ref TileID[] layer, ref int offset)
         {
             try
             {
@@ -64,7 +76,7 @@ namespace TEiNRandomizer
             }
         }
 
-        public static void SaveLayer(ref byte[] filedata, ref TileID[] layer, ref int offset)
+        static void SaveLayer(ref byte[] filedata, ref TileID[] layer, ref int offset)
         {
             byte[] tempBytes = new byte[4];
             for (int i = 0; i < layer.Length; i++)

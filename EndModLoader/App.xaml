@@ -99,7 +99,7 @@
 
         <local:SettingsDisplayer x:Key="SettingsDisplayer" />
 
-        <FontFamily x:Key="TheEnd">./data/theend.ttf#TheEnd</FontFamily>
+        <FontFamily x:Key="TheEnd">./theend.ttf#TheEnd</FontFamily>
 
         <Style x:Key="AdvancedSettings" TargetType="ListBox">
             <Setter Property="Visibility" Value="{Binding ShowAdvancedSettings, Converter={StaticResource SettingsDisplayer}}" />
@@ -452,7 +452,9 @@
             </Style.Triggers>
         </Style>
 
-        
+        <DataTemplate x:Key="StringListTemplate">
+            <TextBlock Text="{Binding this}" Style="{StaticResource TitleText}"  FontSize="13" Margin="10,0,0,0"/>
+        </DataTemplate>
 
         <DataTemplate x:Key="ModListTemplate" x:Name="ModListTemp">
             <StackPanel Margin="0,3,0,3" Orientation="Vertical" >

@@ -1,0 +1,46 @@
+NumLevels 10
+NumAreas 20
+DoMusic true
+DoPalettes true
+MusicPerLevel false
+DoShaders true
+DoParticles true
+DoOverlays true
+DoTileGraphics true
+DoNevermoreTilt true
+DoExodusWobble true
+DoNPCs false
+UseAreaTileset true
+CacheRuns 0
+AreaType normal
+RepeatTolerance 0
+AltLevel Safe
+GenerateCustomParticles true
+MaxParticles 1000
+GameDirectory "C:\\Program Files (x86)\\Steam\\steamapps\\common\\theendisnigh\\"
+MaxParticleEffects 2
+ManualLoad true
+DoCorruptions true
+MirrorMode false
+DeadRacer true
+CartLives 19
+DoPhysics false
+PlatformPhysics true
+PlayerPhysics false
+WaterPhysics false
+LowGravPhysics false
+LevelMerge false
+ToolsInDirectory "C:\\Program Files (x86)\\Steam\\steamapps\\common\\theendisnigh\\tein-modding\\randoColors\\tilemaps\\"
+ToolsOutDirectory "C:\\Program Files (x86)\\Steam\\steamapps\\common\\theendisnigh\\tilemaps\\"
+RandomizeAreaType false
+CRSmart true
+CROverlays false
+CRTumors true
+CRAddTiles 0
+CRAddEnemies 0
+CRSpikeStrips false
+CRCrumbles false
+CRCrushers false
+CRChaos false
+CRWaterLevels false
+UserName Ash
