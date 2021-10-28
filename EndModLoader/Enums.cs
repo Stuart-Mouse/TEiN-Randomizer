@@ -27,6 +27,16 @@ namespace TEiNRandomizer
 
         all = 0b1111
     }
+    // This enum is just used to easily identify the type of OpenEnd
+    public enum LevelType
+    {
+        Standard,
+        Secret,
+        Connector,
+        DeadEnd     // This is included for the level generator to use in marking OpenEnds
+                    // This occurs when an entrance-only connection is placed facing a null level
+
+    }
     public enum AreaTypesEnum
     {
         normal,
@@ -42,11 +52,6 @@ namespace TEiNRandomizer
         Extended,
         Crazy,
         Insane
-    }
-    public enum Secrets
-    {
-        Up,
-        Down
     }
     public enum Direction
     {

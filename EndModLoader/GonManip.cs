@@ -107,6 +107,16 @@ namespace TEiNRandomizer
 
                 return gon;
             }
+            public static GonObject FromDouble(double val, string name = "")
+            {
+                GonObject gon = new GonObject();
+                gon.Name = name;
+                gon.Type = FieldType.NUMBER;
+
+                gon.Float_Data = val;
+
+                return gon;
+            }
             public static GonObject FromString(string val, string name = "")
             {
                 GonObject gon = new GonObject();

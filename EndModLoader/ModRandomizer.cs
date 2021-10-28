@@ -9,7 +9,7 @@ namespace TEiNRandomizer
         {
             string dir;
             // set up palette and shaders
-            if (settings.DoPalettes)
+            if (Settings.DoPalettes)
             {
                 //set up palette
                 dir = $"{saveDir}textures";
@@ -29,7 +29,7 @@ namespace TEiNRandomizer
                 }
             }
 
-            if (settings.DoParticles)
+            if (Settings.DoParticles)
             {
                 dir = saveDir + "data/particles.txt.append";
                 if (!File.Exists(dir))
@@ -40,7 +40,7 @@ namespace TEiNRandomizer
         {
             //ShadersList = mw.ShadersList;
 
-            saveDir = settings.GameDirectory;
+            saveDir = Settings.GameDirectory;
 
             PrepModFolders();
 
@@ -57,7 +57,7 @@ namespace TEiNRandomizer
                     //    LevelManip.FlipLevelH(ref level);
                     //    FlipCSV(saveDir + "data/map.csv");
                     //}
-                    if (settings.DoCorruptions)
+                    if (Settings.DoCorruptions)
                         LevelCorruptors.CorruptLevel(ref level);
                     LevelManip.Save(level, file);
                 }
@@ -75,7 +75,7 @@ namespace TEiNRandomizer
                     for (int i = 0; i < text.Length; i++)
                     {
                         if (text[i].Contains("palette"))
-                            text[i] = TilesetManip.GetPalette();
+                            text[i] = TilesetManip.GetPalette().ToString();
                         if (text[i].Contains("tile_graphics"))
                             text[i] = TilesetManip.GetTile();
                         if (text[i].Contains("overlay_graphics"))
@@ -83,7 +83,7 @@ namespace TEiNRandomizer
                         if (text[i].Contains("global_particle"))
                         {
                             var split = text[i].Trim().Split(Convert.ToChar(" "));
-                            text[i] = split[0] + " " + ParticleGenerator.GetParticle(settings);
+                            text[i] = split[0] + " " + ParticleGenerator.GetParticle();
                         }
                     }
                     File.Delete(file);

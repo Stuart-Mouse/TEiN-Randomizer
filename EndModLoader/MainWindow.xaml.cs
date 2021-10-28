@@ -131,8 +131,6 @@ namespace TEiNRandomizer
                     LoadPoolList(Randomizer.LevelPoolCategories.OrderBy(p => p));
                     LoadSavedRuns(FileSystem.ReadModFolder(SavedRunsPath).OrderBy(p => p));
                     LoadPieceList(Randomizer.PiecePools.OrderBy(p => p));
-                    GameSeed = RNG.GetUInt32();
-                    //FileSystem.EnableWatching(ModPath, OnAdd, OnRemove, OnRename);
                 }
                 else
                 {

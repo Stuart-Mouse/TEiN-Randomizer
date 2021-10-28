@@ -155,6 +155,7 @@
     <Compile Include="LevelManip.cs" />
     <Compile Include="LevelPiece.cs" />
     <Compile Include="MainWindowButtons.cs" />
+    <Compile Include="MapConnections.cs" />
     <Compile Include="MapGenerator.cs" />
     <Compile Include="ModRandomizer.cs" />
     <Compile Include="AppResources.cs" />

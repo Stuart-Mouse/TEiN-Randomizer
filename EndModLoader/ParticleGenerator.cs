@@ -1,42 +1,37 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Windows;
-using System.Xml.Linq;
-using System.Collections.ObjectModel;
 
 namespace TEiNRandomizer
 {
     public static class ParticleGenerator
     {
-        public static string GetParticle(SettingsFile settings)
+        public static string GetParticle()
         {
             string particle_name = "";
             switch (RNG.random.Next(0, 3))
             {
                 case 0:
                 case 1:
-                    particle_name = DirectionParticle(settings);
+                    particle_name = DirectionParticle();
                     break;
                 case 2:
-                    particle_name = MistParticle(settings);
+                    particle_name = MistParticle();
                     break;
             }
             return particle_name;
         }
-        public static string MistParticle(SettingsFile settings)
+        public static string MistParticle()
         {
             string particle_name = "MistParticle" + RNG.GetUInt32().ToString();
 
             int layer = 4;
-            int base_speed = 3;
+            //int base_speed = 3;
 
             // can be anything
             double alpha_start = 1;
             double alpha_end = 0;
             string movieclip;
-            int max_particles = settings.MaxParticles;
+            int max_particles = AppResources.MainSettings.MaxParticles;
             int emit_spread = 0;
             string rotation_speed = "0";
             string initial_rotation = "0";
@@ -120,7 +115,7 @@ namespace TEiNRandomizer
             return particle_name;
         }
 
-        public static string DirectionParticle(SettingsFile settings)
+        public static string DirectionParticle()
         {
             string particle_name = "DirectionParticle" + RNG.GetUInt32().ToString();
 
@@ -133,7 +128,7 @@ namespace TEiNRandomizer
             double alpha_start = 1;
             double alpha_end = 1;
             string movieclip;
-            int max_particles = settings.MaxParticles;
+            int max_particles = AppResources.MainSettings.MaxParticles;
             int emit_spread = 0;
             string rotation_speed = "0";
             string initial_rotation = "0";

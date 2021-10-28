@@ -42,18 +42,83 @@ namespace TEiNRandomizer
         }
         public static void TilesetTest()
         {
-            var gon = GonObject.Load("testin.txt");
 
-            var ts1 = gon["1"];
-            var ts2 = gon["2"];
+            // prevent crashing
+            TilesetManip.MakeShaderPool();
 
-            var ts3 = GonObject.Manip.PriorityMerge(ts1, ts2);
+            // create a drawpool for testing
+            var drawPool = new List<Level>();
+            foreach (var cat in AppResources.LevelPoolCategories)
+            {
+                if (cat.Enabled)
+                {
+                    foreach (var pool in cat.Pools) // push levels in all active level pools into drawpool vector
+                    {
+                        if (pool.Active)
+                        {
+                            foreach (var level in pool.Levels)
+                            {
+                                drawPool.Add(level);
+                            }
+                        }
+                    }
+                }
+            }
 
-            ts1.Save("testout1.txt");
-            ts2.Save("testout2.txt");
-            ts3.Save("testout3.txt");
+            // Create a few MapAreas for testing purposes
+            List<MapArea> MapAreasList = new List<MapArea>();
+            for (int i = 0; i < 10; i++)
+            {
+                // Create new MapArea
+                // the map area is created with a randmized name and tileset already initialized
+                MapArea mapArea = new MapArea();
 
+                // select some random levels
+                for (int j = 0; j < 10; j++)
+                {
+                    int selection = RNG.random.Next(0, drawPool.Count());
+                    mapArea.Levels.Add(drawPool[selection]);
+                }
 
+                MapAreasList.Add(mapArea);
+            }
+
+            // Create a StreamWriter object for writing to the tilesets.txt file
+            using (StreamWriter sw = File.CreateText("data/tilesets.txt.append"))
+            {
+                // Loop over map areas
+                for (int i = 0; i < MapAreasList.Count(); i++)
+                {
+                    // Get reference to MapArea #i in list 
+                    MapArea mapArea = MapAreasList[i];
+                     
+                    // Set areaTileset to Map Area's tileset
+                    Tileset areaTileset = mapArea.Tileset;
+
+                    // Write the area's tileset to the file
+                    sw.WriteLine($"{mapArea.Name} {{");
+                    areaTileset.WriteTileset(sw);
+
+                    // Loop over levels in area
+                    for (int j = 0; j < mapArea.Levels.Count(); j++)
+                    {
+                        // Get reference to Level #i in area 
+                        Level level = mapArea.Levels[j];
+
+                        // Calculate the final tileset
+                        // The tilesets are added in order of priority, from lowest to highest
+                        Tileset levelTileset = (level.TSDefault + areaTileset) + level.TSNeed;
+                       
+                        // Write level tileset to the file
+                        sw.WriteLine($"{level.Name} {{");
+                        levelTileset.WriteTileset(sw);
+                        sw.WriteLine("}");
+                    }
+
+                    // write closing bracket for area tileset
+                    sw.WriteLine("}\n");
+                }
+            }
         }
         public static void WriteTilesetFunction()
         {
@@ -142,25 +207,35 @@ namespace TEiNRandomizer
             
             var doc = XDocument.Load(path);    // open levelpool file
 
+            // Reformat header
+            outFile += "header {\n";
             if (Convert.ToBoolean(doc.Root.Attribute("enabled").Value == "True"))
                 outFile += "enabled true\n";
             else outFile += "enabled false\n";
-
             outFile += "order " + Convert.ToInt32(doc.Root.Attribute("order").Value) + "\n";
-
             outFile += "author \"" + doc.Root.Attribute("author").Value + "\"\n";
-            outFile += "source \"" + doc.Root.Attribute("source").Value + "\"\n\n";
+            outFile += "source \"" + doc.Root.Attribute("source").Value + "\"\n";
+            outFile += "path   \"data/level pools/" + doc.Root.Attribute("source").Value + "/\"\n";
+            outFile += "}\n\n";
+
+            // Reformat levels / tileset
             foreach (var element in doc.Root.Elements())
             {
                 if (element.Name == "lvl" || element.Name == "level")
                 {
                     outFile += $"  \"{element.Attribute("name").Value}\" {{\n";
                     //outFile += "    name \"" + element.Attribute("name").Value + "\"\n";
-                    outFile += "    secret " + Convert.ToBoolean(element.Attribute("secret").Value) + "\n";
+                    //outFile += "    secret " + Convert.ToBoolean(element.Attribute("secret").Value) + "\n";
+
+                    outFile += "    connections {\n";
+                    outFile += "      up n\n";
+                    outFile += "      down n\n";
+                    outFile += "      left E\n";
+                    outFile += "      right X\n";
+                    outFile += "    }\n";
 
                     foreach (var element2 in element.Elements())
                     {
-                        //if (element2.Name == "name") level.Name = element2.Value;
                         if (element2.Name == "tileset")
                         {
                             outFile += "    tileset {\n";
@@ -169,17 +244,17 @@ namespace TEiNRandomizer
                                 if (element3.Name == "default")
                                 {
                                     outFile += "      default\n";
-                                    outFile += "      \"" + element3.Value + "\"\n";
+                                    outFile += "      {" + element3.Value + "}\n";
                                 }
                                 else if (element3.Name == "need")
                                 {
                                     outFile += "      need\n";
-                                    outFile += "      \"" + element3.Value + "\"\n";
+                                    outFile += "      {" + element3.Value + "}\n";
                                 }
                                 else if (element3.Name == "art")
                                 {
                                     outFile += "      art\n";
-                                    outFile += "      \"" + element3.Value + "\"\n";
+                                    outFile += "      {" + element3.Value + "}\n";
                                 }
                             }
                             outFile += "    }\n";
@@ -195,24 +270,24 @@ namespace TEiNRandomizer
                         if (element2.Name == "default")
                         {
                             outFile += "  default\n";
-                            outFile += "  \"" + element2.Value + "\"\n";
+                            outFile += "  {" + element2.Value + "}\n";
                         }
                         else if (element2.Name == "need")
                         {
                             outFile += "  need\n";
-                            outFile += "  \"" + element2.Value + "\"\n";
+                            outFile += "  {" + element2.Value + "}\n";
                         }
                         else if (element2.Name == "art")
                         {
                             outFile += "  art\n";
-                            outFile += "  \"" + element2.Value + "\"\n";
+                            outFile += "  {" + element2.Value + "}\n";
                         }
                     }
-                    outFile += "}\n";
+                    outFile += "}\n\n";
                 }
             }
 
-            File.WriteAllText("data/levelpools/testout.gon", outFile);
+            File.WriteAllText($"data/level pools/The End is Nigh/{fileName}.gon", outFile);
         }
 
         

@@ -9,14 +9,7 @@ namespace TEiNRandomizer
 {
     public static class TilesetManip
     {
-        static string[] TileGraphicsPool { get; set; }
-        static string[] OverlayGraphicsPool { get; set; }
-        static string[] BackgroundPool { get; set; }
-        static string[] ParticlePool { get; set; }
-        static string[] MusicPool { get; set; }
-        public static int NumPalettes { get; set; }
-        static List<string> ShaderPool { get; set; }
-        static string[] AreaTypes { get; set; } = AppResources.AreaTypes;
+        // CONSTRUCTOR
         static TilesetManip()
         {
             // Load Resources
@@ -26,176 +19,194 @@ namespace TEiNRandomizer
             OverlayGraphicsPool = GonObject.Manip.GonToStringArray(gon["overlay_graphics"]);
             ParticlePool        = GonObject.Manip.GonToStringArray(gon["particles"]);
             MusicPool           = GonObject.Manip.GonToStringArray(gon["music"]);
+            ArtAlts             = GonObject.Load("data/text/art_alts.gon");
         }
+
+        // MEMBERS
+
+        // Pools for randomized tileset properties
+        static string[] TileGraphicsPool { get; set; }
+        static string[] OverlayGraphicsPool { get; set; }
+        static string[] BackgroundPool { get; set; }
+        static string[] ParticlePool { get; set; }
+        static string[] MusicPool { get; set; }
+        static GonObject ArtAlts { get; set; }
+        public static int NumPalettes { get; set; }
+        static List<Shader> ShaderPool { get; set; }
+        static string[] AreaTypes { get; set; } = AppResources.AreaTypes;   // References area types from app resources
+
+        // METHODS
+
+        // Shader pool is re-evaluated each time the randomization process begins
         public static void MakeShaderPool()
         {
-            ShaderPool = new List<string> { };
+            ShaderPool = new List<Shader> { };
 
             foreach (var shader in AppResources.ShadersList)
             {
                 if (shader.Enabled)
-                    ShaderPool.Add(shader.Content);
+                    ShaderPool.Add(shader);
             }
         }
 
-        public static string GetPalette() { return $"    palette { RNG.random.Next(1, NumPalettes) }"; }
-        public static string GetTile() { return $"    tile_graphics { TileGraphicsPool[RNG.random.Next(0, TileGraphicsPool.Count())] }"; }
-        public static string GetOverlay() { return $"    overlay_graphics { OverlayGraphicsPool[RNG.random.Next(0, OverlayGraphicsPool.Count())] }"; }
-
-        private static string GetArtAlts(SettingsFile settings)
+        // Functions for getting random values
+        public static int GetPalette() { return RNG.random.Next(1, NumPalettes); }
+        public static string GetTile() { return TileGraphicsPool[RNG.random.Next(0, TileGraphicsPool.Count())]; }
+        public static string GetMusic() { return MusicPool[RNG.random.Next(0, MusicPool.Count())]; }
+        public static string GetOverlay() { return OverlayGraphicsPool[RNG.random.Next(0, OverlayGraphicsPool.Count())]; }
+        public static List<string[]> GetArtAlts()
         {
-            string ArtAlts = "";
-
-            try
+            List<string[]> ret = new List<string[]>();
+            if (AppResources.MainSettings.AltLevel == "Safe")
             {
-                var gon = GonObject.Load("data/text/art_alts.gon");
-                if (settings.AltLevel == "Safe")
+                for (int i = 0; i < ArtAlts["safe"].Size(); i++)
                 {
-                    for (int i = 0; i < gon["safe"].Size(); i++)
-                    {
-                        var art = gon["safe"][i];
+                    var art = ArtAlts["safe"][i];
 
-                        for (int j = 0; j < art.Size(); j++)
-                        {
-                            var alts = GonObject.Manip.GonToStringArray(art);
-                            ArtAlts += "[" + art.GetName() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
-                        }
-                    }
-                }
-                else if (settings.AltLevel == "Extended")
-                {
-                    for (int i = 0; i < gon["extended"].Size(); i++)
+                    for (int j = 0; j < art.Size(); j++)
                     {
-                        var art = gon["extended"][i];
-
-                        for (int j = 0; j < art.Size(); j++)
-                        {
-                            var alts = GonObject.Manip.GonToStringArray(art);
-                            ArtAlts += "[" + art.GetName() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
-                        }
+                        var alts = GonObject.Manip.GonToStringArray(art);
+                        ret.Add( new string[] { art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim() } );
                     }
-                }
-                else if (settings.AltLevel == "Crazy")
-                {
-                    for (int i = 0; i < gon["crazy"].Size(); i++)
-                    {
-                        var art = gon["crazy"][i];
-
-                        for (int j = 0; j < art.Size(); j++)
-                        {
-                            var alts = GonObject.Manip.GonToStringArray(art);
-                            ArtAlts += "[" + art.GetName() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
-                        }
-                    }
-                }
-                else if (settings.AltLevel == "Insane")
-                {
-                    var art = gon["insane"];
-                    for (int i = 0; i < art.Size(); i++)
-                    {
-                        var alts = GonObject.Manip.GonToStringArray(gon["insane"]);
-                        ArtAlts += "[" + art[i].String() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() + "]";
-                    }
-                    //ArtAlts += "[ChainLink, None][ChainLink2, None]";
                 }
             }
-            catch (Exception)
+            else if (AppResources.MainSettings.AltLevel == "Extended")
             {
-                MessageBox.Show(
-                        "Art Alt Error",
-                        "Warning",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information,
-                        MessageBoxResult.OK
-                    );
-                throw;
+                for (int i = 0; i < ArtAlts["extended"].Size(); i++)
+                {
+                    var art = ArtAlts["extended"][i];
+
+                    for (int j = 0; j < art.Size(); j++)
+                    {
+                        var alts = GonObject.Manip.GonToStringArray(art);
+                        ret.Add( new string[] { art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim() } );
+                    }
+                }
             }
-            return ArtAlts;
+            else if (AppResources.MainSettings.AltLevel == "Crazy")
+            {
+                for (int i = 0; i < ArtAlts["crazy"].Size(); i++)
+                {
+                    var art = ArtAlts["crazy"][i];
+
+                    for (int j = 0; j < art.Size(); j++)
+                    {
+                        var alts = GonObject.Manip.GonToStringArray(art);
+                        ret.Add( new string[] { art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim() } );
+                    }
+                }
+            }
+            else if (AppResources.MainSettings.AltLevel == "Insane")
+            {
+                var art = ArtAlts["insane"];
+                for (int i = 0; i < art.Size(); i++)
+                {
+                    var alts = GonObject.Manip.GonToStringArray(ArtAlts["insane"]);
+                    ret.Add( new string[] { art[i].String() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() } );
+                }
+                //ArtAlts += "[ChainLink, None][ChainLink2, None]";
+            }
+
+            return ret;
         }
-        public static Tileset GetTileset(SettingsFile settings, bool isAreaTS)
+        public static Tileset GetTileset()
         {
+            // Create new tileset to return
             Tileset tileset = new Tileset();
-            try
+             
+            // Set area type
+            if (AppResources.MainSettings.RandomizeAreaType)
+                tileset.area_type = AreaTypes[RNG.random.Next(0, 5)];
+            else tileset.area_type = AppResources.MainSettings.AreaType;
+
+            // Set tileset info
+            tileset.tile_graphics = GetTile();
+            tileset.overlay_graphics = GetOverlay();
+            tileset.palette = GetPalette();
+            tileset.music = GetMusic();
+
+            // Set fx_shader_mid info
+            if (AppResources.MainSettings.DoShaders && ShaderPool.Count() > 0)
             {
-                // Select Tileset Info
-                if (isAreaTS)
-                {
-                    //if (settings.DeadRacer) tileset.AreaType = "glitch";
-                    if (settings.RandomizeAreaType)
-                        tileset.AreaType = AreaTypes[RNG.random.Next(0, 5)];
-                    else tileset.AreaType = settings.AreaType;
-                }
-
-                tileset.Tile = ($"    tile_graphics { TileGraphicsPool[RNG.random.Next(0, TileGraphicsPool.Count())] }\n");
-                tileset.Overlay = ($"    overlay_graphics { OverlayGraphicsPool[RNG.random.Next(0, OverlayGraphicsPool.Count())] }\n");
-                tileset.Palette = ($"    palette { RNG.random.Next(1, NumPalettes) }\n");
-                tileset.Music = ($"    music { MusicPool[RNG.random.Next(0, MusicPool.Count())] }\n");
-
                 if (RNG.random.Next(0, 2) == 0)  // set shader
                 {
-                    tileset.Shader = ($"    { ShaderPool[RNG.random.Next(0, ShaderPool.Count())] }\n");
+                    tileset.shaderMid.fx_shader_mid = ($"    { ShaderPool[RNG.random.Next(0, ShaderPool.Count())] }\n");
                 }
-                tileset.Shader += "shader_param " + ((float)RNG.random.Next(0, 101) / 100);
-
-                // set particles
-                if (settings.DoParticles)
-                {
-                    var loop = RNG.random.Next(1, settings.MaxParticleEffects);
-                    if (settings.GenerateCustomParticles)
-                    {
-                        for (int i = 0; i < loop; i++)
-                        {
-                            tileset.Particles += ("    global_particle_" + (i + 1).ToString() + $" { ParticleGenerator.GetParticle(settings) }\n");
-                        }
-                    }
-                    else
-                    {
-                        for (int i = 0; i < loop; i++)
-                        {
-                            tileset.Particles += ("    global_particle_" + (i + 1).ToString() + $" { ParticlePool[RNG.random.Next(0, ParticlePool.Count())] }\n");
-                        }
-                    }
-                }
-
-                // bgsolid for auto-refresh
-                //if (settings.AutoRefresh || settings.LevelMerge)
-                //    Extras += "background_graphics bgsolid\n";
-
-                if (settings.LevelMerge)
-                    tileset.Extras += "global_particle_1 None\nglobal_particle_2 None\nglobal_particle_3 None tile_particle_1 None tile_particle_2 None tile_particle_3 None tile_particle_4 None tile_particle_5 None\n";
-
-                // generate Art Alts
-                if (settings.AltLevel != "None")
-                    tileset.ArtAlts = GetArtAlts(settings);
-
-                // extras and physics
-                if (settings.UseAreaTileset == isAreaTS)
-                {
-                    if (settings.DoNevermoreTilt && RNG.random.Next(0, 6) == 0 /*!(isAreaTS && !settings.UseAreaTileset)*/)
-                    {
-                        tileset.DoTilt = ($"    do_tilt true\n");
-                    }
-                    if (settings.DoExodusWobble && RNG.random.Next(0, 6) == 0 /*!(isAreaTS && !settings.UseAreaTileset)*/)
-                    {
-                        tileset.DoWobble = ($"    do_wobble true\n");
-                    }
-                    if (settings.DoPhysics)
-                    {
-                        if (settings.PlatformPhysics)
-                            tileset.Extras += "    platform_physics " + Physics.PlatformPhysics() + "\n";
-                        if (settings.WaterPhysics)
-                            tileset.Extras += "    water_physics " + Physics.WaterPhysics() + "\n";
-                        if (settings.PlayerPhysics)
-                            tileset.Extras += "    player_physics " + Physics.PlayerPhysics() + "\n";
-                        if (settings.LowGravPhysics)
-                            tileset.Extras += "    lowgrav_physics " + Physics.LowGravPhysics() + "\n";
-                    }
-                }
-
-                // create "all", which is just the entire tileset in one string
-                tileset.All = $"area_type {tileset.AreaType}\n" + tileset.Tile + "\n" + tileset.Overlay + "\n" + tileset.Particles + "\n" + tileset.Shader + "\n" + tileset.Palette + "\n" + tileset.Music + "\n" + tileset.Extras;
+                tileset.shaderMid.shader_param = ((float)RNG.random.Next(0, 101) / 100);
             }
-            catch (Exception ex) { MessageBox.Show($"Error creating tileset. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+
+            // Select or generate particle effects
+            if (AppResources.MainSettings.DoParticles)
+            {
+                // Particles are generated where necessary
+                if (AppResources.MainSettings.GenerateCustomParticles)
+                {
+                    // Select the number of particles to generate, based on the max particles setting
+                    int count = RNG.random.Next(0, AppResources.MainSettings.MaxParticleEffects);
+
+                    // Switch case "fallthrough" allows use to generate the proper number particles in descending order
+                    switch (count)
+                    {
+                        case 2:
+                            tileset.global_particle_3 = ParticleGenerator.GetParticle();
+                            goto case 1;
+                        case 1:
+                            tileset.global_particle_2 = ParticleGenerator.GetParticle();
+                            goto case 0;
+                        case 0:
+                            tileset.global_particle_1 = ParticleGenerator.GetParticle();
+                            break;
+                    }
+                }
+                // If we aren't generating particles, select from the standard pool
+                else
+                {
+                    // Same principle as above for this switch case
+                    int count = RNG.random.Next(0, AppResources.MainSettings.MaxParticleEffects);
+                    switch (count)
+                    {
+                        case 2:
+                            tileset.global_particle_3 = ParticlePool[RNG.random.Next(0, ParticlePool.Count())];
+                            goto case 1;
+                        case 1:
+                            tileset.global_particle_2 = ParticlePool[RNG.random.Next(0, ParticlePool.Count())];
+                            goto case 0;
+                        case 0:
+                            tileset.global_particle_1 = ParticlePool[RNG.random.Next(0, ParticlePool.Count())];
+                            break;
+                    }
+                }
+            }
+
+            // Generate art alts
+            if (AppResources.MainSettings.AltLevel != "None")
+                tileset.art_alts = GetArtAlts();
+
+            // Set tilt and wobble
+            if (AppResources.MainSettings.DoNevermoreTilt && RNG.random.Next(0, 6) == 0)
+            {
+                tileset.do_tilt = true;
+            }
+            if (AppResources.MainSettings.DoExodusWobble && RNG.random.Next(0, 6) == 0)
+            {
+                tileset.do_wobble = true;
+            }
+
+            // Generate physics
+            if (AppResources.MainSettings.DoPhysics)
+            {
+                if (AppResources.MainSettings.PlatformPhysics)
+                    tileset.platform_physics = Physics.PlatformPhysics();
+
+                if (AppResources.MainSettings.WaterPhysics)
+                    tileset.water_physics    = Physics.WaterPhysics();
+
+                if (AppResources.MainSettings.PlayerPhysics)
+                    tileset.player_physics   = Physics.PlayerPhysics();
+
+                if (AppResources.MainSettings.LowGravPhysics)
+                    tileset.lowgrav_physics  = Physics.LowGravPhysics();
+            }
 
             return tileset;
         }

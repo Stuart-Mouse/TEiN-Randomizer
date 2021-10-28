@@ -20,16 +20,14 @@ namespace TEiNRandomizer
         // Tools Buttons
         private void DoLatestThing_Click(object sender, RoutedEventArgs e)
         {
-            //Utility.XML2GON("C:/Users/Noah/Documents/GitHub/TEiN-Randomizer/EndModLoader/bin/Debug/data/levelpools/The End is Nigh/Overflow.xml");
-            //var gon = GonObject.Load("data/text/particles_templates.gon");
-            //Utility.FixAltsFile();
-            //gon.DebugOut();
-            //gon.Save("data/text/testout.gon");
-            Utility.TilesetTest();
+            foreach (var file in Directory.GetFiles("data/levelpools/The End is Nigh", "*.xml"))
+            {
+                Utility.XML2GON(file);
+            }
         }
         private void TestGon_Click(object sender, RoutedEventArgs e)
         {
-            //GonObject.GonManip.LoadTilesetFile("tools/tilesets.txt");
+            Utility.TilesetTest();
         }
         private void TestMapGen_Click(object sender, RoutedEventArgs e)
         {
@@ -37,7 +35,7 @@ namespace TEiNRandomizer
         }
         private void WriteSettingsCodeForMe_Click(object sender, RoutedEventArgs e)
         {
-            RSettings.WriteNewSaveFunc();
+            //RSettings.WriteNewSaveFunc();
         }
         private void LevelGenTestButton_Click(object sender, RoutedEventArgs e)
         {
@@ -118,7 +116,7 @@ namespace TEiNRandomizer
             Randomizer.saveDir = RSettings.ToolsOutDirectory;
             for (int i = 0; i < 50; i++)
             {
-                ParticleGenerator.GetParticle(RSettings);
+                ParticleGenerator.GetParticle();
             }
             MessageBox.Show($"Successfully Generated Particles", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
@@ -262,21 +260,7 @@ namespace TEiNRandomizer
         }
         private void SaveSettings_Click(object sender, RoutedEventArgs e)
         {
-            //ParticleRanger();
             RSettings.Save();
-            AppResources.SaveShadersList(ShadersList);
-            foreach (LevelPoolCategory cat in PoolCatList.Items)
-                foreach (LevelPool pool in cat.Pools)
-                {
-                    pool.Save();
-                }
-            MessageBox.Show(
-                        "Save successful.",
-                        "FYI",
-                        MessageBoxButton.OK,
-                        MessageBoxImage.Information,
-                        MessageBoxResult.OK
-                    );
         }
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {

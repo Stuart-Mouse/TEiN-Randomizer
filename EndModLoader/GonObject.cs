@@ -250,7 +250,8 @@ namespace TEiNRandomizer
                 return ret;
             }
             else if (Tokens.Peek() == "[")
-            {  //read array
+            {  
+                //read array
                 ret.Type = FieldType.ARRAY;
 
                 Tokens.Consume(); //consume '['
@@ -261,7 +262,6 @@ namespace TEiNRandomizer
                     if (Tokens.error)
                     {
                         throw new GonException("GON ERROR: missing a ']' somewhere");
-                        return null;
                     }
                 }
                 Tokens.Consume(); //consume ']'
@@ -270,35 +270,25 @@ namespace TEiNRandomizer
             }
             else
             {
-                //read data value
+                // read data value
                 ret.Type = FieldType.STRING;
                 ret.String_Data = Tokens.Read();
 
-                //if string data can be converted to a number, do so
+                // if string data can be converted to a number, do so
                 if (ret.String_Data.All(Char.IsDigit))
                 {
                     ret.Int_Data = Convert.ToInt32(ret.String_Data);
                     ret.Type = FieldType.NUMBER;
                 }
-                /*char* endptr;
-                ret.int_data = strtol(ret.string_data.c_str(), &endptr, 0);
-                if (*endptr == 0)
-                {
-                    ret.type = FieldType.NUMBER;
-                }*/
 
+                // convert string to a double if possible
                 if (IsStringFloat(ret.String_Data))
                 {
                     ret.Float_Data = Convert.ToDouble(ret.String_Data);
                     ret.Type = FieldType.NUMBER;
                 }
-                /*ret.float_data = strtod(ret.string_data.c_str(), &endptr);
-                if (*endptr == 0)
-                {
-                    ret.type = FieldType.NUMBER;
-                }*/
 
-                //if string data can be converted to a bool or null, convert
+                // if string data can be converted to a bool or null, convert
                 if (ret.String_Data == "null") ret.Type = FieldType.NULLGON;
                 if (ret.String_Data == "true")
                 {
@@ -343,7 +333,7 @@ namespace TEiNRandomizer
             return LoadFromTokens(ts);
         }
 
-        //options with error throwing
+        // options with error throwing
         public string String()
         {
             if(Type == FieldType.NULLGON) throw new GonException("GON ERROR: Field \""+(last_accessed_named_field)+"\" does not exist");
@@ -369,13 +359,12 @@ namespace TEiNRandomizer
             return Bool_Data;
         }
 
-        //options with a default value
+        // options with a default value
         public string String(string _default)
             {
             if(Type != FieldType.STRING && Type != FieldType.NUMBER && Type != FieldType.BOOL) return _default;
             return String_Data;
         }
-
         public int Int(int _default) {
             if(Type != FieldType.NUMBER) return _default;
         return Int_Data;
@@ -414,6 +403,18 @@ namespace TEiNRandomizer
             if (Contains(child)) return (this)[child];
             else return this;
         }*/
+
+        public bool TryGetChild(string name, out GonObject child)
+        {
+            child = null;
+            if (Children_Map.ContainsKey(name))
+            {
+                child = this[name];
+                return true;
+            }
+            else return false;
+        }
+
 
         public GonObject this[string child]
         {

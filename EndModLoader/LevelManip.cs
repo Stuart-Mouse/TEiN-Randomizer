@@ -247,16 +247,6 @@ namespace TEiNRandomizer
             Console.WriteLine("============================================");
         }
 
-        public static LevelFile copyLevel(LevelFile level)
-        {
-            var levelNew = new LevelFile();
-
-            levelNew = level;
-
-            return levelNew;
-        }
-
-
         public static LevelFile RotateLevel(ref LevelFile level)
         {
             int lw = level.header.width;
@@ -309,5 +299,100 @@ namespace TEiNRandomizer
             return levelOut;
         }
 
+        public static void NormalizeEntranceH(ref LevelFile left, ref LevelFile right, bool horiz = false)
+        {
+            // Find transition tags in left level
+            int indexL = FindFirstTag(left, TileID.GreenTransitionR);
+
+            // Throw error if none found
+            if (indexL == -1) throw new IndexOutOfRangeException("Could not find given tag in the level.");
+
+            // Get all adjacents
+            List<int> adjacentsL = GetEntryTags(ref left, TileID.GreenTransitionR, indexL);
+
+            // Find transition tags in right level
+            int indexR = FindFirstTag(right, TileID.GreenTransitionL);
+
+            // Throw error if none found
+            if (indexR == -1) throw new IndexOutOfRangeException("Could not find given tag in the level.");
+
+            // Get all adjacents
+            List<int> adjacentsR = GetEntryTags(ref right, TileID.GreenTransitionL, indexR);
+
+            // Calculate new entry height
+            int newEntryHeight = Math.Min(adjacentsL.Count, adjacentsR.Count);
+
+            // Remove extraneous entry tags in left level
+            ReplaceEntryTags(ref left, adjacentsL, newEntryHeight);
+
+            // Remove extraneous entry tags in left level
+            ReplaceEntryTags(ref right, adjacentsR, newEntryHeight);
+        }
+
+        public static int FindFirstTag(LevelFile level, TileID tag)
+        {
+            int lw = level.header.width;
+            int lh = level.header.height;
+
+            for (int row = 0; row < lh; row++)
+            {
+                for (int col = 0; col < lw; col++)
+                {
+                    int index = row * lw + col;
+
+                    if (level.data.tag[index] == tag)
+                        return index;
+                }
+            }
+            return -1;
+        }
+
+        public static void ReplaceEntryTags(ref LevelFile level, List<int> set, int newEntryHeight)
+        {
+            // Calculate how many tiles to replace
+            int toReplace = set.Count() - newEntryHeight;
+            if (toReplace <= 0)
+                return;
+
+            // Iterate over set of tiles
+            for (int i = 0; i < toReplace; i++)
+            {
+                int index = set[i];
+
+                // Remove the transition tag
+                level.data.tag[index] = TileID.Empty;
+
+                // Place invisible solid where tag was
+                level.data.active[index] = TileID.Invisible;
+            }
+        }
+
+        public static List<int> GetEntryTags(ref LevelFile level, TileID id, int index, bool horiz = false)
+        {
+            int lw = level.header.width;
+            int lh = level.header.height;
+
+            int size = lw * lh;
+
+            List<int> adjacents = new List<int>();
+
+            while (true)
+            {
+                if (horiz) index += 1;
+                else index += lw;
+
+                if (index < size)
+                {
+                    if (level.data.active[index] == id)
+                    {
+                        adjacents.Add(index);
+                        continue;
+                    }
+                }
+                break;
+            }
+
+            return adjacents;
+        }
     }
 }

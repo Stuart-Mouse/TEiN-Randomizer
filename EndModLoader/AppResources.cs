@@ -15,7 +15,6 @@ namespace TEiNRandomizer
             LoadLevelPoolCategories();
             LoadPiecePools();
             LoadShadersList();
-            MainSettings = new SettingsFile();
             AttachToTS = new ObservableCollection<string>(File.ReadAllLines("data/text/AttachToTS.txt"));
         }
 
@@ -26,7 +25,7 @@ namespace TEiNRandomizer
         public const string SavedRunsPath = "saved runs/";
 
         // Paths for loading resources
-        public const string LevelPoolPath = "data/levelpools/";
+        public const string LevelPoolPath = "data/level pools/";
         public const string PiecePoolPath = "data/piecepools/";
 
         // Pool Categories and Piece Pools are loaded here first
@@ -34,13 +33,13 @@ namespace TEiNRandomizer
         public static ObservableCollection<PiecePool> PiecePools;
 
         // Settings are loaded here first
-        public static SettingsFile MainSettings;
+        public static SettingsFile MainSettings = new SettingsFile();
 
         // A list of all the loaded shaders is stored in this class.
-        public static List<Shader> ShadersList;
+        public static List<Shader> ShadersList = new List<Shader>();
 
         // Basic things needed in multiple classes
-        public static UInt32 GameSeed;
+        public static UInt32 GameSeed = RNG.GetUInt32();
 
         // List of area types, used in multiple places
         public static string[] AreaTypes = { "normal", "dark", "cart", "ironcart", "glitch" };
@@ -58,61 +57,92 @@ namespace TEiNRandomizer
             var gon = GonObject.Load($"data/text/shaders.gon");    // open levelpool file
             for (int i = 0; i < gon.Size(); i++)
             {
-                var shader = new Shader() { };
-                var item = gon[i];
+                Shader shader = new Shader() { };
+                GonObject item = gon[i];
 
                 shader.Name = item.GetName();
-                shader.Enabled = item["enabled"].Bool();
-                shader.Content = item["content"].String();
+                //shader.Enabled = item["enabled"].Bool();
+
+                // Load shader content
+                if (item["fx_shader_mid"] != null)
+                    shader.fx_shader_mid = item["fx_shader_mid"].String();
+                if (item["midfx_graphics"] != null)
+                    shader.midfx_graphics = item["midfx_graphics"].String();
+                if (item["midfx_layer"] != null)
+                    shader.midfx_layer = item["midfx_layer"].Int();
+                if (item["shader_param"] != null)
+                    shader.shader_param = item["shader_param"].Number();
+
+                // The set of active shaders is stored as a string array.
+                // When loading, we search for the shader's name in the set of active shaders.
+                // If found, we active the shader.
+                // The shader's name is simply saved into this array when saving.
+                var settings = AppResources.MainSettings;
+                foreach (string str in settings.ActiveShaders)
+                {
+                    if (str == shader.Name) shader.Enabled = true;
+                }
 
                 ShadersList.Add(shader);
             }
-        }
-        public static void SaveShadersList(List<Shader> ShadersList)
-        {
-            if (ShadersList != null)
-            {
-                var gon = new GonObject();
-                foreach (var shader in ShadersList)
-                {
-                    var item = new GonObject();
-                    item.InsertChild(GonObject.Manip.FromBool(shader.Enabled, "enabled"));
-                    item.InsertChild(GonObject.Manip.FromString(shader.Content, "content"));
-                    gon.InsertChild(shader.Name, item);
-                }
 
-                gon.Save($"data/text/shaders.gon");
-            }
+            
+
+            
+
         }
         static void LoadLevelPoolCategories()
         {
+            // This function loads all of the playable level pools into the randomizer.
+            // This is performed during the boot-up process of the program.
+            // If these pools are unable to load, then the program will not run correctly (or at all).
+            
+            // Create new list of level pool categories
             LevelPoolCategories = new ObservableCollection<LevelPoolCategory>();
+            
+            // Iterate over directories in level pools folder
             foreach (var dir in Directory.GetDirectories(LevelPoolPath, "*", SearchOption.TopDirectoryOnly))
             {
-                var folder = Path.GetFileNameWithoutExtension(dir);
-                var cat = new LevelPoolCategory() { Name = folder, Pools = new ObservableCollection<LevelPool>() { } };
-                var tempList = new List<LevelPool>() { };
-                string author = null;
-                bool enabled = false;
-                foreach (var file in Directory.GetFiles($"{LevelPoolPath}/{folder}", "*.xml", SearchOption.TopDirectoryOnly))
+                // Get the directory name of the pool
+                string folder = Path.GetFileName(dir);
+
+                // If the folder begins with '.' then do not process it.
+                // Folders beginning with '.' are used for templated levels and other stuff the randomizer needs.
+                // These are not intended to be your typical playable leves.
+                if (folder[0] == '.') continue;
+
+                // Create new level pool category
+                LevelPoolCategory cat = new LevelPoolCategory() { Name = folder, Pools = new ObservableCollection<LevelPool>() { } };
+                
+                // Create temporary list of levels
+                List<LevelPool> tempList = new List<LevelPool>() { };
+
+                // Initialize category.enabled to false
+                cat.Enabled = false;
+
+                // Iterate over all level pools in the category directory
+                foreach (var file in Directory.GetFiles($"{LevelPoolPath}/{folder}", "*.gon", SearchOption.TopDirectoryOnly))
                 {
-                    var pool = LevelPool.LoadPool(file);    // pool creation done in Pool constructor
+                    // Create new level pool from file
+                    LevelPool pool = LevelPool.LoadPool(file);
+                    
+                    // If the pool is not null, set category info and add to temp list
                     if (pool != null)
                     {
-                        if (pool.Author != null)        // set category author
+                        if (pool.Author != null)                // set category author
                         {
-                            if (author == null)         // if author not already set, set it
-                                author = pool.Author;
-                            else if (author != pool.Author)  // if there is more than one pool author in the category, set to V.A.
-                                author = "V.A.";
+                            if (cat.Author == null)             // if author not already set, set it
+                                cat.Author = pool.Author;
+                            else if (cat.Author != pool.Author) // if there is more than one pool author in the category, set to V.A.
+                                cat.Author = "V.A.";
                         }
-                        if (pool.Active == true)
-                            enabled = true;
+                        if (pool.Active == true)                // if the pool is enabled, enabled the category
+                            cat.Enabled = true;
                         tempList.Add(pool);
                     }
                 }
-                cat.Enabled = enabled;
-                cat.Author = author;
+
+                // Reorder temporary list and save to pool category
                 cat.Pools = tempList.OrderBy(p => p.Order);
                 LevelPoolCategories.Add(cat);
             }
@@ -123,7 +153,7 @@ namespace TEiNRandomizer
             PiecePools = new ObservableCollection<PiecePool>();
             foreach (var file in Directory.GetFiles(PiecePoolPath, "*.xml", SearchOption.TopDirectoryOnly))
             {
-                var pool = PiecePool.LoadPiecePool(Path.GetFileNameWithoutExtension(file), folder);    // pool creation done in Pool constructor
+                var pool = PiecePool.LoadPiecePool(Path.GetFileNameWithoutExtension(file), folder);
                 if (pool != null)
                     PiecePools.Add(pool);
             }

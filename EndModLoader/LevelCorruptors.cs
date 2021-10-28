@@ -49,28 +49,28 @@ namespace TEiNRandomizer
             string TSAppend = "";
 
             // smart corruptions done first
-            if (Randomizer.settings.CRSmart)
+            if (Randomizer.Settings.CRSmart)
             {
                 if (SmartCorruptActive(ref level))
                 {
                     TSAppend += "\n#added by level corruptor\nfx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2\n";
                 }
             }
-            if (Randomizer.settings.CROverlays) SmartCorruptOverlay(ref level);
+            if (Randomizer.Settings.CROverlays) SmartCorruptOverlay(ref level);
 
             // tumor remover second
-            if (Randomizer.settings.CRTumors)
+            if (Randomizer.Settings.CRTumors)
             {
-                if (Randomizer.settings.AreaType == "normal") TumorRandomizer(ref level);
-                else if (Randomizer.settings.AreaType == "cart") RingRandomizer(ref level);
-                else if (Randomizer.settings.AreaType == "dark") TumorRemover(ref level);
-                else if (Randomizer.settings.AreaType == "glitch") TumorRemover(ref level);
-                else if (Randomizer.settings.AreaType == "ironcart") TumorRemover(ref level);
+                if (Randomizer.Settings.AreaType == "normal") TumorRandomizer(ref level);
+                else if (Randomizer.Settings.AreaType == "cart") RingRandomizer(ref level);
+                else if (Randomizer.Settings.AreaType == "dark") TumorRemover(ref level);
+                else if (Randomizer.Settings.AreaType == "glitch") TumorRemover(ref level);
+                else if (Randomizer.Settings.AreaType == "ironcart") TumorRemover(ref level);
             }
 
             // add enemies and add tiles is next
-            AddTiles(ref level, Randomizer.settings.CRAddTiles);
-            if (AddEnemies(ref level, Randomizer.settings.CRAddEnemies))
+            AddTiles(ref level, Randomizer.Settings.CRAddTiles);
+            if (AddEnemies(ref level, Randomizer.Settings.CRAddEnemies))
             {
                 TSAppend += "\nfx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2\n";
             }
@@ -78,10 +78,10 @@ namespace TEiNRandomizer
             
             // last priority is the various ones below
             //if (Randomizer.settings.CRChaos) TotalChaos(ref level);
-            if (Randomizer.settings.CRCrumbles) RandomCrumbles(ref level);
-            if (Randomizer.settings.CRSpikeStrips) SpikeStrips(ref level);
-            if (Randomizer.settings.CRCrushers) Crushers(ref level);
-            if (Randomizer.settings.CRWaterLevels && RNG.CoinFlip()) WaterLevel(ref level);
+            if (Randomizer.Settings.CRCrumbles) RandomCrumbles(ref level);
+            if (Randomizer.Settings.CRSpikeStrips) SpikeStrips(ref level);
+            if (Randomizer.Settings.CRCrushers) Crushers(ref level);
+            if (Randomizer.Settings.CRWaterLevels && RNG.CoinFlip()) WaterLevel(ref level);
 
             return TSAppend;
         }
@@ -734,7 +734,7 @@ namespace TEiNRandomizer
             int[] a = { index + 1, index - 1, index + lw, index - lw };
 
             // loop through neighbors
-            for (int k=0; k<4; k++)
+            for (int k = 0; k < 4; k++)
             {
                 if ( a[k] > 0 && a[k] < size )  // check if in bounds
                 {
