@@ -15,7 +15,7 @@ namespace TEiNRandomizer
         // Operator overloads for easily comparing Map Connections
         public static MapConnections operator &(MapConnections a, MapConnections b)
         {
-            // Overloaded & operator performs & on all members
+            // Overloaded AND operator performs AND on all members
 
             MapConnections ret;
 
@@ -26,9 +26,22 @@ namespace TEiNRandomizer
 
             return ret;
         }
+        public static MapConnections operator |(MapConnections a, MapConnections b)
+        {
+            // Overloaded OR operator performs OR on all members
+
+            MapConnections ret;
+
+            ret.U = a.U | b.U;
+            ret.D = a.D | b.D;
+            ret.L = a.L | b.L;
+            ret.R = a.R | b.R;
+
+            return ret;
+        }
         public static MapConnections operator ~(MapConnections a)
         {
-            // Overloaded & operator performs & on all members
+            // Overloaded NOT operator performs NOT on all members
 
             MapConnections ret;
 
@@ -68,11 +81,20 @@ namespace TEiNRandomizer
     {
         // ConnectionType is an enum of flags, so it is easy to use binary operators on the values
         
-        none = 0b0000,
-        entrance = 0b0001,
-        exit = 0b0010,
-        both = 0b0011,
-        secret = 0b0100,
-        locked = 0b1000
+        none        = 0b0000,
+        entrance    = 0b0001,
+        exit        = 0b0010,
+        both        = 0b0011,
+        secret      = 0b0100,
+        all         = 0b0111,
+        locked      = 0b1000,
+
+        secretAndExit = secret | exit,
+        secretAndEntrance = secret | entrance,
+
+        lockedEntrance = locked | entrance,
+        lockedExit = locked | exit,
+        lockedBoth = locked | both,
+        lockedAll = locked | all,
     }
 }

@@ -11,9 +11,6 @@ namespace TEiNRandomizer
         // to the folder of the level pool the level belongs to
         public string Path;
 
-        // The type of the level (standard, secret, connector, etc.)
-        public LevelType Type;
-
         // Level tileset defaults and needs
         public Tileset TSDefault;
         public Tileset TSNeed;
@@ -67,7 +64,6 @@ namespace TEiNRandomizer
             // Clone all members
             ret.Name = Name;
             ret.Path = Path;
-            ret.Type = Type;
             ret.TSDefault = TSDefault;
             ret.TSNeed = TSNeed;
             ret.Flags = Flags;
