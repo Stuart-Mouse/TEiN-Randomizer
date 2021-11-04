@@ -38,8 +38,8 @@ namespace TEiNRandomizer
         {
             LastPiece = new LevelPiece();
             NextPiece = new LevelPiece();
-            EntranceDirection = Direction.Left;
-            ExitDirection = Direction.Right;
+            EntranceDirection = Direction.L;
+            ExitDirection = Direction.R;
             WidthRemaining = UsableWidth;
 
             if (RNG.CoinFlip()) { Canvas.FloorEx = true; Canvas.CeilingEx = true; };
@@ -95,16 +95,16 @@ namespace TEiNRandomizer
                     switch (piece.File.data.tag[index])
                     {
                         case TileID.GreenTransitionL:
-                            piece.Entrance = Direction.Left;
+                            piece.Entrance = Direction.L;
                             break;
                         case TileID.GreenTransitionD:
-                            piece.Entrance = Direction.Down;
+                            piece.Entrance = Direction.D;
                             break;
                         case TileID.YellowTransitionR:
-                            piece.Exit = Direction.Right;
+                            piece.Exit = Direction.R;
                             break;
                         case TileID.YellowTransitionU:
-                            piece.Exit = Direction.Up;
+                            piece.Exit = Direction.U;
                             break;
                     }
                 }

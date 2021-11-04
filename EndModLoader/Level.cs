@@ -15,6 +15,9 @@ namespace TEiNRandomizer
         public Tileset TSDefault;
         public Tileset TSNeed;
 
+        // Reference to the Area that the level belongs to
+        //public MapArea Area;
+
         // Map connections
         public MapConnections MapConnections;
 
