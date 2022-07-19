@@ -7,6 +7,9 @@ namespace TEiNRandomizer
         // Level name used for identification and for loading level file
         public string Name;
 
+        // The level type
+        //public bool isGameplay;
+
         // This identifies the exact path from the executable
         // to the folder of the level pool the level belongs to
         public string Path;
@@ -55,7 +58,6 @@ namespace TEiNRandomizer
         // Returns the file to load
         public string InFile { get => $"{Path}{Name}.lvl"; }
 
-
         public Level Clone()
         {
             // This returns a cloned Level object.
@@ -66,6 +68,7 @@ namespace TEiNRandomizer
             
             // Clone all members
             ret.Name = Name;
+            //ret.isGameplay = isGameplay;
             ret.Path = Path;
             ret.TSDefault = TSDefault;
             ret.TSNeed = TSNeed;

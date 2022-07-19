@@ -87,7 +87,7 @@ namespace TEiNRandomizer
                 GonObject gonLevel = gonLevels[i];
                 
                 // Create new level file
-                Level level     = new Level { };
+                Level level     = new Level();
 
                 // Set basic level info
                 level.Path      = levelsPath;
@@ -115,28 +115,28 @@ namespace TEiNRandomizer
                 // Set flags
                 if (gonLevel.TryGetChild("flags", out GonObject flags))
                 {
-                    if (gonConnections.Contains("npc_1"))
+                    if (flags.Contains("npc_1"))
                         level.Flags |= Level.LevelFlags.npc_1;
-                    if (gonConnections.Contains("npc_2"))
+                    if (flags.Contains("npc_2"))
                         level.Flags |= Level.LevelFlags.npc_2;
-                    if (gonConnections.Contains("npc_3"))
+                    if (flags.Contains("npc_3"))
                         level.Flags |= Level.LevelFlags.npc_3;
 
-                    if (gonConnections.Contains("Key"))
+                    if (flags.Contains("Key"))
                         level.Flags |= Level.LevelFlags.Key;
-                    if (gonConnections.Contains("Lock"))
+                    if (flags.Contains("Lock"))
                         level.Flags |= Level.LevelFlags.Lock;
 
-                    if (gonConnections.Contains("ExitWarp"))
+                    if (flags.Contains("ExitWarp"))
                         level.Flags |= Level.LevelFlags.ExitWarp;
-                    if (gonConnections.Contains("WarpPoint"))
+                    if (flags.Contains("WarpPoint"))
                         level.Flags |= Level.LevelFlags.WarpPoint;
 
-                    if (gonConnections.Contains("Collectable"))
+                    if (flags.Contains("Collectable"))
                         level.Flags |= Level.LevelFlags.Collectable;
-                    if (gonConnections.Contains("MegaTumor"))
+                    if (flags.Contains("MegaTumor"))
                         level.Flags |= Level.LevelFlags.MegaTumor;
-                    if (gonConnections.Contains("Cart"))
+                    if (flags.Contains("Cart"))
                         level.Flags |= Level.LevelFlags.Cart;
                 }
 

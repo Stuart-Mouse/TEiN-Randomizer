@@ -9,7 +9,7 @@ namespace TEiNRandomizer
     public struct LevelFile
     {
         public LevelHeader header;
-        public LevelData data;
+        public TileID[,] data;
 
         public LevelFile(int width = 54, int height = 32)
         {
@@ -22,12 +22,15 @@ namespace TEiNRandomizer
             int layerLength = header.width * header.height;
 
             // initialize data layers
-            data.back1   = new TileID[layerLength];
-            data.active  = new TileID[layerLength];
-            data.tag     = new TileID[layerLength];
-            data.overlay = new TileID[layerLength];
-            data.back2   = new TileID[layerLength];
+            data = new TileID[5,layerLength];
         }
+
+        // const int values for indexing level layers
+        public const int BACK1   = 0;
+        public const int ACTIVE  = 1;
+        public const int TAG     = 2;
+        public const int OVERLAY = 3;
+        public const int BACK2   = 4;
     }
     public struct LevelHeader
     {
@@ -36,14 +39,4 @@ namespace TEiNRandomizer
         public Int32 height;
         public Int32 layers;
     }
-
-    public struct LevelData
-    {
-        public TileID[] back1;
-        public TileID[] active;
-        public TileID[] tag;
-        public TileID[] overlay;
-        public TileID[] back2;
-    }
-
 }

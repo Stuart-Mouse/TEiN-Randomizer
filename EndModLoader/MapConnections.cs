@@ -12,6 +12,23 @@ namespace TEiNRandomizer
         public ConnectionType L;
         public ConnectionType R;
 
+        // Get ConnectionType by direction
+        public ConnectionType GetDirection(Directions dir)
+        {
+            // Switch to the correct connection based on direction passed in
+            switch (dir)
+            {
+                case Directions.U:
+                    return U;
+                case Directions.D:
+                    return D;
+                case Directions.L:
+                    return L;
+                default:
+                    return R;
+            }
+        }
+
         // Operator overloads for easily comparing Map Connections
         public static MapConnections operator &(MapConnections a, MapConnections b)
         {
@@ -84,17 +101,19 @@ namespace TEiNRandomizer
         none        = 0b0000,
         entrance    = 0b0001,
         exit        = 0b0010,
-        both        = 0b0011,
         secret      = 0b0100,
-        all         = 0b0111,
         locked      = 0b1000,
 
-        secretAndExit = secret | exit,
-        secretAndEntrance = secret | entrance,
+        both = entrance | exit,
+        all  = entrance | exit | secret,
+
+        secretExit     = secret | exit,
+        secretEntrance = secret | entrance,
 
         lockedEntrance = locked | entrance,
-        lockedExit = locked | exit,
-        lockedBoth = locked | both,
-        lockedAll = locked | all,
+        lockedExit     = locked | exit,
+        lockedBoth     = locked | both,
+        lockedSecret   = locked | secret,
+        lockedAll      = locked | all
     }
 }

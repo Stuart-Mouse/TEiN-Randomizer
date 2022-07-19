@@ -90,11 +90,11 @@ namespace TEiNRandomizer
             bool hasGas = false;
             for (int i = 0; i < num; i++)
             {
-                int index = RNG.random.Next(0, level.data.active.Length);
-                if (level.data.active[index] == 0 && level.data.tag[index] == 0)
+                int index = RNG.random.Next(0, level.header.height * level.header.width);
+                if (level.data[LevelFile.ACTIVE, index] == 0 && level.data[LevelFile.TAG, index] == 0)
                 {
                     var tile = (TileID)EntityTiles[RNG.random.Next(0, EntityTiles.Length)];
-                    level.data.active[index] = tile;
+                    level.data[LevelFile.ACTIVE, index] = tile;
                     if (tile == TileID.Gasper || tile == TileID.GasCloud) hasGas = true;
 
                 }
@@ -105,9 +105,9 @@ namespace TEiNRandomizer
         {
             for (int i = 0; i < num; i++)
             {
-                int index = RNG.random.Next(0, level.data.active.Length);
-                if (level.data.active[index] != TileID.Solid && level.data.tag[index] == TileID.Empty)
-                    level.data.active[index] = (TileID)ActiveTiles[RNG.random.Next(0, ActiveTiles.Length)];
+                int index = RNG.random.Next(0, level.header.height * level.header.width);
+                if (level.data[LevelFile.ACTIVE, index] != TileID.Solid && level.data[LevelFile.TAG, index] == TileID.Empty)
+                    level.data[LevelFile.ACTIVE, index] = (TileID)ActiveTiles[RNG.random.Next(0, ActiveTiles.Length)];
             }
         }
         public static void SpikeStrips(ref LevelFile level)
@@ -119,8 +119,8 @@ namespace TEiNRandomizer
                 for (int j = 0; j < lw; j++)
                 {
                     int index = i * lw + j;
-                    if (level.data.active[index] == TileID.Solid && j % 5 == i % 5)
-                        level.data.active[index] = TileID.SpikeU;
+                    if (level.data[LevelFile.ACTIVE, index] == TileID.Solid && j % 5 == i % 5)
+                        level.data[LevelFile.ACTIVE, index] = TileID.SpikeU;
                 }
             }
         }
@@ -128,23 +128,23 @@ namespace TEiNRandomizer
         {
             for (int i = 0; i < 100; i++)
             {
-                int index = RNG.random.Next(0, level.data.active.Length);
-                if (level.data.active[index] == TileID.Solid)
-                    level.data.active[index] = TileID.Crumble;
+                int index = RNG.random.Next(0, level.header.height * level.header.width);
+                if (level.data[LevelFile.ACTIVE, index] == TileID.Solid)
+                    level.data[LevelFile.ACTIVE, index] = TileID.Crumble;
             }
         }
         public static void Crushers(ref LevelFile level)
         {
             for (int i = 0; i < 30; i++)
             {
-                int index = RNG.random.Next(0, level.data.active.Length);
-                if (level.data.active[index] == TileID.Solid && level.data.tag[index] == TileID.Empty)
+                int index = RNG.random.Next(0, level.header.height * level.header.width);
+                if (level.data[LevelFile.ACTIVE, index] == TileID.Solid && level.data[LevelFile.TAG, index] == TileID.Empty)
                 {
                     if (RNG.CoinFlip())
-                        level.data.active[index] = TileID.CrusherEye;
-                    else level.data.active[index] = TileID.CrusherGear;
+                        level.data[LevelFile.ACTIVE, index] = TileID.CrusherEye;
+                    else level.data[LevelFile.ACTIVE, index] = TileID.CrusherGear;
 
-                    level.data.tag[index] = TileID.Crusher;
+                    level.data[LevelFile.TAG, index] = TileID.Crusher;
                 }
             }
         }
@@ -152,10 +152,10 @@ namespace TEiNRandomizer
         {
             for (int i = 0; i < 60; i++)
             {
-                int index = RNG.random.Next(0, level.data.active.Length);
-                //if (level.data.tag[index] == 0)
+                int index = RNG.random.Next(0, level.header.height * level.header.width);
+                //if (level.data[LevelFile.TAG, index] == 0)
                 //{
-                level.data.overlay[index] = (TileID)OverlayTiles[RNG.random.Next(0, OverlayTiles.Length)];
+                level.data[LevelFile.OVERLAY, index] = (TileID)OverlayTiles[RNG.random.Next(0, OverlayTiles.Length)];
                 //}
             }
         }
@@ -179,9 +179,9 @@ namespace TEiNRandomizer
                     int col = RNG.random.Next(bounds.Left, bounds.Right);
 
                     index = row * lw + col;
-                    if (level.data.active[index] == TileID.Empty)
+                    if (level.data[LevelFile.ACTIVE, index] == TileID.Empty)
                     {
-                        level.data.active[index] = TileID.Tumor;
+                        level.data[LevelFile.ACTIVE, index] = TileID.Tumor;
                         placed = true;
                     }
                     if (attempts > 5) placed = true;
@@ -198,7 +198,7 @@ namespace TEiNRandomizer
 
             for (int j = 0; j < lw; j++)
             {
-                level.data.overlay[j] = TileID.WaterUB;
+                level.data[LevelFile.OVERLAY, j] = TileID.WaterUB;
             }
         }
         public static void PlaceTile(ref LevelFile level, TileID toPlace, int numPerLevel, TileID toReplace = TileID.Empty, bool ignoreTags = false, int cushion = 3)
@@ -221,10 +221,10 @@ namespace TEiNRandomizer
                     int col = RNG.random.Next(bounds.Left + cushion, bounds.Right - cushion);
 
                     index = row * lw + col;
-                    if (level.data.active[index] == toReplace)
+                    if (level.data[LevelFile.ACTIVE, index] == toReplace)
                     {
-                        if (level.data.tag[index] == TileID.Empty || ignoreTags)
-                            level.data.active[index] = toPlace;
+                        if (level.data[LevelFile.TAG, index] == TileID.Empty || ignoreTags)
+                            level.data[LevelFile.ACTIVE, index] = toPlace;
                         placed = true;
                     }
 
@@ -242,8 +242,8 @@ namespace TEiNRandomizer
                 for (int j = 0; j < lw; j++)
                 {
                     index = i * lw + j;
-                    if (level.data.active[index] == TileID.Tumor)
-                        level.data.active[index] = TileID.Empty;
+                    if (level.data[LevelFile.ACTIVE, index] == TileID.Tumor)
+                        level.data[LevelFile.ACTIVE, index] = TileID.Empty;
                 }
             }
         }
@@ -267,9 +267,9 @@ namespace TEiNRandomizer
                     int col = RNG.random.Next(bounds.Left, bounds.Right);
 
                     index = row * lw + col;
-                    if (level.data.active[index] == TileID.Empty)
+                    if (level.data[LevelFile.ACTIVE, index] == TileID.Empty)
                     {
-                        level.data.active[index] = TileID.Ring;
+                        level.data[LevelFile.ACTIVE, index] = TileID.Ring;
                         placed = true;
                     }
 
@@ -289,7 +289,7 @@ namespace TEiNRandomizer
                 for (int col = 0; col < lw; col++)
                 {
                     index = row * lw + col;
-                    if (level.data.tag[index] == TileID.CameraBounds)
+                    if (level.data[LevelFile.TAG, index] == TileID.CameraBounds)
                     {
                         bounds.Top = Math.Min(row, bounds.Top);
                         bounds.Bottom = Math.Max(row, bounds.Bottom);
@@ -360,16 +360,16 @@ namespace TEiNRandomizer
                 {
                     int index = i * lw + j;
 
-                    if (SmartTiles.TryGetValue((int)level.data.active[index], out int[] alts) && alts.Length > 0)
+                    if (SmartTiles.TryGetValue((int)level.data[LevelFile.ACTIVE, index], out int[] alts) && alts.Length > 0)
                     {
-                        if ((int)level.data.active[index] < 1000)
+                        if ((int)level.data[LevelFile.ACTIVE, index] < 1000)
                         {
                             if (RNG.random.Next(0, corruptLevel) == 0)
                             {
                                 try
                                 {
                                     int num = alts[RNG.random.Next(0, alts.Length)];
-                                    level.data.active[index] = (TileID)num;
+                                    level.data[LevelFile.ACTIVE, index] = (TileID)num;
                                 }
                                 catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                             }
@@ -380,7 +380,7 @@ namespace TEiNRandomizer
                             {
                                 int num = alts[RNG.random.Next(0, options.Length)];
                                 if (num == 40003 || num == 40047) { hasGas = true; }
-                                level.data.active[index] = (TileID)num;
+                                level.data[LevelFile.ACTIVE, index] = (TileID)num;
                             }
                             catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                         }
@@ -407,14 +407,14 @@ namespace TEiNRandomizer
                 {
                     int index = i * lw + j;
 
-                    if(SmartTiles.TryGetValue((int)level.data.active[index], out int[] alts) && alts.Length > 0)
+                    if(SmartTiles.TryGetValue((int)level.data[LevelFile.ACTIVE, index], out int[] alts) && alts.Length > 0)
                     {
                         if (RNG.CoinFlip())
                         {
                             try
                             {
                                 int num = alts[RNG.random.Next(0, options.Length)];
-                                level.data.overlay[index] = (TileID)num;
+                                level.data[LevelFile.OVERLAY, index] = (TileID)num;
                             }
                             catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                         }
@@ -436,7 +436,7 @@ namespace TEiNRandomizer
                 {
                     int index = i * lw + j;
 
-                    int tile = (int)level.data.active[index];
+                    int tile = (int)level.data[LevelFile.ACTIVE, index];
 
                     //// SPECIAL RULES (these gotta go first so it all works right)
 
@@ -451,7 +451,7 @@ namespace TEiNRandomizer
                             adjacents.Add(index);
 
                             int numTile = 1, numTileX = 1;
-                            GetAdjacentTiles(ref level, level.data.active[index], BLUE_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
+                            GetAdjacentTiles(ref level, level.data[LevelFile.ACTIVE, index], BLUE_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
 
                             int[] contiguous = new int[adjacents.Count];
 
@@ -460,7 +460,7 @@ namespace TEiNRandomizer
                             try
                             {
                                 for (int k = 0; k < contiguous.Length; k++)
-                                    level.data.active[contiguous[k]] = (TileID)num;
+                                    level.data[LevelFile.ACTIVE, contiguous[k]] = (TileID)num;
                             }
                             catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                         }
@@ -474,7 +474,7 @@ namespace TEiNRandomizer
                             try
                             {
                                 int num = alts[RNG.random.Next(0, alts.Length)];
-                                level.data.active[index] = (TileID)num;
+                                level.data[LevelFile.ACTIVE, index] = (TileID)num;
                             }
                             catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
                         }
@@ -488,14 +488,14 @@ namespace TEiNRandomizer
                         adjacents.Add(index);               // add first tile to adjacents
                         
                         int numTile = 1, numTileX = 1;
-                        GetAdjacentTiles(ref level, level.data.active[index], YELLOW_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
+                        GetAdjacentTiles(ref level, level.data[LevelFile.ACTIVE, index], YELLOW_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
 
                         // create array from adjacents
                         int[] contiguous = new int[adjacents.Count];
                         adjacents.CopyTo(contiguous);
 
                         // get tile to place in "empty" spots
-                        //string s = colorTiles.Element(Enum.GetName(typeof(TileID), level.data.active[index])).ToString();
+                        //string s = colorTiles.Element(Enum.GetName(typeof(TileID), level.data[LevelFile.ACTIVE, index])).ToString();
                         TileID noTile = TileID.Empty;   // default is empty tile
                         if (tile - YELLOW_OFFSET == 7)  // empty tile is solid when tile value is a hook
                             noTile = TileID.Solid;
@@ -508,7 +508,7 @@ namespace TEiNRandomizer
                             int n = RNG.random.Next(0, contiguous.Length);  // get random tile from contiguous
                             if (adjacents.Remove(contiguous[n]))            // if it can be removed (i.e. hasn't been selected yet)
                             {
-                                level.data.active[contiguous[n]] = (TileID)(tile - YELLOW_OFFSET);  // place the tile
+                                level.data[LevelFile.ACTIVE, contiguous[n]] = (TileID)(tile - YELLOW_OFFSET);  // place the tile
                                 k++;                                                                // increment loop counter
                             }
                         }
@@ -519,7 +519,7 @@ namespace TEiNRandomizer
                         for (int k = 0; k < alltherest.Length; k++)
                         {
                             int n = alltherest[k];
-                            level.data.active[n] = noTile;
+                            level.data[LevelFile.ACTIVE, n] = noTile;
                         }
                     }
 
@@ -530,7 +530,7 @@ namespace TEiNRandomizer
                         adjacents.Add(index);
 
                         int numTile = 1, numTileX = 1;
-                        GetAdjacentTiles(ref level, level.data.active[index], RED_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
+                        GetAdjacentTiles(ref level, level.data[LevelFile.ACTIVE, index], RED_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
 
                         int[] contiguous = new int[adjacents.Count];
                         adjacents.CopyTo(contiguous);
@@ -548,7 +548,7 @@ namespace TEiNRandomizer
                                 for (int p = 0; p < loop; p++)
                                 {
                                     if (k + p >= contiguous.Length) break;
-                                    level.data.active[contiguous[k]] = (TileID)(tile - RED_OFFSET);  // place the next tile
+                                    level.data[LevelFile.ACTIVE, contiguous[k]] = (TileID)(tile - RED_OFFSET);  // place the next tile
                                     k++;
                                 }
                                 placeTile = !placeTile;
@@ -559,7 +559,7 @@ namespace TEiNRandomizer
                                 for (int p = 0; p < loop; p++)
                                 {
                                     if (k + p >= contiguous.Length) break;
-                                    level.data.active[contiguous[k]] = noTile;
+                                    level.data[LevelFile.ACTIVE, contiguous[k]] = noTile;
                                     k++;
                                 }
                                 placeTile = !placeTile;
@@ -574,7 +574,7 @@ namespace TEiNRandomizer
                         adjacents.Add(index);
 
                         int numTile = 1, numTileX = 1;
-                        GetAdjacentColor(ref level, level.data.active[index], GREEN_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
+                        GetAdjacentColor(ref level, level.data[LevelFile.ACTIVE, index], GREEN_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
 
                         int[] contiguous = new int[adjacents.Count];
                         adjacents.CopyTo(contiguous);
@@ -592,7 +592,7 @@ namespace TEiNRandomizer
                                 for (int p = 0; p < loop; p++)
                                 {
                                     if (k + p >= contiguous.Length) break;
-                                    level.data.active[contiguous[k]] = (TileID)((int)level.data.active[contiguous[k]] - GREEN_OFFSET);  // place the next tile
+                                    level.data[LevelFile.ACTIVE, contiguous[k]] = (TileID)((int)level.data[LevelFile.ACTIVE, contiguous[k]] - GREEN_OFFSET);  // place the next tile
                                     k++;
                                 }
                                 placeTile = !placeTile;
@@ -603,7 +603,7 @@ namespace TEiNRandomizer
                                 for (int p = 0; p < loop; p++)
                                 {
                                     if (k + p >= contiguous.Length) break;
-                                    level.data.active[contiguous[k]] = TileID.Empty;
+                                    level.data[LevelFile.ACTIVE, contiguous[k]] = TileID.Empty;
                                     k++;
                                 }
                                 placeTile = !placeTile;
@@ -619,7 +619,7 @@ namespace TEiNRandomizer
                         adjacents.Add(index);
 
                         int numTile = 1, numTileX = 1;
-                        GetAdjacentEntity(ref level, level.data.active[index], YELLOW_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
+                        GetAdjacentEntity(ref level, level.data[LevelFile.ACTIVE, index], YELLOW_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
 
                         int[] contiguous = new int[adjacents.Count];
                         adjacents.CopyTo(contiguous);
@@ -630,7 +630,7 @@ namespace TEiNRandomizer
                             int n = RNG.random.Next(0, contiguous.Length);  // get random tile from contiguous
                             if (adjacents.Remove(contiguous[n]))            // if it can be removed (i.e. hasn't been selected yet)
                             {
-                                level.data.active[contiguous[n]] = (TileID)((int)level.data.active[contiguous[n]] - YELLOW_OFFSET);  // place the tile
+                                level.data[LevelFile.ACTIVE, contiguous[n]] = (TileID)((int)level.data[LevelFile.ACTIVE, contiguous[n]] - YELLOW_OFFSET);  // place the tile
                                 k++;                                                                // increment loop counter
                             }
                         }
@@ -640,7 +640,7 @@ namespace TEiNRandomizer
                         for (int k = 0; k < alltherest.Length; k++)
                         {
                             int n = alltherest[k];
-                            level.data.active[n] = TileID.Empty;
+                            level.data[LevelFile.ACTIVE, n] = TileID.Empty;
                         }
                     }
                     // RED
@@ -650,7 +650,7 @@ namespace TEiNRandomizer
                         adjacents.Add(index);
 
                         int numTile = 1, numTileX = 1;
-                        GetAdjacentEntity(ref level, level.data.active[index], RED_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
+                        GetAdjacentEntity(ref level, level.data[LevelFile.ACTIVE, index], RED_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
                         
                         int[] contiguous = new int[adjacents.Count];
                         adjacents.CopyTo(contiguous);
@@ -664,7 +664,7 @@ namespace TEiNRandomizer
                                 for (int p = 0; p < loop; p++)
                                 {
                                     if (k + p >= contiguous.Length) break;
-                                    level.data.active[contiguous[k]] = (TileID)((int)level.data.active[contiguous[k]] - RED_OFFSET);  // place the next tile
+                                    level.data[LevelFile.ACTIVE, contiguous[k]] = (TileID)((int)level.data[LevelFile.ACTIVE, contiguous[k]] - RED_OFFSET);  // place the next tile
                                     k++;
                                 }
                                 placeTile = !placeTile;
@@ -675,7 +675,7 @@ namespace TEiNRandomizer
                                 for (int p = 0; p < loop; p++)
                                 {
                                     if (k + p >= contiguous.Length) break;
-                                    level.data.active[contiguous[k]] = TileID.Empty;
+                                    level.data[LevelFile.ACTIVE, contiguous[k]] = TileID.Empty;
                                     k++;
                                 }
                                 placeTile = !placeTile;
@@ -688,7 +688,7 @@ namespace TEiNRandomizer
                         var adjacents = new HashSet<int>();
                         adjacents.Add(index);
                         int numTile = 1, numTileX = 1;
-                        GetAdjacentEntity(ref level, level.data.active[index], GREEN_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
+                        GetAdjacentEntity(ref level, level.data[LevelFile.ACTIVE, index], GREEN_OFFSET, index, ref adjacents, ref numTile, ref numTileX);
                         int[] contiguous = new int[adjacents.Count];
                         adjacents.CopyTo(contiguous);
 
@@ -701,7 +701,7 @@ namespace TEiNRandomizer
                                 for (int p = 0; p < loop; p++)
                                 {
                                     if (k + p >= contiguous.Length) break;
-                                    level.data.active[contiguous[k]] = (TileID)((int)level.data.active[contiguous[k]] - GREEN_OFFSET);  // place the next tile
+                                    level.data[LevelFile.ACTIVE, contiguous[k]] = (TileID)((int)level.data[LevelFile.ACTIVE, contiguous[k]] - GREEN_OFFSET);  // place the next tile
                                     k++;
                                 }
                                 placeTile = !placeTile;
@@ -712,7 +712,7 @@ namespace TEiNRandomizer
                                 for (int p = 0; p < loop; p++)
                                 {
                                     if (k + p >= contiguous.Length) break;
-                                    level.data.active[contiguous[k]] = TileID.Empty;
+                                    level.data[LevelFile.ACTIVE, contiguous[k]] = TileID.Empty;
                                     k++;
                                 }
                                 placeTile = !placeTile;
@@ -738,9 +738,9 @@ namespace TEiNRandomizer
             {
                 if ( a[k] > 0 && a[k] < size )  // check if in bounds
                 {
-                    int tileValue = (int)level.data.active[a[k]] - color_offset;
+                    int tileValue = (int)level.data[LevelFile.ACTIVE, a[k]] - color_offset;
 
-                    if (level.data.active[a[k]] == id)  // check if tile id matches
+                    if (level.data[LevelFile.ACTIVE, a[k]] == id)  // check if tile id matches
                     {
                         if (adjacents.Add(a[k]))            // add to adjacents
                             GetAdjacentTiles(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
@@ -763,7 +763,7 @@ namespace TEiNRandomizer
                     }
                     else if (tileValue == 0)    // null tile
                     {
-                        level.data.active[a[k]] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, a[k]] = TileID.Empty;
                         GetAdjacentTiles(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);   //look for adjecents to next set of tiles
                     }
                 }
@@ -784,7 +784,7 @@ namespace TEiNRandomizer
             {
                 if (a[k] > 0 && a[k] < size)  // check if in bounds
                 {
-                    int tileValue = (int)level.data.active[a[k]] - color_offset;
+                    int tileValue = (int)level.data[LevelFile.ACTIVE, a[k]] - color_offset;
 
                     if (tileValue >= 40000 && tileValue < 50000)  // check if tile value is in correct range
                     {
@@ -794,20 +794,20 @@ namespace TEiNRandomizer
                     else if (tileValue > 90 && tileValue < 100) // Number tiles
                     {
                         //if (adjacents.Add(a[k]))            // add to adjacents
-                        level.data.active[a[k]] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, a[k]] = TileID.Empty;
                         numTile = Math.Max(numTile, tileValue - 90);
                         GetAdjacentEntity(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
                     }
                     else if (tileValue > 80 && tileValue < 90)  // X Number tiles
                     {
                         //if (adjacents.Add(a[k]))            // add to adjacents
-                        level.data.active[a[k]] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, a[k]] = TileID.Empty;
                         numTileX = Math.Max(numTileX, tileValue - 80);
                         GetAdjacentEntity(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
                     }
                     else if (tileValue == 0)    // null tile
                     {
-                        level.data.active[a[k]] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, a[k]] = TileID.Empty;
                         GetAdjacentEntity(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
                     }
                 }
@@ -829,7 +829,7 @@ namespace TEiNRandomizer
             {
                 if (a[k] > 0 && a[k] < size)  // check if in bounds
                 {
-                    int tileValue = (int)level.data.active[a[k]] - color_offset;
+                    int tileValue = (int)level.data[LevelFile.ACTIVE, a[k]] - color_offset;
 
                     if (tileValue > 0 && tileValue < 50000)  // check if tile value is in correct range
                     {
@@ -840,19 +840,19 @@ namespace TEiNRandomizer
                     {
                         //if (adjacents.Add(a[k]))            // add to adjacents
                         numTile = Math.Max(numTile, tileValue - 90);
-                        level.data.active[a[k]] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, a[k]] = TileID.Empty;
                         GetAdjacentColor(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
                     }
                     else if (tileValue > 80 && tileValue < 90)  // X Number tiles
                     {
                         //if (adjacents.Add(a[k]))            // add to adjacents
                         numTile = Math.Max(numTileX, tileValue - 80);
-                        level.data.active[a[k]] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, a[k]] = TileID.Empty;
                         GetAdjacentColor(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
                     }
                     else if (tileValue == 0)    // null tile
                     {
-                        level.data.active[a[k]] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, a[k]] = TileID.Empty;
                         GetAdjacentColor(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
                     }
                 }

@@ -10,7 +10,7 @@ namespace TEiNRandomizer
     {
         public static class Manip
         {
-
+            
             public static GonObject PriorityMerge(GonObject low, GonObject high)
             {
                 // create new gonObject to return

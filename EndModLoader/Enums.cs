@@ -1,49 +1,62 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Xml.Linq;
-using TEiNRandomizer.Properties;
+﻿using System;
 
 namespace TEiNRandomizer
 {
     [Flags]
-    public enum Connections
+    public enum Directions
     {
-        empty = 0,
+        None = 0,
         
-        right = 0b0001,
-        left  = 0b0010,
-        up    = 0b0100,
-        down  = 0b1000,
+        R = 0b0001,
+        L = 0b0010,
+        D = 0b0100,
+        U = 0b1000,
 
-        all = 0b1111
+        All = 0b1111
     }
-    public enum AreaTypesEnum
+
+    public static class DirectionsEnum
     {
-        normal,
-        dark,
-        cart,
-        ironcart,
-        glitch
+        // This will return the opposite direction(s) to that which is passed in
+        public static Directions Opposite(Directions dir)
+        {
+            Directions ret = Directions.None;
+
+            if (dir.HasFlag(Directions.R)) ret |= Directions.L;
+            if (dir.HasFlag(Directions.L)) ret |= Directions.R;
+            if (dir.HasFlag(Directions.D)) ret |= Directions.U;
+            if (dir.HasFlag(Directions.U)) ret |= Directions.D;
+
+            return ret;
+        }
+        public static Directions FromString(string dir)
+        {
+            Directions ret = Directions.None;
+
+            if (dir.Contains("r")) ret |= Directions.R;
+            if (dir.Contains("l")) ret |= Directions.L;
+            if (dir.Contains("d")) ret |= Directions.D;
+            if (dir.Contains("u")) ret |= Directions.U;
+
+            return ret;
+        }
+        public static Pair ToVectorPair(Directions dir)
+        {
+            Pair ret = new Pair();
+
+            if (dir.HasFlag(Directions.R)) ret.Second = 1;
+            if (dir.HasFlag(Directions.L)) ret.Second = -1;
+            if (dir.HasFlag(Directions.D)) ret.First  = 1;      // Down is +1 because map is indexed from topright corner
+            if (dir.HasFlag(Directions.U)) ret.First  = -1;     // Likewise, up is -1
+
+            return ret;
+        }
+
     }
-    public enum AltLevelsEnum
-    {
-        None,
-        Safe,
-        Extended,
-        Crazy,
-        Insane
-    }
-    public enum Direction
+
+    // This is a dumb enum and it should be removed
+    // Doesn't allow for diagonals, but is easily reversed
+    public enum Direc
     {
         None = 0,
         U = 1,
@@ -52,6 +65,7 @@ namespace TEiNRandomizer
         R = -2,
         Any = 3
     }
+
     public enum TileID
     {
         // Active

@@ -282,5 +282,65 @@ namespace TEiNRandomizer
             ActiveShaders    = GonObject.Manip.GonToStringArray(gon[nameof(ActiveShaders)]);
 
         }
+
+        public void Copy()
+        {
+            // Open levelpool file
+            GonObject gon = GonObject.Load("data/text/settings.gon");
+
+            // Load randomization settings
+            NumLevels = gon[nameof(NumLevels)].Int();
+            NumAreas = gon[nameof(NumAreas)].Int();
+            DoMusic = gon[nameof(DoMusic)].Bool();
+            DoPalettes = gon[nameof(DoPalettes)].Bool();
+            MusicPerLevel = gon[nameof(MusicPerLevel)].Bool();
+            DoShaders = gon[nameof(DoShaders)].Bool();
+            DoParticles = gon[nameof(DoParticles)].Bool();
+            DoOverlays = gon[nameof(DoOverlays)].Bool();
+            DoTileGraphics = gon[nameof(DoTileGraphics)].Bool();
+            DoNevermoreTilt = gon[nameof(DoNevermoreTilt)].Bool();
+            DoExodusWobble = gon[nameof(DoExodusWobble)].Bool();
+            DoNPCs = gon[nameof(DoNPCs)].Bool();
+            UseAreaTileset = gon[nameof(UseAreaTileset)].Bool();
+            AreaType = gon[nameof(AreaType)].String();
+            AltLevel = gon[nameof(AltLevel)].String();
+            GenerateCustomParticles = gon[nameof(GenerateCustomParticles)].Bool();
+            MaxParticles = gon[nameof(MaxParticles)].Int();
+            GameDirectory = gon[nameof(GameDirectory)].String();
+            MaxParticleEffects = gon[nameof(MaxParticleEffects)].Int();
+            ManualLoad = gon[nameof(ManualLoad)].Bool();
+            DoCorruptions = gon[nameof(DoCorruptions)].Bool();
+            MirrorMode = gon[nameof(MirrorMode)].Bool();
+            DeadRacer = gon[nameof(DeadRacer)].Bool();
+            CartLives = gon[nameof(CartLives)].Int();
+            DoPhysics = gon[nameof(DoPhysics)].Bool();
+            PlatformPhysics = gon[nameof(PlatformPhysics)].Bool();
+            PlayerPhysics = gon[nameof(PlayerPhysics)].Bool();
+            WaterPhysics = gon[nameof(WaterPhysics)].Bool();
+            LowGravPhysics = gon[nameof(LowGravPhysics)].Bool();
+            LevelMerge = gon[nameof(LevelMerge)].Bool();
+            ToolsInDirectory = gon[nameof(ToolsInDirectory)].String();
+            ToolsOutDirectory = gon[nameof(ToolsOutDirectory)].String();
+            RandomizeAreaType = gon[nameof(RandomizeAreaType)].Bool();
+
+            CRSmart = gon[nameof(CRSmart)].Bool();
+            CROverlays = gon[nameof(CROverlays)].Bool();
+            CRTumors = gon[nameof(CRTumors)].Bool();
+            CRAddTiles = gon[nameof(CRAddTiles)].Int();
+            CRAddEnemies = gon[nameof(CRAddEnemies)].Int();
+            CRSpikeStrips = gon[nameof(CRSpikeStrips)].Bool();
+            CRCrumbles = gon[nameof(CRCrumbles)].Bool();
+            CRCrushers = gon[nameof(CRCrushers)].Bool();
+            CRChaos = gon[nameof(CRChaos)].Bool();
+            CRWaterLevels = gon[nameof(CRWaterLevels)].Bool();
+
+            UserName = gon[nameof(UserName)].String();
+
+            // Load pool settings
+            ActiveLevelPools = GonObject.Manip.GonToStringArray(gon[nameof(ActiveLevelPools)]);
+            ActiveShaders = GonObject.Manip.GonToStringArray(gon[nameof(ActiveShaders)]);
+
+        }
+
     }
 }

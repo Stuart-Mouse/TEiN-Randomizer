@@ -30,16 +30,16 @@ namespace TEiNRandomizer
         static Bounds CameraBounds = new Bounds();
 
         // Level Generation Info
-        static Direction EntranceDirection = Direction.None;
-        static Direction ExitDirection = Direction.None;
+        static Direc EntranceDirection = Direc.None;
+        static Direc ExitDirection = Direc.None;
         static int WidthRemaining;
 
         static void InitGenInfo()
         {
             LastPiece = new LevelPiece();
             NextPiece = new LevelPiece();
-            EntranceDirection = Direction.L;
-            ExitDirection = Direction.R;
+            EntranceDirection = Direc.L;
+            ExitDirection = Direc.R;
             WidthRemaining = UsableWidth;
 
             if (RNG.CoinFlip()) { Canvas.FloorEx = true; Canvas.CeilingEx = true; };
@@ -58,7 +58,7 @@ namespace TEiNRandomizer
                 for (int j = 0; j < lw; j++)
                 {
                     index = i * lw + j;
-                    level.data.tag[index] = TileID.OOBMarker;
+                    level.data[LevelFile.TAG, index] = TileID.OOBMarker;
                 }
             }
 
@@ -92,25 +92,25 @@ namespace TEiNRandomizer
                 {
                     index = i * lw + j;
 
-                    switch (piece.File.data.tag[index])
+                    switch (piece.File.data[LevelFile.TAG, index])
                     {
                         case TileID.GreenTransitionL:
-                            piece.Entrance = Direction.L;
+                            piece.Entrance = Direc.L;
                             break;
                         case TileID.GreenTransitionD:
-                            piece.Entrance = Direction.D;
+                            piece.Entrance = Direc.D;
                             break;
                         case TileID.YellowTransitionR:
-                            piece.Exit = Direction.R;
+                            piece.Exit = Direc.R;
                             break;
                         case TileID.YellowTransitionU:
-                            piece.Exit = Direction.U;
+                            piece.Exit = Direc.U;
                             break;
                     }
                 }
             }
 
-            if (piece.Entrance != Direction.None && piece.Exit != Direction.None)
+            if (piece.Entrance != Direc.None && piece.Exit != Direc.None)
                 return true;
             else
             {
@@ -126,9 +126,9 @@ namespace TEiNRandomizer
             foreach (LevelPiece piece in Pieces)
             {
                 if (piece.Name != LastPiece.Name)
-                    if (EntranceDirection == Direction.Any || piece.Entrance == EntranceDirection) // entrance check
+                    if (EntranceDirection == Direc.Any || piece.Entrance == EntranceDirection) // entrance check
                         //if (piece.CeilingEn == Canvas.CeilingEx && piece.FloorEn == Canvas.FloorEx)
-                        if (ExitDirection == Direction.Any || piece.Exit == ExitDirection)         // exit check
+                        if (ExitDirection == Direc.Any || piece.Exit == ExitDirection)         // exit check
                             if (piece.File.header.height <= maxHeight && piece.File.header.width <= maxWidth) // piece size check
                                 pool.Add(piece);
             }
@@ -176,7 +176,7 @@ namespace TEiNRandomizer
             while (true)
             {
                 LastPiece = NextPiece;                                      // the old new piece becomes the new old piece
-                Direction entranceDir = (Direction)(-(int)LastPiece.Exit);  // get the opposite direction of the exit
+                Direc entranceDir = (Direc)(-(int)LastPiece.Exit);  // get the opposite direction of the exit
                 WidthRemaining = UsableWidth - Canvas.File.header.width;         // The amount of space left before reaching the usable width limit
 
                 if (!AttemptAddPiece()) break; // try to add a new piece. if this fails, break from the loop
@@ -205,9 +205,9 @@ namespace TEiNRandomizer
             //int vert = level.header.height / 2;
             //int width = level.header.width;
             //int index = vert * width + (width - 2);     // right camera tile
-            //level.data.tag[index] = TileID.CameraBounds;
+            //level.data[LevelFile.TAG, index] = TileID.CameraBounds;
             //index = vert * width + 1;                   // left camera tile
-            //level.data.tag[index] = TileID.CameraBounds;    
+            //level.data[LevelFile.TAG, index] = TileID.CameraBounds;    
             // vertical camera bounds are not set, they should just naturally work out
 
             return Canvas.File;
@@ -232,29 +232,29 @@ namespace TEiNRandomizer
                 {
                     index = i * lw + j;
 
-                    if (Canvas.File.data.tag[index] == TileID.OOBMarker)
+                    if (Canvas.File.data[LevelFile.TAG, index] == TileID.OOBMarker)
                     {
                         if (tagFillTile != TileID.OOBMarker)
                         {
-                            //Canvas.File.data.tag[index]     = TileID.Empty;
-                            Canvas.File.data.active[index]  = activeFillTile;
-                            Canvas.File.data.back1[index]   = back1FillTile;
-                            Canvas.File.data.back2[index]   = back2FillTile;
-                            Canvas.File.data.tag[index]     = tagFillTile;
+                            //Canvas.File.data[LevelFile.TAG, index]     = TileID.Empty;
+                            Canvas.File.data[LevelFile.ACTIVE, index]  = activeFillTile;
+                            Canvas.File.data[LevelFile.BACK1, index]   = back1FillTile;
+                            Canvas.File.data[LevelFile.BACK2, index]   = back2FillTile;
+                            Canvas.File.data[LevelFile.TAG, index]     = tagFillTile;
                             //if (RNG.CoinFlip())
                             //{
-                            //    Canvas.File.data.active[index] = TileID.Kuko;
-                            //    Canvas.File.data.overlay[index] = TileID.FakeSolidOver;
+                            //    Canvas.File.data[LevelFile.ACTIVE, index] = TileID.Kuko;
+                            //    Canvas.File.data[LevelFile.OVERLAY, index] = TileID.FakeSolidOver;
                             //}
                         }
                     }
                     else
                     {
-                        activeFillTile = Canvas.File.data.active[index];
-                        back1FillTile = Canvas.File.data.back1[index];
-                        back2FillTile = Canvas.File.data.back2[index];
-                        //if (Canvas.data.tag[index] != TileID.Empty)
-                        tagFillTile = Canvas.File.data.tag[index];
+                        activeFillTile = Canvas.File.data[LevelFile.ACTIVE, index];
+                        back1FillTile = Canvas.File.data[LevelFile.BACK1, index];
+                        back2FillTile = Canvas.File.data[LevelFile.BACK2, index];
+                        //if (Canvas.data[LevelFile.TAG, index] != TileID.Empty)
+                        tagFillTile = Canvas.File.data[LevelFile.TAG, index];
                     }
                 }
 
@@ -264,26 +264,26 @@ namespace TEiNRandomizer
                 {
                     index = i * lw + j;
 
-                    if (Canvas.File.data.tag[index] == TileID.OOBMarker)
+                    if (Canvas.File.data[LevelFile.TAG, index] == TileID.OOBMarker)
                     {
                         if (tagFillTile != TileID.OOBMarker)
                         {
-                            Canvas.File.data.tag[index] = TileID.Empty;
-                            Canvas.File.data.active[index] = activeFillTile;
-                            Canvas.File.data.back1[index] = back1FillTile;
-                            Canvas.File.data.back2[index] = back2FillTile;
-                            Canvas.File.data.tag[index] = tagFillTile;
+                            Canvas.File.data[LevelFile.TAG, index] = TileID.Empty;
+                            Canvas.File.data[LevelFile.ACTIVE, index] = activeFillTile;
+                            Canvas.File.data[LevelFile.BACK1, index] = back1FillTile;
+                            Canvas.File.data[LevelFile.BACK2, index] = back2FillTile;
+                            Canvas.File.data[LevelFile.TAG, index] = tagFillTile;
                             //if (RNG.CoinFlip())
-                            //    Canvas.File.data.active[index] = TileID.Mother;
+                            //    Canvas.File.data[LevelFile.ACTIVE, index] = TileID.Mother;
                         }
                     }
                     else
                     {
-                        activeFillTile = Canvas.File.data.active[index];
-                        back1FillTile = Canvas.File.data.back1[index];
-                        back2FillTile = Canvas.File.data.back2[index];
-                        //if (Canvas.data.tag[index] != TileID.Empty)
-                        tagFillTile = Canvas.File.data.tag[index];
+                        activeFillTile = Canvas.File.data[LevelFile.ACTIVE, index];
+                        back1FillTile = Canvas.File.data[LevelFile.BACK1, index];
+                        back2FillTile = Canvas.File.data[LevelFile.BACK2, index];
+                        //if (Canvas.data[LevelFile.TAG, index] != TileID.Empty)
+                        tagFillTile = Canvas.File.data[LevelFile.TAG, index];
                     }
                 }
             }
@@ -299,7 +299,7 @@ namespace TEiNRandomizer
                 for (int j = 0; j < lw; j++)
                 {
                     index = i * lw + j;
-                    if (level.data.tag[index] == TileID.YellowTransitionR)
+                    if (level.data[LevelFile.TAG, index] == TileID.YellowTransitionR)
                         return new Pair(i, j);
                 }
             }
@@ -316,7 +316,7 @@ namespace TEiNRandomizer
                 for (int j = 0; j < lw; j++)
                 {
                     index = i * lw + j;
-                    if (level.data.tag[index] == TileID.GreenTransitionL)
+                    if (level.data[LevelFile.TAG, index] == TileID.GreenTransitionL)
                         return new Pair(i, j);
                 }
             }
@@ -352,7 +352,7 @@ namespace TEiNRandomizer
                 transition = new LevelPiece(new LevelFile(1, ceilingHeight + 2));
                 for (int i = 1; i < ceilingHeight; i++)
                 {
-                    if (RNG.CoinFlip()) transition.File.data.back1[i] = sidePiece;
+                    if (RNG.CoinFlip()) transition.File.data[LevelFile.BACK1, i] = sidePiece;
                 }
             }
 
@@ -360,9 +360,9 @@ namespace TEiNRandomizer
             
             if (left.FloorEx || right.FloorEn) // check floor
             {
-                if (left.CeilingEx) transition.File.data.back1[lh - 2] = TileID.LargeCornerBL;
-                else if (right.CeilingEn) transition.File.data.back1[lh - 2] = TileID.LargeCornerBR;
-                transition.File.data.active[lh - 1] = TileID.Solid; // add ground
+                if (left.CeilingEx) transition.File.data[LevelFile.BACK1, lh - 2] = TileID.LargeCornerBL;
+                else if (right.CeilingEn) transition.File.data[LevelFile.BACK1, lh - 2] = TileID.LargeCornerBR;
+                transition.File.data[LevelFile.ACTIVE, lh - 1] = TileID.Solid; // add ground
             }
 
             //LevelFile tempFile = GetNewLevelFile(left.File.header.width + 1, left.File.header.height);
@@ -381,7 +381,7 @@ namespace TEiNRandomizer
             for (ceilingHeight = 1; ceilingHeight < coord.First; ceilingHeight++)
             {
                 int index = (coord.First - ceilingHeight) * lw + coord.Second;
-                if (level.data.active[index] == TileID.Solid) break;
+                if (level.data[LevelFile.ACTIVE, index] == TileID.Solid) break;
             }
             return ceilingHeight;
         }
@@ -426,9 +426,9 @@ namespace TEiNRandomizer
 
             // get rid of old entrances
             int index = (L1Origin.First + L1ExitCoord.First) * TempLevel.header.width + (L1Origin.Second + L1ExitCoord.Second);
-            TempLevel.data.tag[index] = TileID.Empty;
+            TempLevel.data[LevelFile.TAG, index] = TileID.Empty;
             index = (L2Origin.First + L2EntryCoord.First) * TempLevel.header.width + (L2Origin.Second + L2EntryCoord.Second);
-            TempLevel.data.tag[index] = TileID.Empty;
+            TempLevel.data[LevelFile.TAG, index] = TileID.Empty;
 
             // set canvas piece info
             Canvas.File = TempLevel;
@@ -454,14 +454,14 @@ namespace TEiNRandomizer
                     copyIndex = i * copylw + j;
                     pasteIndex = (i + coords.First) * pastelw + (j + coords.Second);
 
-                    if (pasteLevel.data.tag[pasteIndex] != TileID.OOBMarker)
+                    if (pasteLevel.data[LevelFile.TAG, pasteIndex] != TileID.OOBMarker)
                         throw new LevelCollisionException();
 
-                    pasteLevel.data.active[pasteIndex]  = copyLevel.data.active[copyIndex];
-                    pasteLevel.data.back1[pasteIndex]   = copyLevel.data.back1[copyIndex];
-                    pasteLevel.data.back2[pasteIndex]   = copyLevel.data.back2[copyIndex];
-                    pasteLevel.data.tag[pasteIndex]     = copyLevel.data.tag[copyIndex];
-                    pasteLevel.data.overlay[pasteIndex] = copyLevel.data.overlay[copyIndex];
+                    pasteLevel.data[LevelFile.ACTIVE,  pasteIndex] = copyLevel.data[LevelFile.ACTIVE,  copyIndex];
+                    pasteLevel.data[LevelFile.BACK1,   pasteIndex] = copyLevel.data[LevelFile.BACK1,   copyIndex];
+                    pasteLevel.data[LevelFile.BACK2,   pasteIndex] = copyLevel.data[LevelFile.BACK2,   copyIndex];
+                    pasteLevel.data[LevelFile.TAG,     pasteIndex] = copyLevel.data[LevelFile.TAG,     copyIndex];
+                    pasteLevel.data[LevelFile.OVERLAY, pasteIndex] = copyLevel.data[LevelFile.OVERLAY, copyIndex];
                 }
             }
         }

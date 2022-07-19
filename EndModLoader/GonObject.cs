@@ -473,7 +473,7 @@ namespace TEiNRandomizer
         }
         int size()
         {
-            if(Type == FieldType.NULLGON) return 0;
+            if (Type == FieldType.NULLGON) return 0;
             if (Type != FieldType.OBJECT && Type != FieldType.ARRAY) return 1;//size 1, object is self
             return (int)Children_Array.Count();
         }

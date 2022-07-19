@@ -75,14 +75,14 @@ namespace TEiNRandomizer
                     for (int i = 0; i < text.Length; i++)
                     {
                         if (text[i].Contains("palette"))
-                            text[i] = TilesetManip.GetPalette().ToString();
+                            text[i] = "palette " + TilesetManip.GetPalette().ToString();
                         if (text[i].Contains("tile_graphics"))
-                            text[i] = TilesetManip.GetTile();
+                            text[i] = "tile_graphics " + TilesetManip.GetTile();
                         if (text[i].Contains("overlay_graphics"))
-                            text[i] = TilesetManip.GetOverlay();
+                            text[i] = "overlay_graphics " + TilesetManip.GetOverlay();
                         if (text[i].Contains("global_particle"))
                         {
-                            var split = text[i].Trim().Split(Convert.ToChar(" "));
+                            var split = text[i].Trim().Split(' ');
                             text[i] = split[0] + " " + ParticleGenerator.GetParticle();
                         }
                     }

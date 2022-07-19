@@ -27,7 +27,7 @@ namespace TEiNRandomizer
             for (int i = 0; i < child.Size(); i++)
             {
                 // We can safely index both the first and second item directly since we know they will always be present
-                pair.First  = child[i][0].Int();
+                pair.First = child[i][0].Int();
                 pair.Second = child[i][1].Int();
                 HFlipIndex.Add(pair);
             }
@@ -36,7 +36,7 @@ namespace TEiNRandomizer
             child = gon["vert"];
             for (int i = 0; i < child.Size(); i++)
             {
-                pair.First  = child[i][0].Int();
+                pair.First = child[i][0].Int();
                 pair.Second = child[i][1].Int();
                 VFlipIndex.Add(pair);
             }
@@ -47,13 +47,12 @@ namespace TEiNRandomizer
             child = gon["rotate"];
             for (int i = 0; i < child.Size(); i++)
             {
-                pair.First  = child[i][0].Int();
+                pair.First = child[i][0].Int();
                 pair.Second = child[i][1].Int();
                 RotationIndex.Add(pair);
             }
         }
-
-        static void LoadLayer(ref byte[] filedata, ref TileID[] layer, ref int offset)
+        /*static void LoadLayer(ref byte[] filedata, ref TileID[] layer, ref int offset)
         {
             try
             {
@@ -86,8 +85,7 @@ namespace TEiNRandomizer
                 Buffer.BlockCopy(tempBytes, 0, filedata, offset, 4);
                 offset += 4;
             }
-        }
-
+        }*/
         public static LevelFile Load(string path)
         {
             LevelFile level = new LevelFile() { };
@@ -111,27 +109,32 @@ namespace TEiNRandomizer
 
             // get data layer length
             int layerLength = level.header.width * level.header.height;
-            //Console.WriteLine("file length  (bytes): " + filedata.Length);
-            //Console.WriteLine("layer length (bytes): " + layerLength);
 
             // initialize data layers
-            level.data.back1    = new TileID[layerLength];
-            level.data.active   = new TileID[layerLength];
-            level.data.tag      = new TileID[layerLength];
-            level.data.overlay  = new TileID[layerLength];
-            level.data.back2    = new TileID[layerLength];
+            level.data = new TileID[level.header.layers, layerLength];
 
             // load data layers
             int offset = 16;
-            LoadLayer(ref filedata, ref level.data.back1, ref offset);
+            for (int i = 0; i < level.header.layers; i++) // Iterate over the layers
+            {
+                tempBytes = new byte[4];
+                for (int j = 0; j < layerLength; j++)
+                {
+                    Buffer.BlockCopy(filedata, offset, tempBytes, 0, 4);
+                    Array.Reverse(tempBytes);
+                    level.data[i,j] = (TileID)(BitConverter.ToInt32(tempBytes, 0));
+                    offset += 4;
+                }
+            }
+            // OLD LAYER LOADING
+            /*LoadLayer(ref filedata, ref level.data.back1, ref offset);
             LoadLayer(ref filedata, ref level.data.active, ref offset);
             LoadLayer(ref filedata, ref level.data.tag, ref offset);
             LoadLayer(ref filedata, ref level.data.overlay, ref offset);
-            LoadLayer(ref filedata, ref level.data.back2, ref offset);
+            LoadLayer(ref filedata, ref level.data.back2, ref offset);*/
 
             return level;
         }
-
         public static void Save(LevelFile level, string path)
         {
             // get data layer length
@@ -157,11 +160,24 @@ namespace TEiNRandomizer
 
             // save data layers
             int offset = 16;
-            SaveLayer(ref filedata, ref level.data.back1, ref offset);
+            for (int i = 0; i < level.header.layers; i++)
+            {
+                tempBytes = new byte[4];
+                for (int j = 0; j < layerLength; j ++)
+                {
+                    tempBytes = BitConverter.GetBytes((Int32)level.data[i,j]);
+                    Array.Reverse(tempBytes);
+                    Buffer.BlockCopy(tempBytes, 0, filedata, offset, 4);
+                    offset += 4;
+                }
+            }
+
+            // OLD LAYER SAVING
+            /*SaveLayer(ref filedata, ref level.data.back1, ref offset);
             SaveLayer(ref filedata, ref level.data.active, ref offset);
             SaveLayer(ref filedata, ref level.data.tag, ref offset);
             SaveLayer(ref filedata, ref level.data.overlay, ref offset);
-            SaveLayer(ref filedata, ref level.data.back2, ref offset);
+            SaveLayer(ref filedata, ref level.data.back2, ref offset);*/
 
             string folder = Path.GetDirectoryName(path);
             if (!File.Exists(folder))
@@ -170,20 +186,51 @@ namespace TEiNRandomizer
 
         }
 
-        
+        // Basic Manipulations ( Flip / Rotation / Resize )
         public static void FlipLevelH(ref LevelFile level)
         {
             int lw = level.header.width;
             int lh = level.header.height;
 
-            FlipLayerH(ref level.data.back1, lw, lh);
+            TileID temp;
+
+            for (int layer = 0; layer < level.header.layers; layer++)   // iterate over layers
+            {
+                for (int row = 0; row < lh; row++)                      // iterate over rows
+                {
+                    for (int col = 0; col < lw; col++)                  // iterate over columns
+                    {
+                        int index = row * lw + col;                     // get tile index
+                        int toSwap = (row+1) * lw - col - 1;            // get swap index
+
+                        if (index >= toSwap) break; // Only iterate over half of level
+                        
+                        if (   level.data[layer, index ] != TileID.Background 
+                            && level.data[layer, toSwap] != TileID.Background 
+                            && level.data[layer, index ] != TileID.Foreground 
+                            && level.data[layer, toSwap] != TileID.Foreground) // Don't flip BG and FG alignment tiles
+                        {
+                            // Flip the TileIDs in place
+                            FlipTileH(ref level.data[layer, index ]);
+                            FlipTileH(ref level.data[layer, toSwap]);
+
+                            // Swap the locations of the now flipped tiles
+                            temp                      = level.data[layer, index];
+                            level.data[layer, index]  = level.data[layer, toSwap];
+                            level.data[layer, toSwap] = temp;
+                        }
+                    }
+                }
+            }
+
+            // OLD LEVEL FLIPPING
+            /*FlipLayerH(ref level.data.back1, lw, lh);
             FlipLayerH(ref level.data.active, lw, lh);
             FlipLayerH(ref level.data.tag, lw, lh);
             FlipLayerH(ref level.data.overlay, lw, lh);
-            FlipLayerH(ref level.data.back2, lw, lh);
+            FlipLayerH(ref level.data.back2, lw, lh);*/
         }
-
-        public static void FlipLayerH(ref TileID[] layer, Int32 lw, Int32 lh)
+        /*public static void FlipLayerH(ref TileID[] layer, Int32 lw, Int32 lh)
         {
             TileID temp;
             for (int row = 0; row < lh; row++)
@@ -198,8 +245,8 @@ namespace TEiNRandomizer
                         if (layer[index] != TileID.Background && layer[toSwap] != TileID.Background && layer[index] != TileID.Foreground && layer[toSwap] != TileID.Foreground) // Don't flip BG and FG alignment tiles
                         {
                             // insert tile flip lookup here
-                            GetFlipH(ref layer[index]);
-                            GetFlipH(ref layer[toSwap]);
+                            FlipTileH(ref layer[index]);
+                            FlipTileH(ref layer[toSwap]);
 
                             temp = layer[index];
                             layer[index] = layer[toSwap];
@@ -208,9 +255,8 @@ namespace TEiNRandomizer
                     }
                 }
             }
-        }
-
-        public static void GetFlipH(ref TileID id)
+        }*/
+        public static void FlipTileH(ref TileID id)
         {
             foreach (var pair in HFlipIndex)
             {
@@ -219,9 +265,7 @@ namespace TEiNRandomizer
                 else if (id == (TileID)pair.Second)
                     id = (TileID)pair.First;
             }
-            //return id;
         }
-
         public static void PrintLevelToConsole(LevelFile level)
         {
             var lh = level.header.height;
@@ -233,11 +277,11 @@ namespace TEiNRandomizer
                 for (int j = 0; j < lw; j++)
                 {
                     int index = i * lw + j;
-                    if (level.data.active[index] == TileID.Solid)
+                    if (level.data[LevelFile.ACTIVE, index] == TileID.Solid)
                         Console.Write("▓▓");
-                    else if (level.data.back1[index] == TileID.WholePiece)
+                    else if (level.data[LevelFile.BACK1, index] == TileID.WholePiece)
                         Console.Write("▒▒");
-                    else if (level.data.back2[index] == TileID.WholePiece2)
+                    else if (level.data[LevelFile.BACK2, index] == TileID.WholePiece2)
                         Console.Write("░░");
                     else Console.Write("  ");
 
@@ -246,7 +290,6 @@ namespace TEiNRandomizer
             }
             Console.WriteLine("============================================");
         }
-
         public static LevelFile RotateLevel(ref LevelFile level)
         {
             int lw = level.header.width;
@@ -259,19 +302,15 @@ namespace TEiNRandomizer
                 for (int col = 0; col < lw; col++)
                 {
                     int copyIndex = row * lw + col;
-                    int pasteIndex = col * lh + (lh-row-1);
+                    int pasteIndex = col * lh + (lh - row - 1);
 
-                    levelNew.data.active[pasteIndex]  = GetRotation(level.data.active[copyIndex]);
-                    levelNew.data.back1[pasteIndex]   = GetRotation(level.data.back1[copyIndex]);
-                    levelNew.data.back2[pasteIndex]   = GetRotation(level.data.back2[copyIndex]);
-                    levelNew.data.tag[pasteIndex]     = GetRotation(level.data.tag[copyIndex]);
-                    levelNew.data.overlay[pasteIndex] = GetRotation(level.data.overlay[copyIndex]);
+                    for (int layer = 0; layer < levelNew.header.layers; layer++)
+                        levelNew.data[layer, pasteIndex] = GetRotation(level.data[layer, copyIndex]);
                 }
             }
 
             return levelNew;
         }
-
         public static TileID GetRotation(TileID id)
         {
             foreach (var pair in RotationIndex)
@@ -281,9 +320,9 @@ namespace TEiNRandomizer
             }
             return id;
         }
-
         public static LevelFile FixAspect(ref LevelFile levelIn)
         {
+            // This function resizes the level to a 16:9 aspect ratio.
             int lh = levelIn.header.height;
             int lw = levelIn.header.width;
 
@@ -299,100 +338,74 @@ namespace TEiNRandomizer
             return levelOut;
         }
 
-        public static void NormalizeEntranceH(ref LevelFile left, ref LevelFile right, bool horiz = false)
+        // Search Functions ( Find / Replace )
+        public static int GetTileCount(ref LevelFile level, int layer, TileID id)
         {
-            // Find transition tags in left level
-            int indexL = FindFirstTag(left, TileID.GreenTransitionR);
+            int lsize = level.header.width * level.header.height;
 
-            // Throw error if none found
-            if (indexL == -1) throw new IndexOutOfRangeException("Could not find given tag in the level.");
+            int count = 0;
 
-            // Get all adjacents
-            List<int> adjacentsL = GetEntryTags(ref left, TileID.GreenTransitionR, indexL);
+            for (int i = 0; i < lsize; i++)
+                if (level.data[layer, i] == id) count++;
 
-            // Find transition tags in right level
-            int indexR = FindFirstTag(right, TileID.GreenTransitionL);
+            return count;
+        }
+        public static void ReplaceTilesByID(ref LevelFile level, int layer, TileID id, TileID rep)
+        {
+            // Replaces all tiles of a specified tileID on a specified layer
+            int lsize = level.header.width * level.header.height;
 
-            // Throw error if none found
-            if (indexR == -1) throw new IndexOutOfRangeException("Could not find given tag in the level.");
+            for (int i = 0; i < lsize; i++)
+                if (level.data[layer, i] == id) level.data[layer, i] = rep;
+        }
+        public static List<int> FindTilesByID(ref LevelFile level, int layer, TileID id, int startIndex = 0, int step = 1)
+        {
+            // Finds all tiles of a specified tileID on a specified layer and returns their indices as a list of integers
 
-            // Get all adjacents
-            List<int> adjacentsR = GetEntryTags(ref right, TileID.GreenTransitionL, indexR);
+            int lsize = level.header.width * level.header.height;
 
-            // Calculate new entry height
-            int newEntryHeight = Math.Min(adjacentsL.Count, adjacentsR.Count);
+            List<int> list = new List<int>();
 
-            // Remove extraneous entry tags in left level
-            ReplaceEntryTags(ref left, adjacentsL, newEntryHeight);
+            for (int i = startIndex; i < lsize; i += step)
+                if (level.data[layer, i] == id) list.Add(i);
 
-            // Remove extraneous entry tags in left level
-            ReplaceEntryTags(ref right, adjacentsR, newEntryHeight);
+            return list;
+        }
+        public static int FindFirstTileByID(ref LevelFile level, int layer, TileID id)
+        {
+            int lsize = level.header.width * level.header.height;
+
+            for (int i = 0; i < lsize; i++)
+                if (level.data[layer, i] == id) return i;
+
+            return -1;  // return -1 if none found
         }
 
-        public static int FindFirstTag(LevelFile level, TileID tag)
+        // Copy & Paste Operations
+        public static void CopyLevelClip(ref LevelFile copyLevel, ref LevelFile pasteLevel, Pair coords, Pair size)    // pass in the origin coords of the level to be copied from
         {
-            int lw = level.header.width;
-            int lh = level.header.height;
+            // This function will copy a specified portion of the copylevel into the pastelevel at the origin
+            int copyIndex = 0;
+            int pasteIndex = 0;
 
-            for (int row = 0; row < lh; row++)
+            int copylw = copyLevel.header.width;
+            int copylh = copyLevel.header.height;
+
+            int pastelw = pasteLevel.header.width;
+            int pastelh = pasteLevel.header.height;
+
+            for (int i = 0; i < size.First; i++)
             {
-                for (int col = 0; col < lw; col++)
+                for (int j = 0; j < size.Second; j++)
                 {
-                    int index = row * lw + col;
+                    pasteIndex =  i                 * pastelw +  j                 ;
+                    copyIndex  = (i + coords.First) * copylw  + (j + coords.Second);
 
-                    if (level.data.tag[index] == tag)
-                        return index;
+                    for (int layer = 0; layer < pasteLevel.header.layers; layer++)
+                        pasteLevel.data[layer, pasteIndex]  = copyLevel.data[layer, copyIndex];
                 }
             }
-            return -1;
         }
 
-        public static void ReplaceEntryTags(ref LevelFile level, List<int> set, int newEntryHeight)
-        {
-            // Calculate how many tiles to replace
-            int toReplace = set.Count() - newEntryHeight;
-            if (toReplace <= 0)
-                return;
-
-            // Iterate over set of tiles
-            for (int i = 0; i < toReplace; i++)
-            {
-                int index = set[i];
-
-                // Remove the transition tag
-                level.data.tag[index] = TileID.Empty;
-
-                // Place invisible solid where tag was
-                level.data.active[index] = TileID.Invisible;
-            }
-        }
-
-        public static List<int> GetEntryTags(ref LevelFile level, TileID id, int index, bool horiz = false)
-        {
-            int lw = level.header.width;
-            int lh = level.header.height;
-
-            int size = lw * lh;
-
-            List<int> adjacents = new List<int>();
-
-            while (true)
-            {
-                if (horiz) index += 1;
-                else index += lw;
-
-                if (index < size)
-                {
-                    if (level.data.active[index] == id)
-                    {
-                        adjacents.Add(index);
-                        continue;
-                    }
-                }
-                break;
-            }
-
-            return adjacents;
-        }
     }
 }

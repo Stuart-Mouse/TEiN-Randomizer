@@ -130,9 +130,9 @@ namespace TEiNRandomizer
             {
                 if (RNG.random.Next(0, 2) == 0)  // set shader
                 {
-                    tileset.shaderMid.fx_shader_mid = ($"    { ShaderPool[RNG.random.Next(0, ShaderPool.Count())] }\n");
+                    tileset.shaderMid = ShaderPool[RNG.random.Next(0, ShaderPool.Count())];
                 }
-                tileset.shaderMid.shader_param = ((float)RNG.random.Next(0, 101) / 100);
+                tileset.shaderMid.shader_param = ((float)RNG.random.Next(10, 101) / 100);
             }
 
             // Select or generate particle effects

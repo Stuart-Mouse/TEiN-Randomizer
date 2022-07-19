@@ -19,6 +19,12 @@ namespace TEiNRandomizer
         public static Pair operator -(Pair a) => new Pair(-a.First, -a.Second);
         public static Pair operator +(Pair a, Pair b) => new Pair(a.First + b.First, a.Second + b.Second);
         public static Pair operator -(Pair a, Pair b) => new Pair(a.First - b.First, a.Second - b.Second);
+        public static Pair operator *(Pair a, int s) => new Pair(a.First * s, a.Second * s);
+        public static Pair operator /(Pair a, int s) => new Pair(a.First / s, a.Second / s);
+        public static Pair operator *(Pair a, Pair b) => new Pair(a.First * b.First, a.Second * b.Second);
+        public static Pair operator /(Pair a, Pair b) => new Pair(a.First / b.First, a.Second / b.Second);
+        public static bool operator ==(Pair a, Pair b) { if (a.First == b.First && a.Second == b.Second) return true; else return false; }
+        public static bool operator !=(Pair a, Pair b) { if (a.First != b.First && a.Second != b.Second) return false; else return true; }
     }
 
     public struct Bounds
@@ -31,6 +37,20 @@ namespace TEiNRandomizer
 
     public static class Utility
     {
+        public static int FindHighestBit(byte bite)
+        {
+            // gets the highest active bit in the byte.
+            // The intent is to basically get what is the bit shift of 1 that this nummber equates to
+            // if bite == 0 then -1 is returned
+
+            int hiBit = -1;
+
+            for (int i = 0; i < 8; i++)
+                if ((bite & (1 << i)) != 0) hiBit = i;
+
+            return hiBit;
+        }
+        
         public static Level FindLevelInListByName(List<Level> list, string name)
         {
             foreach (var level in list)
@@ -66,12 +86,12 @@ namespace TEiNRandomizer
             }
 
             // Create a few MapAreas for testing purposes
-            List<MapArea> MapAreasList = new List<MapArea>();
+            /*List<MapGenerator> MapAreasList = new List<MapGenerator>();
             for (int i = 0; i < 10; i++)
             {
                 // Create new MapArea
                 // the map area is created with a randmized name and tileset already initialized
-                MapArea mapArea = new MapArea();
+                MapGenerator mapArea = new MapGenerator();
 
                 // select some random levels
                 for (int j = 0; j < 10; j++)
@@ -90,7 +110,7 @@ namespace TEiNRandomizer
                 for (int i = 0; i < MapAreasList.Count(); i++)
                 {
                     // Get reference to MapArea #i in list 
-                    MapArea mapArea = MapAreasList[i];
+                    MapGenerator mapArea = MapAreasList[i];
                      
                     // Set areaTileset to Map Area's tileset
                     Tileset areaTileset = mapArea.Tileset;
@@ -118,7 +138,7 @@ namespace TEiNRandomizer
                     // write closing bracket for area tileset
                     sw.WriteLine("}\n");
                 }
-            }
+            }*/
         }
         public static void WriteTilesetFunction()
         {
@@ -294,10 +314,10 @@ namespace TEiNRandomizer
         public static string[] XElementToArray(XElement element)         // converts xml element value to a string array
         {
             string t_string = Convert.ToString(element.Value).Trim();
-            var myArray = t_string.Split(Convert.ToChar("\n"));
+            var myArray = t_string.Split('\n');
             for (int i = 0; i < myArray.Count(); i++)
             {
-                myArray[i] = myArray[i].Trim(Convert.ToChar("\t"), Convert.ToChar(" "));
+                myArray[i] = myArray[i].Trim('\t', ' ');
             }
 
             return myArray;
@@ -305,11 +325,11 @@ namespace TEiNRandomizer
         public static Int32[] XElementToArray(XElement element, bool y)  // converts xml element value to a string array
         {
             string t_string = Convert.ToString(element.Value).Trim();
-            var myArray = t_string.Split(Convert.ToChar("\n"));
+            var myArray = t_string.Split('\n');
             int[] intArray = new int[myArray.Count()];
             for (int i = 0; i < myArray.Count(); i++)
             {
-                intArray[i] = Convert.ToInt32(myArray[i].Trim(Convert.ToChar("\t"), Convert.ToChar(" ")));
+                intArray[i] = Convert.ToInt32(myArray[i].Trim('\t'), ' ');
             }
 
             return intArray;
@@ -321,7 +341,7 @@ namespace TEiNRandomizer
             var file = new List<string[]>();
             foreach (var str in arr)
             {
-                var line = str.Split(Convert.ToChar(","));
+                var line = str.Split(',');
                 if (line.Length > length)
                     length = line.Length;
                 line = line.Reverse().ToArray();
@@ -355,6 +375,22 @@ namespace TEiNRandomizer
                 list[k] = list[n];
                 list[n] = value;
             }
+        }
+
+        public static string[][] LoadCSV(string path, out int length)
+        {
+            // loads a csv file into a jagged 2d string array
+            // the length of the longest line is sent back as an out parameter
+            var file = File.ReadAllLines(path);
+            length = 0;
+            var arr = new List<string[]>();
+            foreach (var str in file)
+            {
+                var line = str.Split(',');
+                    length = line.Length;
+                arr.Add(line);
+            }
+            return arr.ToArray();
         }
     }
 }

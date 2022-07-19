@@ -20,10 +20,15 @@ namespace TEiNRandomizer
         // Tools Buttons
         private void DoLatestThing_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var file in Directory.GetFiles("data/levelpools/The End is Nigh", "*.xml"))
-            {
-                Utility.XML2GON(file);
-            }
+            // CONVERT XML TO GON
+            //foreach (var file in Directory.GetFiles("data/levelpools/The End is Nigh", "*.xml"))
+            //{
+            //    Utility.XML2GON(file);
+            //}
+
+            // TEST MARIO LEVEL GENERATOR
+            //MarioLevelGenerator.ChopAndSave();
+
         }
         private void TestGon_Click(object sender, RoutedEventArgs e)
         {
@@ -31,7 +36,7 @@ namespace TEiNRandomizer
         }
         private void TestMapGen_Click(object sender, RoutedEventArgs e)
         {
-            MapGenerator.GenerateMap();
+            //MapGenerator.GenerateMap();
         }
         private void WriteSettingsCodeForMe_Click(object sender, RoutedEventArgs e)
         {
@@ -82,21 +87,21 @@ namespace TEiNRandomizer
 
                     int index, lw = level.header.width, lh = level.header.height;
 
-                    if (level.data.active[0] == TileID.Solid)               // checks top left tile for solid block
+                    if (level.data[LevelFile.ACTIVE, 0] == TileID.Solid)               // checks top left tile for solid block
                         piece.SetAttributeValue("ceilingEn", "True");
-                    if (level.data.active[lw - 1] == TileID.Solid)          // checks top right tile for solid block
+                    if (level.data[LevelFile.ACTIVE, lw - 1] == TileID.Solid)          // checks top right tile for solid block
                         piece.SetAttributeValue("ceilingEx", "True");
 
                     index = (enCoord.First + 1) * lw + enCoord.Second;
                     if (index < lh * lw)
                     {
-                        if (level.data.active[index] == TileID.Solid)       // checks tile underneath the entrance for solid block
+                        if (level.data[LevelFile.ACTIVE, index] == TileID.Solid)       // checks tile underneath the entrance for solid block
                             piece.SetAttributeValue("floorEn", "True");
                     }
                     index = (exCoord.First + 1) * lw + exCoord.Second;
                     if (index < lh * lw)
                     {
-                        if (level.data.active[index] == TileID.Solid)       // checks tile underneath the exit for solid block
+                        if (level.data[LevelFile.ACTIVE, index] == TileID.Solid)       // checks tile underneath the exit for solid block
                             piece.SetAttributeValue("floorEx", "True");
                     }
 

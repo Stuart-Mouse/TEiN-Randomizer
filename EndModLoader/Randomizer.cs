@@ -18,7 +18,6 @@ namespace TEiNRandomizer
             LoadFunnyNames();
         }
 
-
         // MEMBERS
 
         public static ObservableCollection<LevelPoolCategory> LevelPoolCategories = AppResources.LevelPoolCategories;
@@ -34,6 +33,8 @@ namespace TEiNRandomizer
 
         public static List<MapArea> MapAreasList;
 
+        // The below resources should be moved to the AppResources class
+
         // NPC Stuff
         public static string[] NPCMovieClips;
         public static string[] NPCSoundIDs;
@@ -45,6 +46,17 @@ namespace TEiNRandomizer
         public static string[] LINames;
         public static string[] LILocations;
 
+        // The list of levels available to the level generator
+        // This may be passed in the main randomize() function later
+        public static List<Level> Levels;
+
+        // These levels are reusable connectors that use
+        // color tiles and corruptors to reduce repetition
+        public static List<Level> Connectors;
+
+        // These levels are placed at secret entrances
+        // They will not be reused unless necessary
+        public static List<Level> Secrets;
 
         // METHODS
 
@@ -108,36 +120,55 @@ namespace TEiNRandomizer
                 }
             }
         }
-        public static string GetFunnyName()
+        public static string GetFunnyAreaName()
         {
             // STRUCTURE:
-            // NAME's ( ADJECTIVE ) LOCATION ( of ( ADJECTIVE ) NOUN )
-            // NAME's ( ADJECTIVE ) NOUN LOCATION
+            // ( NAME's ) ( ADJECTIVE ) LOCATION of ( ADJECTIVE ) NOUN
+            // ( NAME's ) ( ADJECTIVE ) NOUN LOCATION
 
             // create le funny name
-            string areaname = "";
+            string area_name = "";
             if (RNG.random.Next(0, 5) == 0)
             {
-                areaname += LINames[RNG.random.Next(0, LINames.Length)] + "s ";
+                area_name += LINames[RNG.random.Next(0, LINames.Length)] + "s ";
             }
             if (RNG.CoinFlip())
             {
                 if (RNG.CoinFlip())
-                    areaname += LIAdjectives[RNG.random.Next(0, LIAdjectives.Length)] + " ";
-                if (RNG.CoinFlip())
-                    areaname += LINouns[RNG.random.Next(0, LINouns.Length)] + " ";
-                areaname += LILocations[RNG.random.Next(0, LILocations.Length)];
+                    area_name += LIAdjectives[RNG.random.Next(0, LIAdjectives.Length)] + " ";
+                area_name += LINouns[RNG.random.Next(0, LINouns.Length)] + " ";
+                area_name += LILocations[RNG.random.Next(0, LILocations.Length)];
             }
             else
             {
-                areaname += LILocations[RNG.random.Next(0, LILocations.Length)] + " of ";
+                area_name += LILocations[RNG.random.Next(0, LILocations.Length)] + " of ";
                 if (RNG.CoinFlip())
-                    areaname += LIAdjectives[RNG.random.Next(0, LIAdjectives.Length)] + " ";
-                areaname += LINouns[RNG.random.Next(0, LINouns.Length)];
+                    area_name += LIAdjectives[RNG.random.Next(0, LIAdjectives.Length)] + " ";
+                area_name += LINouns[RNG.random.Next(0, LINouns.Length)];
             }
-            return areaname;
+            return area_name;
         }
-        static void Tilesets()
+        public static string GetFunnyModName()
+        {
+            // STRUCTURE:
+            // ( NAME's ) ( ADJECTIVE ) LOCATION of ( ADJECTIVE ) NOUN
+            // ( NAME's ) ( ADJECTIVE ) NOUN LOCATION
+
+            // create le funny name
+            string area_name = "The ";
+            if (RNG.CoinFlip())
+            {
+                if (RNG.CoinFlip())
+                    area_name += LIAdjectives[RNG.random.Next(0, LIAdjectives.Length)] + " ";
+                area_name += LINouns[RNG.random.Next(0, LINouns.Length)] + " is Nigh";
+            }
+            else
+            {
+                area_name = $"The End is {LIAdjectives[RNG.random.Next(0, LIAdjectives.Length)]}";
+            }
+            return area_name;
+        }
+        /*static void Tilesets()
         {
             // Create a StreamWriter object for writing to the tilesets.txt file
             using (StreamWriter sw = File.CreateText("data/tilesets.txt.append"))
@@ -156,10 +187,10 @@ namespace TEiNRandomizer
                     areaTileset.WriteTileset(sw);
 
                     // Loop over levels in area
-                    for (int j = 0; j < mapArea.Levels.Count(); j++)
+                    for (int j = 0; j < mapArea.ChosenScreens.Count(); j++)
                     {
                         // Get reference to Level #i in area 
-                        Level level = mapArea.Levels[j];
+                        Level level = mapArea.ChosenScreens[j].Level;
 
                         // Calculate the final tileset
                         // The tilesets are added in order of priority, from lowest to highest
@@ -175,7 +206,7 @@ namespace TEiNRandomizer
                     sw.WriteLine("}\n");
                 }
             }
-        }
+        }*/
         static void CreateFolders()
         {
             Directory.CreateDirectory(saveDir + "textures");
@@ -223,7 +254,7 @@ namespace TEiNRandomizer
         {
             for (int i = 0; i < Settings.NumAreas; i++)
             {
-                string areaname = GetFunnyName();
+                string areaname = GetFunnyAreaName();
 
                 using (StreamWriter sw = File.AppendText(saveDir + "data/levelinfo.txt.append"))
                 {
@@ -270,7 +301,7 @@ namespace TEiNRandomizer
         }
         static string SaveRunPrompt()
         {
-            string title       = GetFunnyName();
+            string title       = GetFunnyModName();
             string author      = $"Seed: {AppResources.GameSeed}";
             string description = "A randomized world!";
             string version     = DateTime.Now.ToString();
@@ -383,22 +414,28 @@ namespace TEiNRandomizer
             TilesetManip.MakeShaderPool();
 
             // Make the draw pool based on which level pools are enabled
-            // MakeDrawPool();
+            MakeDrawPool();
 
             // Flip all levels in the drawpool horizontally and add the flipped variants to the pool
-            // AddFlippedLevels(ref DrawPool);
+            AddFlippedLevels(ref DrawPool);
 
             // Pass drawpool to map generator
             // MapGenerator.Levels = DrawPool;
-            var pool = LevelPool.LoadPool("data/level pools/.mapgen/TestingConnectors.gon");
-            MapGenerator.Connectors = pool.Levels;
-            pool = LevelPool.LoadPool("data/level pools/.mapgen/TestingGameplay.gon");
-            MapGenerator.Levels = pool.Levels;
 
+            // Load test levels for testing purposes
+            //Connectors = LevelPool.LoadPool("data/level pools/.mapgen/TestingConnectors.gon").Levels;
+            //Levels = LevelPool.LoadPool("data/level pools/.mapgen/TestingGameplayExpanded.gon").Levels;
+
+            Connectors = LevelPool.LoadPool("data/level pools/.mapgen/TestingGameplayExpanded.gon").Levels;
+            Levels = DrawPool;
             try { CreateFolders(); } catch (Exception ex) { Console.WriteLine($"Error creating folders. Exception {ex}"); MessageBox.Show($"Error creating folders. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            
-            MapGenerator.GenerateMap();
-            
+
+            CopyPreliminaries();
+
+            // Map Generation
+            GameMap gameMap = MapGenerator.GenerateGameMap();
+            MapGenerator.PrintCSV(gameMap, $"{saveDir}/data/map.csv");
+
             // The rest of the randomization process is delegated to the functions below.
             //try { LevelInfo(); }      catch (Exception ex) { Console.WriteLine($"Error creating levelinfo. Exception {ex}");                  MessageBox.Show($"Error creating levelinfo. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             //try { MapCSV(); }         catch (Exception ex) { Console.WriteLine($"Error creating map. Exception {ex}");                        MessageBox.Show($"Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
@@ -407,5 +444,7 @@ namespace TEiNRandomizer
             //try { NPCs(); }           catch (Exception ex) { Console.WriteLine($"Error creating npcs. Exception {ex}");                       MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
             //try { Worldmap.WriteWorldMap(); } catch (Exception ex) { Console.WriteLine($"Error creating worldmap. Exception {ex}");           MessageBox.Show($"Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
         }
+
+        
     }
 }

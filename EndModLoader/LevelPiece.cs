@@ -32,8 +32,8 @@ namespace TEiNRandomizer
 
         // The direction the entrance and exit tiles are facing. 
         // Later on these should be replaced by a list of all entrances and exits to a piece.
-        public Direction Entrance;
-        public Direction Exit;
+        public Direc Entrance;
+        public Direc Exit;
 
         // The margin values tell the generator how many tiles on each side can be ignored when placing camera bounds.
         public Bounds Margin;
@@ -67,8 +67,8 @@ namespace TEiNRandomizer
 
             // The direction the entrance and exit tiles are facing. 
             // Later on these should be replaced by a list of all entrances and exits to a piece.
-            Entrance = Direction.None;
-            Exit = Direction.None;
+            Entrance = Direc.None;
+            Exit = Direc.None;
         }
     }
 }

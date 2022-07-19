@@ -56,6 +56,8 @@ namespace TEiNRandomizer
 
         public string fx_shader;
 
+        public string extras;
+
         // Shader class is included so that fx_shader_mid settings can be easily overwritten as a sinlge thing
         public Shader shaderMid;
 
@@ -82,6 +84,14 @@ namespace TEiNRandomizer
                 area_type = gon["area_type"].String();
             if (gon["toxic_timer"] != null)
                 toxic_timer = gon["toxic_timer"].Number();
+            if (gon["platform_physics"] != null)
+                platform_physics = gon["platform_physics"].String();
+            if (gon["water_physics"] != null)
+                water_physics = gon["water_physics"].String();
+            if (gon["player_physics"] != null)
+                player_physics = gon["player_physics"].String();
+            if (gon["lowgrav_physics"] != null)
+                lowgrav_physics = gon["_physics"].String();
             if (gon["tile_particle_1"] != null)
                 tile_particle_1 = gon["tile_particle_1"].String();
             if (gon["tile_particle_2"] != null)
@@ -160,6 +170,14 @@ namespace TEiNRandomizer
                 tileset.area_type = b.area_type;
             if (b.toxic_timer != 0)
                 tileset.toxic_timer = b.toxic_timer;
+            if (b.platform_physics != null)
+                tileset.platform_physics = b.platform_physics;
+            if (b.water_physics != null)
+                tileset.water_physics = b.water_physics;
+            if (b.player_physics != null)
+                tileset.player_physics = b.player_physics;
+            if (b.lowgrav_physics != null)
+                tileset.lowgrav_physics = b.lowgrav_physics;
             if (b.tile_particle_1 != null)
                 tileset.tile_particle_1 = b.tile_particle_1;
             if (b.tile_particle_2 != null)
@@ -202,19 +220,21 @@ namespace TEiNRandomizer
                 tileset.fx_shader = b.fx_shader;
             if (b.shaderMid.fx_shader_mid != null)
                 tileset.shaderMid = b.shaderMid;
+            if (b.extras != null)
+                tileset.extras += b.extras;
 
             return tileset;
         }
         public static List<string[]> ArtAltsMerge(in List<string[]> low, in List<string[]> high)
         {
             // Create a new list to return
-            List<string[]> newList = new List<string[]>();
+            List<string[]> new_list = new List<string[]>();
 
             // Prevent errors by checking if the lists are null
             if (low == null)
             {
                 if (high == null)
-                    return newList;
+                    return new_list;
                 else return high;
             }
             else if (high == null) return low;
@@ -234,7 +254,7 @@ namespace TEiNRandomizer
                     if (low[i][0] == high[j][0])
                     {
                         // add the higher priority alt to the new list of art alts
-                        newList.Add(high[j]);
+                        new_list.Add(high[j]);
                         // remove the alt from the high-priority list
                         // (we do this so that it does not reappear on the second run-through)
                         high.Remove(high[j]);
@@ -244,18 +264,18 @@ namespace TEiNRandomizer
                     }
                 }
                 // If an alt for the same art was not found, use the low-priority alt
-                if (!found) newList.Add(low[i]);
+                if (!found) new_list.Add(low[i]);
             }
             // Iterate over high-priroity art alts again
             // This time we only have those that did not appear in the low-priority list
-            foreach (var highItem in high)
+            foreach (var high_item in high)
             {
                 // add every entry to the new list
-                newList.Add(highItem);
+                new_list.Add(high_item);
             }
 
             // return the newly created list
-            return newList;
+            return new_list;
         }
         public void WriteTileset(StreamWriter sw)
         {
@@ -279,6 +299,14 @@ namespace TEiNRandomizer
                 sw.WriteLine($"area_type {area_type}");
             if (toxic_timer != 0)
                 sw.WriteLine($"toxic_timer {toxic_timer}");
+            if (platform_physics != null)
+                sw.WriteLine($"platform_physics {platform_physics}");
+            if (water_physics != null)
+                sw.WriteLine($"water_physics {water_physics}");
+            if (player_physics != null)
+                sw.WriteLine($"player_physics {player_physics}");
+            if (lowgrav_physics != null)
+                sw.WriteLine($"lowgrav_physics {lowgrav_physics}");
             if (tile_particle_1 != null)
                 sw.WriteLine($"tile_particle_1 {tile_particle_1}");
             if (tile_particle_2 != null)
@@ -316,7 +344,12 @@ namespace TEiNRandomizer
             if (stop_previous_music != null)
                 sw.WriteLine($"stop_previous_music {stop_previous_music}");
             if (art_alts != null)
-                sw.WriteLine($"art_alts [{art_alts}]");
+            {
+                sw.Write($"art_alts [");
+                for (int i = 0; i < art_alts.Count(); i++)
+                    sw.Write($"[{art_alts[i][0]},{art_alts[i][1]}]");
+                sw.Write("]\n");
+            }
             if (fx_shader != null)
                 sw.WriteLine($"fx_shader {fx_shader}");
             if (shaderMid.fx_shader_mid != null)
@@ -329,6 +362,8 @@ namespace TEiNRandomizer
                 if (shaderMid.shader_param != 0)
                     sw.WriteLine($"shader_param {shaderMid.shader_param}");
             }
+            if (extras != null)
+                sw.WriteLine(extras + "\n");
         }
     }
 }

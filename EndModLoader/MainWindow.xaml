@@ -143,8 +143,6 @@
                                                     <CheckBox Width="200" Content="Randomize Physics" ToolTip="Creates randomized physics files for each area." IsChecked="{Binding RSettings.DoPhysics}" />
                                                     <CheckBox Width="200" Content="Corrupt Levels" ToolTip="Enables level corruptions." IsChecked="{Binding RSettings.DoCorruptions}" />
                                                     <!--<CheckBox Content="Level Merge" IsChecked="{Binding RSettings.LevelMerge}" />-->
-                                                    <CheckBox Width="200" Content="Mirror Mode" ToolTip="Flips the entire game horizontally." IsChecked="{Binding RSettings.MirrorMode}" />
-                                                    <CheckBox Width="200" Content="Dead Racer Mode" ToolTip="Enables the Dear Racer timer in the glitch cart areas." IsChecked="{Binding RSettings.DeadRacer}" />
                                                     <!--<CheckBox Content="Auto-Refresh Levels" IsChecked="{Binding RSettings.AutoRefresh}" />-->
                                                 </ListBox>
                                                 <ListBox Style="{StaticResource SettingsListStyle}">
