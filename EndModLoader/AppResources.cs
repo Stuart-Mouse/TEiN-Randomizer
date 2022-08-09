@@ -21,16 +21,16 @@ namespace TEiNRandomizer
         // MEMBERS
 
         // Paths for saving and loading mods
-        public const string ModPath = "mods/";
+        public const string ModPath       = "mods/";
         public const string SavedRunsPath = "saved runs/";
 
         // Paths for loading resources
-        public const string LevelPoolPath = "data/level pools/";
+        public const string LevelPoolPath = "data/level_pools/";
         public const string PiecePoolPath = "data/piecepools/";
 
         // Pool Categories and Piece Pools are loaded here first
         public static ObservableCollection<LevelPoolCategory> LevelPoolCategories;
-        public static ObservableCollection<PiecePool> PiecePools;
+        public static ObservableCollection<PiecePool        > PiecePools;
 
         // Settings are loaded here first
         public static SettingsFile MainSettings = new SettingsFile();
@@ -85,11 +85,6 @@ namespace TEiNRandomizer
 
                 ShadersList.Add(shader);
             }
-
-            
-
-            
-
         }
         static void LoadLevelPoolCategories()
         {
@@ -104,15 +99,15 @@ namespace TEiNRandomizer
             foreach (var dir in Directory.GetDirectories(LevelPoolPath, "*", SearchOption.TopDirectoryOnly))
             {
                 // Get the directory name of the pool
-                string folder = Path.GetFileName(dir);
+                string folder_name = Path.GetFileName(dir);
 
                 // If the folder begins with '.' then do not process it.
                 // Folders beginning with '.' are used for templated levels and other stuff the randomizer needs.
                 // These are not intended to be your typical playable leves.
-                if (folder[0] == '.') continue;
+                if (folder_name[0] == '.') continue;
 
                 // Create new level pool category
-                LevelPoolCategory cat = new LevelPoolCategory() { Name = folder, Pools = new ObservableCollection<LevelPool>() { } };
+                LevelPoolCategory cat = new LevelPoolCategory() { Name = folder_name, Pools = new ObservableCollection<LevelPool>() { } };
                 
                 // Create temporary list of levels
                 List<LevelPool> tempList = new List<LevelPool>() { };
@@ -121,7 +116,7 @@ namespace TEiNRandomizer
                 cat.Enabled = false;
 
                 // Iterate over all level pools in the category directory
-                foreach (var file in Directory.GetFiles($"{LevelPoolPath}/{folder}", "*.gon", SearchOption.TopDirectoryOnly))
+                foreach (var file in Directory.GetFiles($"{LevelPoolPath}{folder_name}", "*.gon", SearchOption.TopDirectoryOnly))
                 {
                     // Create new level pool from file
                     LevelPool pool = LevelPool.LoadPool(file);
@@ -136,7 +131,7 @@ namespace TEiNRandomizer
                             else if (cat.Author != pool.Author) // if there is more than one pool author in the category, set to V.A.
                                 cat.Author = "V.A.";
                         }
-                        if (pool.Active == true)                // if the pool is enabled, enabled the category
+                        if (pool.Enabled == true)                // if the pool is enabled, enabled the category
                             cat.Enabled = true;
                         tempList.Add(pool);
                     }

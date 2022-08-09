@@ -20,15 +20,34 @@ namespace TEiNRandomizer
         // Tools Buttons
         private void DoLatestThing_Click(object sender, RoutedEventArgs e)
         {
-            // CONVERT XML TO GON
-            //foreach (var file in Directory.GetFiles("data/levelpools/The End is Nigh", "*.xml"))
-            //{
-            //    Utility.XML2GON(file);
-            //}
+            // generate all directional connector levels from template (level pool data)
+            StreamWriter sw = File.CreateText("data/level_pools/.mapgen/NewConnectors.gon");
 
-            // TEST MARIO LEVEL GENERATOR
-            //MarioLevelGenerator.ChopAndSave();
+            sw.Write("header {\nenabled true\norder 1\nauthor \"Tyler & Edmund\"\nsource \"The End is Nigh\"\npath \"data/level_pools/.mapgen/tilemaps/\"\ntype connector\n}\n");
+            sw.Write("levels {\n");
 
+            // iterate over all combinations of directions
+            for (Directions dirs = Directions.None; dirs < Directions.All; dirs++)
+            {
+                // create level file
+                LevelFile level = LevelManip.Load("data/level_pools/.mapgen/tilemaps/template.lvl");
+                LevelCorruptors.CleanLevels(ref level, Collectables.None, ~dirs);
+                LevelManip.Save(level, $"data/level_pools/.mapgen/tilemaps/{(int)dirs}.lvl");
+                
+                // write data to file
+                sw.Write((int)dirs + " {\n");
+
+                sw.Write("\tconnections {\n");
+                DirectionsEnum.ActOnEach(dirs, delegate(Directions dir)
+                    { sw.Write("\t\t" + DirectionsEnum.SingleToString(dir) + " EX\n"); }
+                );
+                sw.Write("\t}\n");
+
+                sw.Write("}\n");
+            }
+
+            sw.Write("}\n");
+            sw.Close();
         }
         private void TestGon_Click(object sender, RoutedEventArgs e)
         {
@@ -118,7 +137,7 @@ namespace TEiNRandomizer
         }
         private void GenerateParticles_Click(object sender, RoutedEventArgs e)
         {
-            Randomizer.saveDir = RSettings.ToolsOutDirectory;
+            Randomizer.SaveDir = RSettings.ToolsOutDirectory;
             for (int i = 0; i < 50; i++)
             {
                 ParticleGenerator.GetParticle();
@@ -284,16 +303,16 @@ namespace TEiNRandomizer
         private void ModList_Click(object sender, RoutedEventArgs e)
         {
             var selected = (sender as ListView).SelectedItem;
-            (selected as Mod).Active = !(selected as Mod).Active;
+            (selected as Mod).Enabled = !(selected as Mod).Enabled;
         }
         private void SavedRunsList_Click(object sender, RoutedEventArgs e)
         {
             var selected = (sender as ListView).SelectedItem;
             foreach (var mod in SavedRuns)
             {
-                mod.Active = false;
+                mod.Enabled = false;
             }
-            (selected as Mod).Active = true;
+            (selected as Mod).Enabled = true;
         }
         private void PieceList_Click(object sender, RoutedEventArgs e)
         {

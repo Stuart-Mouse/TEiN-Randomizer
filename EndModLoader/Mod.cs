@@ -15,14 +15,14 @@ namespace TEiNRandomizer
         public string Author { get; private set; }      // Used for the Seed of saved runs
         public string Version { get; private set; }     // Used for the date and time of Saved Runs
         public string ModPath { get; private set; }
-        private bool _active { get; set; }
-        public bool Active
+        private bool _enabled { get; set; }
+        public bool Enabled
         {
-            get { return _active; }
+            get { return _enabled; }
             set
             {
-                _active = value;
-                OnPropertyChanged(nameof(Active));
+                _enabled = value;
+                OnPropertyChanged(nameof(Enabled));
             }
         }
 

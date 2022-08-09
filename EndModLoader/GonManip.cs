@@ -10,7 +10,6 @@ namespace TEiNRandomizer
     {
         public static class Manip
         {
-            
             public static GonObject PriorityMerge(GonObject low, GonObject high)
             {
                 // create new gonObject to return
@@ -59,8 +58,8 @@ namespace TEiNRandomizer
 
                 ret.Type = FieldType.ARRAY;
 
-                List<string[]> lowArr  = GonTo2DStringArray(low).ToList();
-                List<string[]> highArr = GonTo2DStringArray(high).ToList();
+                List<string[]> lowArr  = To2DStringArray(low).ToList();
+                List<string[]> highArr = To2DStringArray(high).ToList();
 
                 for (int i = 0; i < lowArr.Count(); i++)
                 {
@@ -155,7 +154,7 @@ namespace TEiNRandomizer
             }
 
             // Functions for easily reading Gon Arrays
-            public static string[] GonToStringArray(GonObject gon)
+            public static string[] ToStringArray(GonObject gon)
             {
                 try
                 {
@@ -172,14 +171,14 @@ namespace TEiNRandomizer
                     throw;
                 }
             }
-            public static string[][] GonTo2DStringArray(GonObject gon)
+            public static string[][] To2DStringArray(GonObject gon)
             {
                 try
                 {
                     string[][] ret = new string[gon.Size()][];
                     for (int i = 0; i < gon.Size(); i++)
                     {
-                        ret[i] = GonToStringArray(gon[i]);
+                        ret[i] = ToStringArray(gon[i]);
                     }
                     return ret;
                 }
@@ -189,7 +188,7 @@ namespace TEiNRandomizer
                     throw;
                 }
             }
-            public static int[] GonToIntArray(GonObject gon)
+            public static int[] ToIntArray(GonObject gon)
             {
                 int[] ret = new int[gon.Size()];
                 for (int i = 0; i < gon.Size(); i++)

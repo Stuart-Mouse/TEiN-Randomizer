@@ -208,7 +208,13 @@ namespace TEiNRandomizer
                 if (!CheckForModFolders()) return;
 
                 AppState = AppState.InGame;
-                Randomizer.Randomize();
+                if (Randomizer.Randomize() == 1)
+                {
+                    AppState = AppState.InMenus;
+                    FileSystem.UnloadAll(RSettings.GameDirectory);
+                    MessageBox.Show($"Randomization Failed.", "Randomizer Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
 
                 if (!RSettings.ManualLoad)
                 {

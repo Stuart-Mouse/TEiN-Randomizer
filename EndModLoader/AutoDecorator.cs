@@ -71,7 +71,7 @@ namespace TEiNRandomizer
                                     level.data[LevelFile.BACK1, index - 1] = (TileID)RNG.random.Next(50013, 50017);
                                     goto default;
                                 default:
-                                    level.data[LevelFile.BACK1, index] = TileID.Empty;
+                                    level.data[LevelFile.BACK1, index] = TileID.None;
                                     break;
                             }
                         }
@@ -90,7 +90,7 @@ namespace TEiNRandomizer
                                     level.data[LevelFile.BACK1, index + 1] = (TileID)RNG.random.Next(50013, 50017);
                                     goto default;*/
                                 default:
-                                    level.data[LevelFile.BACK1, index] = TileID.Empty;
+                                    level.data[LevelFile.BACK1, index] = TileID.None;
                                     break;
                             }
                         }
@@ -109,7 +109,7 @@ namespace TEiNRandomizer
                                     level.data[LevelFile.BACK1, index + lw] = (TileID)RNG.random.Next(50013, 50017);
                                     goto default;*/
                                 default:
-                                    level.data[LevelFile.BACK1, index] = TileID.Empty;
+                                    level.data[LevelFile.BACK1, index] = TileID.None;
                                     break;
                             }
                         }
@@ -131,7 +131,7 @@ namespace TEiNRandomizer
                                     level.data[LevelFile.BACK1, index - lw] = (TileID)RNG.random.Next(50013, 50017);
                                     goto default;*/
                                 default:
-                                    level.data[LevelFile.BACK1, index] = TileID.Empty;
+                                    level.data[LevelFile.BACK1, index] = TileID.None;
                                     break;
                             }
                         }

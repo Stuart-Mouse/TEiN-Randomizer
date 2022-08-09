@@ -15,10 +15,10 @@ namespace TEiNRandomizer
             // Load Resources
             var gon = GonObject.Load("data/text/tilesets_pools.gon");
             NumPalettes         = Convert.ToInt32(gon["palettes"].Int());
-            TileGraphicsPool    = GonObject.Manip.GonToStringArray(gon["tile_graphics"]);
-            OverlayGraphicsPool = GonObject.Manip.GonToStringArray(gon["overlay_graphics"]);
-            ParticlePool        = GonObject.Manip.GonToStringArray(gon["particles"]);
-            MusicPool           = GonObject.Manip.GonToStringArray(gon["music"]);
+            TileGraphicsPool    = GonObject.Manip.ToStringArray(gon["tile_graphics"]);
+            OverlayGraphicsPool = GonObject.Manip.ToStringArray(gon["overlay_graphics"]);
+            ParticlePool        = GonObject.Manip.ToStringArray(gon["particles"]);
+            MusicPool           = GonObject.Manip.ToStringArray(gon["music"]);
             ArtAlts             = GonObject.Load("data/text/art_alts.gon");
         }
 
@@ -65,7 +65,7 @@ namespace TEiNRandomizer
 
                     for (int j = 0; j < art.Size(); j++)
                     {
-                        var alts = GonObject.Manip.GonToStringArray(art);
+                        var alts = GonObject.Manip.ToStringArray(art);
                         ret.Add( new string[] { art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim() } );
                     }
                 }
@@ -78,7 +78,7 @@ namespace TEiNRandomizer
 
                     for (int j = 0; j < art.Size(); j++)
                     {
-                        var alts = GonObject.Manip.GonToStringArray(art);
+                        var alts = GonObject.Manip.ToStringArray(art);
                         ret.Add( new string[] { art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim() } );
                     }
                 }
@@ -91,7 +91,7 @@ namespace TEiNRandomizer
 
                     for (int j = 0; j < art.Size(); j++)
                     {
-                        var alts = GonObject.Manip.GonToStringArray(art);
+                        var alts = GonObject.Manip.ToStringArray(art);
                         ret.Add( new string[] { art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim() } );
                     }
                 }
@@ -101,7 +101,7 @@ namespace TEiNRandomizer
                 var art = ArtAlts["insane"];
                 for (int i = 0; i < art.Size(); i++)
                 {
-                    var alts = GonObject.Manip.GonToStringArray(ArtAlts["insane"]);
+                    var alts = GonObject.Manip.ToStringArray(ArtAlts["insane"]);
                     ret.Add( new string[] { art[i].String() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() } );
                 }
                 //ArtAlts += "[ChainLink, None][ChainLink2, None]";
@@ -113,11 +113,11 @@ namespace TEiNRandomizer
         {
             // Create new tileset to return
             Tileset tileset = new Tileset();
-             
+
             // Set area type
-            if (AppResources.MainSettings.RandomizeAreaType)
+            /*if (AppResources.MainSettings.RandomizeAreaType)
                 tileset.area_type = AreaTypes[RNG.random.Next(0, 5)];
-            else tileset.area_type = AppResources.MainSettings.AreaType;
+            else tileset.area_type = AppResources.MainSettings.AreaType;*/
 
             // Set tileset info
             tileset.tile_graphics = GetTile();
@@ -132,7 +132,8 @@ namespace TEiNRandomizer
                 {
                     tileset.shaderMid = ShaderPool[RNG.random.Next(0, ShaderPool.Count())];
                 }
-                tileset.shaderMid.shader_param = ((float)RNG.random.Next(10, 101) / 100);
+                if (tileset.shaderMid != null)
+                    tileset.shaderMid.shader_param = ((float)RNG.random.Next(10, 101) / 100);
             }
 
             // Select or generate particle effects

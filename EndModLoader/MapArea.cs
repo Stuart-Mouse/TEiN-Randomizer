@@ -13,7 +13,13 @@ namespace TEiNRandomizer
         // Basic map area information
         public string ID;
         public string Name;
-        public Tileset Tileset;
+        public bool IsStandalone = false;
+        public Tileset Tileset = null;
+        public string TSRef = null;    // used when one area needs to use the tileset of another
+
+        // The set of levels to be used as the draw pool for gameplay levels in this area
+        // By default this is the list of standard levels, but may be replaced with the cart pool or a custom pool
+        public List<Level> Levels = Randomizer.StandardLevels;
 
         // This is used for areas which are loaded from csv
         public string CSVPath;
@@ -31,6 +37,9 @@ namespace TEiNRandomizer
         public HashSet<Pair> DeadEntries = new HashSet<Pair>();
         public HashSet<Pair> SecretEnds  = new HashSet<Pair>();
 
+        // Contains tags which are relevant to generation
+        public string[] tags;
+
         // These will be used for split and loaded areas which can have multiple exits
         public string XUp;
         public string XDown;
@@ -47,7 +56,7 @@ namespace TEiNRandomizer
         // These are the area IDs of the areas to branch off of this one (that make sense?)
         // We will need to reserve an OpenEnd for each AreaEnd
         //public string[] AreaEnds;
-        public string NextAreaID;
+        public string ExitID;
 
         // These are the maximum dimensions of the area
         // Will only be computed if not equal to zero or null
@@ -81,21 +90,31 @@ namespace TEiNRandomizer
         public Directions EDir;
         public Directions XDir; // only used by standard type areas
 
+        // Determines the default collectables to be placed in the area's gameplay levels (usually either "t" or "r")
+        //Collectables DefaultCollectables;
+
         // List of all the map screens in the area, used when creating area data files
         public List<MapScreen> ChosenScreens = new List<MapScreen>();
+
+        // Generation settings
+        //public bool DoCorruptions;
+
 
     }
     public enum GenerationType
     {
         // This is the standard area type used in generating normal areas
         Standard,
+        // These exist as slight modifications of the standard generation routine
+        // They are effectively a proxy for checking the Tileset.area_type during generation
+        Dark,
+        Cart,
+        Iron,
+        Glitch,
         // Used for hub areas, or special layouts. These are loaded from a csv file
         Loaded,
         // Used to create "split" areas
-        Split,
-        // The below types are used in Steven areas, so they are generated in separate sub-maps
-        Layers,
-        Brackets,
-        Cube
+        Split
+        // The below types are used in Steven areas, they do not have entrances
     }
 }

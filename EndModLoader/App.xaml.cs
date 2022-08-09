@@ -28,7 +28,7 @@ namespace TEiNRandomizer
         private void PoolList_Click(object sender, RoutedEventArgs e)
         {
             var selected = (sender as ListBox).SelectedItem;
-            (selected as LevelPool).Active = !(selected as LevelPool).Active;
+            (selected as LevelPool).Enabled = !(selected as LevelPool).Enabled;
         }
         //private void Mod_Click(object sender, RoutedEventArgs e)
         //{
@@ -39,7 +39,7 @@ namespace TEiNRandomizer
         {
             //var element = ((StackPanel)sender);
             //var window = element.
-            (sender as Mod).Active = true;
+            (sender as Mod).Enabled = true;
             //foreach (var mod in Mods)
         }
         
@@ -54,7 +54,7 @@ namespace TEiNRandomizer
             var list = (ListBox)grid.Children[1];
             foreach (var pool in list.ItemsSource)
             {
-                (pool as LevelPool).Active = false;
+                (pool as LevelPool).Enabled = false;
                 //(pool as ListBoxItem).GetBindingExpression(ListBox.).UpdateTarget();
             }
         }

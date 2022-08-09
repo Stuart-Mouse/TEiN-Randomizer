@@ -207,7 +207,7 @@ namespace TEiNRandomizer
                 {
                     foreach (var pool in cat.Pools)
                     {
-                        if (pool.Active)
+                        if (pool.Enabled)
                             strs.Add(pool.Name);
                     }
                 }
@@ -278,8 +278,8 @@ namespace TEiNRandomizer
             UserName = gon[nameof(UserName)].String();
 
             // Load pool settings
-            ActiveLevelPools = GonObject.Manip.GonToStringArray(gon[nameof(ActiveLevelPools)]);
-            ActiveShaders    = GonObject.Manip.GonToStringArray(gon[nameof(ActiveShaders)]);
+            ActiveLevelPools = GonObject.Manip.ToStringArray(gon[nameof(ActiveLevelPools)]);
+            ActiveShaders    = GonObject.Manip.ToStringArray(gon[nameof(ActiveShaders)]);
 
         }
 
@@ -337,8 +337,8 @@ namespace TEiNRandomizer
             UserName = gon[nameof(UserName)].String();
 
             // Load pool settings
-            ActiveLevelPools = GonObject.Manip.GonToStringArray(gon[nameof(ActiveLevelPools)]);
-            ActiveShaders = GonObject.Manip.GonToStringArray(gon[nameof(ActiveShaders)]);
+            ActiveLevelPools = GonObject.Manip.ToStringArray(gon[nameof(ActiveLevelPools)]);
+            ActiveShaders = GonObject.Manip.ToStringArray(gon[nameof(ActiveShaders)]);
 
         }
 

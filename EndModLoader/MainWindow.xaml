@@ -73,7 +73,7 @@
                                                         <Button  Name="SeedButton" Content="Get New Seed" Click="SeedButton_Click" Width="90" Height="20" Margin="5,0"/>
                                                     </WrapPanel>
                                                 </ListBox>
-                                                <ListBox Style="{StaticResource SettingsListStyle}">
+                                                <!--<ListBox Style="{StaticResource SettingsListStyle}">
                                                     <TextBlock Text="Area Settings:" FontWeight="Bold" />
                                                     <CheckBox Width="200" Content="One Tileset Per Area" ToolTip="All levels within a given area will use the same tileset info. (recommended)" IsChecked="{Binding RSettings.UseAreaTileset}" />
                                                     <CheckBox Width="200" Content="Randomize Area Type" ToolTip="Picks a random area type for every area." IsChecked="{Binding RSettings.RandomizeAreaType}" />
@@ -117,15 +117,8 @@
                                                         <TextBlock Grid.Column="0" Text="Area Type: " ToolTip="The type of area that will be generated."/>
                                                         <ComboBox Grid.Column="1" Width="90" Name="AreaTypesBox" SelectedItem="{Binding RSettings.AreaType}" ItemsSource="{Binding AreaTypes}" Text="Area Types" IsEditable="false" IsReadOnly="false"/>
                                                     </Grid>
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="100"/>
-                                                            <ColumnDefinition Width="100"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock Grid.Column="0" Text="Art Alts: " ToolTip="This setting determines which art assets can be substituted for others."/>
-                                                        <ComboBox Grid.Column="1" Width="90" Name="AltLevelsBox" SelectedItem="{Binding RSettings.AltLevel}" ItemsSource="{Binding AltLevels}" Text="Alt Levels" IsEditable="false" IsReadOnly="false"/>
-                                                    </Grid>
-                                                </ListBox>
+                                                    
+                                                </ListBox>-->
                                                 <ListBox Style="{StaticResource SettingsListStyle}">
                                                     <TextBlock Text="Visuals:" FontWeight="Bold" />
                                                     <CheckBox Width="200" Content="Randomize Music"          ToolTip="Applies a random music track to every area."      IsChecked="{Binding RSettings.DoMusic}" />
@@ -137,6 +130,14 @@
                                                     <CheckBox Width="200" Content="Can Apply Nevermore Tilt" ToolTip="Allows the Nevermore tilt to appear in areas."    IsChecked="{Binding RSettings.DoNevermoreTilt}" />
                                                     <CheckBox Width="200" Content="Can Apply Exodus Wobble"  ToolTip="Allows the Exodus wobble to appear in areas."     IsChecked="{Binding RSettings.DoExodusWobble}" />
                                                     <!--<CheckBox Content="Randomize NPCs" IsChecked="{Binding RSettings.DoNPCs}" />-->
+                                                    <Grid>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="100"/>
+                                                            <ColumnDefinition Width="100"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <TextBlock Grid.Column="0" Text="Art Alts: " ToolTip="This setting determines which art assets can be substituted for others."/>
+                                                        <ComboBox Grid.Column="1" Width="90" Name="AltLevelsBox" SelectedItem="{Binding RSettings.AltLevel}" ItemsSource="{Binding AltLevels}" Text="Alt Levels" IsEditable="false" IsReadOnly="false"/>
+                                                    </Grid>
                                                 </ListBox>
                                                 <ListBox Style="{StaticResource SettingsListStyle}">
                                                     <TextBlock Text="Gameplay:" FontWeight="Bold" />

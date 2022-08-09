@@ -12,6 +12,11 @@ namespace TEiNRandomizer
         public ConnectionType L;
         public ConnectionType R;
 
+        public ConnectionType UR;
+        public ConnectionType DR;
+        public ConnectionType UL;
+        public ConnectionType DL;
+
         // Get ConnectionType by direction
         public ConnectionType GetDirection(Directions dir)
         {
@@ -24,9 +29,36 @@ namespace TEiNRandomizer
                     return D;
                 case Directions.L:
                     return L;
-                default:
+                case Directions.R:
                     return R;
+                case Directions.UR:
+                    return UR;
+                case Directions.DR:
+                    return DR;
+                case Directions.UL:
+                    return UL;
+                case Directions.DL:
+                    return DL;
+                default:
+                    throw new Exception("Invalid direction, cannot be used to index ConnectionType.");
             }
+        }
+        public Directions Flatten()
+        {
+            // Basically just an all-or-none converstion from MapConnections to Directions
+            // If the MapConnections in any direction is not none, then it is considered to be a connection of some sort
+            Directions ret = Directions.None;
+
+            if (U != ConnectionType.none) ret |= Directions.U;
+            if (D != ConnectionType.none) ret |= Directions.D;
+            if (L != ConnectionType.none) ret |= Directions.L;
+            if (R != ConnectionType.none) ret |= Directions.R;
+            if (UR != ConnectionType.none) ret |= Directions.UR;
+            if (DR != ConnectionType.none) ret |= Directions.DR;
+            if (UL != ConnectionType.none) ret |= Directions.UL;
+            if (DL != ConnectionType.none) ret |= Directions.DL;
+
+            return ret;
         }
 
         // Operator overloads for easily comparing Map Connections
@@ -41,6 +73,11 @@ namespace TEiNRandomizer
             ret.L = a.L & b.L;
             ret.R = a.R & b.R;
 
+            ret.UR = a.UR & b.UR;
+            ret.DR = a.DR & b.DR;
+            ret.UL = a.UL & b.UL;
+            ret.DL = a.DL & b.DL;
+
             return ret;
         }
         public static MapConnections operator |(MapConnections a, MapConnections b)
@@ -53,6 +90,11 @@ namespace TEiNRandomizer
             ret.D = a.D | b.D;
             ret.L = a.L | b.L;
             ret.R = a.R | b.R;
+
+            ret.UR = a.UR | b.UR;
+            ret.DR = a.DR | b.DR;
+            ret.UL = a.UL | b.UL;
+            ret.DL = a.DL | b.DL;
 
             return ret;
         }
@@ -67,17 +109,26 @@ namespace TEiNRandomizer
             ret.L = ~a.L;
             ret.R = ~a.R;
 
+            ret.UR = ~a.UR;
+            ret.DR = ~a.DR;
+            ret.UL = ~a.UL;
+            ret.DL = ~a.DL;
+
             return ret;
         }
         public static bool operator ==(MapConnections a, MapConnections b)
         {
             // Overloaded == operator checks equality of all members
 
-            if (a.U == b.U)
-                if (a.D == b.D)
-                    if (a.L == b.L)
-                        if (a.R == b.R)
-                            return true;
+            if (a.U  == b.U
+             && a.D  == b.D
+             && a.L  == b.L
+             && a.R  == b.R
+             && a.UR == b.UR
+             && a.DR == b.DR
+             && a.UL == b.UL
+             && a.DL == b.DL)
+                return true;
             return false;
         }
         public static bool operator !=(MapConnections a, MapConnections b)
@@ -85,11 +136,15 @@ namespace TEiNRandomizer
             // Overloaded != operator checks equality of all members, but with reversed return values as compared to == operator
             // This is only included because the language requires it
 
-            if (a.U == b.U)
-                if (a.D == b.D)
-                    if (a.L == b.L)
-                        if (a.R == b.R)
-                            return false;
+            if (a.U  == b.U
+             && a.D  == b.D
+             && a.L  == b.L
+             && a.R  == b.R
+             && a.UR == b.UR
+             && a.DR == b.DR
+             && a.UL == b.UL
+             && a.DL == b.DL)
+                return false;
             return true;
         }
     }

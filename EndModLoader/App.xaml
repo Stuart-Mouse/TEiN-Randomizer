@@ -164,11 +164,11 @@
             <Setter Property="TextAlignment" Value="Center" />
             <Setter Property="HorizontalAlignment" Value="Center"/>
             <Style.Triggers>
-                <DataTrigger Binding="{Binding Active}" Value="False">
+                <DataTrigger Binding="{Binding Enabled}" Value="False">
                     <Setter Property="Text" Value="Disabled" />
                     <Setter Property="Background" Value="PaleVioletRed" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding Active}" Value="True">
+                <DataTrigger Binding="{Binding Enabled}" Value="True">
                     <Setter Property="Text" Value="Enabled" />
                     <Setter Property="Background" Value="LightGreen" />
                 </DataTrigger>
@@ -473,7 +473,7 @@
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Author}"      Style="{StaticResource DescriptionText}" HorizontalAlignment="Right" Margin="0,0,5,0"/>
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Description}" Style="{StaticResource DescriptionText}" Margin="10,0,0,0" HorizontalAlignment="Left"/>
                     <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Version}"     Style="{StaticResource DescriptionText}" Margin="0,0,5,0" HorizontalAlignment="Right"/>
-                    <Image     Name="ModCheckImage"  Grid.RowSpan="2" Grid.Column="2" Source="checkmark.png" Height="20" Width="20" Margin="0,0,10,0"  VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding Active, Converter={StaticResource SettingsDisplayer}}"/>
+                    <Image     Name="ModCheckImage"  Grid.RowSpan="2" Grid.Column="2" Source="checkmark.png" Height="20" Width="20" Margin="0,0,10,0"  VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding Enabled, Converter={StaticResource SettingsDisplayer}}"/>
                 </Grid>
                 <Separator Margin="2.5, 5, 2.5, 0"/>
             </StackPanel>
@@ -501,7 +501,7 @@
                     <TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right" Margin="0,0,10,0"/>
                     <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding Description}" Style="{StaticResource DescriptionText}" Margin="10,0,0,0" HorizontalAlignment="Left"/>
                     <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding Version}" Style="{StaticResource DescriptionText}" Margin="0,0,10,0" HorizontalAlignment="Right"/>
-                    <Image     Name="ModCheckImage"  Grid.RowSpan="2" Grid.Column="2" Source="checkmark.png" Height="20" Width="20" Margin="0,0,10,0"  VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding Active, Converter={StaticResource SettingsDisplayer}}"/>
+                    <Image     Name="ModCheckImage"  Grid.RowSpan="2" Grid.Column="2" Source="checkmark.png" Height="20" Width="20" Margin="0,0,10,0"  VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding Enabled, Converter={StaticResource SettingsDisplayer}}"/>
                 </Grid>
                 <Separator Margin="2.5, 5, 2.5, 0"/>
                 <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->
@@ -518,8 +518,8 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="{Binding Name}"      Style="{StaticResource TitleText}"       FontSize="13" Margin="10,0,0,0" VerticalAlignment="Center"/>
                     <TextBlock Grid.Column="1" Text="{Binding NumLevels}" Style="{StaticResource DescriptionText}" Margin="0,0,5,0" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    <!--<CheckBox  Grid.Column="2" Content="Enabled" IsChecked="{Binding Active}" Margin="10,0,10,0"   HorizontalAlignment="Right"/>-->
-                    <Image     Name="ModCheckImage" Grid.Column="2" Source="checkmark.png" Height="15" Width="15" Margin="0,0,10,0"  VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding Active, Converter={StaticResource SettingsDisplayer}}"/>
+                    <!--<CheckBox  Grid.Column="2" Content="Enabled" IsChecked="{Binding Enabled}" Margin="10,0,10,0"   HorizontalAlignment="Right"/>-->
+                    <Image     Name="ModCheckImage" Grid.Column="2" Source="checkmark.png" Height="15" Width="15" Margin="0,0,10,0"  VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding Enabled, Converter={StaticResource SettingsDisplayer}}"/>
                 </Grid>
                 <Separator Margin="2.5, 5, 2.5, 0"/>
                 <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->
@@ -536,7 +536,7 @@
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Column="0" Text="{Binding Name}" Style="{StaticResource TitleText}" FontSize="13" Margin="10,0,0,0"  VerticalAlignment="Center"/>
                     <TextBlock Grid.Column="1" Text="{Binding NumPieces}" Style="{StaticResource DescriptionText}" HorizontalAlignment="Right" Margin="0,0,5,0"  VerticalAlignment="Center"/>
-                    <Image     Name="ModCheckImage"  Grid.RowSpan="2" Grid.Column="2" Source="checkmark.png" Height="15" Width="15" Margin="0,0,10,0"  VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding Active, Converter={StaticResource SettingsDisplayer}}"/>
+                    <Image     Name="ModCheckImage"  Grid.RowSpan="2" Grid.Column="2" Source="checkmark.png" Height="15" Width="15" Margin="0,0,10,0"  VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="{Binding Enabled, Converter={StaticResource SettingsDisplayer}}"/>
                 </Grid>
                 <Separator Margin="2.5, 5, 2.5, 0"/>
                 <!--<TextBlock Grid.Column="1" Text="{Binding Author}" Style="{StaticResource DescriptionText}"/>-->

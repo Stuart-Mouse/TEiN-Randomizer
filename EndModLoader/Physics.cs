@@ -122,7 +122,7 @@ namespace TEiNRandomizer
 
             string filename = "data/player_physics/" + RNG.GetUInt32().ToString() + ".txt";
 
-            using (StreamWriter sw = File.CreateText(Randomizer.saveDir + filename))
+            using (StreamWriter sw = File.CreateText(Randomizer.SaveDir + filename))
             {
                 sw.WriteLine(nameof(gravity) + " " + gravity);
                 sw.WriteLine(nameof(leniency) + " " + leniency);
@@ -220,7 +220,7 @@ namespace TEiNRandomizer
 
             string filename = "data/lowgrav_physics/" + RNG.GetUInt32().ToString() + ".txt";
 
-            using (StreamWriter sw = File.CreateText(Randomizer.saveDir + filename))
+            using (StreamWriter sw = File.CreateText(Randomizer.SaveDir + filename))
             {
                 sw.WriteLine(nameof(gravity) + " " + gravity);
                 sw.WriteLine(nameof(leniency) + " " + leniency);
@@ -317,7 +317,7 @@ namespace TEiNRandomizer
 
             string filename = "data/water_physics/" + RNG.GetUInt32().ToString() + ".txt";
 
-            using (StreamWriter sw = File.CreateText(Randomizer.saveDir + filename))
+            using (StreamWriter sw = File.CreateText(Randomizer.SaveDir + filename))
             {
                 sw.WriteLine(nameof(gravity) + " " + gravity);
                 sw.WriteLine(nameof(leniency) + " " + leniency);
@@ -406,7 +406,7 @@ namespace TEiNRandomizer
 
             // Write platformphysics.txt
             string filename = "data/platform_physics/" + RNG.GetUInt32().ToString() + ".txt";
-            using (StreamWriter sw = File.CreateText(Randomizer.saveDir + filename))
+            using (StreamWriter sw = File.CreateText(Randomizer.SaveDir + filename))
             {
                 sw.WriteLine(nameof(MovingPlatformSpeedLow) + " " + MovingPlatformSpeedLow);
                 sw.WriteLine(nameof(MovingPlatformSpeedMed) + " " + MovingPlatformSpeedMed);

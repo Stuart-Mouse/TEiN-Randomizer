@@ -218,9 +218,9 @@ namespace TEiNRandomizer
             int lw = Canvas.File.header.width;
             int lh = Canvas.File.header.height;
 
-            TileID activeFillTile = TileID.Empty;
-            TileID back1FillTile = TileID.Empty;
-            TileID back2FillTile = TileID.Empty;
+            TileID activeFillTile = TileID.None;
+            TileID back1FillTile = TileID.None;
+            TileID back2FillTile = TileID.None;
             TileID tagFillTile = TileID.OOBMarker;
 
             // j is on the outside loop here because I need to increment along columns instead of rows
@@ -268,7 +268,7 @@ namespace TEiNRandomizer
                     {
                         if (tagFillTile != TileID.OOBMarker)
                         {
-                            Canvas.File.data[LevelFile.TAG, index] = TileID.Empty;
+                            Canvas.File.data[LevelFile.TAG, index] = TileID.None;
                             Canvas.File.data[LevelFile.ACTIVE, index] = activeFillTile;
                             Canvas.File.data[LevelFile.BACK1, index] = back1FillTile;
                             Canvas.File.data[LevelFile.BACK2, index] = back2FillTile;
@@ -426,9 +426,9 @@ namespace TEiNRandomizer
 
             // get rid of old entrances
             int index = (L1Origin.First + L1ExitCoord.First) * TempLevel.header.width + (L1Origin.Second + L1ExitCoord.Second);
-            TempLevel.data[LevelFile.TAG, index] = TileID.Empty;
+            TempLevel.data[LevelFile.TAG, index] = TileID.None;
             index = (L2Origin.First + L2EntryCoord.First) * TempLevel.header.width + (L2Origin.Second + L2EntryCoord.Second);
-            TempLevel.data[LevelFile.TAG, index] = TileID.Empty;
+            TempLevel.data[LevelFile.TAG, index] = TileID.None;
 
             // set canvas piece info
             Canvas.File = TempLevel;

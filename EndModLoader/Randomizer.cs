@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Xml.Linq;
-using System.Collections.ObjectModel;
 
 
 namespace TEiNRandomizer
@@ -20,18 +19,17 @@ namespace TEiNRandomizer
 
         // MEMBERS
 
+        public static string ErrorNotes = "";    // Will be used for minor errors to be catalogues and printed, without throwing an error that ends randomization.
+
         public static ObservableCollection<LevelPoolCategory> LevelPoolCategories = AppResources.LevelPoolCategories;
-        public static ObservableCollection<PiecePool> PiecePools = AppResources.PiecePools;
+        public static ObservableCollection<PiecePool        > PiecePools          = AppResources.PiecePools;
 
         static List<List<Level>> ChosenLevels;
-        static List<Level> DrawPool;
 
-        public static string saveDir;         // The save directory is determined when starting the randomize function and stored. (Will select between game directory and save directory.)
+        public static string SaveDir;         // The save directory is determined when starting the randomize function and stored. (Will select between game directory and save directory.)
         public static SettingsFile Settings = AppResources.MainSettings;  // a copy of the settings is stored so that all of the functions within this class can read it.
 
         public static List<string> AreaTypesChosen;
-
-        public static List<MapArea> MapAreasList;
 
         // The below resources should be moved to the AppResources class
 
@@ -46,17 +44,8 @@ namespace TEiNRandomizer
         public static string[] LINames;
         public static string[] LILocations;
 
-        // The list of levels available to the level generator
-        // This may be passed in the main randomize() function later
-        public static List<Level> Levels;
-
-        // These levels are reusable connectors that use
-        // color tiles and corruptors to reduce repetition
-        public static List<Level> Connectors;
-
-        // These levels are placed at secret entrances
-        // They will not be reused unless necessary
-        public static List<Level> Secrets;
+        // worldmap.txt
+        public static WorldMapFile WorldMap;
 
         // METHODS
 
@@ -64,29 +53,29 @@ namespace TEiNRandomizer
         static void LoadFunnyNames()
         {
             var gon         = GonObject.Load("data/text/area_names.gon");
-            LINames         = GonObject.Manip.GonToStringArray(gon["name"]);
-            LILocations     = GonObject.Manip.GonToStringArray(gon["location"]);
-            LIAdjectives    = GonObject.Manip.GonToStringArray(gon["adjective"]);
-            LINouns         = GonObject.Manip.GonToStringArray(gon["noun"]);
+            LINames         = GonObject.Manip.ToStringArray(gon["name"]);
+            LILocations     = GonObject.Manip.ToStringArray(gon["location"]);
+            LIAdjectives    = GonObject.Manip.ToStringArray(gon["adjective"]);
+            LINouns         = GonObject.Manip.ToStringArray(gon["noun"]);
         }
         static void LoadNPCs()
         {
             var gon = GonObject.Load($"data/text/npcs.gon");    // open npcs file
-            NPCMovieClips = GonObject.Manip.GonToStringArray(gon["movieclips"]);
-            NPCSoundIDs = GonObject.Manip.GonToStringArray(gon["movieclips"]);
+            NPCMovieClips = GonObject.Manip.ToStringArray(gon["movieclips"]);
+            NPCSoundIDs = GonObject.Manip.ToStringArray(gon["movieclips"]);
             NPCTexts = new List<string[]>();
 
             var text = gon["text"];
             for (int i = 0; i < text.Size(); i++)
             {
-                NPCTexts.Add(GonObject.Manip.GonToStringArray(text[i]));
+                NPCTexts.Add(GonObject.Manip.ToStringArray(text[i]));
             }
         }
 
         // Randomize() subfunctions (separated out for readability)
         static void NPCs()
         {
-            using (StreamWriter sw = File.CreateText(saveDir + "data/npcs.txt.append"))
+            using (StreamWriter sw = File.CreateText(SaveDir + "data/npcs.txt.append"))
             {
                 for (int j = 0; j < Settings.NumAreas; j++) // area loop
                 {
@@ -151,8 +140,8 @@ namespace TEiNRandomizer
         public static string GetFunnyModName()
         {
             // STRUCTURE:
-            // ( NAME's ) ( ADJECTIVE ) LOCATION of ( ADJECTIVE ) NOUN
-            // ( NAME's ) ( ADJECTIVE ) NOUN LOCATION
+            // The ( ADJECTIVE ) NOUN is Nigh
+            // The End is ADJECTIVE
 
             // create le funny name
             string area_name = "The ";
@@ -168,135 +157,27 @@ namespace TEiNRandomizer
             }
             return area_name;
         }
-        /*static void Tilesets()
-        {
-            // Create a StreamWriter object for writing to the tilesets.txt file
-            using (StreamWriter sw = File.CreateText("data/tilesets.txt.append"))
-            {
-                // Loop over map areas
-                for (int i = 0; i < MapAreasList.Count(); i++)
-                {
-                    // Get reference to MapArea #i in list 
-                    MapArea mapArea = MapAreasList[i];
-
-                    // Set areaTileset to Map Area's tileset
-                    Tileset areaTileset = mapArea.Tileset;
-
-                    // Write the area's tileset to the file
-                    sw.WriteLine($"{mapArea.Name} {{");
-                    areaTileset.WriteTileset(sw);
-
-                    // Loop over levels in area
-                    for (int j = 0; j < mapArea.ChosenScreens.Count(); j++)
-                    {
-                        // Get reference to Level #i in area 
-                        Level level = mapArea.ChosenScreens[j].Level;
-
-                        // Calculate the final tileset
-                        // The tilesets are added in order of priority, from lowest to highest
-                        Tileset levelTileset = (level.TSDefault + areaTileset) + level.TSNeed;
-
-                        // Write level tileset to the file
-                        sw.WriteLine($"{level.Name} {{");
-                        levelTileset.WriteTileset(sw);
-                        sw.WriteLine("}");
-                    }
-
-                    // write closing bracket for area tileset
-                    sw.WriteLine("}\n");
-                }
-            }
-        }*/
         static void CreateFolders()
         {
-            Directory.CreateDirectory(saveDir + "textures");
-            Directory.CreateDirectory(saveDir + "shaders");
-            Directory.CreateDirectory(saveDir + "swfs");
-            Directory.CreateDirectory(saveDir + "data/platform_physics");
-            Directory.CreateDirectory(saveDir + "data/water_physics");
-            Directory.CreateDirectory(saveDir + "data/lowgrav_physics");
-            Directory.CreateDirectory(saveDir + "data/player_physics");
-            
+            Directory.CreateDirectory(SaveDir + "textures");
+            Directory.CreateDirectory(SaveDir + "shaders");
+            Directory.CreateDirectory(SaveDir + "swfs");
+            Directory.CreateDirectory(SaveDir + "data/platform_physics");
+            Directory.CreateDirectory(SaveDir + "data/water_physics");
+            Directory.CreateDirectory(SaveDir + "data/lowgrav_physics");
+            Directory.CreateDirectory(SaveDir + "data/player_physics");
         }
-        static void CopyPreliminaries()
+        static void CopyAssets()
         {
-            File.Copy("data/palette.png", saveDir + "textures/palette.png", true);
+            File.Copy("data/palette.png", SaveDir + "textures/palette.png", true);
             foreach (var file in Directory.GetFiles("data/swfs"))
             {
-                File.Copy(file, saveDir + $"swfs/{Path.GetFileName(file)}", true);
+                File.Copy(file, SaveDir + $"swfs/{Path.GetFileName(file)}", true);
             }
-            File.Copy("data/swfs/endnigh.swf", saveDir + "swfs/endnigh.swf", true); Console.WriteLine("swf");
+            File.Copy("data/swfs/endnigh.swf", SaveDir + "swfs/endnigh.swf", true); Console.WriteLine("swf");
             foreach (var file in Directory.GetFiles("data/shaders"))
             {
-                File.Copy(file, saveDir + $"shaders/{Path.GetFileName(file)}", true);
-            }
-        }
-        static void MapCSV()
-        {
-            System.IO.File.Copy("data/map_CLEAN.csv", saveDir + "data/map.csv", true);
-            using (StreamWriter sw = File.AppendText(saveDir + "data/map.csv"))
-            {
-                for (int j = 0; j < Settings.NumAreas; j++)
-                {
-                    for (int i = 0; i < Settings.NumLevels; i++)
-                    {
-                        sw.Write($"v{j + 1}-{i + 1}.lvl,");
-                    }
-                    if (j != Settings.NumAreas-1) sw.Write($"v-npc{j + 1}.lvl,");
-                }
-                sw.Write("v-end.lvl");
-            }
-            /*if (settings.MirrorMode)
-                FlipCSV(saveDir + "data/map.csv");*/
-
-        }
-        static void LevelInfo()
-        {
-            for (int i = 0; i < Settings.NumAreas; i++)
-            {
-                string areaname = GetFunnyAreaName();
-
-                using (StreamWriter sw = File.AppendText(saveDir + "data/levelinfo.txt.append"))
-                {
-                    for (int j = 0; j < Settings.NumLevels; j++)
-                    {
-                        sw.WriteLine("\"v" + Convert.ToString(i + 1) + "-" + Convert.ToString(j + 1) + "\" {name=\"" + areaname + " " + Convert.ToString(j + 1) + "\" id=-1}");
-                    }
-                }
-            }
-        }
-        static void TileMaps()
-        {
-            string[] baseLevels = { "1-1", "1-1x", "v-connect", "v-start", "v-end" };
-            var npclevel = LevelManip.Load($"data/tilemaps/The End is Nigh/v-npc.lvl");
-
-            foreach (var level in baseLevels)
-            {
-                //File.Copy($"data/vtilemaps/The End is Nigh/{level}.lvl", saveDir + $"tilemaps/{level}.lvl", true);
-                var levelFile = LevelManip.Load($"data/tilemaps/The End is Nigh/{level}.lvl");
-
-                if (Settings.MirrorMode)
-                    LevelManip.FlipLevelH(ref levelFile);
-
-                LevelManip.Save(levelFile, saveDir + $"tilemaps/{level}.lvl");
-            }
-
-            for (int j = 0; j < Settings.NumAreas; j++)
-            {
-                for (int i = 0; i < Settings.NumLevels; i++)
-                {
-                    var level = ChosenLevels[j][i];
-                    var levelFile = LevelManip.Load(level.InFile);
-
-                    if (/*level.CanReverse && RNG.CoinFlip() ||*/ Settings.MirrorMode)
-                        LevelManip.FlipLevelH(ref levelFile);
-
-                    if (Settings.DoCorruptions)
-                        //level.TSNeed += LevelCorruptors.CorruptLevel(ref levelFile);
-
-                    LevelManip.Save(levelFile, saveDir + $"tilemaps/v{j + 1}-{i + 1}.lvl");
-                }
-                LevelManip.Save(npclevel, saveDir + $"tilemaps/v-npc{j + 1}.lvl");
+                File.Copy(file, SaveDir + $"shaders/{Path.GetFileName(file)}", true);
             }
         }
         static string SaveRunPrompt()
@@ -335,114 +216,110 @@ namespace TEiNRandomizer
             }
             else { MessageBox.Show($"A saved run with this name already exists. Please try again.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); return null; }
         }
-        static List<Level> MakeDrawPool()
+        static void MakeDrawPools()
         {
-            DrawPool = new List<Level> { };     // make drawpool
-            try
+            StandardLevels = new List<Level>(); // Init all level lists
+            CartLevels     = new List<Level>();
+            Connectors     = new List<Level>();
+            Secrets        = new List<Level>();
+            List<Level> list;
+            foreach (var cat in AppResources.LevelPoolCategories)
             {
-                foreach (var cat in AppResources.LevelPoolCategories)
+                if (!cat.Enabled) continue;
+                foreach (var pool in cat.Pools)
                 {
-                    if (cat.Enabled)
+                    if (!pool.Enabled) continue;
+                    switch (pool.Type)  // Switch the list being referenced based on the type of pool we are adding
                     {
-                        foreach (var pool in cat.Pools) // push levels in all active level pools into drawpool vector
-                        {
-                            if (pool.Active)
-                            {
-                                foreach (var level in pool.Levels)
-                                {
-                                    DrawPool.Add(level);
-                                }
-                            }
-                        }
+                        case PoolType.Standard:
+                            list = StandardLevels; break;
+                        case PoolType.Connector:
+                            list = Connectors;     break;
+                        case PoolType.Secret:
+                            list = Secrets;        break;
+                        case PoolType.Cart:
+                            list = CartLevels;     break;
+                        default:
+                            throw new Exception("Tried to load level pool with invalid pool type");
+                    }
+                    foreach (var level in pool.Levels)
+                    {
+                        list.Add(level);
                     }
                 }
             }
-            catch (Exception) { MessageBox.Show("Error creating drawpool.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            return DrawPool;
         }
-        static void ChooseLevels()
+        static void AddFlippedLevels(ref List<Level> pool)
         {
-            ChosenLevels = new List<List<Level>> { };   // initialize ChosenLevels
-            try
-            {
-                for (int j = 0; j < Settings.NumAreas; j++)     // select levels
-                {
-                    var levels = new List<Level> { };
-                    for (int i = 0; i < Settings.NumLevels; i++)
-                    {
-                        int selection = RNG.random.Next(0, DrawPool.Count());
-                        levels.Add(DrawPool[selection]);
-                        DrawPool.RemoveAt(selection);
-                    }
-                    ChosenLevels.Add(levels);
-                }
-                //if (settings.CacheRuns != 0) SaveRecents();      // add chosenlevels to cache
-            }
-            catch (Exception) { Console.WriteLine("Error selecting levels or saving cache."); MessageBox.Show("Error selecting levels or saving cache.", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-        }
-        static void AddFlippedLevels(ref List<Level> DrawPool)
-        {
-            int size = DrawPool.Count();
+            int size = pool.Count();
             for (int i = 0; i < size; i++)
             {
-                Level flipLevel = DrawPool[i].Clone();
-                FlipLevelHoriz(ref flipLevel);
-                DrawPool.Add(flipLevel);
+                Level level = pool[i].Clone();
+
+                // Swap left and right entrances
+                ConnectionType temp = level.MapConnections.L;
+                level.MapConnections.L = level.MapConnections.R;
+                level.MapConnections.R = temp;
+
+                temp = level.MapConnections.UL;
+                level.MapConnections.UL = level.MapConnections.UR;
+                level.MapConnections.UR = temp;
+
+                temp = level.MapConnections.DL;
+                level.MapConnections.DL = level.MapConnections.DR;
+                level.MapConnections.DR = temp;
+
+                // Set FlippedHoriz flag to true
+                // This notifies the randomizer to flip the level file when copying the level to the output folder
+                level.FlippedHoriz = true;
+
+                pool.Add(level);
             }
         }
-        static void FlipLevelHoriz(ref Level level)
-        {
-            // This function flips the level (not level file) horizontally
-
-            // Swap left and right entrances
-            ConnectionType temp = level.MapConnections.L;
-            level.MapConnections.L = level.MapConnections.R;
-            level.MapConnections.R = temp;
-
-            // Set FlippedHoriz flag to true
-            // This notifies the randomizer to flip the level file when copying the level to the output folder
-            level.FlippedHoriz = true;
-        }
-
-        public static void Randomize(string args = null)
+        public static int Randomize(string args = null)
         {
 
-            saveDir = Settings.GameDirectory;
-            if (args == "savemod") saveDir = SaveRunPrompt();
-            if (saveDir == null) return;
+            SaveDir = Settings.GameDirectory;
+            if (args == "savemod") SaveDir = SaveRunPrompt();
+            if (SaveDir == null)
+            {
+                MessageBox.Show($"Error: Save Directory was null.", "Randomizer Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return 1;
+            }
 
-            TilesetManip.MakeShaderPool();
+            ErrorNotes = "";    // Init ErrorNotes to emtpy string
 
-            // Make the draw pool based on which level pools are enabled
-            MakeDrawPool();
+            TilesetManip.MakeShaderPool();  // Set up the shader pool
 
-            // Flip all levels in the drawpool horizontally and add the flipped variants to the pool
-            AddFlippedLevels(ref DrawPool);
+            MakeDrawPools();    // Make the draw pool based on which level pools are enabled
+            AddFlippedLevels(ref StandardLevels);   // Flip all levels in the drawpool horizontally and add the flipped variants to the pool
+            AddFlippedLevels(ref CartLevels);
 
-            // Pass drawpool to map generator
-            // MapGenerator.Levels = DrawPool;
-
-            // Load test levels for testing purposes
-            //Connectors = LevelPool.LoadPool("data/level pools/.mapgen/TestingConnectors.gon").Levels;
-            //Levels = LevelPool.LoadPool("data/level pools/.mapgen/TestingGameplayExpanded.gon").Levels;
-
-            Connectors = LevelPool.LoadPool("data/level pools/.mapgen/TestingGameplayExpanded.gon").Levels;
-            Levels = DrawPool;
+            // Load the connectors
+            Connectors = LevelPool.LoadPool("data/level_pools/.mapgen/TestingConnectors.gon").Levels;
+            //CartLevels = Connectors = StandardLevels = LevelPool.LoadPool("data/level_pools/.mapgen/NewConnectors.gon").Levels;
             try { CreateFolders(); } catch (Exception ex) { Console.WriteLine($"Error creating folders. Exception {ex}"); MessageBox.Show($"Error creating folders. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
-            CopyPreliminaries();
+            WorldMap.Init();    // Init the worldmap.txt file
 
             // Map Generation
-            GameMap gameMap = MapGenerator.GenerateGameMap();
-            MapGenerator.PrintCSV(gameMap, $"{saveDir}/data/map.csv");
+            try
+            {
+                GameMap gameMap = GenerateGameMap();
+                PrintCSV(gameMap, $"{SaveDir}/data/map.csv");
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"Error: {e.Message}", "Randomizer Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return 1;
+            }
 
-            // The rest of the randomization process is delegated to the functions below.
-            //try { LevelInfo(); }      catch (Exception ex) { Console.WriteLine($"Error creating levelinfo. Exception {ex}");                  MessageBox.Show($"Error creating levelinfo. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            //try { MapCSV(); }         catch (Exception ex) { Console.WriteLine($"Error creating map. Exception {ex}");                        MessageBox.Show($"Error creating map. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            //try { TileMaps(); }       catch (Exception ex) { Console.WriteLine($"Error copying tilemaps. Exception {ex}");                    MessageBox.Show($"Error copying tilemaps. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            //try { Tilesets(); }       catch (Exception ex) { Console.WriteLine($"Error creating tilesets. Exception {ex}");                   MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            //try { NPCs(); }           catch (Exception ex) { Console.WriteLine($"Error creating npcs. Exception {ex}");                       MessageBox.Show($"Error creating tilesets. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
-            //try { Worldmap.WriteWorldMap(); } catch (Exception ex) { Console.WriteLine($"Error creating worldmap. Exception {ex}");           MessageBox.Show($"Error creating worldmap. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
+            WorldMap.Write();
+            CopyAssets();       // Copy the palette and swfs to save dir
+
+            if (ErrorNotes != "") MessageBox.Show($"Minor Errors Encountered:\n{ErrorNotes}", "Error Notes", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+            return 0;
         }
 
         

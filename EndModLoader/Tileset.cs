@@ -62,10 +62,9 @@ namespace TEiNRandomizer
         public Shader shaderMid;
 
         // Constructors
-        public Tileset() { shaderMid = new Shader(); }
+        public Tileset() { }
         public Tileset(GonObject gon)
         {
-            shaderMid = new Shader();
             if (gon["area_name"] != null)
                 area_name = gon["area_name"].String();
             if (gon["area_label_frame"] != null)
@@ -129,27 +128,78 @@ namespace TEiNRandomizer
             if (gon["stop_previous_music"] != null)
                 stop_previous_music = gon["stop_previous_music"].String();
             if (gon["art_alts"] != null)
-                art_alts = GonObject.Manip.GonTo2DStringArray(gon["art_alts"]).ToList();
+                art_alts = GonObject.Manip.To2DStringArray(gon["art_alts"]).ToList();
             if (gon["fx_shader"] != null)
                 fx_shader = gon["fx_shader"].String();
             if (gon["fx_shader_mid"] != null)
+            {
+                shaderMid = new Shader();
                 shaderMid.fx_shader_mid = gon["fx_shader_mid"].String();
-            if (gon["midfx_layer"] != null)
-                shaderMid.midfx_layer = gon["midfx_layer"].Int();
-            if (gon["midfx_graphics"] != null)
-                shaderMid.midfx_graphics = gon["midfx_graphics"].String();
-            if (gon["shader_param"] != null)
-                shaderMid.shader_param = gon["shader_param"].Number();
+                if (gon["midfx_layer"] != null)
+                    shaderMid.midfx_layer = gon["midfx_layer"].Int();
+                if (gon["midfx_graphics"] != null)
+                    shaderMid.midfx_graphics = gon["midfx_graphics"].String();
+                if (gon["shader_param"] != null)
+                    shaderMid.shader_param = gon["shader_param"].Number();
+            }
         }
+
+        public Tileset Clone()
+        {
+            // Create new tilset to return
+            // Copy all initial values from this
+            Tileset tileset = new Tileset();
+
+            tileset.area_name = area_name;
+            tileset.area_label_frame = area_label_frame;
+            tileset.tile_graphics = tile_graphics;
+            tileset.overlay_graphics = overlay_graphics;
+            tileset.background_graphics = background_graphics;
+            tileset.foreground_graphics = foreground_graphics;
+            tileset.palette = palette;
+            tileset.area_type = area_type;
+            tileset.toxic_timer = toxic_timer;
+            tileset.platform_physics = platform_physics;
+            tileset.water_physics = water_physics;
+            tileset.player_physics = player_physics;
+            tileset.lowgrav_physics = lowgrav_physics;
+            tileset.tile_particle_1 = tile_particle_1;
+            tileset.tile_particle_2 = tile_particle_2;
+            tileset.tile_particle_3 = tile_particle_3;
+            tileset.tile_particle_4 = tile_particle_4;
+            tileset.tile_particle_5 = tile_particle_5;
+            tileset.global_particle_1 = global_particle_1;
+            tileset.global_particle_2 = global_particle_2;
+            tileset.global_particle_3 = global_particle_3;
+            tileset.decoration_1 = decoration_1;
+            tileset.decoration_2 = decoration_2;
+            tileset.decoration_3 = decoration_3;
+            tileset.npc_1 = npc_1;
+            tileset.npc_2 = npc_2;
+            tileset.npc_3 = npc_3;
+            tileset.music = music;
+            tileset.ambience = ambience;
+            tileset.ambience_volume = ambience_volume;
+            tileset.stop_previous_music = stop_previous_music;
+            tileset.art_alts = art_alts;
+            tileset.fx_shader = fx_shader;
+            tileset.shaderMid = shaderMid;
+            tileset.extras = extras;
+
+            return tileset;
+        }
+
 
         // OPERATOR OVERLOADS
         // The tileset + operator overwrites each field in the left operand with the value from the right operand if it is not null.
         // Art alts are special and get merged, overwriting only conflicting alts
         public static Tileset operator +(Tileset a, Tileset b)
         {
+            if (a == null) return b.Clone();
+            
             // Create new tilset to return
             // Copy all initial values from a
-            Tileset tileset = a;
+            Tileset tileset = a.Clone();
 
             // Replace all values with those from b if they exist
             if (b.area_name != null)
@@ -218,10 +268,10 @@ namespace TEiNRandomizer
                 tileset.art_alts = ArtAltsMerge(a.art_alts, b.art_alts);
             if (b.fx_shader != null)
                 tileset.fx_shader = b.fx_shader;
-            if (b.shaderMid.fx_shader_mid != null)
+            if (b.shaderMid != null)
                 tileset.shaderMid = b.shaderMid;
             if (b.extras != null)
-                tileset.extras += b.extras;
+                tileset.extras = b.extras;
 
             return tileset;
         }
@@ -352,9 +402,10 @@ namespace TEiNRandomizer
             }
             if (fx_shader != null)
                 sw.WriteLine($"fx_shader {fx_shader}");
-            if (shaderMid.fx_shader_mid != null)
+            if (shaderMid != null)
             {
-                sw.WriteLine($"fx_shader_mid {shaderMid.fx_shader_mid}");
+                if (shaderMid.fx_shader_mid != null)
+                    sw.WriteLine($"fx_shader_mid {shaderMid.fx_shader_mid}");
                 if (shaderMid.midfx_graphics != null)
                     sw.WriteLine($"midfx_graphics {shaderMid.midfx_graphics}");
                 if (shaderMid.midfx_layer != 0)

@@ -39,7 +39,7 @@ namespace TEiNRandomizer
             {
                 try  // will attempt to load all mods selected, but will return false if there is a conflict
                 {
-                    if (mod.Active)
+                    if (mod.Enabled)
                     {
                         ZipFile.ExtractToDirectory($"{mod.ModPath}", mw.RSettings.GameDirectory);
                     }
@@ -61,7 +61,7 @@ namespace TEiNRandomizer
             {
                 try  // will attempt to load all mods selected, but will return false if there is a conflict
                 {
-                    if (mod.Active)
+                    if (mod.Enabled)
                     {
                         foreach (var folder in ModFolders)
                         {

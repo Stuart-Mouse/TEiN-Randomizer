@@ -1,18 +1,50 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace TEiNRandomizer
 {
+    public enum PoolType
+    {
+        None = 0,
+        Standard  = 1,
+        Connector = 1 << 1,
+        Secret    = 1 << 2,
+        Cart      = 1 << 3
+    }
+    
+    [Flags]
+    public enum Collectables
+    {
+        None = 0,
+
+        Tumor      = 1,
+        MegaTumor  = 1 << 1,
+        Cartridge  = 1 << 2,
+        Rings      = 1 << 3,
+        FriendHead = 1 << 4,
+        FriendBody = 1 << 5,
+        FriendSoul = 1 << 6,
+        LevelGoal  = 1 << 7
+    }
+
     [Flags]
     public enum Directions
     {
         None = 0,
         
-        R = 0b0001,
-        L = 0b0010,
-        D = 0b0100,
-        U = 0b1000,
+        R = 0b_0000_0001,
+        L = 0b_0000_0010,
+        D = 0b_0000_0100,
+        U = 0b_0000_1000,
 
-        All = 0b1111
+        UR = 0b_0001_0000,
+        DR = 0b_0010_0000,
+        UL = 0b_0100_0000,
+        DL = 0b_1000_0000,
+
+        All = 0b_1111_1111
     }
 
     public static class DirectionsEnum
@@ -27,31 +59,88 @@ namespace TEiNRandomizer
             if (dir.HasFlag(Directions.D)) ret |= Directions.U;
             if (dir.HasFlag(Directions.U)) ret |= Directions.D;
 
+            if (dir.HasFlag(Directions.UR)) ret |= Directions.DL;
+            if (dir.HasFlag(Directions.DR)) ret |= Directions.UL;
+            if (dir.HasFlag(Directions.UL)) ret |= Directions.DR;
+            if (dir.HasFlag(Directions.DL)) ret |= Directions.UR;
+
             return ret;
         }
         public static Directions FromString(string dir)
         {
+            switch (dir)
+            {
+                case "u": return Directions.U;
+                case "d": return Directions.D;
+                case "l": return Directions.L;
+                case "r": return Directions.R;
+
+                case "ur": return Directions.UR;
+                case "dr": return Directions.DR;
+                case "ul": return Directions.UL;
+                case "dl": return Directions.DL;
+            }
+            return Directions.None;
+        }
+        public static Directions FromStringArray(string[] dir)
+        {
             Directions ret = Directions.None;
 
-            if (dir.Contains("r")) ret |= Directions.R;
-            if (dir.Contains("l")) ret |= Directions.L;
-            if (dir.Contains("d")) ret |= Directions.D;
             if (dir.Contains("u")) ret |= Directions.U;
+            if (dir.Contains("d")) ret |= Directions.D;
+            if (dir.Contains("l")) ret |= Directions.L;
+            if (dir.Contains("r")) ret |= Directions.R;
+
+            if (dir.Contains("ur")) ret |= Directions.UR;
+            if (dir.Contains("dr")) ret |= Directions.DR;
+            if (dir.Contains("ul")) ret |= Directions.UL;
+            if (dir.Contains("dl")) ret |= Directions.DL;
 
             return ret;
+        }
+        public static string SingleToString(Directions dir)
+        {
+            switch (dir)
+            {
+                case Directions.U: return "up";
+                case Directions.D: return "down";
+                case Directions.L: return "left";
+                case Directions.R: return "right";
+
+                case Directions.UR: return "upright";
+                case Directions.DR: return "downright";
+                case Directions.UL: return "upleft";
+                case Directions.DL: return "downleft";
+            }
+            return null;
+        }
+        public static void ActOnEach(Directions dir, Action<Directions> act)
+        {
+            if (dir.HasFlag(Directions.U))  act(Directions.U);
+            if (dir.HasFlag(Directions.D))  act(Directions.D);
+            if (dir.HasFlag(Directions.L))  act(Directions.L);
+            if (dir.HasFlag(Directions.R))  act(Directions.R);
+            if (dir.HasFlag(Directions.UR)) act(Directions.UR);
+            if (dir.HasFlag(Directions.DR)) act(Directions.DR);
+            if (dir.HasFlag(Directions.UL)) act(Directions.UL);
+            if (dir.HasFlag(Directions.DL)) act(Directions.DL);
         }
         public static Pair ToVectorPair(Directions dir)
         {
-            Pair ret = new Pair();
+            switch (dir)
+            {
+                case Directions.U: return new Pair(-1,  0);
+                case Directions.D: return new Pair( 1,  0);
+                case Directions.L: return new Pair( 0, -1);
+                case Directions.R: return new Pair( 0,  1);
 
-            if (dir.HasFlag(Directions.R)) ret.Second = 1;
-            if (dir.HasFlag(Directions.L)) ret.Second = -1;
-            if (dir.HasFlag(Directions.D)) ret.First  = 1;      // Down is +1 because map is indexed from topright corner
-            if (dir.HasFlag(Directions.U)) ret.First  = -1;     // Likewise, up is -1
-
-            return ret;
+                case Directions.UR: return new Pair(-1,  1);
+                case Directions.DR: return new Pair( 1,  1);
+                case Directions.UL: return new Pair(-1, -1);
+                case Directions.DL: return new Pair( 1, -1);
+            }
+            return new Pair (0, 0);
         }
-
     }
 
     // This is a dumb enum and it should be removed
@@ -69,7 +158,7 @@ namespace TEiNRandomizer
     public enum TileID
     {
         // Active
-        Empty = 0,
+        None = 0,
         Solid = 1,
         SpikeR = 2,
         SpikeD = 3,
@@ -122,6 +211,14 @@ namespace TEiNRandomizer
         GraityBeam = 30007,
         ParticleEmit5 = 30008,
         FakeSolidOver = 30009,
+        EBlockR  = 30101,
+        EBlockL  = 30102,
+        EBlockU  = 30103,
+        EBlockD  = 30104,
+        EBlockUR = 30105,
+        EBlockDR = 30106,
+        EBlockDL = 30107,
+        EBlockUL = 30108,
 
         // Entity
         HoastL = 40000,

@@ -108,7 +108,7 @@ namespace TEiNRandomizer
             template = template.Replace("FACE_MOVING_DIRECTION", face_moving_direction);
             template = template.Replace("SPEED_SCALE", speed_scale.ToString());
 
-            using (StreamWriter sw = File.AppendText(Randomizer.saveDir + "data/particles.txt.append"))
+            using (StreamWriter sw = File.AppendText(Randomizer.SaveDir + "data/particles.txt.append"))
             {
                 sw.WriteLine(template);
             }
@@ -286,7 +286,7 @@ namespace TEiNRandomizer
             template = template.Replace("SPEED_SCALE", speed_scale.ToString());
             template += notes;
 
-            using (StreamWriter sw = File.AppendText(Randomizer.saveDir + "data/particles.txt.append"))
+            using (StreamWriter sw = File.AppendText(Randomizer.SaveDir + "data/particles.txt.append"))
             {
                 sw.WriteLine(template);
             }

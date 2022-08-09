@@ -126,12 +126,6 @@ namespace TEiNRandomizer
                     offset += 4;
                 }
             }
-            // OLD LAYER LOADING
-            /*LoadLayer(ref filedata, ref level.data.back1, ref offset);
-            LoadLayer(ref filedata, ref level.data.active, ref offset);
-            LoadLayer(ref filedata, ref level.data.tag, ref offset);
-            LoadLayer(ref filedata, ref level.data.overlay, ref offset);
-            LoadLayer(ref filedata, ref level.data.back2, ref offset);*/
 
             return level;
         }
@@ -171,13 +165,6 @@ namespace TEiNRandomizer
                     offset += 4;
                 }
             }
-
-            // OLD LAYER SAVING
-            /*SaveLayer(ref filedata, ref level.data.back1, ref offset);
-            SaveLayer(ref filedata, ref level.data.active, ref offset);
-            SaveLayer(ref filedata, ref level.data.tag, ref offset);
-            SaveLayer(ref filedata, ref level.data.overlay, ref offset);
-            SaveLayer(ref filedata, ref level.data.back2, ref offset);*/
 
             string folder = Path.GetDirectoryName(path);
             if (!File.Exists(folder))
@@ -223,72 +210,16 @@ namespace TEiNRandomizer
                 }
             }
 
-            // OLD LEVEL FLIPPING
-            /*FlipLayerH(ref level.data.back1, lw, lh);
-            FlipLayerH(ref level.data.active, lw, lh);
-            FlipLayerH(ref level.data.tag, lw, lh);
-            FlipLayerH(ref level.data.overlay, lw, lh);
-            FlipLayerH(ref level.data.back2, lw, lh);*/
-        }
-        /*public static void FlipLayerH(ref TileID[] layer, Int32 lw, Int32 lh)
-        {
-            TileID temp;
-            for (int row = 0; row < lh; row++)
+            void FlipTileH(ref TileID id)
             {
-                for (int col = 0; col < lw; col++)
+                foreach (var pair in HFlipIndex)
                 {
-                    int index = row * lw + col;
-                    int toSwap = row * lw + lw - col - 1;
-
-                    if (index < toSwap)
-                    {
-                        if (layer[index] != TileID.Background && layer[toSwap] != TileID.Background && layer[index] != TileID.Foreground && layer[toSwap] != TileID.Foreground) // Don't flip BG and FG alignment tiles
-                        {
-                            // insert tile flip lookup here
-                            FlipTileH(ref layer[index]);
-                            FlipTileH(ref layer[toSwap]);
-
-                            temp = layer[index];
-                            layer[index] = layer[toSwap];
-                            layer[toSwap] = temp;
-                        }
-                    }
+                    if (id == (TileID)pair.First)
+                        id = (TileID)pair.Second;
+                    else if (id == (TileID)pair.Second)
+                        id = (TileID)pair.First;
                 }
             }
-        }*/
-        public static void FlipTileH(ref TileID id)
-        {
-            foreach (var pair in HFlipIndex)
-            {
-                if (id == (TileID)pair.First)
-                    id = (TileID)pair.Second;
-                else if (id == (TileID)pair.Second)
-                    id = (TileID)pair.First;
-            }
-        }
-        public static void PrintLevelToConsole(LevelFile level)
-        {
-            var lh = level.header.height;
-            var lw = level.header.width;
-
-            Console.WriteLine("============================================");
-            for (int i = 0; i < lh; i++)
-            {
-                for (int j = 0; j < lw; j++)
-                {
-                    int index = i * lw + j;
-                    if (level.data[LevelFile.ACTIVE, index] == TileID.Solid)
-                        Console.Write("▓▓");
-                    else if (level.data[LevelFile.BACK1, index] == TileID.WholePiece)
-                        Console.Write("▒▒");
-                    else if (level.data[LevelFile.BACK2, index] == TileID.WholePiece2)
-                        Console.Write("░░");
-                    else Console.Write("  ");
-
-                }
-                Console.Write("\n");
-            }
-            Console.WriteLine("============================================");
         }
         public static LevelFile RotateLevel(ref LevelFile level)
         {
@@ -310,32 +241,34 @@ namespace TEiNRandomizer
             }
 
             return levelNew;
-        }
-        public static TileID GetRotation(TileID id)
-        {
-            foreach (var pair in RotationIndex)
+
+            TileID GetRotation(TileID id)
             {
-                if (id == (TileID)pair.First)
-                    return (TileID)pair.Second;
+                foreach (var pair in RotationIndex)
+                {
+                    if (id == (TileID)pair.First)
+                        return (TileID)pair.Second;
+                }
+                return id;
             }
-            return id;
         }
-        public static LevelFile FixAspect(ref LevelFile levelIn)
+        
+        public static LevelFile FixAspect(ref LevelFile level_in)
         {
             // This function resizes the level to a 16:9 aspect ratio.
-            int lh = levelIn.header.height;
-            int lw = levelIn.header.width;
+            int lh = level_in.header.height;
+            int lw = level_in.header.width;
 
             if (lh * 16 > lw * 9)
                 lw = lh * 16 / 9;
             else lh = lw * 9 / 16;
 
-            LevelFile levelOut = LevelGenerator.GetNewLevelFile(lw, lh);
-            int hOffset = lh - levelIn.header.width;
+            LevelFile level_out = LevelGenerator.GetNewLevelFile(lw, lh);
+            int hOffset = lh - level_in.header.width;
 
-            LevelGenerator.CopyToCoords(ref levelIn, ref levelOut, new Pair(0, hOffset));
+            LevelGenerator.CopyToCoords(ref level_in, ref level_out, new Pair(0, hOffset));
 
-            return levelOut;
+            return level_out;
         }
 
         // Search Functions ( Find / Replace )
@@ -361,7 +294,6 @@ namespace TEiNRandomizer
         public static List<int> FindTilesByID(ref LevelFile level, int layer, TileID id, int startIndex = 0, int step = 1)
         {
             // Finds all tiles of a specified tileID on a specified layer and returns their indices as a list of integers
-
             int lsize = level.header.width * level.header.height;
 
             List<int> list = new List<int>();

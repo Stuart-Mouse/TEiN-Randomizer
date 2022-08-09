@@ -20,14 +20,15 @@ namespace TEiNRandomizer
         //public string Folder { get; set; }
         public string Author { get; set; }
         public string Source { get; set; }
-        private bool _active { get; set; }
-        public bool Active
+        public PoolType Type { get; set; }
+        private bool _enabled { get; set; }
+        public bool Enabled
         {
-            get { return _active; }
+            get { return _enabled; }
             set
             {
-                _active = value;
-                OnPropertyChanged(nameof(Active));
+                _enabled = value;
+                OnPropertyChanged(nameof(Enabled));
             }
         }
 
@@ -51,7 +52,7 @@ namespace TEiNRandomizer
             // Open LevelPool File
             GonObject gon = GonObject.Load(path);
 
-            string levelsPath;
+            string levels_path;
             {
                 // Load Pool Header Info
                 GonObject header = gon["header"];
@@ -60,43 +61,49 @@ namespace TEiNRandomizer
                 pool.Source = header["source"].String();
 
                 // This is the path for the level files in the pool
-                levelsPath = header["path"].String();
+                {
+                    if (header.TryGetChild("path", out GonObject alt_path))
+                    {
+                        levels_path = alt_path.String();
+                    }
+                    else levels_path = path + "/tilemaps/";
+                }
             }
 
             // Load Pool Tilesets Info
-            Tileset areaDefault = new Tileset();    // Intialize to empty tileset in case
-            Tileset areaNeed    = new Tileset();    // no definition is given in pool file
+            Tileset pool_default = new Tileset();    // Intialize to empty tileset in case
+            Tileset pool_need    = new Tileset();    // no definition is given in pool file
 
             // Set area tileset defaults and needs if not null
             {
-                if (gon.TryGetChild("tileset", out GonObject gonTileset))
+                if (gon.TryGetChild("tileset", out GonObject gon_tileset))
                 {
-                    if (gon.TryGetChild("default", out GonObject gonDefault))
-                        areaDefault = new Tileset(gonDefault);
-                    if (gon.TryGetChild("need", out GonObject gonNeed))
-                        areaNeed = new Tileset(gonNeed);
+                    if (gon_tileset.TryGetChild("default", out GonObject gon_default))
+                        pool_default = new Tileset(gon_default);
+                    if (gon_tileset.TryGetChild("need", out GonObject gon_need))
+                        pool_need = new Tileset(gon_need);
                 }
             }
 
             // Iterate over levels and add them to pool
-            GonObject gonLevels = gon["levels"];        // not even going to check if this exists bc if it doesn't the pool shouldn't exist
+            GonObject gon_levels = gon["levels"];        // not even going to check if this exists bc if it doesn't the pool shouldn't exist
 
             for (int i = 0; i < gon["levels"].Size(); i++)
             {
                 // Get level object from gon file
-                GonObject gonLevel = gonLevels[i];
+                GonObject gon_level = gon_levels[i];
                 
                 // Create new level file
                 Level level     = new Level();
 
                 // Set basic level info
-                level.Path      = levelsPath;
-                level.TSDefault = areaDefault;
-                level.TSNeed    = areaNeed;
-                level.Name      = gonLevel.GetName();
+                level.Path      = levels_path;
+                level.TSDefault = pool_default;
+                level.TSNeed    = pool_need;
+                level.Name      = gon_level.GetName();
 
                 // Set connections
-                if (gonLevel.TryGetChild("connections", out GonObject gonConnections))
+                if (gon_level.TryGetChild("connections", out GonObject gonConnections))
                 {
                     if (gonConnections.TryGetChild("up", out GonObject gonUp))
                         level.MapConnections.U = GetConnectionType(gonUp.String());
@@ -112,8 +119,8 @@ namespace TEiNRandomizer
                     else level.MapConnections.R = new ConnectionType();
                 }
 
-                // Set flags
-                if (gonLevel.TryGetChild("flags", out GonObject flags))
+                // Set level tags
+                /*if (gon_level.TryGetChild("tags", out GonObject flags))
                 {
                     if (flags.Contains("npc_1"))
                         level.Flags |= Level.LevelFlags.npc_1;
@@ -138,15 +145,15 @@ namespace TEiNRandomizer
                         level.Flags |= Level.LevelFlags.MegaTumor;
                     if (flags.Contains("Cart"))
                         level.Flags |= Level.LevelFlags.Cart;
-                }
+                }*/
 
                 // Set level tileset defaults and needs if not null
-                if (gon.TryGetChild("tileset", out GonObject gonTileset))
+                if (gon_level.TryGetChild("tileset", out GonObject gon_tileset))
                 {
-                    if (gonTileset.TryGetChild("default", out GonObject gonDefault))
-                        level.TSDefault += new Tileset(gonDefault);
-                    if (gonTileset.TryGetChild("need", out GonObject gonNeed))
-                        level.TSNeed += new Tileset(gonNeed);
+                    if (gon_tileset.TryGetChild("default", out GonObject gon_default))
+                        level.TSDefault += new Tileset(gon_default);
+                    if (gon_tileset.TryGetChild("need", out GonObject gon_need))
+                        level.TSNeed += new Tileset(gon_need);
                 }
                 
                 // Add level to pool
@@ -173,9 +180,7 @@ namespace TEiNRandomizer
         public static LevelPool LoadPool(string path)
         {
             // This function is used to load a level pool from a Gon file into the internal LevelPool type.
-            // It calls the ReadGon sub-function in order to do that actual gon reading portion of the process,
-            // but honestly that could just be inlined and it would make no difference.
-            
+
             // Create new level pool
             LevelPool pool = new LevelPool();
 
@@ -186,30 +191,132 @@ namespace TEiNRandomizer
             pool.Levels = new List<Level>();
 
             // Read the gon file data for the pool
-            ReadGon(pool, path);
+            // Open LevelPool File
+            GonObject gon = GonObject.Load(path);
+
+            string levels_path;
+            {
+                // Load Pool Header Info
+                GonObject header = gon["header"];
+                pool.Order  = header["order"].Int();
+                pool.Author = header["author"].String();
+                pool.Source = header["source"].String();
+                {
+                    if (header.TryGetChild("type", out GonObject type))
+                    {
+                        switch (type.String())
+                        {
+                            case "standard":
+                                pool.Type = PoolType.Standard; break;
+                            case "connector":
+                                pool.Type = PoolType.Connector; break;
+                            case "secret":
+                                pool.Type = PoolType.Secret; break;
+                            case "cart":
+                                pool.Type = PoolType.Cart; break;
+                            default:
+                                throw new Exception("Tried to load level pool with invalid pool type");
+                        }
+                    } else pool.Type = PoolType.Standard;
+                }
+                // This is the path for the level files in the pool
+                {
+                    if (header.TryGetChild("path", out GonObject alt_path))
+                    {
+                        levels_path = alt_path.String();
+                    }
+                    else levels_path = Path.GetDirectoryName(path) + "/tilemaps/";
+                }
+            }
+
+            // Load Pool Tilesets Info
+            Tileset pool_default = new Tileset();    // Intialize to empty tileset in case
+            Tileset pool_need    = new Tileset();    // no definition is given in pool file
+
+            // Set area tileset defaults and needs if not null
+            {
+                if (gon.TryGetChild("tileset", out GonObject gon_tileset))
+                {
+                    if (gon_tileset.TryGetChild("default", out GonObject gon_default))
+                        pool_default = new Tileset(gon_default);
+                    if (gon_tileset.TryGetChild("need", out GonObject gon_need))
+                        pool_need = new Tileset(gon_need);
+                }
+            }
+
+            // Iterate over levels and add them to pool
+            GonObject gon_levels = gon["levels"];        // not even going to check if this exists bc if it doesn't the pool shouldn't exist
+
+            for (int i = 0; i < gon["levels"].Size(); i++)
+            {
+                // Get level object from gon file
+                GonObject gon_level = gon_levels[i];
+
+                // Create new level file
+                Level level = new Level();
+
+                // Set basic level info
+                level.Path = levels_path;
+                level.TSDefault = pool_default;
+                level.TSNeed = pool_need;
+                level.Name = gon_level.GetName();
+
+                // Set connections
+                if (gon_level.TryGetChild("connections", out GonObject gonConnections))
+                {
+                    // Cardinals
+                    if (gonConnections.TryGetChild("up", out GonObject gonDir))
+                        level.MapConnections.U = GetConnectionType(gonDir.String());
+                    else level.MapConnections.U = new ConnectionType();
+                    if (gonConnections.TryGetChild("down", out gonDir))
+                        level.MapConnections.D = GetConnectionType(gonDir.String());
+                    else level.MapConnections.D = new ConnectionType();
+                    if (gonConnections.TryGetChild("left", out gonDir))
+                        level.MapConnections.L = GetConnectionType(gonDir.String());
+                    else level.MapConnections.L = new ConnectionType();
+                    if (gonConnections.TryGetChild("right", out gonDir))
+                        level.MapConnections.R = GetConnectionType(gonDir.String());
+                    else level.MapConnections.R = new ConnectionType();
+                    // Diagonals
+                    if (gonConnections.TryGetChild("upright", out gonDir))
+                        level.MapConnections.UR = GetConnectionType(gonDir.String());
+                    else level.MapConnections.UR = new ConnectionType();
+                    if (gonConnections.TryGetChild("downright", out gonDir))
+                        level.MapConnections.DR = GetConnectionType(gonDir.String());
+                    else level.MapConnections.DR = new ConnectionType();
+                    if (gonConnections.TryGetChild("upleft", out gonDir))
+                        level.MapConnections.UL = GetConnectionType(gonDir.String());
+                    else level.MapConnections.UL = new ConnectionType();
+                    if (gonConnections.TryGetChild("downleft", out gonDir))
+                        level.MapConnections.DL = GetConnectionType(gonDir.String());
+                    else level.MapConnections.DL = new ConnectionType();
+                }
+
+                // Set level tileset defaults and needs if not null
+                if (gon_level.TryGetChild("tileset", out GonObject gon_tileset))
+                {
+                    if (gon_tileset.TryGetChild("default", out GonObject gon_default))
+                        level.TSDefault += new Tileset(gon_default);
+                    if (gon_tileset.TryGetChild("need", out GonObject gon_need))
+                        level.TSNeed += new Tileset(gon_need);
+                }
+
+                // Add level to pool
+                pool.Levels.Add(level);
+            }
 
             // Set the pool to active based on saved settings
-            pool.Active = GetIfActive(pool.Name);
+            pool.Enabled = false;
+            foreach (string str in AppResources.MainSettings.ActiveLevelPools)
+            {
+                if (str == pool.Name) pool.Enabled = true;
+            }
 
-            // Set the number of levels (maybe this can be removed)
+            // Set the number of levels (maybe this can be removed)c
             pool.NumLevels = pool.Levels.Count.ToString() + " levels";
 
             // Return the pool that we have just created.
             return pool;
-        }
-        static bool GetIfActive(string name)
-        {
-            // The set of active pools is stored as a string array.
-            // When loading, we search for the pool's name in the set of active pools.
-            // If found, we active the pool.
-            // The pool's name is simply saved into this array when saving.
-
-            var settings = AppResources.MainSettings;
-            foreach (string str in settings.ActiveLevelPools)
-            {
-                if (str == name) return true;
-            }
-            return false;
         }
     }
 }

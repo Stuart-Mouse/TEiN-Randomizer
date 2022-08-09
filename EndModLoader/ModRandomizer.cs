@@ -12,13 +12,13 @@ namespace TEiNRandomizer
             if (Settings.DoPalettes)
             {
                 //set up palette
-                dir = $"{saveDir}textures";
+                dir = $"{SaveDir}textures";
                 if (!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
-                File.Copy("data/palette.png", $"{saveDir}textures/palette.png", true);
+                File.Copy("data/palette.png", $"{SaveDir}textures/palette.png", true);
 
                 // set up shaders
-                dir = $"{saveDir}shaders";
+                dir = $"{SaveDir}shaders";
                 if (!Directory.Exists(dir))
                     Directory.CreateDirectory(dir);
                 foreach (var file in Directory.GetFiles("data/shaders"))
@@ -31,7 +31,7 @@ namespace TEiNRandomizer
 
             if (Settings.DoParticles)
             {
-                dir = saveDir + "data/particles.txt.append";
+                dir = SaveDir + "data/particles.txt.append";
                 if (!File.Exists(dir))
                     File.Create(dir);
             }
@@ -40,12 +40,12 @@ namespace TEiNRandomizer
         {
             //ShadersList = mw.ShadersList;
 
-            saveDir = Settings.GameDirectory;
+            SaveDir = Settings.GameDirectory;
 
             PrepModFolders();
 
             // level corruptions
-            string dir = $"{saveDir}tilemaps";
+            string dir = $"{SaveDir}tilemaps";
             if (Directory.Exists(dir))
             {
                 string[] paths = Directory.GetFiles(dir);
@@ -64,7 +64,7 @@ namespace TEiNRandomizer
             }
 
             // data folder
-            dir = $"{saveDir}data";
+            dir = $"{SaveDir}data";
             if (Directory.Exists(dir))
             {
                 // tilesets.txt

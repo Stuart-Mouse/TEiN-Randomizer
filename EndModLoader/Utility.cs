@@ -37,6 +37,30 @@ namespace TEiNRandomizer
 
     public static class Utility
     {
+        public static Collectables CollectablesFromString(string str)
+        {
+            // each char represents a collectable type
+            // t = tumor
+            // m = mega tumor
+            // c = cartridge
+            // r = rings
+            // h = friend head
+            // b = friend body
+            // s = friend soul
+
+            Collectables ret = Collectables.None;
+
+            if (str.Contains("t")) ret |= Collectables.Tumor;
+            if (str.Contains("m")) ret |= Collectables.MegaTumor;
+            if (str.Contains("c")) ret |= Collectables.Cartridge;
+            if (str.Contains("r")) ret |= Collectables.Rings;
+            if (str.Contains("h")) ret |= Collectables.FriendHead;
+            if (str.Contains("b")) ret |= Collectables.FriendBody;
+            if (str.Contains("s")) ret |= Collectables.FriendSoul;
+
+            return ret;
+        }
+
         public static int FindHighestBit(byte bite)
         {
             // gets the highest active bit in the byte.
@@ -74,7 +98,7 @@ namespace TEiNRandomizer
                 {
                     foreach (var pool in cat.Pools) // push levels in all active level pools into drawpool vector
                     {
-                        if (pool.Active)
+                        if (pool.Enabled)
                         {
                             foreach (var level in pool.Levels)
                             {
@@ -235,7 +259,7 @@ namespace TEiNRandomizer
             outFile += "order " + Convert.ToInt32(doc.Root.Attribute("order").Value) + "\n";
             outFile += "author \"" + doc.Root.Attribute("author").Value + "\"\n";
             outFile += "source \"" + doc.Root.Attribute("source").Value + "\"\n";
-            outFile += "path   \"data/level pools/" + doc.Root.Attribute("source").Value + "/\"\n";
+            outFile += "path   \"data/level_pools/" + doc.Root.Attribute("source").Value + "/\"\n";
             outFile += "}\n\n";
 
             // Reformat levels / tileset
@@ -307,7 +331,7 @@ namespace TEiNRandomizer
                 }
             }
 
-            File.WriteAllText($"data/level pools/The End is Nigh/{fileName}.gon", outFile);
+            File.WriteAllText($"data/level_pools/The End is Nigh/{fileName}.gon", outFile);
         }
 
         

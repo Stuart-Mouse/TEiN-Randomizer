@@ -25,9 +25,9 @@ namespace TEiNRandomizer
         static LevelCorruptors()
         {
             var gon      = GonObject.Load($"data/text/corruptor_tiles.gon");
-            ActiveTiles  = GonObject.Manip.GonToIntArray(gon["active"]);
-            EntityTiles  = GonObject.Manip.GonToIntArray(gon["entity"]);
-            OverlayTiles = GonObject.Manip.GonToIntArray(gon["overlay"]);
+            ActiveTiles  = GonObject.Manip.ToIntArray(gon["active"]);
+            EntityTiles  = GonObject.Manip.ToIntArray(gon["entity"]);
+            OverlayTiles = GonObject.Manip.ToIntArray(gon["overlay"]);
             SmartTiles = LoadDictionary(gon["smart"]);
             ColorTiles = LoadDictionary(gon["color"]);
         }
@@ -38,12 +38,126 @@ namespace TEiNRandomizer
             {
                 var item = gon[i];
                 int id = item["id"].Int();
-                int[] alts = GonObject.Manip.GonToIntArray(item["alts"]);
+                int[] alts = GonObject.Manip.ToIntArray(item["alts"]);
 
                 dict.Add(id, alts);
             }
             return dict;
         }
+
+        // Clean Level and Do Collectables
+        public static int CleanLevels(ref LevelFile level, Collectables collectables, Directions block_directions)
+        {
+            // This function "cleans" the level file before saving. 
+            // This entails placing all of the required collectables,
+            // creating locks where necessary, and de-coloring the level.
+
+            // Return codes let the calling function know if minor errors are encountered,
+            // which we do not want to throw as exceptions.
+            
+            // WARNING: This function will throw an index out of range exception if the level
+            // contains fewer positions for collectables than the number of collectables to be placed.
+            // This can also occur if a cart level has fewer than 10 rings, and rings are requested.
+
+            List<int> tumors = new List<int>(); // indices where tumors, megatumors, and carts may be placed
+            List<int> rings  = new List<int>(); // indices where rings may be placed
+
+            for (int i = 0; i < level.header.width * level.header.height; i++)
+            {
+                if (level.data[LevelFile.ACTIVE, i] == TileID.Tumor)
+                {
+                    level.data[LevelFile.ACTIVE, i] = TileID.None;
+                    tumors.Add(i);
+                }
+                if (level.data[LevelFile.ACTIVE, i] == TileID.Ring)
+                {
+                    level.data[LevelFile.ACTIVE, i] = TileID.None;
+                    rings.Add(i);
+                }
+                if (level.data[LevelFile.ACTIVE , i] == TileID.LevelGoal && !collectables.HasFlag(Collectables.LevelGoal))
+                    level.data[LevelFile.ACTIVE , i] = TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockU)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.U) ? TileID.SolidOver : TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockD)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.D) ? TileID.SolidOver : TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockL)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.L) ? TileID.SolidOver : TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockR)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.R) ? TileID.SolidOver : TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockUR)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.UR) ? TileID.SolidOver : TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockDR)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.DR) ? TileID.SolidOver : TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockUL)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.UL) ? TileID.SolidOver : TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockDL)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.DL) ? TileID.SolidOver : TileID.None;
+            }
+
+            if (collectables.HasFlag(Collectables.Tumor))
+            {
+                if (tumors.Count == 0) return 1;
+                int i = RNG.random.Next(0, tumors.Count);
+                level.data[LevelFile.ACTIVE, tumors[i]] = TileID.Tumor;
+                tumors.RemoveAt(i);
+            }
+            if (collectables.HasFlag(Collectables.MegaTumor))
+            {
+                if (tumors.Count == 0) return 2;
+                int i = RNG.random.Next(0, tumors.Count);
+                level.data[LevelFile.ACTIVE, tumors[i]] = TileID.MegaTumor;
+                tumors.RemoveAt(i);
+            }
+            if (collectables.HasFlag(Collectables.Cartridge))
+            {
+                if (tumors.Count == 0) return 3;
+                int i = RNG.random.Next(0, tumors.Count);
+                level.data[LevelFile.ACTIVE, tumors[i]] = TileID.Cartridge;
+                tumors.RemoveAt(i);
+            }
+            if (collectables.HasFlag(Collectables.FriendHead))
+            {
+                if (tumors.Count == 0) return 4;
+                int i = RNG.random.Next(0, tumors.Count);
+                level.data[LevelFile.ACTIVE, tumors[i]] = TileID.FriendPieces1;
+                tumors.RemoveAt(i);
+            }
+            if (collectables.HasFlag(Collectables.FriendBody))
+            {
+                if (tumors.Count == 0) return 5;
+                int i = RNG.random.Next(0, tumors.Count);
+                level.data[LevelFile.ACTIVE, tumors[i]] = TileID.FriendPieces2;
+                tumors.RemoveAt(i);
+            }
+            if (collectables.HasFlag(Collectables.FriendSoul))
+            {
+                if (tumors.Count == 0) return 6;
+                int i = RNG.random.Next(0, tumors.Count);
+                level.data[LevelFile.ACTIVE, tumors[i]] = TileID.FriendPieces3;
+                tumors.RemoveAt(i);
+            }
+            /*if (args.HasFlag(Collectables.LevelGoal))
+            {
+                if (tumors.Count == 0) return 7;
+                int i = RNG.random.Next(0, tumors.Count);
+                level.data[LevelFile.ACTIVE, tumors[i]] = TileID.LevelGoal;
+                tumors.RemoveAt(i);
+            }*/
+            if (collectables.HasFlag(Collectables.Rings))
+            {
+                if (rings.Count < 10) return 8;
+                for (int r = 0; r < 10; r++)
+                {
+                    int i = RNG.random.Next(0, rings.Count);
+                    level.data[LevelFile.ACTIVE, rings[i]] = TileID.Ring;
+                    rings.RemoveAt(i);
+                }
+            }
+
+            return 0;
+        }
+
+
         public static string CorruptLevel(ref LevelFile level)
         {
             string TSAppend = "";
@@ -106,7 +220,7 @@ namespace TEiNRandomizer
             for (int i = 0; i < num; i++)
             {
                 int index = RNG.random.Next(0, level.header.height * level.header.width);
-                if (level.data[LevelFile.ACTIVE, index] != TileID.Solid && level.data[LevelFile.TAG, index] == TileID.Empty)
+                if (level.data[LevelFile.ACTIVE, index] != TileID.Solid && level.data[LevelFile.TAG, index] == TileID.None)
                     level.data[LevelFile.ACTIVE, index] = (TileID)ActiveTiles[RNG.random.Next(0, ActiveTiles.Length)];
             }
         }
@@ -138,7 +252,7 @@ namespace TEiNRandomizer
             for (int i = 0; i < 30; i++)
             {
                 int index = RNG.random.Next(0, level.header.height * level.header.width);
-                if (level.data[LevelFile.ACTIVE, index] == TileID.Solid && level.data[LevelFile.TAG, index] == TileID.Empty)
+                if (level.data[LevelFile.ACTIVE, index] == TileID.Solid && level.data[LevelFile.TAG, index] == TileID.None)
                 {
                     if (RNG.CoinFlip())
                         level.data[LevelFile.ACTIVE, index] = TileID.CrusherEye;
@@ -179,7 +293,7 @@ namespace TEiNRandomizer
                     int col = RNG.random.Next(bounds.Left, bounds.Right);
 
                     index = row * lw + col;
-                    if (level.data[LevelFile.ACTIVE, index] == TileID.Empty)
+                    if (level.data[LevelFile.ACTIVE, index] == TileID.None)
                     {
                         level.data[LevelFile.ACTIVE, index] = TileID.Tumor;
                         placed = true;
@@ -201,7 +315,7 @@ namespace TEiNRandomizer
                 level.data[LevelFile.OVERLAY, j] = TileID.WaterUB;
             }
         }
-        public static void PlaceTile(ref LevelFile level, TileID toPlace, int numPerLevel, TileID toReplace = TileID.Empty, bool ignoreTags = false, int cushion = 3)
+        public static void PlaceTile(ref LevelFile level, TileID toPlace, int numPerLevel, TileID toReplace = TileID.None, bool ignoreTags = false, int cushion = 3)
         {
             //int numPerLevel = 10;
             int index = 0;
@@ -223,7 +337,7 @@ namespace TEiNRandomizer
                     index = row * lw + col;
                     if (level.data[LevelFile.ACTIVE, index] == toReplace)
                     {
-                        if (level.data[LevelFile.TAG, index] == TileID.Empty || ignoreTags)
+                        if (level.data[LevelFile.TAG, index] == TileID.None || ignoreTags)
                             level.data[LevelFile.ACTIVE, index] = toPlace;
                         placed = true;
                     }
@@ -243,7 +357,7 @@ namespace TEiNRandomizer
                 {
                     index = i * lw + j;
                     if (level.data[LevelFile.ACTIVE, index] == TileID.Tumor)
-                        level.data[LevelFile.ACTIVE, index] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, index] = TileID.None;
                 }
             }
         }
@@ -267,7 +381,7 @@ namespace TEiNRandomizer
                     int col = RNG.random.Next(bounds.Left, bounds.Right);
 
                     index = row * lw + col;
-                    if (level.data[LevelFile.ACTIVE, index] == TileID.Empty)
+                    if (level.data[LevelFile.ACTIVE, index] == TileID.None)
                     {
                         level.data[LevelFile.ACTIVE, index] = TileID.Ring;
                         placed = true;
@@ -440,6 +554,10 @@ namespace TEiNRandomizer
 
                     //// SPECIAL RULES (these gotta go first so it all works right)
 
+                    // BLUE Collectables
+
+
+
                     // BLUE CONVEYORS
                     if (tile == 100027 || tile == 100028)
                     {
@@ -496,7 +614,7 @@ namespace TEiNRandomizer
 
                         // get tile to place in "empty" spots
                         //string s = colorTiles.Element(Enum.GetName(typeof(TileID), level.data[LevelFile.ACTIVE, index])).ToString();
-                        TileID noTile = TileID.Empty;   // default is empty tile
+                        TileID noTile = TileID.None;   // default is empty tile
                         if (tile - YELLOW_OFFSET == 7)  // empty tile is solid when tile value is a hook
                             noTile = TileID.Solid;
                         //if (s != null && s != "")
@@ -535,7 +653,7 @@ namespace TEiNRandomizer
                         int[] contiguous = new int[adjacents.Count];
                         adjacents.CopyTo(contiguous);
 
-                        TileID noTile = TileID.Empty;   // default is empty tile
+                        TileID noTile = TileID.None;   // default is empty tile
                         if (tile - RED_OFFSET == 7)  // empty tile is solid when tile value is a hook
                             noTile = TileID.Solid;
 
@@ -603,7 +721,7 @@ namespace TEiNRandomizer
                                 for (int p = 0; p < loop; p++)
                                 {
                                     if (k + p >= contiguous.Length) break;
-                                    level.data[LevelFile.ACTIVE, contiguous[k]] = TileID.Empty;
+                                    level.data[LevelFile.ACTIVE, contiguous[k]] = TileID.None;
                                     k++;
                                 }
                                 placeTile = !placeTile;
@@ -640,7 +758,7 @@ namespace TEiNRandomizer
                         for (int k = 0; k < alltherest.Length; k++)
                         {
                             int n = alltherest[k];
-                            level.data[LevelFile.ACTIVE, n] = TileID.Empty;
+                            level.data[LevelFile.ACTIVE, n] = TileID.None;
                         }
                     }
                     // RED
@@ -675,7 +793,7 @@ namespace TEiNRandomizer
                                 for (int p = 0; p < loop; p++)
                                 {
                                     if (k + p >= contiguous.Length) break;
-                                    level.data[LevelFile.ACTIVE, contiguous[k]] = TileID.Empty;
+                                    level.data[LevelFile.ACTIVE, contiguous[k]] = TileID.None;
                                     k++;
                                 }
                                 placeTile = !placeTile;
@@ -712,7 +830,7 @@ namespace TEiNRandomizer
                                 for (int p = 0; p < loop; p++)
                                 {
                                     if (k + p >= contiguous.Length) break;
-                                    level.data[LevelFile.ACTIVE, contiguous[k]] = TileID.Empty;
+                                    level.data[LevelFile.ACTIVE, contiguous[k]] = TileID.None;
                                     k++;
                                 }
                                 placeTile = !placeTile;
@@ -763,7 +881,7 @@ namespace TEiNRandomizer
                     }
                     else if (tileValue == 0)    // null tile
                     {
-                        level.data[LevelFile.ACTIVE, a[k]] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, a[k]] = TileID.None;
                         GetAdjacentTiles(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);   //look for adjecents to next set of tiles
                     }
                 }
@@ -794,26 +912,25 @@ namespace TEiNRandomizer
                     else if (tileValue > 90 && tileValue < 100) // Number tiles
                     {
                         //if (adjacents.Add(a[k]))            // add to adjacents
-                        level.data[LevelFile.ACTIVE, a[k]] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, a[k]] = TileID.None;
                         numTile = Math.Max(numTile, tileValue - 90);
                         GetAdjacentEntity(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
                     }
                     else if (tileValue > 80 && tileValue < 90)  // X Number tiles
                     {
                         //if (adjacents.Add(a[k]))            // add to adjacents
-                        level.data[LevelFile.ACTIVE, a[k]] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, a[k]] = TileID.None;
                         numTileX = Math.Max(numTileX, tileValue - 80);
                         GetAdjacentEntity(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
                     }
                     else if (tileValue == 0)    // null tile
                     {
-                        level.data[LevelFile.ACTIVE, a[k]] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, a[k]] = TileID.None;
                         GetAdjacentEntity(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
                     }
                 }
             }
         }
-
         public static void GetAdjacentColor(ref LevelFile level, TileID id, int color_offset, int index, ref HashSet<int> adjacents, ref int numTile, ref int numTileX)
         {
             int lw = level.header.width;
@@ -840,19 +957,19 @@ namespace TEiNRandomizer
                     {
                         //if (adjacents.Add(a[k]))            // add to adjacents
                         numTile = Math.Max(numTile, tileValue - 90);
-                        level.data[LevelFile.ACTIVE, a[k]] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, a[k]] = TileID.None;
                         GetAdjacentColor(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
                     }
                     else if (tileValue > 80 && tileValue < 90)  // X Number tiles
                     {
                         //if (adjacents.Add(a[k]))            // add to adjacents
                         numTile = Math.Max(numTileX, tileValue - 80);
-                        level.data[LevelFile.ACTIVE, a[k]] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, a[k]] = TileID.None;
                         GetAdjacentColor(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
                     }
                     else if (tileValue == 0)    // null tile
                     {
-                        level.data[LevelFile.ACTIVE, a[k]] = TileID.Empty;
+                        level.data[LevelFile.ACTIVE, a[k]] = TileID.None;
                         GetAdjacentColor(ref level, id, color_offset, a[k], ref adjacents, ref numTile, ref numTileX);
                     }
                 }
