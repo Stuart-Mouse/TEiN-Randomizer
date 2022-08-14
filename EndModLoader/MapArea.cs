@@ -36,16 +36,7 @@ namespace TEiNRandomizer
         public Dictionary<Pair, OpenEnd> OpenEnds    = new Dictionary<Pair, OpenEnd>();
         public Dictionary<Pair, OpenEnd> DeadEntries = new Dictionary<Pair, OpenEnd>();
         public Dictionary<Pair, OpenEnd> SecretEnds  = new Dictionary<Pair, OpenEnd>();
-        public struct OpenEnd
-        {
-            public int NumNeighbors;
-            public string PathTrace;
-            public OpenEnd(int num_neighbors, string pathtrace)
-            {
-                NumNeighbors = num_neighbors;
-                PathTrace = pathtrace;
-            }
-        }
+        
 
         // Contains tags which are relevant to generation
         public string[] tags;
@@ -126,5 +117,18 @@ namespace TEiNRandomizer
         // Used to create "split" areas
         Split
         // The below types are used in Steven areas, they do not have entrances
+    }
+
+    public struct OpenEnd
+    {
+        public Pair   Coords;
+        public int    NumNeighbors;
+        public string PathTrace;
+        public OpenEnd(Pair coords, int num_neighbors = 0, string pathtrace = "")
+        {
+            Coords       = coords;
+            NumNeighbors = num_neighbors;
+            PathTrace    = pathtrace;
+        }
     }
 }
