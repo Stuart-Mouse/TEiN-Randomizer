@@ -58,7 +58,7 @@ namespace TEiNRandomizer
 
         public string extras;
 
-        // Shader class is included so that fx_shader_mid settings can be easily overwritten as a sinlge thing
+        // Shader class is included so that fx_shader_mid settings can be easily overwritten as a single thing
         public Shader shaderMid;
 
         // Constructors

@@ -46,7 +46,7 @@ namespace TEiNRandomizer
         }
 
         // Clean Level and Do Collectables
-        public static int CleanLevels(ref LevelFile level, Collectables collectables, Directions block_directions)
+        public static int CleanLevel(ref LevelFile level, Collectables collectables, Directions block_directions)
         {
             // This function "cleans" the level file before saving. 
             // This entails placing all of the required collectables,
@@ -155,6 +155,23 @@ namespace TEiNRandomizer
             }
 
             return 0;
+        }
+        public static void SwapTiles(ref LevelFile level, Dictionary<TileID, TileID> swaps)
+        {
+            for (int i = 0; i < level.header.layers; i++)
+            {
+                for (int j = 0; j < level.header.width * level.header.height; j++)
+                {
+                    foreach (var swap in swaps)
+                    {
+                        if (level.data[i, j] == swap.Key)
+                        {
+                            level.data[i, j] = swap.Value;
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
 

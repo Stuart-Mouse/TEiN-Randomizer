@@ -17,6 +17,12 @@ namespace TEiNRandomizer
         public ConnectionType UL;
         public ConnectionType DL;
 
+        public ConnectionType this[Directions key]
+        {
+            get => GetDirection(key);
+            set => SetDirection(key, value);
+        }
+
         // Get ConnectionType by direction
         public ConnectionType GetDirection(Directions dir)
         {
@@ -39,6 +45,39 @@ namespace TEiNRandomizer
                     return UL;
                 case Directions.DL:
                     return DL;
+                default:
+                    throw new Exception("Invalid direction, cannot be used to index ConnectionType.");
+            }
+        }
+        public void SetDirection(Directions dir, ConnectionType con)
+        {
+            // Switch to the correct connection based on direction passed in
+            switch (dir)
+            {
+                case Directions.U:
+                    U = con; 
+                    return;
+                case Directions.D:
+                    D = con; 
+                    return;
+                case Directions.L:
+                    L = con; 
+                    return;
+                case Directions.R:
+                    R = con; 
+                    return;
+                case Directions.UR:
+                    UR = con; 
+                    return;
+                case Directions.DR:
+                    DR = con; 
+                    return;
+                case Directions.UL:
+                    UL = con; 
+                    return;
+                case Directions.DL:
+                    DL = con; 
+                    return;
                 default:
                     throw new Exception("Invalid direction, cannot be used to index ConnectionType.");
             }
@@ -147,7 +186,21 @@ namespace TEiNRandomizer
                 return false;
             return true;
         }
+        public string DebugString()
+        {
+            string str = "";
+            if (U  != ConnectionType.none) str += $"U : {U }\n";
+            if (D  != ConnectionType.none) str += $"D : {D }\n";
+            if (L  != ConnectionType.none) str += $"L : {L }\n";
+            if (R  != ConnectionType.none) str += $"R : {R }\n";
+            if (UR != ConnectionType.none) str += $"UR: {UR}\n";
+            if (DR != ConnectionType.none) str += $"DR: {DR}\n";
+            if (UL != ConnectionType.none) str += $"UL: {UL}\n";
+            if (DL != ConnectionType.none) str += $"DL: {DL}\n";
+            return str;
+        }
     }
+
     [Flags]
     public enum ConnectionType
     {
@@ -162,13 +215,13 @@ namespace TEiNRandomizer
         both = entrance | exit,
         all  = entrance | exit | secret,
 
-        secretExit     = secret | exit,
+        /*secretExit     = secret | exit,
         secretEntrance = secret | entrance,
 
         lockedEntrance = locked | entrance,
         lockedExit     = locked | exit,
         lockedBoth     = locked | both,
         lockedSecret   = locked | secret,
-        lockedAll      = locked | all
+        lockedAll      = locked | all*/
     }
 }

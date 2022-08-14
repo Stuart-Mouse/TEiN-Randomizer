@@ -33,9 +33,19 @@ namespace TEiNRandomizer
         public GameMap Map;
 
         // These are the OpenEnds, DeadEntries, and SecretEnds contained within the area
-        public HashSet<Pair> OpenEnds    = new HashSet<Pair>();
-        public HashSet<Pair> DeadEntries = new HashSet<Pair>();
-        public HashSet<Pair> SecretEnds  = new HashSet<Pair>();
+        public Dictionary<Pair, OpenEnd> OpenEnds    = new Dictionary<Pair, OpenEnd>();
+        public Dictionary<Pair, OpenEnd> DeadEntries = new Dictionary<Pair, OpenEnd>();
+        public Dictionary<Pair, OpenEnd> SecretEnds  = new Dictionary<Pair, OpenEnd>();
+        public struct OpenEnd
+        {
+            public int NumNeighbors;
+            public string PathTrace;
+            public OpenEnd(int num_neighbors, string pathtrace)
+            {
+                NumNeighbors = num_neighbors;
+                PathTrace = pathtrace;
+            }
+        }
 
         // Contains tags which are relevant to generation
         public string[] tags;

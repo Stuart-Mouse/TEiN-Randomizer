@@ -229,14 +229,11 @@ namespace TEiNRandomizer
                 {
                     case GenerationType.Standard:
                         {
-                            if (area.ID == "3d")
-                                Console.WriteLine("asdf");
-                            
                             // PRELIMINARIES
                             // Initialize Ends
-                            area.OpenEnds = new HashSet<Pair>();
-                            area.DeadEntries = new HashSet<Pair>();
-                            area.SecretEnds = new HashSet<Pair>();
+                            area.OpenEnds    = new Dictionary<Pair, MapArea.OpenEnd>();
+                            area.DeadEntries = new Dictionary<Pair, MapArea.OpenEnd>();
+                            area.SecretEnds  = new Dictionary<Pair, MapArea.OpenEnd>();
                             // Init Map and associated trackers
                             area.Map = new GameMap(area.MaxSize.First, area.MaxSize.Second);  // Initialize map to size of bounds in def
                             area.MinBuilt = new Pair(area.MaxSize.First, area.MaxSize.Second);  // Initializes to highest possible value
@@ -361,48 +358,43 @@ namespace TEiNRandomizer
                                 // Try to get options from Levels
                                 // We used closed options in this case because on the first level we don't want to branch, only meet the basic requirements
                                 List<Level> options;
-                                bool isGameplay = true;
-                                options = GetOptionsOpen(area, reqs, nots, area.Levels);
-
-                                // If there are not any options in Levels
-                                if (options.Count == 0)
-                                {
-                                    options = GetOptionsOpen(area, reqs, nots, Connectors);    // Try to get options from Connectors
-                                    isGameplay = false;                                    // Set isGameplay to false since we are now using a connector
-                                }
-
-                                // Get random level from the list of options
-                                Level level = options[RNG.random.Next(0, options.Count)];
-
-                                // Create screen to place
-                                // counter is incremented upon creating screen
+                                Level level;
                                 MapScreen screen;
                                 string screen_id;
-                                if (isGameplay)
+                                options = GetOptionsComplex(Directions.None, reqs, nots, area.Levels);
+                                options = FilterOptionsOpen(reqs, options);
+
+                                if (options.Count != 0)
                                 {
+                                    level     = options[RNG.random.Next(0, options.Count)];
                                     screen_id = $"{++area.LevelCount}";
-                                    screen = new MapScreen(area.ID, screen_id, ScreenType.Level, level);
+                                    screen    = new MapScreen(area.ID, screen_id, ScreenType.Level, level);
                                 }
+                                // If we get no options from area.Levels, we try to get options from the Connectors pool
                                 else
                                 {
+                                    options = GetOptionsComplex(Directions.None, reqs, nots, Connectors);
+                                    options = FilterOptionsOpen(reqs, options);
+
+                                    level     = options[RNG.random.Next(0, options.Count)];
                                     screen_id = $"x{++area.ConnectorCount}";
-                                    screen = new MapScreen(area.ID, screen_id, ScreenType.Connector, level);
+                                    screen    = new MapScreen(area.ID, screen_id, ScreenType.Connector, level);
                                 }
 
                                 // add entrance screen to worldmap screenwipes
                                 switch (area.EDir)
                                 {
                                     case Directions.U:
-                                        WorldMap.upwipes += $"{screen_id} ";
+                                        WorldMap.upwipes += $"{screen.FullID} ";
                                         break;
                                     case Directions.D:
-                                        WorldMap.downwipes += $"{screen_id} ";
+                                        WorldMap.downwipes += $"{screen.FullID} ";
                                         break;
                                     case Directions.L:
-                                        WorldMap.leftwipes += $"{screen_id} ";
+                                        WorldMap.leftwipes += $"{screen.FullID} ";
                                         break;
                                     case Directions.R:
-                                        WorldMap.rightwipes += $"{screen_id} ";
+                                        WorldMap.rightwipes += $"{screen.FullID} ";
                                         break;
                                 }
 
@@ -420,7 +412,7 @@ namespace TEiNRandomizer
                                 PlaceScreen(area, area.ECoords.First, area.ECoords.Second, screen);
                                 area.ChosenScreens.Add(screen);
                                 {
-                                    Directions dir_ret = AddEnds(area, area.ECoords.First, area.ECoords.Second, level.MapConnections);
+                                    Directions dir_ret = AddEnds(area, area.ECoords.First, area.ECoords.Second, level.MapConnections, screen.PathTrace);
                                     //if (dir_ret != Directions.None && dir_ret != area.EDir) 
                                     //    throw new Exception("Error, tried to add invalid end.");
                                 }
@@ -454,11 +446,6 @@ namespace TEiNRandomizer
 
                                 while (area.LevelCount < area.LevelQuota)    // add levels until the quota is met
                                 {
-                                    // Draw a new map screen from the list of available levels and add it to the map at the position of an open end.
-
-                                    // This tells us whether or not to remove the level from its pool after placing
-                                    bool isGameplay = true;
-
                                     // Get next OpenEnd to fill
                                     coords = SmartSelectOpenEnd(area);
 
@@ -466,22 +453,32 @@ namespace TEiNRandomizer
                                     CheckNeighbors(area, coords.First, coords.Second, out reqs, out nots, out string pathtrace);
 
                                     // Try to get open options from Levels
+                                    Level level;
+                                    string screen_id;
+
                                     List<Level> options;
-                                    options = GetOptionsOpen(area, reqs, nots, area.Levels);
+                                    options = GetOptionsComplex(area.NoBuild, reqs, nots, area.Levels);
+                                    options = FilterOptionsOpen(reqs, options);
 
                                     // If there are not open options in Levels
-                                    if (options.Count == 0)
+                                    if (options.Count != 0)
+                                    {
+                                        level = options[RNG.random.Next(0, options.Count)];
+                                        screen_id = $"{++area.LevelCount}";
+                                        screen = new MapScreen(area.ID, screen_id, ScreenType.Level, level, pathtrace);
+                                    }
+                                    // If we get no options from area.Levels, we try to get options from the Connectors pool
+                                    else
                                     {
                                         // Try to get open options from Connectors
-                                        options = GetOptionsOpen(area, reqs, nots, Connectors);
-                                        // set isGameplay to false since we are now using a connector
-                                        isGameplay = false;
+                                        options = GetOptionsComplex(area.NoBuild, reqs, nots, Connectors);
+                                        options = FilterOptionsOpen(reqs, options);
 
                                         // If there are not open options in Connectors
                                         // Then try to get any kind of option from Connectors
                                         if (options.Count == 0)
                                         {
-                                            options = GetOptions(reqs, nots, Connectors);
+                                            options = GetOptionsComplex(area.NoBuild, reqs, nots, Connectors);
 
                                             // If there are still no options, we have a problem
                                             if (options.Count == 0)
@@ -489,15 +486,13 @@ namespace TEiNRandomizer
                                                 DebugPrintReqs(coords, reqs, nots);
                                                 throw new Exception("ran out of options during mapArea generation");
                                             }
+
+                                            level = options[RNG.random.Next(0, options.Count)];
                                         }
+
+                                        level = options[RNG.random.Next(0, options.Count)];
+                                        screen = new MapScreen(area.ID, $"x{++area.ConnectorCount}", ScreenType.Connector, level, pathtrace);
                                     }
-
-                                    // Get random level from the list of options
-                                    Level level = options[RNG.random.Next(0, options.Count)];
-
-                                    // Create screen to place / increment counter
-                                    if (isGameplay) screen = new MapScreen(area.ID, $"{++area.LevelCount}", ScreenType.Level, level, pathtrace);
-                                    else            screen = new MapScreen(area.ID, $"x{++area.ConnectorCount}", ScreenType.Connector, level, pathtrace);
 
                                     // Place screen
                                     PlaceScreen(area, coords.First, coords.Second, screen);
@@ -505,7 +500,7 @@ namespace TEiNRandomizer
 
                                     // Add new ends after placement
                                     {
-                                        Directions dir_ret = AddEnds(area, coords.First, coords.Second, level.MapConnections);
+                                        Directions dir_ret = AddEnds(area, coords.First, coords.Second, level.MapConnections, screen.PathTrace);
                                         if (dir_ret != Directions.None) throw new Exception("Error, tried to add invalid end.");
                                     }
 
@@ -525,7 +520,7 @@ namespace TEiNRandomizer
                                 }
 
                                 // Area terminates with a cart end
-                                if (area.tags.Contains("cart"))
+                                if (area.tags != null && area.tags.Contains("cart"))
                                 {
                                     // Get the last screen added by the main generation loop and set the block entrances directions based on last nots
                                     screen.BlockEntrances = DirectionsEnum.Opposite(reqs.Flatten());
@@ -534,7 +529,7 @@ namespace TEiNRandomizer
                             }
 
                             // PLACE FINAL LEVEL
-                            if (!area.tags.Contains("cart"))
+                            if (area.tags == null || !area.tags.Contains("cart"))
                             {
                                 // Area exits into another area
                                 if (area.XDir != Directions.None)
@@ -545,41 +540,29 @@ namespace TEiNRandomizer
                                     MapConnections reqs = NoMapConnections;
                                     MapConnections nots = NoMapConnections;
 
-                                    for (int i = 0; i < area.OpenEnds.Count; i++)   // Iterate over the list of open ends
+                                    foreach (var end in area.OpenEnds)
                                     {
-                                        Pair coords = area.OpenEnds.ElementAt(i);   // Get the next end to check
-
-                                        // Check that the end is on the edge of the map
-                                        bool onEdge = false;
+                                        Pair coords = end.Key;   // Get the next end to check
 
                                         switch (area.XDir) // Switch based on the build direction so we check the correct side
                                         {
                                             case Directions.U:
-                                                if (coords.First  == area.MinBuilt.First ) onEdge = true;
+                                                if (coords.First  != area.MinBuilt.First ) continue;
                                                 break;
                                             case Directions.D:
-                                                if (coords.First  == area.MaxBuilt.First ) onEdge = true;
+                                                if (coords.First  != area.MaxBuilt.First ) continue;
                                                 break;
                                             case Directions.L:
-                                                if (coords.Second == area.MinBuilt.Second) onEdge = true;
+                                                if (coords.Second != area.MinBuilt.Second) continue;
                                                 break;
                                             case Directions.R:
-                                                if (coords.Second == area.MaxBuilt.Second) onEdge = true;
+                                                if (coords.Second != area.MaxBuilt.Second) continue;
                                                 break;
                                         }
 
-                                        if (onEdge)
-                                        {
-                                            // Use checkneighbors to get the level requirements and pathtrace of the level
-                                            CheckNeighbors(area, coords.First, coords.Second, out reqs, out nots, out string pathtrace);
-
-                                            // Find the end with the greatest distance
-                                            if (pathtrace.Length > dist)
-                                            {
-                                                area_end = coords;           // Set the area end to the coords of the selected end
-                                                dist = pathtrace.Length;   // Set the highest distance to the distance of the selected end
-                                            }
-                                        }
+                                        // Find the end with the greatest distance
+                                        if (end.Value.PathTrace.Length > dist)
+                                            area_end = end.Key;
                                     }
 
                                     // Error if the areaEnd is (-1, -1)
@@ -617,48 +600,45 @@ namespace TEiNRandomizer
 
                                     // Try to get options from Levels
                                     // We used closed options in this case because on the first level we don't want to branch, only meet the basic requirements
-                                    List<Level> options;
-                                    bool isGameplay = true;
-                                    options = GetOptionsClosed(reqs, nots, area.Levels);
-
-                                    // If there are not any options in Levels
-                                    if (options.Count == 0)
-                                    {
-                                        options = GetOptionsClosed(reqs, nots, Connectors);     // Try to get options from Connectors
-                                        isGameplay = false;                                     // Set isGameplay to false since we are now using a connector
-                                    }
-
-                                    // Get random level from the list of options
-                                    Level level = options[RNG.random.Next(0, options.Count)];
-
-                                    // Create screen to place
+                                    Level level;
                                     MapScreen screen;
-                                    string screen_name;
-                                    if (isGameplay)
+                                    string screen_id;
+
+                                    List<Level> options;
+                                    options = GetOptions(area.NoBuild, reqs, nots, area.Levels);
+                                    options = FilterOptionsOpen(reqs, options);
+
+                                    if (options.Count != 0)
                                     {
-                                        screen_name = $"{++area.LevelCount}";
-                                        screen = new MapScreen(area.ID, screen_name, ScreenType.Level, level);
+                                        level = options[RNG.random.Next(0, options.Count)];
+                                        screen_id = $"{++area.LevelCount}";
+                                        screen = new MapScreen(area.ID, screen_id, ScreenType.Level, level);
                                     }
+                                    // If we get no options from area.Levels, we try to get options from the Connectors pool
                                     else
                                     {
-                                        screen_name = $"x{++area.ConnectorCount}";
-                                        screen = new MapScreen(area.ID, screen_name, ScreenType.Connector, level);
+                                        options = GetOptions(area.NoBuild, reqs, nots, Connectors);
+                                        options = FilterOptionsOpen(reqs, options);
+
+                                        level = options[RNG.random.Next(0, options.Count)];
+                                        screen_id = $"x{++area.ConnectorCount}";
+                                        screen = new MapScreen(area.ID, screen_id, ScreenType.Connector, level);
                                     }
 
                                     // add exit screen to worldmap screenwipes
                                     switch (area.XDir)
                                     {
                                         case Directions.U:
-                                            WorldMap.upwipes    += $"{screen_name} ";
+                                            WorldMap.upwipes    += $"{screen.FullID} ";
                                             break;
                                         case Directions.D:
-                                            WorldMap.downwipes  += $"{screen_name} ";
+                                            WorldMap.downwipes  += $"{screen.FullID} ";
                                             break;
                                         case Directions.L:
-                                            WorldMap.leftwipes  += $"{screen_name} ";
+                                            WorldMap.leftwipes  += $"{screen.FullID} ";
                                             break;
                                         case Directions.R:
-                                            WorldMap.rightwipes += $"{screen_name} ";
+                                            WorldMap.rightwipes += $"{screen.FullID} ";
                                             break;
                                     }
 
@@ -688,35 +668,32 @@ namespace TEiNRandomizer
                                     MapConnections reqs = NoMapConnections;
                                     MapConnections nots = NoMapConnections;
 
-                                    for (int i = 0; i < area.OpenEnds.Count; i++)   // Iterate over the list of open ends
                                     {
-                                        Pair coords = area.OpenEnds.ElementAt(i);   // Get the next end to check
-
-                                        // Use checkneighbors to get the level requirements and pathtrace of the level
-                                        CheckNeighbors(area, coords.First, coords.Second, out reqs, out nots, out string pathtrace);
-
-                                        // Find the end with the greatest distance
-                                        if (pathtrace.Length > dist)
+                                        // Find furthest end
+                                        foreach (var end in area.OpenEnds)
                                         {
-                                            area_end = coords;         // Set the area end to the coords of the selected end
-                                            dist = pathtrace.Length;   // Set the highest distance to the distance of the selected end
+                                            if (end.Value.PathTrace.Length > dist)
+                                                area_end = end.Key;
                                         }
-                                    }
-                                    // Error if the areaEnd is (-1, -1)
-                                    // This can occur if the only OpenEnd is a dead end
-                                    if (area_end.First == -1)
-                                    {
-                                        PrintDebugCSV(area, $"tools/map testing/map_{area.ID}_exitdots.csv");
-                                        throw new Exception($"Could not select area end in area {area.ID}.");
+
+                                        // Error if the areaEnd is (-1, -1)
+                                        // This can occur if the only OpenEnd is a dead end
+                                        if (area_end.First == -1)
+                                        {
+                                            PrintDebugCSV(area, $"tools/map testing/map_{area.ID}_exitdots.csv");
+                                            throw new Exception($"Could not select area end in area {area.ID}.");
+                                        }
+
+                                        CheckNeighbors(area, area_end.First, area_end.Second, out reqs, out nots, out string pathtrace);
                                     }
 
                                     // Set XCoords so we can see where the area end is
                                     area.XCoords = area_end;
 
-                                    // Select level to place at screen
                                     List<Level> options;
-                                    if (area.ExitID == "friend_orb") options = GetOptionsClosed(reqs, nots, FriendOrb);     // Try to get options from FriendOrb levels
-                                    else                             options = GetOptionsClosed(reqs, nots, Connectors);     // Try to get options from Connectors
+                                    if (area.ExitID == "friend_orb") options = GetOptionsComplex(area.NoBuild, reqs, nots, FriendOrb );     // Try to get options from FriendOrb levels
+                                    else                             options = GetOptionsComplex(area.NoBuild, reqs, nots, Connectors);     // Try to get options from Connectors
+                                    options = FilterOptionsClosed(reqs, options);
 
                                     // Get random level from the list of options
                                     Level level = options[RNG.random.Next(0, options.Count)];
@@ -733,13 +710,13 @@ namespace TEiNRandomizer
                                     switch (area.ExitID)
                                     {
                                         case "friend_head":
-                                            screen.Collectables = Collectables.FriendHead; break;
+                                            screen.Collectables |= Collectables.FriendHead; break;
                                         case "friend_body":
-                                            screen.Collectables = Collectables.FriendBody; break;
+                                            screen.Collectables |= Collectables.FriendBody; break;
                                         case "friend_soul":
-                                            screen.Collectables = Collectables.FriendSoul; break;
+                                            screen.Collectables |= Collectables.FriendSoul; break;
                                         case "level_goal":
-                                            screen.Collectables = Collectables.LevelGoal; break;
+                                            screen.Collectables |= Collectables.LevelGoal; break;
                                         case "friend_orb":
                                             break; // This case is handled above in level selection.
                                         default:
@@ -758,24 +735,16 @@ namespace TEiNRandomizer
                             // Build secret areas
 
                             // Cap all Open Ends
-                            while (area.OpenEnds.Count != 0)
-                            {
-                                Pair coords = area.OpenEnds.First();
-                                CapOpenEnd(area, coords);
-                                area.OpenEnds.Remove(coords);
-                            }
+                            foreach (var end in area.OpenEnds)
+                                CapOpenEnd(area, end.Key);
                             // Cap all Dead Ends
-                            while (area.DeadEntries.Count != 0)
-                            {
-                                Pair coords = area.DeadEntries.First();
-                                CapOpenEnd(area, coords);
-                                area.DeadEntries.Remove(coords);
-                            }
+                            foreach (var end in area.DeadEntries)
+                                CapOpenEnd(area, end.Key);
 
                             // Crop the map
-                            PrintDebugCSV(area, $"tools/map testing/{area.ID}_beforecrop.csv");
+                            //PrintDebugCSV(area, $"tools/map testing/{area.ID}_beforecrop.csv");
                             area.Map = GameMap.CropMap(area.MaxBuilt.First - area.MinBuilt.First + 1, area.MaxBuilt.Second - area.MinBuilt.Second + 1, area.Map, area.MinBuilt.First, area.MinBuilt.Second);
-                            PrintDebugCSV(area, $"tools/map testing/{area.ID}_aftercrop.csv");
+                            //PrintDebugCSV(area, $"tools/map testing/{area.ID}_aftercrop.csv");
 
                             // Adjust the ECoords and XCoords
                             area.ECoords -= area.MinBuilt;
@@ -843,7 +812,8 @@ namespace TEiNRandomizer
                                         if (cell[3].Contains('R')) reqs.R |= ConnectionType.exit;
 
                                         // get a random level with only reqs
-                                        List<Level> options = GetOptionsClosed(reqs, new MapConnections(), StandardLevels);
+                                        List<Level> options = GetOptionsComplex(area.NoBuild, reqs, NoMapConnections, area.Levels);
+                                        options = FilterOptionsClosed(reqs, options);
                                         level = options[RNG.random.Next(0, options.Count)];
                                     }
                                     else
@@ -931,7 +901,8 @@ namespace TEiNRandomizer
                             if (area.XLeft != null) reqs.L = ConnectionType.exit;
                             if (area.XRight != null) reqs.R = ConnectionType.exit;
 
-                            List<Level> options = GetOptionsClosed(reqs, nots, Connectors);
+                            List<Level> options = options = GetOptionsComplex(area.NoBuild, reqs, NoMapConnections, Connectors);
+                            options = FilterOptionsClosed(reqs, Connectors);
                             Level level = options[RNG.random.Next(0, options.Count)];
                             MapScreen screen = new MapScreen(area.ID, "x", ScreenType.Connector, level);
                             area.Map.Data[0, 0] = screen;
@@ -944,12 +915,14 @@ namespace TEiNRandomizer
                     // Open StreamWriters for the data files
                     StreamWriter levelinfo_file = File.AppendText(SaveDir + "data/levelinfo.txt.append");
                     StreamWriter tilesets_file = File.AppendText(SaveDir + "data/tilesets.txt.append");
+                    StreamWriter debug_file = File.CreateText("tools/debug.md");
 
                     // Create randomized area tileset
                     if (area.Name == null) area.Name = GetFunnyAreaName();
 
                     // Write the area's tileset to the file
                     tilesets_file.WriteLine($"{area.ID} {{");
+                    debug_file.WriteLine($"## Area {area.ID}");
                     area.Tileset.WriteTileset(tilesets_file);
 
                     // Iterate over all of the screen in the area
@@ -961,6 +934,9 @@ namespace TEiNRandomizer
                         // Skip over screens of Dot type
                         if (screen.Type == ScreenType.Dots) continue;
 
+                        debug_file.WriteLine($"\n### Level {screen.ScreenID}");
+                        debug_file.WriteLine($"InFile: {screen.Level.InFile}");
+                        
                         // Load the level file associated with that screen/level
                         LevelFile level_file = LevelManip.Load(screen.Level.InFile);
 
@@ -974,9 +950,26 @@ namespace TEiNRandomizer
                                 else if (area.Tileset.area_type == "cart")       // add rings to cart levels
                                     screen.Collectables |= Collectables.Rings;
                             }
-                            int ret_code = LevelCorruptors.CleanLevels(ref level_file, screen.Collectables, screen.BlockEntrances);
+                            int ret_code = LevelCorruptors.CleanLevel(ref level_file, screen.Collectables, screen.BlockEntrances);
                             if (ret_code != 0) ErrorNotes += $"Failed to place collectables on level {area.ID}-{screen.ScreenID}, code {ret_code}\n";
+                            
+                            if (screen.Level.TileSwaps != null && screen.Level.TileSwaps.Count != 0)
+                            {
+                                debug_file.WriteLine($"TileSwaps: ");
+                                LevelCorruptors.SwapTiles(ref level_file, screen.Level.TileSwaps);      // do tile swaps
+                                foreach (var swap in screen.Level.TileSwaps)
+                                    debug_file.WriteLine($"{swap.Key} -> {swap.Value}");
+                            }
                         }
+
+                        debug_file.WriteLine("MapConnections: ");
+                        debug_file.Write(screen.Level.MapConnections.DebugString());
+                        debug_file.WriteLine("Reqs: ");
+                        debug_file.Write(screen.Level.DebugReqs.DebugString());
+                        debug_file.WriteLine("Nots: ");
+                        debug_file.Write(screen.Level.DebugNots.DebugString());
+                        debug_file.WriteLine("Collectables: ");
+                        debug_file.WriteLine(screen.Collectables);
 
                         if (screen.Level.FlippedHoriz)
                             LevelManip.FlipLevelH(ref level_file);
@@ -1001,6 +994,8 @@ namespace TEiNRandomizer
                         }
 
                         // Write level tileset to the file
+                        //debug_file.WriteLine($"Tileset: {screen.Level.InFile}");
+                        //level_tileset.WriteTileset(debug_file);
                         tilesets_file.WriteLine($"{screen.ScreenID} {{");
                         tilesets_file.WriteLine($"#filename: {screen.Level.InFile}");
                         level_tileset.WriteTileset(tilesets_file);
@@ -1010,14 +1005,10 @@ namespace TEiNRandomizer
                     // write closing bracket for area tileset
                     tilesets_file.WriteLine("}\n");
 
+                    // close filestreams
                     levelinfo_file.Close();
                     tilesets_file.Close();
-
-                    // NPCS
-
-                    // Worldmap
-
-
+                    debug_file.Close();
 
                 }
             }
@@ -1277,59 +1268,38 @@ namespace TEiNRandomizer
 
             return new_map;
         }
-        // Functions for getting Open Ends
         static Pair SmartSelectOpenEnd(MapArea area)
         {
             // If there is only one end, use this end
             // If filling this end creates no new open ends, we will need to fix that.
             if (area.OpenEnds.Count == 1)
-                return area.OpenEnds.First();
+                return area.OpenEnds.First().Key;
 
-            // Iterate over the list of open ends
-            for (int i = 0; i < area.OpenEnds.Count; i++)
-            {
-                // Count the number of empty neighbors each end has
-                // If an end has no empty neighbors
-                // Use this end to just get it out of the way
-                // This will help us avoid getting stuck with it later
-                Pair coords = area.OpenEnds.ElementAt(i);
-                CheckNeighbors(area, coords.First, coords.Second, out MapConnections reqs, out MapConnections nots, out string pathtrace);
-                if (CountEmptyNeighbors(reqs, nots) == 0)
-                {
-                    return coords;
-                }
-            }
-
-            // Declare new openEnd to return
-            Pair openEnd = new Pair(-1, -1);
-            // Declare distance and set to zero
+            Pair open_end = new Pair(-1, -1);
             int dist = 0;
 
-            // Iterate over the list of open ends again
-            for (int i = 0; i < area.OpenEnds.Count; i++)
+            // find furthest end
+            foreach (var end in area.OpenEnds)
             {
-                // This time we select the openEnd by greatest distance
-                Pair coords = area.OpenEnds.ElementAt(i);
-                CheckNeighbors(area, coords.First, coords.Second, out MapConnections reqs, out MapConnections nots, out string pathtrace);
-                if (pathtrace.Length > dist)
-                {
-                    // If the distance is greater than what we had before, make this the openEnd to return
-                    openEnd = coords;
-                }
+                
+                // Code to use up ends with many neighbors, so they are less likely to get boxed in later on
+                /*if (end.Value.NumNeighbors == 7)
+                    return end.Key;*/
+                if (end.Value.PathTrace.Length > dist)
+                    open_end = end.Key;
             }
-            // If our new end has been changed from initial value
-            // this probably should not ever be false
-            if (openEnd.First != -1)
-                return openEnd;
+
+            if (open_end.First != -1)
+                return open_end;
 
             // Otherwise, pick a random end
-            return GetOpenEnd(area);
+            return area.OpenEnds.ElementAt(RNG.random.Next(0, area.OpenEnds.Count)).Key;
         }
         static Pair GetOpenEnd(MapArea area)
         {
             // Return a random OpenEnd from the list
             // Will error if there are no OpenEnds
-            return area.OpenEnds.ElementAt(RNG.random.Next(0, area.OpenEnds.Count));
+            return area.OpenEnds.ElementAt(RNG.random.Next(0, area.OpenEnds.Count)).Key;
         }
         static void CheckNeighbors(MapArea area, int i, int j, out MapConnections reqs, out MapConnections nots, out string pathtrace)  // returns the type necessary to meet needs of neighbors
         {
@@ -1358,7 +1328,7 @@ namespace TEiNRandomizer
             void CheckNeighbor(int k, int l, ref ConnectionType req, ref ConnectionType not, Directions dir)
             {
                 // Must be inside map bounds and not be a secret end
-                if (MapBoundsCheck(area.Map, k, l) && !area.SecretEnds.Contains(new Pair(k, l)))
+                if (MapBoundsCheck(area.Map, k, l) && !area.SecretEnds.ContainsKey(new Pair(k, l)))
                 {
                     // Get the neighbor we want to check
                     MapScreen neighbor = area.Map.Data[k, l];
@@ -1386,7 +1356,7 @@ namespace TEiNRandomizer
                             
                             // Set pathtrace to new level if shorter than existing path or if no path is set
                             if (dirs == null || neighbor.PathTrace.Length < dirs.Length)
-                                dirs = neighbor.PathTrace + (int)(DirectionsEnum.Opposite(dir));
+                                dirs = neighbor.PathTrace + (char)(DirectionsEnum.Opposite(dir));
                         }
                         // If there is only an entrance, require an exit
                         else if (connection.HasFlag(ConnectionType.entrance))
@@ -1400,8 +1370,8 @@ namespace TEiNRandomizer
 
                     // SECRETS
                     // If we have an OpenEnd or DeadEntry in this location, we cannot have a secret here.
-                    if (area.OpenEnds.Contains(new Pair(k, l))
-                     || area.DeadEntries.Contains(new Pair(k, l)))
+                    if (area.OpenEnds.ContainsKey(new Pair(k, l))
+                     || area.DeadEntries.ContainsKey(new Pair(k, l)))
                     {
                         not |= ConnectionType.secret;
                     }
@@ -1410,7 +1380,7 @@ namespace TEiNRandomizer
                 else not |= ConnectionType.all;  // all includes both entrances, exits, and secrets
             }
         }
-        static Directions AddEnds(MapArea area, int i, int j, MapConnections mCons)
+        static Directions AddEnds(MapArea area, int i, int j, MapConnections mCons, string pathtrace)
         {
             // This function calls AddEnd for each direction of connection
             // The index given is the screen that is Up, Down, Left, or Right from the screen just placed.
@@ -1445,14 +1415,21 @@ namespace TEiNRandomizer
                 {
                     // By the rules in CheckNeighbors, we shouldn't be trying to place an openEnd over an already existing secretEnd
                     // So the only other consideration is whether a DeadEntry already exists, which we can overwrite.
-                    if (!MapBoundsCheck(area.Map, index.First, index.Second)) return dir;
+                    if (!MapBoundsCheck(area.Map, index.First, index.Second))
+                        return dir;
                     if (area.Map.Data[index.First, index.Second] == null)
                     {
                         // Remove deadEntry if there was one here
                         area.DeadEntries.Remove(index);
 
-                        // Add OpenEnd
-                        area.OpenEnds.Add(index);
+                        // Add or Update OpenEnd
+                        if (area.OpenEnds.TryGetValue(index, out MapArea.OpenEnd end))
+                        {
+                            if (pathtrace.Length > end.PathTrace.Length)
+                                end.PathTrace = pathtrace + (char)DirectionsEnum.Opposite(dir);
+                            end.NumNeighbors++;
+                        }
+                        else area.OpenEnds.Add(index, new MapArea.OpenEnd(1, pathtrace + (char)DirectionsEnum.Opposite(dir)));
                         UpdateMinMaxCoords(area, index.First, index.Second);
                     }
                 }
@@ -1460,12 +1437,13 @@ namespace TEiNRandomizer
                 {
                     // If we have only an entrance here, try to add a deadEntry
                     // If there is already an openEnd here, don't add the deadEntry
-                    if (!MapBoundsCheck(area.Map, index.First, index.Second)) return dir;
-                    if (MapBoundsCheck(area.Map, index.First, index.Second) && area.Map.Data[index.First, index.Second] == null)
+                    if (!MapBoundsCheck(area.Map, index.First, index.Second))
+                        return dir;
+                    if (area.Map.Data[index.First, index.Second] == null)
                     {
-                        if (!area.OpenEnds.Contains(index))
+                        if (!area.OpenEnds.ContainsKey(index))
                         {
-                            area.DeadEntries.Add(index);
+                            area.DeadEntries.Add(index, new MapArea.OpenEnd(1, pathtrace + (char)DirectionsEnum.Opposite(dir)));
                             UpdateMinMaxCoords(area, index.First, index.Second);
                         }
                     }
@@ -1475,8 +1453,9 @@ namespace TEiNRandomizer
                     // Add a secret end if applicable
                     // Should be no issues with adding this since we pre-check for other types of ends in this spot during CheckNeighbors
                     // For SecretEnds, we don't need to check if the screen at index is null
-                    if (!MapBoundsCheck(area.Map, index.First, index.Second)) return dir;
-                    area.SecretEnds.Add(index);
+                    if (!MapBoundsCheck(area.Map, index.First, index.Second))
+                        return dir;
+                    area.SecretEnds.Add(index, new MapArea.OpenEnd(1, pathtrace + (char)DirectionsEnum.Opposite(dir)));
                     UpdateMinMaxCoords(area, index.First, index.Second);
                 }
                 return Directions.None;
@@ -1505,7 +1484,8 @@ namespace TEiNRandomizer
             CheckNeighbors(area, coords.First, coords.Second, out MapConnections reqs, out MapConnections nots, out string pathtrace);
 
             // Get options from pool of screens
-            List<Level> options = GetOptionsClosed(reqs, nots, Connectors);
+            List<Level> options = GetOptionsComplex(area.NoBuild, reqs, nots, Connectors);
+            options = FilterOptionsClosed(reqs, options);
 
             // Get random level from the list of options
             Level level = options[RNG.random.Next(0, options.Count)];
@@ -1548,21 +1528,163 @@ namespace TEiNRandomizer
             area.MaxBuilt.First  = Math.Max(area.MaxBuilt.First,  i);
             area.MaxBuilt.Second = Math.Max(area.MaxBuilt.Second, j);
         }
-        static List<Level> GetOptions(MapConnections reqs, MapConnections nots, List<Level> pool)
+        // Get and Filter Level Options
+        static List<Level> GetOptions(Directions no_build, MapConnections reqs, MapConnections nots, List<Level> pool)
         {
             List<Level> options = new List<Level>();
             foreach (Level level in pool)
             {
-                if ((level.MapConnections & reqs) == reqs)
-                    if ((level.MapConnections & nots) == NoMapConnections)
-                        options.Add(level);
+                // Check connection requirements
+                if ((level.MapConnections & reqs) != reqs) continue;
+                if ((level.MapConnections & nots) != NoMapConnections) continue;
+
+                // Subtract the requirements and see what remains
+                MapConnections umc = GetUniqueConnections(level.MapConnections, reqs);
+                // Skip levels which build (add exits) in disallowed directions
+                if ((no_build.HasFlag(Directions.U) && umc.U.HasFlag(ConnectionType.exit))) continue;
+                if ((no_build.HasFlag(Directions.D) && umc.D.HasFlag(ConnectionType.exit))) continue;
+                if ((no_build.HasFlag(Directions.L) && umc.L.HasFlag(ConnectionType.exit))) continue;
+                if ((no_build.HasFlag(Directions.R) && umc.R.HasFlag(ConnectionType.exit))) continue;
+                if ((no_build.HasFlag(Directions.UR) && umc.UR.HasFlag(ConnectionType.exit))) continue;
+                if ((no_build.HasFlag(Directions.DR) && umc.DR.HasFlag(ConnectionType.exit))) continue;
+                if ((no_build.HasFlag(Directions.UL) && umc.UL.HasFlag(ConnectionType.exit))) continue;
+                if ((no_build.HasFlag(Directions.DL) && umc.DL.HasFlag(ConnectionType.exit))) continue;
+
+                options.Add(level);
             }
             return options;
         }
-        static List<Level> GetOptionsOpen(MapArea area, MapConnections reqs, MapConnections nots, List<Level> pool)
+        static List<Level> GetOptionsComplex(Directions no_build, MapConnections reqs, MapConnections nots, List<Level> pool)
         {
-            // Gets Options the standard way, but also...
-            List<Level> options = GetOptions(reqs, nots, pool);
+            List<Level> options = new List<Level>();
+
+            foreach (Level level in pool)
+            {
+                Level copy_level = level.Clone();
+
+                // Skip levels which build (add exits) in disallowed directions
+                {
+                    // Subtract the requirements and see what remains
+                    MapConnections umc = GetUniqueConnections(level.MapConnections, reqs);
+                    if ((no_build.HasFlag(Directions.U) && umc.U.HasFlag(ConnectionType.exit))) continue;
+                    if ((no_build.HasFlag(Directions.D) && umc.D.HasFlag(ConnectionType.exit))) continue;
+                    if ((no_build.HasFlag(Directions.L) && umc.L.HasFlag(ConnectionType.exit))) continue;
+                    if ((no_build.HasFlag(Directions.R) && umc.R.HasFlag(ConnectionType.exit))) continue;
+                    if ((no_build.HasFlag(Directions.UR) && umc.UR.HasFlag(ConnectionType.exit))) continue;
+                    if ((no_build.HasFlag(Directions.DR) && umc.DR.HasFlag(ConnectionType.exit))) continue;
+                    if ((no_build.HasFlag(Directions.UL) && umc.UL.HasFlag(ConnectionType.exit))) continue;
+                    if ((no_build.HasFlag(Directions.DL) && umc.DL.HasFlag(ConnectionType.exit))) continue;
+                }
+
+                // Continue will skip over the level without adding it to the return list
+                if ((level.MapConnections.U & reqs.U) != reqs.U) continue;
+                if ((level.MapConnections.D & reqs.D) != reqs.D) continue;
+                if ((level.MapConnections.U & nots.U) != ConnectionType.none) continue;
+                if ((level.MapConnections.D & nots.D) != ConnectionType.none) continue;
+
+                List<int>[] opt = new List<int>[3];
+                for (int i = 0; i < 3; i++) opt[i] = new List<int>(3);
+                Directions taken_dirs = Directions.None;
+                int[] assignments = new int[3];
+
+                //Console.Write("-----\n");
+
+                // right side
+                TileID[] tiles = { TileID.GreenTransitionUR , TileID.GreenTransitionR , TileID.GreenTransitionDR };
+                Directions[] dirs = { Directions.UR, Directions.R, Directions.DR };
+                ConnectionType[] r  = { reqs.UR, reqs.R, reqs.DR };
+                ConnectionType[] n  = { nots.UR, nots.R, nots.DR };
+                ConnectionType[] mc = { level.MapConnections.UR, level.MapConnections.R, level.MapConnections.DR };
+                if (!CheckSide()) continue;
+
+                //Console.Write("--\n");
+
+                // left side
+                tiles = new TileID[] { TileID.GreenTransitionUL, TileID.GreenTransitionL, TileID.GreenTransitionDL };
+                dirs = new Directions[] { Directions.UL, Directions.L, Directions.DL };
+                r  = new ConnectionType[] { reqs.UL, reqs.L, reqs.DL };
+                n  = new ConnectionType[] { nots.UL, nots.L, nots.DL };
+                mc = new ConnectionType[] { level.MapConnections.UL, level.MapConnections.L, level.MapConnections.DL };
+                for (int i = 0; i < 3; i++) opt[i] = new List<int>(3);
+                assignments = new int[3];
+                if (!CheckSide()) continue;
+
+                copy_level.DebugReqs = reqs;
+                copy_level.DebugNots = nots;
+
+                options.Add(copy_level);
+
+                bool CheckSide()
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        for (int j = 0; j < 3; j++)
+                        {
+                            if (taken_dirs.HasFlag(dirs[j])
+                            || (r[i] & mc[j]) != r[i]
+                            || (n[i] & mc[j]) != ConnectionType.none)
+                                continue;
+                            opt[i].Add(j);
+                        }
+                        if (opt[i].Count == 0)
+                        {
+                            //Console.Write($"P1: returned false on i{i}\n");
+                            return false;
+                        }
+                        if (opt[i].Count == 1)
+                        {
+                            assignments[i] = opt[i][0];
+                            taken_dirs |= dirs[opt[i][0]];
+                            //Console.Write($"P1: i{i} = j{opt[i][0]}\n");
+                        }
+                    }
+                    //if (level.Name == "2" && )
+                    //    Console.WriteLine("break");
+                    // loop again, make assignments for directions with multiple options
+                    for (int i = 0; i < 3; i++)
+                    {
+                        if (opt[i].Count < 2)
+                        {
+                            //Console.Write($"P2: broke on i{i}\n");
+                            continue;
+                        }
+                        for (int j = 0; j < opt[i].Count; j++)
+                        {
+                            int choice = opt[i][j];
+                            if (!taken_dirs.HasFlag(dirs[choice]))   // check again that it is not taken
+                            {
+                                assignments[i] = choice;
+                                taken_dirs |= dirs[choice];
+                                //Console.Write($"P2: i{i} = j{opt[i][j]}\n");
+                                break;
+                            }
+                            opt[i].RemoveAt(j--);     // remove option if it was already taken.
+                        }
+                        if (opt[i].Count == 0)  // if we exit the loop with no options, the level failed
+                        {
+                            //Console.Write($"P2: returned false on i{i}\n");
+                            return false;
+                        }
+                    }
+                    // use assignments to make new level data
+                    for (int i = 0; i < 3; i++)
+                    {
+                        int j = assignments[i]; // get assigned j of i
+                        // j will give us the direction and tileid for connection i
+                        // mc[j] is the connectiontype of the connection assigned to dir[i]
+                        // this is stored to the new_mc in the new direction
+                        copy_level.MapConnections[dirs[i]] = mc[j];
+                        // the transition tile orginally corresponding to j will be replaced with the tile corresponding to i
+                        if (i != j) copy_level.TileSwaps.Add(tiles[j], tiles[i]);
+                    }
+                    return true;
+                }
+            }
+            return options;
+        }
+        static List<Level> FilterOptionsOpen(MapConnections reqs, List<Level> options)
+        {
+            // Use GetOptions or GetOptionsComplex and pass the result in to narrow down options further
 
             // Create new list of options
             List<Level> new_options = new List<Level>();
@@ -1572,16 +1694,6 @@ namespace TEiNRandomizer
             {
                 // Subtract the requirements and see what remains
                 MapConnections mc = GetUniqueConnections(level.MapConnections, reqs);
-
-                // Skip levels which build in disallowed directions
-                if ((area.NoBuild.HasFlag(Directions.U) && mc.U.HasFlag(ConnectionType.exit))) continue;
-                if ((area.NoBuild.HasFlag(Directions.D) && mc.D.HasFlag(ConnectionType.exit))) continue;
-                if ((area.NoBuild.HasFlag(Directions.L) && mc.L.HasFlag(ConnectionType.exit))) continue;
-                if ((area.NoBuild.HasFlag(Directions.R) && mc.R.HasFlag(ConnectionType.exit))) continue;
-                if ((area.NoBuild.HasFlag(Directions.UR) && mc.UR.HasFlag(ConnectionType.exit))) continue;
-                if ((area.NoBuild.HasFlag(Directions.DR) && mc.DR.HasFlag(ConnectionType.exit))) continue;
-                if ((area.NoBuild.HasFlag(Directions.UL) && mc.UL.HasFlag(ConnectionType.exit))) continue;
-                if ((area.NoBuild.HasFlag(Directions.DL) && mc.DL.HasFlag(ConnectionType.exit))) continue;
 
                 // Spare the level if any new exits are added
                 if      (mc.U.HasFlag(ConnectionType.exit)) new_options.Add(level);
@@ -1595,11 +1707,9 @@ namespace TEiNRandomizer
             }
             return new_options;
         }
-        // Static functions
-        static List<Level> GetOptionsClosed(MapConnections reqs, MapConnections nots, List<Level> pool)
+        static List<Level> FilterOptionsClosed(MapConnections reqs, List<Level> options)
         {
-            // Gets Options the standard way, but also...
-            List<Level> options = GetOptions(reqs, nots, pool);
+            // Use GetOptions or GetOptionsComplex and pass the result in to narrow down options further
 
             // Create new list of options
             List<Level> newOptions = new List<Level>();
@@ -1631,10 +1741,10 @@ namespace TEiNRandomizer
 
             // If the requirements impose anything on a given side, then that whole side is thrown out
             // If that side is empty, then that side contains unique connections
-            if (reqs.U == ConnectionType.none) ret.U = cons.U;
-            if (reqs.D == ConnectionType.none) ret.D = cons.D;
-            if (reqs.L == ConnectionType.none) ret.L = cons.L;
-            if (reqs.R == ConnectionType.none) ret.R = cons.R;
+            if (reqs.U  == ConnectionType.none) ret.U  = cons.U ;
+            if (reqs.D  == ConnectionType.none) ret.D  = cons.D ;
+            if (reqs.L  == ConnectionType.none) ret.L  = cons.L ;
+            if (reqs.R  == ConnectionType.none) ret.R  = cons.R ;
             if (reqs.UR == ConnectionType.none) ret.UR = cons.UR;
             if (reqs.DR == ConnectionType.none) ret.DR = cons.DR;
             if (reqs.UL == ConnectionType.none) ret.UL = cons.UL;
@@ -1818,15 +1928,15 @@ namespace TEiNRandomizer
                                     sw.Write($"c");*/
                             }
                         }
-                        if (area.OpenEnds.Contains(new Pair(i, j)))
+                        if (area.OpenEnds.ContainsKey(new Pair(i, j)))
                         {
                             sw.Write($"O");
                         }
-                        if (area.DeadEntries.Contains(new Pair(i, j)))
+                        if (area.DeadEntries.ContainsKey(new Pair(i, j)))
                         {
                             sw.Write($"D");
                         }
-                        if (area.SecretEnds.Contains(new Pair(i, j)))
+                        if (area.SecretEnds.ContainsKey(new Pair(i, j)))
                         {
                             sw.Write($"S");
                         }

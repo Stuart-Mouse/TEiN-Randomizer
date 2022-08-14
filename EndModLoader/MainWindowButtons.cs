@@ -27,11 +27,11 @@ namespace TEiNRandomizer
             sw.Write("levels {\n");
 
             // iterate over all combinations of directions
-            for (Directions dirs = Directions.None; dirs < Directions.All; dirs++)
+            for (Directions dirs = Directions.None; dirs <= Directions.All; dirs++)
             {
                 // create level file
                 LevelFile level = LevelManip.Load("data/level_pools/.mapgen/tilemaps/template.lvl");
-                LevelCorruptors.CleanLevels(ref level, Collectables.None, ~dirs);
+                LevelCorruptors.CleanLevel(ref level, Collectables.Tumor, ~dirs);
                 LevelManip.Save(level, $"data/level_pools/.mapgen/tilemaps/{(int)dirs}.lvl");
                 
                 // write data to file

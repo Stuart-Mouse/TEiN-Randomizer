@@ -30,7 +30,7 @@ namespace TEiNRandomizer
 
         // can be used to replace any tileid with another tileid when cleaning level
         // created for replacing horizontal transitions with vertical ones where necessary
-        public Dictionary<TileID, TileID> ReplaceTiles = new Dictionary<TileID, TileID>();
+        public Dictionary<TileID, TileID> TileSwaps = new Dictionary<TileID, TileID>();
 
         // This is a string of the character U, D, L, R that specify the directions to the level
         public string PathTrace;
@@ -45,6 +45,8 @@ namespace TEiNRandomizer
             Level = level;
             PathTrace = pathtrace;
             Collectables = collectables;
+            if (Level != null)
+                TileSwaps = Level.TileSwaps;
         }
     }
     public enum ScreenType
