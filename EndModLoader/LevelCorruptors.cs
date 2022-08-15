@@ -174,17 +174,83 @@ namespace TEiNRandomizer
             }
         }
 
+        // Functions for adding/subtracting background tiles
+        public static Directions BGToDirs(TileID tile)
+        {
+            // Converts a bg tile to a set of directions indicating the coverage of the tile.
+
+            // Convert BG2 to BG1 to make switch case less wordy.
+            if (tile > TileID.Back1Deco4) 
+                tile -= 33;
+            if (tile > TileID.DiagonalBR || tile < TileID.WholePiece)
+                return Directions.None;
+
+            switch (tile)
+            {
+                case TileID.WholePiece:
+                    return Directions.All;
+
+                case TileID.LargeSideL:
+                    return Directions.UL | Directions.L | Directions.DL;
+                case TileID.LargeSideT:
+                    return Directions.UL | Directions.U | Directions.UR;
+                case TileID.LargeSideR:
+                    return Directions.UR | Directions.R | Directions.DR;
+                case TileID.LargeSideB:
+                    return Directions.DL | Directions.D | Directions.DR;
+
+                case TileID.SmallSideL:
+                    return Directions.L;
+                case TileID.SmallSideT:
+                    return Directions.U;
+                case TileID.SmallSideR:
+                    return Directions.R;
+                case TileID.SmallSideB:
+                    return Directions.D;
+
+                case TileID.SmallCornerBL:
+                    return Directions.DL;
+                case TileID.SmallCornerTL:
+                    return Directions.UL;
+                case TileID.SmallCornerTR:
+                    return Directions.UR;
+                case TileID.SmallCornerBR:
+                    return Directions.DR;
+
+                case TileID.LargeCornerBL:
+                    return Directions.D | Directions.DL | Directions.L;
+                case TileID.LargeCornerTL:
+                    return Directions.L | Directions.UL | Directions.U;
+                case TileID.LargeCornerTR:
+                    return Directions.U | Directions.UR | Directions.R;
+                case TileID.LargeCornerBR:
+                    return Directions.R | Directions.DR | Directions.D;
+
+                case TileID.DiagonalBL:
+                    return Directions.DR | Directions.D | Directions.DL | Directions.L | Directions.UL;
+                case TileID.DiagonalTL:
+                    return Directions.DL | Directions.L | Directions.UL | Directions.U | Directions.UR;
+                case TileID.DiagonalTR:
+                    return Directions.UL | Directions.U | Directions.UR | Directions.R | Directions.DR;
+                case TileID.DiagonalBR:
+                    return Directions.UR | Directions.R | Directions.DR | Directions.D | Directions.DL;
+
+                default: 
+                    return Directions.None;
+            }
+        }
+
 
         public static string CorruptLevel(ref LevelFile level)
         {
-            string TSAppend = "";
+            string ts_append = "";
 
             // smart corruptions done first
             if (Randomizer.Settings.CRSmart)
             {
                 if (SmartCorruptActive(ref level))
                 {
-                    TSAppend += "\n#added by level corruptor\nfx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2\n";
+                    ts_append += "\n#added by level corruptor\nfx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2\n";
                 }
             }
             if (Randomizer.Settings.CROverlays) SmartCorruptOverlay(ref level);
@@ -203,7 +269,7 @@ namespace TEiNRandomizer
             AddTiles(ref level, Randomizer.Settings.CRAddTiles);
             if (AddEnemies(ref level, Randomizer.Settings.CRAddEnemies))
             {
-                TSAppend += "\nfx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2\n";
+                ts_append += "\nfx_shader_mid cloudripples\nmidfx_graphics None\nmidfx_layer 2\n";
             }
             //PlaceTile(ref level, TileID.Feral, 5);
             
@@ -214,7 +280,7 @@ namespace TEiNRandomizer
             if (Randomizer.Settings.CRCrushers) Crushers(ref level);
             if (Randomizer.Settings.CRWaterLevels && RNG.CoinFlip()) WaterLevel(ref level);
 
-            return TSAppend;
+            return ts_append;
         }
         public static bool AddEnemies(ref LevelFile level, int num)
         {

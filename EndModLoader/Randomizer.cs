@@ -291,13 +291,12 @@ namespace TEiNRandomizer
 
             TilesetManip.MakeShaderPool();  // Set up the shader pool
 
-            //MakeDrawPools();    // Make the draw pool based on which level pools are enabled
-            //AddFlippedLevels(ref StandardLevels);   // Flip all levels in the drawpool horizontally and add the flipped variants to the pool
-            //AddFlippedLevels(ref CartLevels);
-
-            // Load the connectors
-            //Connectors = LevelPool.LoadPool("data/level_pools/.mapgen/TestingConnectors.gon").Levels;
-            CartLevels = Connectors = StandardLevels = LevelPool.LoadPool("data/level_pools/.mapgen/NewConnectors.gon").Levels;
+            MakeDrawPools();    // Make the draw pool based on which level pools are enabled
+            AddFlippedLevels(ref StandardLevels);   // Flip all levels in the drawpool horizontally and add the flipped variants to the pool
+            AddFlippedLevels(ref CartLevels);
+            Connectors = LevelPool.LoadPool("data/level_pools/.mapgen/NewConnectors.gon").Levels;
+            
+            //CartLevels = Connectors = StandardLevels = LevelPool.LoadPool("data/level_pools/.mapgen/NewConnectors.gon").Levels;
             try { CreateFolders(); } catch (Exception ex) { Console.WriteLine($"Error creating folders. Exception {ex}"); MessageBox.Show($"Error creating folders. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
             WorldMap.Init();    // Init the worldmap.txt file

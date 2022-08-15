@@ -47,7 +47,7 @@ namespace TEiNRandomizer
             string lightspawn_id = null;
             string darkspawn_id  = null;
             {
-                string path = "data/text/area_defs/test.gon";
+                string path = "data/text/area_defs.gon";
                 GonObject file = GonObject.Load(path);
 
                 // Load area defintions
@@ -257,68 +257,50 @@ namespace TEiNRandomizer
                                 MapConnections reqs = NoMapConnections;
                                 MapConnections nots = NoMapConnections;
 
+                                // directions to ignore when we do add_ends
+                                // these area all the directions which are contacting the edge of the map
+                                Directions ends_ignore = Directions.None;
+
                                 // Set first level coord and nots based on anchor
                                 switch (area.Anchor)
                                 {
                                     // Cardinals
                                     case Directions.U:
-                                        nots.UL |= ConnectionType.all;
-                                        nots.U  |= ConnectionType.all;
-                                        nots.UR |= ConnectionType.all;
+                                        ends_ignore = Directions.UL | Directions.U | Directions.UR;
                                         area.ECoords.First = 0;
                                         break;
                                     case Directions.D:
-                                        nots.DR |= ConnectionType.all;
-                                        nots.D  |= ConnectionType.all;
-                                        nots.DL |= ConnectionType.all;
+                                        ends_ignore = Directions.DR | Directions.D | Directions.DL;
                                         area.ECoords.First = area.MaxSize.First - 1;
                                         break;
                                     case Directions.L:
-                                        nots.UL |= ConnectionType.all;
-                                        nots.L  |= ConnectionType.all;
-                                        nots.DL |= ConnectionType.all;
+                                        ends_ignore = Directions.UL | Directions.L | Directions.DL;
                                         area.ECoords.Second = 0;
                                         break;
                                     case Directions.R:
-                                        nots.UR |= ConnectionType.all;
-                                        nots.R  |= ConnectionType.all;
-                                        nots.DR |= ConnectionType.all;
+                                        ends_ignore = Directions.DR | Directions.R | Directions.UR;
                                         area.ECoords.Second = area.MaxSize.Second - 1;
                                         break;
                                     // Diagonals
                                     case Directions.UR:
-                                        nots.UL |= ConnectionType.all;
-                                        nots.U  |= ConnectionType.all;
-                                        nots.UR |= ConnectionType.all;
-                                        nots.R  |= ConnectionType.all;
-                                        nots.DR |= ConnectionType.all;
+                                        ends_ignore = Directions.UL | Directions.U | Directions.UR | Directions.R | Directions.DR;
                                         area.ECoords = new Pair(0, area.MaxSize.Second - 1);
                                         break;
                                     case Directions.DR:
-                                        nots.UR |= ConnectionType.all;
-                                        nots.R  |= ConnectionType.all;
-                                        nots.DR |= ConnectionType.all;
-                                        nots.D  |= ConnectionType.all;
-                                        nots.DL |= ConnectionType.all;
+                                        ends_ignore = Directions.UR | Directions.R | Directions.DR | Directions.D | Directions.DL;
                                         area.ECoords = new Pair(area.MaxSize.First - 1, area.MaxSize.Second - 1);
                                         break;
                                     case Directions.UL:
-                                        nots.DL |= ConnectionType.all;
-                                        nots.L  |= ConnectionType.all;
-                                        nots.UL |= ConnectionType.all;
-                                        nots.U  |= ConnectionType.all;
-                                        nots.UR |= ConnectionType.all;
+                                        ends_ignore = Directions.DL | Directions.L | Directions.UL | Directions.U | Directions.UR;
                                         area.ECoords = new Pair(0, 0);
                                         break;
                                     case Directions.DL:
-                                        nots.DR |= ConnectionType.all;
-                                        nots.D  |= ConnectionType.all;
-                                        nots.DL |= ConnectionType.all;
-                                        nots.L  |= ConnectionType.all;
-                                        nots.UL |= ConnectionType.all;
+                                        ends_ignore = Directions.DR | Directions.D | Directions.DL | Directions.L | Directions.UL;
                                         area.ECoords = new Pair(area.MaxSize.First - 1, 0);
                                         break;
                                 }
+                                // We set all the necessary nots using set multiple, based on the ends_ignore directions
+                                nots.SetMultiple(ends_ignore, ConnectionType.all);
 
                                 // Set first level nots based on no_build
                                 if (area.NoBuild.HasFlag(Directions.U)) nots.U |= ConnectionType.all;
@@ -411,11 +393,7 @@ namespace TEiNRandomizer
                                 // place new screen and add the first open end(s)
                                 PlaceScreen(area, area.ECoords.First, area.ECoords.Second, screen);
                                 area.ChosenScreens.Add(screen);
-                                {
-                                    Directions dir_ret = AddEnds(area, screen, area.ECoords.First, area.ECoords.Second);
-                                    //if (dir_ret != Directions.None && dir_ret != area.EDir) 
-                                    //    throw new Exception("Error, tried to add invalid end.");
-                                }
+                                AddEnds(area, screen, area.ECoords, ends_ignore);
 
                                 // Place dot screens from first level to edge of map
                                 if (area.EDir != Directions.None)
@@ -450,7 +428,7 @@ namespace TEiNRandomizer
                                     end = SmartSelectOpenEnd(area);
 
                                     // Get level connection requirements
-                                    CheckNeighbors(area, end.Coords.First, end.Coords.Second, out reqs, out nots);
+                                    CheckNeighbors(area, end.Coords, out reqs, out nots);
 
                                     // Try to get open options from Levels
                                     Level level;
@@ -499,10 +477,7 @@ namespace TEiNRandomizer
                                     area.ChosenScreens.Add(screen);
 
                                     // Add new ends after placement
-                                    {
-                                        Directions dir_ret = AddEnds(area, screen, end.Coords.First, end.Coords.Second);
-                                        if (dir_ret != Directions.None) throw new Exception("Error, tried to add invalid end.");
-                                    }
+                                    AddEnds(area, screen, end.Coords);
 
                                     // Remove the OpenEnd that we are replacing
                                     area.OpenEnds.Remove(end.Coords);
@@ -537,8 +512,6 @@ namespace TEiNRandomizer
                                     // Select the open end with the greatest distance to be the area end
                                     OpenEnd area_end = new OpenEnd(new Pair(-1, -1));
                                     int dist = 0;
-                                    MapConnections reqs = NoMapConnections;
-                                    MapConnections nots = NoMapConnections;
 
                                     foreach (var end in area.OpenEnds)
                                     {
@@ -573,25 +546,35 @@ namespace TEiNRandomizer
                                         throw new Exception($"Could not select area end in area {area.ID}.");
                                     }
 
-                                    // Manually determine the exit requirements based on exit_dir (No multi-direction cases)
+                                    MapConnections reqs = NoMapConnections;
+                                    MapConnections nots = NoMapConnections;
+                                    Directions ends_ignore = Directions.None;
+
+                                    CheckNeighbors(area, area_end.Coords, out reqs, out nots);
+
+                                    // Manually alter the exit requirements based on exit_dir (No multi-direction cases)
                                     // Nots are cleared in exit direction so that MapBounds do not prevent an exit touching the map's edge
                                     switch (area.XDir)
                                     {
-                                        case Directions.D:
-                                            reqs.D |= ConnectionType.exit;      // require a downwards exit
-                                            nots.D = ConnectionType.none;       // clear nots.D
-                                            break;
                                         case Directions.U:
                                             reqs.U |= ConnectionType.exit;      // require an upwards exit
                                             nots.U = ConnectionType.none;       // clear nots.U
+                                            ends_ignore |= Directions.U;
                                             break;
-                                        case Directions.R:
-                                            reqs.R |= ConnectionType.exit;      // require a right exit
-                                            nots.R = ConnectionType.none;       // clear nots.R
+                                        case Directions.D:
+                                            reqs.D |= ConnectionType.exit;      // require a downwards exit
+                                            nots.D = ConnectionType.none;       // clear nots.D
+                                            ends_ignore |= Directions.D;
                                             break;
                                         case Directions.L:
                                             reqs.L |= ConnectionType.exit;      // require a left exit
                                             nots.L = ConnectionType.none;       // clear nots.R
+                                            ends_ignore |= Directions.L;
+                                            break;
+                                        case Directions.R:
+                                            reqs.R |= ConnectionType.exit;      // require a right exit
+                                            nots.R = ConnectionType.none;       // clear nots.R
+                                            ends_ignore |= Directions.R;
                                             break;
                                     }
 
@@ -603,7 +586,6 @@ namespace TEiNRandomizer
 
                                     List<Level> options;
                                     options = GetOptions(area.NoBuild, reqs, nots, area.Levels);
-                                    options = FilterOptionsOpen(reqs, options);
 
                                     if (options.Count != 0)
                                     {
@@ -615,7 +597,6 @@ namespace TEiNRandomizer
                                     else
                                     {
                                         options = GetOptions(area.NoBuild, reqs, nots, Connectors);
-                                        options = FilterOptionsOpen(reqs, options);
 
                                         level = options[RNG.random.Next(0, options.Count)];
                                         screen_id = $"x{++area.ConnectorCount}";
@@ -641,6 +622,7 @@ namespace TEiNRandomizer
 
                                     // place new screen
                                     PlaceScreen(area, area_end.Coords.First, area_end.Coords.Second, screen);
+                                    AddEnds(area, screen, area_end.Coords, ends_ignore);
                                     area.ChosenScreens.Add(screen);
 
                                     // Remove the selected end so that it is not capped in a later step.
@@ -660,32 +642,27 @@ namespace TEiNRandomizer
                                 else
                                 {
                                     // Select the area end
-                                    Pair area_end = new Pair(-1, -1);
+                                    OpenEnd area_end = new OpenEnd(new Pair(-1, -1));
                                     int dist = 0;
-                                    MapConnections reqs = NoMapConnections;
-                                    MapConnections nots = NoMapConnections;
-
+                                    
+                                    // Find furthest end
+                                    foreach (var end in area.OpenEnds)
                                     {
-                                        // Find furthest end
-                                        foreach (var end in area.OpenEnds)
-                                        {
-                                            if (end.Value.PathTrace.Length > dist)
-                                                area_end = end.Key;
-                                        }
-
-                                        // Error if the areaEnd is (-1, -1)
-                                        // This can occur if the only OpenEnd is a dead end
-                                        if (area_end.First == -1)
-                                        {
-                                            PrintDebugCSV(area, $"tools/map testing/map_{area.ID}_exitdots.csv");
-                                            throw new Exception($"Could not select area end in area {area.ID}.");
-                                        }
-
-                                        CheckNeighbors(area, area_end.First, area_end.Second, out reqs, out nots);
+                                        if (end.Value.PathTrace.Length > dist)
+                                            area_end = end.Value;
                                     }
 
-                                    // Set XCoords so we can see where the area end is
-                                    area.XCoords = area_end;
+                                    // Error if the areaEnd is (-1, -1)
+                                    // This can occur if the only OpenEnd is a dead end
+                                    if (area_end.Coords.First == -1)
+                                    {
+                                        PrintDebugCSV(area, $"tools/map testing/map_{area.ID}_exitdots.csv");
+                                        throw new Exception($"Could not select area end in area {area.ID}.");
+                                    }
+
+                                    MapConnections reqs = NoMapConnections;
+                                    MapConnections nots = NoMapConnections;
+                                    CheckNeighbors(area, area_end.Coords, out reqs, out nots);
 
                                     List<Level> options;
                                     if (area.ExitID == "friend_orb") options = GetOptionsComplex(area.NoBuild, reqs, nots, FriendOrb );     // Try to get options from FriendOrb levels
@@ -721,11 +698,12 @@ namespace TEiNRandomizer
                                     }
 
                                     // place new screen
-                                    PlaceScreen(area, area.XCoords.First, area.XCoords.Second, screen);
+                                    PlaceScreen(area, area_end.Coords.First, area_end.Coords.Second, screen);
+                                    //AddEnds(area, screen, area_end.Coords);
                                     area.ChosenScreens.Add(screen);
 
                                     // Remove the selected end so that it is not capped in a later step.
-                                    area.OpenEnds.Remove(area_end);
+                                    area.OpenEnds.Remove(area_end.Coords);
                                 }
                             }
 
@@ -740,8 +718,8 @@ namespace TEiNRandomizer
                                 CapOpenEnd(area, end.Value);
                             // No *real* need to worry about removing the ends as we go, since we will not be using the lists anymore after this.
                             // Only side effect would be ends showing up on the debug map output, so for that purpose just uncomment the 2 lines below
-                            //area.OpenEnds    = new Dictionary<Pair, MapArea.OpenEnd>();
-                            //area.DeadEntries = new Dictionary<Pair, MapArea.OpenEnd>();
+                            area.OpenEnds    = new Dictionary<Pair, OpenEnd>();
+                            area.DeadEntries = new Dictionary<Pair, OpenEnd>();
 
                             // Crop the map
                             //PrintDebugCSV(area, $"tools/map testing/{area.ID}_beforecrop.csv");
@@ -990,10 +968,6 @@ namespace TEiNRandomizer
                         // Calculate the final tileset
                         // The tilesets are added in order of priority, from lowest to highest
                         Tileset level_tileset = (screen.Level.TSDefault + area.Tileset) + screen.Level.TSNeed;
-                        if (level_tileset.area_type == "cart")
-                        {
-                            Console.WriteLine($"{area.ID}-{screen.ScreenID}");
-                        }
 
                         // Write level tileset to the file
                         //debug_file.WriteLine($"Tileset: {screen.Level.InFile}");
@@ -1141,6 +1115,7 @@ namespace TEiNRandomizer
                         if (had_child)
                         {
                             //DebugPrintMap(ret_map, $"tools/map testing/map_{area.ID}_post.csv");
+                            PrintDebugCSV(area, $"tools/map testing/map_{area.ID}.csv");
                             e_coord = new_e_coord;
                             return ret_map;
                         }
@@ -1303,34 +1278,35 @@ namespace TEiNRandomizer
             // Will error if there are no OpenEnds
             return area.OpenEnds.ElementAt(RNG.random.Next(0, area.OpenEnds.Count)).Key;
         }
-        static void CheckNeighbors(MapArea area, int i, int j, out MapConnections reqs, out MapConnections nots/*, out string pathtrace*/)  // returns the type necessary to meet needs of neighbors
+        static void CheckNeighbors(MapArea area, Pair coords, out MapConnections reqs, out MapConnections nots/*, out string pathtrace*/)  // returns the type necessary to meet needs of neighbors
         {
             // initialize reqs and nots to empty
             reqs = NoMapConnections;
             nots = NoMapConnections;
-            //string dirs = null;
 
-            // map is row major, so i is the row and j is the column
-            // get required entrances, and spots where entrances cant be
             // Cardinal Directions
-            CheckNeighbor(i - 1, j, ref reqs.U, ref nots.U, Directions.D); // Check Screen Up
-            CheckNeighbor(i + 1, j, ref reqs.D, ref nots.D, Directions.U); // Check Screen Down
-            CheckNeighbor(i, j - 1, ref reqs.L, ref nots.L, Directions.R); // Check Screen Left
-            CheckNeighbor(i, j + 1, ref reqs.R, ref nots.R, Directions.L); // Check Screen Right
-            // Diagonals
-            CheckNeighbor(i - 1, j + 1, ref reqs.UR, ref nots.UR, Directions.DL); // Check Screen UpRight
-            CheckNeighbor(i + 1, j + 1, ref reqs.DR, ref nots.DR, Directions.UL); // Check Screen DownRight
-            CheckNeighbor(i - 1, j - 1, ref reqs.UL, ref nots.UL, Directions.DR); // Check Screen UpLeft
-            CheckNeighbor(i + 1, j - 1, ref reqs.DL, ref nots.DL, Directions.UR); // Check Screen DownLeft
+            CheckNeighbor(new Pair(-1,  0), ref reqs.U, ref nots.U, Directions.D); // Check Screen Up
+            CheckNeighbor(new Pair( 1,  0), ref reqs.D, ref nots.D, Directions.U); // Check Screen Down
+            CheckNeighbor(new Pair( 0, -1), ref reqs.L, ref nots.L, Directions.R); // Check Screen Left
+            CheckNeighbor(new Pair( 0,  1), ref reqs.R, ref nots.R, Directions.L); // Check Screen Right
 
-            //if (dirs == null) dirs = "";
-            //pathtrace = dirs;
+            // Diagonals
+            CheckNeighbor(new Pair(-1,  1), ref reqs.UR, ref nots.UR, Directions.DL); // Check Screen UpRight
+            CheckNeighbor(new Pair( 1,  1), ref reqs.DR, ref nots.DR, Directions.UL); // Check Screen DownRight
+            CheckNeighbor(new Pair(-1, -1), ref reqs.UL, ref nots.UL, Directions.DR); // Check Screen UpLeft
+            CheckNeighbor(new Pair( 1, -1), ref reqs.DL, ref nots.DL, Directions.UR); // Check Screen DownLeft
+
             return;
 
-            void CheckNeighbor(int k, int l, ref ConnectionType req, ref ConnectionType not, Directions dir)
+            void CheckNeighbor(Pair vec, ref ConnectionType req, ref ConnectionType not, Directions dir)
             {
+                Pair index = coords + vec;
+                
+                // Program will loop back here if a dot screen is encountered
+                Loop:
+
                 // If coords are outside map bounds or contained in secretEnds
-                if (!MapBoundsCheck(area.Map, k, l) || area.SecretEnds.ContainsKey(new Pair(k, l)))
+                if (!MapBoundsCheck(area.Map, index.First, index.Second) || area.SecretEnds.ContainsKey(new Pair(index.First, index.Second)))
                 {
                     // Return a not on all connections
                     not |= ConnectionType.all;
@@ -1338,91 +1314,90 @@ namespace TEiNRandomizer
                 }
 
                 // Get the neighbor we want to check
-                MapScreen neighbor = area.Map.Data[k, l];
+                MapScreen neighbor = area.Map.Data[index.First, index.Second];
                 ConnectionType connection;
 
-                // ENTRANCES AND EXITS
-                // If the screen is not null, check the connections
                 // If it is null, it will not impose any requirements on entrances or exits
-                if (neighbor != null)
+                if (neighbor == null)
+                    return;
+
+                // If it is dots, loop back and check next screen in direction
+                if (neighbor.Type == ScreenType.Dots)
                 {
-                    if (neighbor.Type == ScreenType.Dots)
-                    {
-                        not |= ConnectionType.both;
-                        return;
-                    }
-
-                    // Get the desired connection by specifying direction
-                    connection = neighbor.Level.MapConnections.GetDirection(dir);
-
-                    // If there is an exit (or both), require an entrance
-                    if (connection.HasFlag(ConnectionType.exit))
-                    {
-                        // Set level requirements
-                        req |= ConnectionType.entrance;
-                    }
-                    // If there is only an entrance, require an exit
-                    else if (connection.HasFlag(ConnectionType.entrance))
-                        req |= ConnectionType.exit;
-                    // If there is no connection, require a not on both (secret can be blocked off later)
-                    else not |= ConnectionType.both;
-
-                    // Also, if the screen is not null, then we can't have a secret here
-                    // However, this will be handled when placing openEnds. 
-                    // When we attempt to place a secret end over a screen which is not null, we willl just block off the secret entrance
-                    //not |= ConnectionType.secret;
+                    index += vec;
+                    goto Loop;
                 }
 
-                // SECRETS
-                // If we have an OpenEnd or DeadEntry in this location, we cannot have a secret here.
-                if (area.OpenEnds.ContainsKey(new Pair(k, l))
-                 || area.DeadEntries.ContainsKey(new Pair(k, l)))
+                // Get the desired connection by specifying direction
+                connection = neighbor.Level.MapConnections.GetDirection(dir);
+
+                // If there is an exit (or both), require an entrance
+                if (connection.HasFlag(ConnectionType.exit))
                 {
-                    not |= ConnectionType.secret;
+                    // Set level requirements
+                    req |= ConnectionType.entrance;
                 }
-                
+
+                // If there is only an entrance, require an exit
+                else if (connection.HasFlag(ConnectionType.entrance))
+                    req |= ConnectionType.exit;
+
+                // If there is no connection, require a not on both
+                else not |= ConnectionType.both;
             }
         }
-        static Directions AddEnds(MapArea area, MapScreen screen, int i, int j)
+        static void AddEnds(MapArea area, MapScreen screen, Pair coords, Directions ignore = Directions.None)
         {
             // This function calls AddEnd for each direction of connection
             // The index given is the screen that is Up, Down, Left, or Right from the screen just placed.
             // The ConnectionType given is the connection type of the transition leading into the given screen.
 
-            Directions ret = Directions.None;
             MapConnections cons = screen.Level.MapConnections;
 
-            ret |= AddEnd(Directions.U, cons.U);
-            ret |= AddEnd(Directions.D, cons.D);
-            ret |= AddEnd(Directions.L, cons.L);
-            ret |= AddEnd(Directions.R, cons.R);
+            // Only check direction if a connection exists and we are not set to ignore it
+            if (cons.U != ConnectionType.none && !ignore.HasFlag(Directions.U))
+                AddEnd(new Pair(-1,  0), Directions.D, cons.U); // Check Up
+            if (cons.D != ConnectionType.none && !ignore.HasFlag(Directions.D))
+                AddEnd(new Pair( 1,  0), Directions.U, cons.D); // Check Down
+            if (cons.L != ConnectionType.none && !ignore.HasFlag(Directions.L))
+                AddEnd(new Pair( 0, -1), Directions.R, cons.L); // Check Left
+            if (cons.R != ConnectionType.none && !ignore.HasFlag(Directions.R))
+                AddEnd(new Pair( 0,  1), Directions.L, cons.R); // Check Right
 
-            ret |= AddEnd(Directions.UR, cons.UR);
-            ret |= AddEnd(Directions.DR, cons.DR);
-            ret |= AddEnd(Directions.UL, cons.UL);
-            ret |= AddEnd(Directions.DL, cons.DL);
+            if (cons.UR != ConnectionType.none && !ignore.HasFlag(Directions.UR))
+                AddEnd(new Pair(-1,  1), Directions.DL, cons.UR); // Check UpRight
+            if (cons.DR != ConnectionType.none && !ignore.HasFlag(Directions.DR))
+                AddEnd(new Pair( 1,  1), Directions.UL, cons.DR); // Check DownRight
+            if (cons.UL != ConnectionType.none && !ignore.HasFlag(Directions.UL))
+                AddEnd(new Pair(-1, -1), Directions.DR, cons.UL); // Check UpLeft
+            if (cons.DL != ConnectionType.none && !ignore.HasFlag(Directions.DL))
+                AddEnd(new Pair( 1, -1), Directions.UR, cons.DL); // Check DownLeft
 
-            return ret;
+            return;
 
-            Directions AddEnd(Directions dir, ConnectionType con)
+            void AddEnd(Pair vec, Directions dir, ConnectionType con)
             {
-                // This function adds the applicable End type for a given screen and connection type
+                // set the index at which to place the end
+                Pair index = coords + vec;
 
-                // OpenEnds    are placed on any exits     which lead to null screens
-                // DeadEntries are placed on any entrances which lead to null screens
-                // SecretEnds  are placed on any secret entrances (these are pre-checked for compatibility)
-                Pair vec = DirectionsEnum.ToVectorPair(dir);
-                Pair index = new Pair(i + vec.First, j + vec.Second);
-
-                // if there is no connections, return none
-                if (con == ConnectionType.none)
-                    return Directions.None;
+                // we will loop back here if we land on a dots screen
+                Loop:
 
                 // if the connection reaches off the map, return the direction checked
                 if (!MapBoundsCheck(area.Map, index.First, index.Second))
-                    return dir;
+                {
+                    Console.WriteLine($"Tried to place an end off of the map:\n\t{screen.FullID} {screen.Level.Name} {DirectionsEnum.Opposite(dir)} {con}");
+                    return;
+                }
 
                 MapScreen neighbor = area.Map.Data[index.First, index.Second];
+
+                // If it is dots, loop back and check next screen in direction
+                if (neighbor != null && neighbor.Type == ScreenType.Dots)
+                {
+                    index += vec;
+                    goto Loop;
+                }
 
                 // Exits are checked first because they take precedence over entrances
                 if (con.HasFlag(ConnectionType.exit))
@@ -1431,7 +1406,7 @@ namespace TEiNRandomizer
                     // So now we just worry about pre-existing OpenEnds and DeadEntries, or non-empty screens
 
                     // get neighboring screen
-                    string new_pathtrace = screen.PathTrace + (char)DirectionsEnum.Opposite(dir);
+                    string new_pathtrace = screen.PathTrace + (char)dir;
 
                     if (neighbor == null)
                     {
@@ -1446,7 +1421,7 @@ namespace TEiNRandomizer
                         else if (area.OpenEnds.TryGetValue(index, out OpenEnd o_end))
                         {
                             if (new_pathtrace.Length < o_end.PathTrace.Length)
-                                o_end.PathTrace = screen.PathTrace + (char)DirectionsEnum.Opposite(dir);
+                                o_end.PathTrace = new_pathtrace;
                             o_end.NumNeighbors++;
                         }
                         else area.OpenEnds.Add(index, new OpenEnd(index, 1, new_pathtrace));
@@ -1475,7 +1450,7 @@ namespace TEiNRandomizer
 
                     if (neighbor == null && !area.OpenEnds.ContainsKey(index) && !area.DeadEntries.ContainsKey(index))
                     {
-                        area.SecretEnds.Add(index, new OpenEnd(index, 1, screen.PathTrace + (char)DirectionsEnum.Opposite(dir)));
+                        area.SecretEnds.Add(index, new OpenEnd(index, 1, screen.PathTrace + (char)dir));
                         UpdateMinMaxCoords(area, index.First, index.Second);
                     }
                     else
@@ -1483,10 +1458,11 @@ namespace TEiNRandomizer
                         screen.BlockEntrances |= dir;
                     }
                 }
-
+                
                 // We shouldn't reach this since there's no case where a connection should be none of the above
-                Console.WriteLine($"Something weird happened in AddEnd():\n{screen.FullID}, {dir}, {con}");
-                return Directions.None;
+                else Console.WriteLine($"Something weird happened in AddEnd():\n{screen.FullID}, {dir}, {con}");
+
+                return;
             }
         }
         static Pair DotsFromCellToEdge(GameMap map, Pair coords, Pair dir)
@@ -1509,7 +1485,7 @@ namespace TEiNRandomizer
         static void CapOpenEnd(MapArea area, OpenEnd end)
         {
             // Check the neighbors to get the requirements
-            CheckNeighbors(area, end.Coords.First, end.Coords.Second, out MapConnections reqs, out MapConnections nots);
+            CheckNeighbors(area, end.Coords, out MapConnections reqs, out MapConnections nots);
 
             // Get options from pool of screens
             List<Level> options = GetOptionsComplex(area.NoBuild, reqs, nots, Connectors);
@@ -1537,8 +1513,10 @@ namespace TEiNRandomizer
             {
                 // Print debug output to console
                 if (area.Map.Data[i, j] != null)
-                    Console.WriteLine($"Overwrote a cell at {i}, {j}");
-                
+                {
+                    Console.WriteLine($"Overwrote a cell at {i}, {j}:\n\t{area.Map.Data[i, j].FullID} -> {screen.FullID}");
+                }
+
                 // Place the screen into the map
                 area.Map.Data[i, j] = screen;
 
@@ -1809,13 +1787,6 @@ namespace TEiNRandomizer
             Console.WriteLine($"\tL: {nots.L}");
             Console.WriteLine($"\tR: {nots.R}");
         }
-        // Entrance Normalization Functions
-        /*public static int[] GetTransitionSizes(ref LevelFile level)
-        {
-
-
-            return 
-        }*/
         public static void CountTransitionTiles(ref LevelFile level, Directions anchorflips)
         {
             // Normalizes all transition tags in a level
@@ -1878,35 +1849,6 @@ namespace TEiNRandomizer
                 level.data[LevelFile.ACTIVE, index] = TileID.Invisible;
             }
         }
-        
-        // Deprecated by FindTileByID in LevelManip
-        /*public static List<int> GetEntryTags(ref LevelFile level, TileID id, int index, Directions ConDir)
-        {
-            // Get basic level info
-            int lw = level.header.width;
-            int lh = level.header.height;
-            int size = lw * lh;
-
-            // Set the value to iterate by (iteration moves in same direction as anchor since first tiles are replaced)
-            int it = lw;                                                    // Defaults to iterating by level width (one row)
-            if ((ConDir & (Directions.U | Directions.D)) != 0) index = 1;   // If this is a vertical connection, iterate by 1 instead
-
-            // Create the list of adjacent tile indeces
-            List<int> adjacents = new List<int>();
-
-            // loop until break
-            while (true)
-            {
-                index += it;
-                if (index < size && level.data[LevelFile.ACTIVE, index] == id) // Check the tile is within level bounds and is the same id
-                {
-                    adjacents.Add(index);
-                    continue;
-                }
-                break;  // Break if index is OOB or id is different
-            }
-            return adjacents;   // Return the list of transition tiles
-        }*/
 
         // These functions are currently empty
         static void CreateMoreOpenEnds()
