@@ -90,14 +90,14 @@ namespace TEiNRandomizer
             // If the MapConnections in any direction is not none, then it is considered to be a connection of some sort
             Directions ret = Directions.None;
 
-            if (U != ConnectionType.none) ret |= Directions.U;
-            if (D != ConnectionType.none) ret |= Directions.D;
-            if (L != ConnectionType.none) ret |= Directions.L;
-            if (R != ConnectionType.none) ret |= Directions.R;
-            if (UR != ConnectionType.none) ret |= Directions.UR;
-            if (DR != ConnectionType.none) ret |= Directions.DR;
-            if (UL != ConnectionType.none) ret |= Directions.UL;
-            if (DL != ConnectionType.none) ret |= Directions.DL;
+            if (U != ConnectionType.None) ret |= Directions.U;
+            if (D != ConnectionType.None) ret |= Directions.D;
+            if (L != ConnectionType.None) ret |= Directions.L;
+            if (R != ConnectionType.None) ret |= Directions.R;
+            if (UR != ConnectionType.None) ret |= Directions.UR;
+            if (DR != ConnectionType.None) ret |= Directions.DR;
+            if (UL != ConnectionType.None) ret |= Directions.UL;
+            if (DL != ConnectionType.None) ret |= Directions.DL;
 
             return ret;
         }
@@ -204,14 +204,14 @@ namespace TEiNRandomizer
         public string DebugString()
         {
             string str = "";
-            if (U != ConnectionType.none) str += $"U : {U }\n";
-            if (D != ConnectionType.none) str += $"D : {D }\n";
-            if (L != ConnectionType.none) str += $"L : {L }\n";
-            if (R != ConnectionType.none) str += $"R : {R }\n";
-            if (UR != ConnectionType.none) str += $"UR: {UR}\n";
-            if (DR != ConnectionType.none) str += $"DR: {DR}\n";
-            if (UL != ConnectionType.none) str += $"UL: {UL}\n";
-            if (DL != ConnectionType.none) str += $"DL: {DL}\n";
+            if (U != ConnectionType.None) str += $"U : {U }\n";
+            if (D != ConnectionType.None) str += $"D : {D }\n";
+            if (L != ConnectionType.None) str += $"L : {L }\n";
+            if (R != ConnectionType.None) str += $"R : {R }\n";
+            if (UR != ConnectionType.None) str += $"UR: {UR}\n";
+            if (DR != ConnectionType.None) str += $"DR: {DR}\n";
+            if (UL != ConnectionType.None) str += $"UL: {UL}\n";
+            if (DL != ConnectionType.None) str += $"DL: {DL}\n";
             return str;
         }
     }
@@ -219,25 +219,14 @@ namespace TEiNRandomizer
     [Flags]
     public enum ConnectionType
     {
-        // ConnectionType is an enum of flags, so it is easy to use binary operators on the values
+        None     = 0b0000,
+        Entrance = 0b0001,
+        Exit     = 0b0010,
+        Secret   = 0b0100,
+        Lockable = 0b1000,  
 
-        none = 0b0000,
-        entrance = 0b0001,
-        exit = 0b0010,
-        secret = 0b0100,
-        locked = 0b1000,
-
-        both = entrance | exit,
-        all = entrance | exit | secret,
-
-        /*secretExit     = secret | exit,
-        secretEntrance = secret | entrance,
-
-        lockedEntrance = locked | entrance,
-        lockedExit     = locked | exit,
-        lockedBoth     = locked | both,
-        lockedSecret   = locked | secret,
-        lockedAll      = locked | all*/
+        Both = Entrance | Exit,
+        All  = Entrance | Exit | Secret,
     }
 }
 //}

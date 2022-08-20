@@ -31,7 +31,7 @@ namespace TEiNRandomizer
             {
                 // create level file
                 LevelFile level = LevelManip.Load("data/level_pools/.mapgen/tilemaps/template.lvl");
-                LevelCorruptors.CleanLevel(ref level, Collectables.Tumor, ~dirs);
+                LevelManip.BlockDirections(ref level, ~dirs);
                 LevelManip.Save(level, $"data/level_pools/.mapgen/tilemaps/{(int)dirs}.lvl");
                 
                 // write data to file
@@ -63,12 +63,12 @@ namespace TEiNRandomizer
         }
         private void LevelGenTestButton_Click(object sender, RoutedEventArgs e)
         {
-            LevelGenerator.LoadPieces(this);
+            LevelManip.LoadPieces(this);
             //RNG.SeedMe(0);
 
             for (int i = 0; i < 40; i++)
             {
-                LevelManip.Save(LevelGenerator.CreateLevel(), /*$"C:\\Program Files (x86)\\Steam\\steamapps\\common\\theendisnigh\\tilemaps/1-{i}.lvl"*/$"{RSettings.ToolsOutDirectory}/1-{i}.lvl");
+                LevelManip.Save(LevelManip.CreateLevel(), /*$"C:\\Program Files (x86)\\Steam\\steamapps\\common\\theendisnigh\\tilemaps/1-{i}.lvl"*/$"{RSettings.ToolsOutDirectory}/1-{i}.lvl");
             }
 
             MessageBox.Show($"level gen test complete", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -95,8 +95,8 @@ namespace TEiNRandomizer
                     // create XElement for piece
                     LevelFile level = LevelManip.Load(file);                  // load the associated level file
 
-                    Pair enCoord = LevelGenerator.GetEntryCoord(ref level); // get entry coord
-                    Pair exCoord = LevelGenerator.GetExitCoord(ref level);  // get exit coord
+                    Pair enCoord = LevelManip.GetEntryCoord(ref level); // get entry coord
+                    Pair exCoord = LevelManip.GetExitCoord(ref level);  // get exit coord
 
                     // check for ceilings and floors
                     piece.SetAttributeValue("ceilingEn", "False");
@@ -155,7 +155,7 @@ namespace TEiNRandomizer
                 var level = LevelManip.Load(file);
                 string filename = Path.GetFileName(file);
 
-                LevelCorruptors.ReplaceColorTiles(ref level);
+                LevelManip.ReplaceColorTiles(ref level);
                 //AutoDecorator.DecorateMachine(ref level);
 
                 string savepath = RSettings.ToolsOutDirectory + filename;
@@ -175,7 +175,7 @@ namespace TEiNRandomizer
                 var level = LevelManip.Load(file);
                 string filename = Path.GetFileName(file);
 
-                LevelCorruptors.ReplaceColorTiles(ref level);
+                LevelManip.ReplaceColorTiles(ref level);
                 AutoDecorator.DecorateMachine(ref level);
 
                 string savepath = RSettings.ToolsOutDirectory + filename;
@@ -228,8 +228,8 @@ namespace TEiNRandomizer
             {
                 var level = LevelManip.Load(file);
                 string filename = Path.GetFileName(file);
-                LevelCorruptors.SmartCorruptActive(ref level);
-                LevelCorruptors.SmartCorruptOverlay(ref level);
+                LevelManip.SmartCorruptActive(ref level);
+                LevelManip.SmartCorruptOverlay(ref level);
                 string savepath = RSettings.ToolsOutDirectory + filename;
                 LevelManip.Save(level, savepath);
             }

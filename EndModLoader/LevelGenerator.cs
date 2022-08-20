@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace TEiNRandomizer
 {
-    public static class LevelGenerator
+    public static partial class LevelManip
     {
         static List<LevelPiece> Pieces;
         static LevelPiece LTransition = new LevelPiece(LevelManip.Load("data/levelpieces/GEN/t-left.lvl")) { CeilingEx = false, FloorEx = true, CeilingEn = false, FloorEn = true };
@@ -46,8 +46,9 @@ namespace TEiNRandomizer
             //CameraBounds = { }
         }
 
-        public static LevelFile GetNewLevelFile(int width = 54, int height = 32)
+        public static LevelFile GetNewWithOOB(int width = 54, int height = 32)
         {
+            // Gets a new level and fills it with OOBMarkers
             LevelFile level = new LevelFile(width, height);
 
             int index = 0;
@@ -418,7 +419,7 @@ namespace TEiNRandomizer
             if (!noExcept && (height > UsableHeight || width > UsableWidth))
                 return false;
 
-            TempLevel = GetNewLevelFile(width, height);             // create new level
+            TempLevel = GetNewWithOOB(width, height);             // create new level
             CopyToCoords(ref left.File,  ref TempLevel, L1Origin);  // copy left  level into new level
             if (transition.File.header.height != 0)
                 CopyToCoords(ref transition.File, ref TempLevel, TOrigin);

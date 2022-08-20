@@ -188,6 +188,26 @@ namespace TEiNRandomizer
                     throw;
                 }
             }
+            public static Dictionary<string, string> ToDictionary(GonObject gon)
+            {
+                try
+                {
+                    Dictionary<string, string> ret = new Dictionary<string, string>(gon.Size());
+                    for (int i = 0; i < gon.Size(); i++)
+                    {
+                        if (ret.ContainsKey(gon[i][0].String()))
+                            Console.WriteLine(gon[i][0].String());
+                        else
+                            ret.Add(gon[i][0].String(), gon[i][1].String());
+                    }
+                    return ret;
+                }
+                catch (GonException ge)
+                {
+                    Console.Write(ge);
+                    throw;
+                }
+            }
             public static int[] ToIntArray(GonObject gon)
             {
                 int[] ret = new int[gon.Size()];

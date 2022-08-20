@@ -8,7 +8,7 @@ using System.Collections.ObjectModel;
 
 namespace TEiNRandomizer
 {
-    public static class LevelManip
+    public static partial class LevelManip
     {
         public static List<Pair> HFlipIndex;
         public static List<Pair> VFlipIndex;
@@ -51,6 +51,14 @@ namespace TEiNRandomizer
                 pair.Second = child[i][1].Int();
                 RotationIndex.Add(pair);
             }
+
+            // load level corruptors stuff
+            gon = GonObject.Load($"data/text/corruptor_tiles.gon");
+            ActiveTiles = GonObject.Manip.ToIntArray(gon["active"]);
+            EntityTiles = GonObject.Manip.ToIntArray(gon["entity"]);
+            OverlayTiles = GonObject.Manip.ToIntArray(gon["overlay"]);
+            SmartTiles = LoadDictionary(gon["smart"]);
+            ColorTiles = LoadDictionary(gon["color"]);
         }
         /*static void LoadLayer(ref byte[] filedata, ref TileID[] layer, ref int offset)
         {
@@ -263,10 +271,10 @@ namespace TEiNRandomizer
                 lw = lh * 16 / 9;
             else lh = lw * 9 / 16;
 
-            LevelFile level_out = LevelGenerator.GetNewLevelFile(lw, lh);
+            LevelFile level_out = new LevelFile(lw, lh);
             int hOffset = lh - level_in.header.width;
 
-            LevelGenerator.CopyToCoords(ref level_in, ref level_out, new Pair(0, hOffset));
+            LevelManip.CopyToCoords(ref level_in, ref level_out, new Pair(0, hOffset));
 
             return level_out;
         }

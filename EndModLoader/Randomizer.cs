@@ -287,9 +287,11 @@ namespace TEiNRandomizer
                 return 1;
             }
 
-            ErrorNotes = "";    // Init ErrorNotes to emtpy string
+            // Init ErrorNotes to emtpy string
+            ErrorNotes = "";
 
-            TilesetManip.MakeShaderPool();  // Set up the shader pool
+            // Set up the shader pool
+            TilesetManip.MakeShaderPool();
 
             MakeDrawPools();    // Make the draw pool based on which level pools are enabled
             AddFlippedLevels(ref StandardLevels);   // Flip all levels in the drawpool horizontally and add the flipped variants to the pool
@@ -301,20 +303,74 @@ namespace TEiNRandomizer
 
             WorldMap.Init();    // Init the worldmap.txt file
 
-            // Map Generation
-            //try
-            //{
-                GameMap gameMap = GenerateGameMap();
-                PrintCSV(gameMap, $"{SaveDir}/data/map.csv");
-            //}
-            /*catch (Exception e)
+            // Load Area Definitions
+            Dictionary<string, MapArea> map_areas;
             {
-                MessageBox.Show($"Error: {e.Message}", "Randomizer Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return 1;
-            }*/
+                string path = "data/text/area_defs/standard.gon";
+                GonObject file = GonObject.Load(path);
 
+                GonObject meta = file["meta"];
+                if (meta.TryGetChild("save_initiallevel", out GonObject initiallevel))
+                    WorldMap.save_initiallevel = initiallevel.String();
+                if (meta.TryGetChild("save_lightspawn", out GonObject lightspawn))
+                    WorldMap.save_lightspawn = lightspawn.String();
+                if (meta.TryGetChild("save_lightspawnlabel", out GonObject lightspawnlabel))
+                    WorldMap.save_lightspawnlabel = lightspawnlabel.String();
+                if (meta.TryGetChild("save_darkspawn", out GonObject darkspawn))
+                    WorldMap.save_darkspawn = darkspawn.String();
+                if (meta.TryGetChild("save_darkspawnlabel", out GonObject darkspawnlabel))
+                    WorldMap.save_darkspawnlabel = darkspawnlabel.String();
+
+                map_areas = LoadAreaDefs(file["areas"]);
+            }
+
+            // Generate All Areas
+            foreach (MapArea area in map_areas.Values)
+            {
+                // Switch on area generation type
+                switch (area.Type)
+                {
+                    case GenerationType.Standard:
+                        GenStandardArea(area);
+                        break;
+                    case GenerationType.Loaded:
+                        GenLoadedArea(area);
+                        break;
+                    case GenerationType.Split:
+                        GenSplitArea(area);
+                        break;
+                    case GenerationType.Composite:
+
+                        break;
+                }
+            }
+
+            // Generate Data Files
+            GenerateDataFiles(map_areas);
+
+            // Link map areas
+            GameMap final_map = new GameMap(0,0);
+            {
+                Pair e_coord;       // We don't actually use this once it's returned, but it needs to be declared
+
+                foreach (var item in map_areas)
+                {
+                    MapArea area = item.Value;
+                    if (area.GenStart)
+                    {
+                        GameMap map = LinkMaps(map_areas, area, out e_coord);
+                        final_map = ConcatenateMaps(final_map, map);
+                    }
+                    if (area.IsStandalone)
+                    {
+                        final_map = ConcatenateMaps(final_map, area.Map);
+                    }
+                }
+            }
+
+            PrintCSV(final_map, $"{SaveDir}/data/map.csv");
             WorldMap.Write();
-            CopyAssets();       // Copy the palette and swfs to save dir
+            CopyAssets();
 
             if (ErrorNotes != "") MessageBox.Show($"Minor Errors Encountered:\n{ErrorNotes}", "Error Notes", MessageBoxButton.OK, MessageBoxImage.Warning);
 

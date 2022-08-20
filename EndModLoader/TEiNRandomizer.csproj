@@ -148,7 +148,7 @@
     <Compile Include="MapScreen.cs" />
     <Compile Include="GonManip.cs" />
     <Compile Include="GonObject.cs" />
-    <Compile Include="LevelCorruptors.cs" />
+    <Compile Include="LevelCorruptions.cs" />
     <Compile Include="CSV.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Exceptions.cs" />

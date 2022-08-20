@@ -13,9 +13,13 @@ namespace TEiNRandomizer
         // Basic map area information
         public string ID;
         public string Name;
+        public bool GenStart = false;
         public bool IsStandalone = false;
         public Tileset Tileset = null;
-        public string TSRef = null;    // used when one area needs to use the tileset of another
+        public string TSRef = null;
+
+        // Used by composite areas to store sub-area defs until their time arrives
+        public GonObject SubAreaDefs;
 
         // The set of levels to be used as the draw pool for gameplay levels in this area
         // By default this is the list of standard levels, but may be replaced with the cart pool or a custom pool
@@ -37,7 +41,6 @@ namespace TEiNRandomizer
         public Dictionary<Pair, OpenEnd> DeadEntries = new Dictionary<Pair, OpenEnd>();
         public Dictionary<Pair, OpenEnd> SecretEnds  = new Dictionary<Pair, OpenEnd>();
         
-
         // Contains tags which are relevant to generation
         public string[] tags;
 
@@ -104,21 +107,11 @@ namespace TEiNRandomizer
     }
     public enum GenerationType
     {
-        // This is the standard area type used in generating normal areas
-        Standard,
-        // These exist as slight modifications of the standard generation routine
-        // They are effectively a proxy for checking the Tileset.area_type during generation
-        Dark,
-        Cart,
-        Iron,
-        Glitch,
-        // Used for hub areas, or special layouts. These are loaded from a csv file
-        Loaded,
-        // Used to create "split" areas
-        Split
-        // The below types are used in Steven areas, they do not have entrances
+        Standard    = 1,
+        Loaded      = 2,
+        Split       = 3,
+        Composite   = 4
     }
-
     public struct OpenEnd
     {
         public Pair   Coords;

@@ -58,7 +58,7 @@ namespace TEiNRandomizer
                     //    FlipCSV(saveDir + "data/map.csv");
                     //}
                     if (Settings.DoCorruptions)
-                        LevelCorruptors.CorruptLevel(ref level);
+                        LevelManip.CorruptLevel(ref level);
                     LevelManip.Save(level, file);
                 }
             }

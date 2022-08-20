@@ -194,7 +194,7 @@ namespace TEiNRandomizer
                 game_over_checkpoints = "";
                 iron_cart_entrypoints = "";
                 timed_cart_entrypoints = "";
-                console_entry_levels = "";
+                console_entry_levels = "1-1, 1d-1";
                 nevermore_entry = "7-0";
                 escape_entry = "6-21";
                 nevermore_tumorthresh = 450;
@@ -208,9 +208,9 @@ namespace TEiNRandomizer
 
                 savefile_completion_counter_max = 1;
                 savefile_completion_warpoints = "";
-                save_initiallevel = "hub-1";
-                save_lightspawn = "hub-1";
-                save_darkspawn = "hubd-1";
+                save_initiallevel = "1-1";
+                save_lightspawn = "1-1";
+                save_darkspawn = "1d-1";
                 save_lightspawnlabel = "The End";
                 save_darkspawnlabel = "Anguish";
             }

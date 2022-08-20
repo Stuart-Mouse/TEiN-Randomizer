@@ -26,7 +26,8 @@ namespace TEiNRandomizer
         FriendHead = 1 << 4,
         FriendBody = 1 << 5,
         FriendSoul = 1 << 6,
-        LevelGoal  = 1 << 7
+        LevelGoal  = 1 << 7,
+        ExitWarp   = 1 << 8
     }
 
     [Flags]

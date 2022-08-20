@@ -54,20 +54,16 @@ namespace TEiNRandomizer
         public static string GetTile() { return TileGraphicsPool[RNG.random.Next(0, TileGraphicsPool.Count())]; }
         public static string GetMusic() { return MusicPool[RNG.random.Next(0, MusicPool.Count())]; }
         public static string GetOverlay() { return OverlayGraphicsPool[RNG.random.Next(0, OverlayGraphicsPool.Count())]; }
-        public static List<string[]> GetArtAlts()
+        public static Dictionary<string, string> GetArtAlts()
         {
-            List<string[]> ret = new List<string[]>();
+            Dictionary<string, string> ret = new Dictionary<string, string>();
             if (AppResources.MainSettings.AltLevel == "Safe")
             {
                 for (int i = 0; i < ArtAlts["safe"].Size(); i++)
                 {
                     var art = ArtAlts["safe"][i];
-
-                    for (int j = 0; j < art.Size(); j++)
-                    {
-                        var alts = GonObject.Manip.ToStringArray(art);
-                        ret.Add( new string[] { art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim() } );
-                    }
+                    var alts = GonObject.Manip.ToStringArray(art);
+                    ret.Add(art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim());
                 }
             }
             else if (AppResources.MainSettings.AltLevel == "Extended")
@@ -75,12 +71,8 @@ namespace TEiNRandomizer
                 for (int i = 0; i < ArtAlts["extended"].Size(); i++)
                 {
                     var art = ArtAlts["extended"][i];
-
-                    for (int j = 0; j < art.Size(); j++)
-                    {
-                        var alts = GonObject.Manip.ToStringArray(art);
-                        ret.Add( new string[] { art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim() } );
-                    }
+                    var alts = GonObject.Manip.ToStringArray(art);
+                    ret.Add(art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim());
                 }
             }
             else if (AppResources.MainSettings.AltLevel == "Crazy")
@@ -88,12 +80,8 @@ namespace TEiNRandomizer
                 for (int i = 0; i < ArtAlts["crazy"].Size(); i++)
                 {
                     var art = ArtAlts["crazy"][i];
-
-                    for (int j = 0; j < art.Size(); j++)
-                    {
-                        var alts = GonObject.Manip.ToStringArray(art);
-                        ret.Add( new string[] { art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim() } );
-                    }
+                    var alts = GonObject.Manip.ToStringArray(art);
+                    ret.Add(art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim());
                 }
             }
             else if (AppResources.MainSettings.AltLevel == "Insane")
@@ -102,9 +90,8 @@ namespace TEiNRandomizer
                 for (int i = 0; i < art.Size(); i++)
                 {
                     var alts = GonObject.Manip.ToStringArray(ArtAlts["insane"]);
-                    ret.Add( new string[] { art[i].String() + "," + alts[RNG.random.Next(0, alts.Length)].Trim() } );
+                    ret.Add(art[i].String(), alts[RNG.random.Next(0, alts.Length)].Trim());
                 }
-                //ArtAlts += "[ChainLink, None][ChainLink2, None]";
             }
 
             return ret;

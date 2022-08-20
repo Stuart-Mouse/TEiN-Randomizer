@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TEiNRandomizer
 {
-    public static class LevelCorruptors
+    public static partial class LevelManip
     {
         public static Int32[] ActiveTiles { get; set; }
         public static Int32[] EntityTiles { get; set; }
@@ -22,15 +22,6 @@ namespace TEiNRandomizer
         public const int RED_OFFSET     = 300000;
         public const int GREEN_OFFSET   = 400000;
         
-        static LevelCorruptors()
-        {
-            var gon      = GonObject.Load($"data/text/corruptor_tiles.gon");
-            ActiveTiles  = GonObject.Manip.ToIntArray(gon["active"]);
-            EntityTiles  = GonObject.Manip.ToIntArray(gon["entity"]);
-            OverlayTiles = GonObject.Manip.ToIntArray(gon["overlay"]);
-            SmartTiles = LoadDictionary(gon["smart"]);
-            ColorTiles = LoadDictionary(gon["color"]);
-        }
         static Dictionary<int, int[]> LoadDictionary(GonObject gon)
         {
             var dict = new Dictionary<int, int[]>();
@@ -75,6 +66,8 @@ namespace TEiNRandomizer
                     rings.Add(i);
                 }
                 if (level.data[LevelFile.ACTIVE , i] == TileID.LevelGoal && !collectables.HasFlag(Collectables.LevelGoal))
+                    level.data[LevelFile.ACTIVE , i] = TileID.None;
+                if (level.data[LevelFile.ACTIVE , i] == TileID.ExitWarp && !collectables.HasFlag(Collectables.ExitWarp))
                     level.data[LevelFile.ACTIVE , i] = TileID.None;
                 if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockU)
                     level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.U) ? TileID.SolidOver : TileID.None;
@@ -136,13 +129,6 @@ namespace TEiNRandomizer
                 level.data[LevelFile.ACTIVE, tumors[i]] = TileID.FriendPieces3;
                 tumors.RemoveAt(i);
             }
-            /*if (args.HasFlag(Collectables.LevelGoal))
-            {
-                if (tumors.Count == 0) return 7;
-                int i = RNG.random.Next(0, tumors.Count);
-                level.data[LevelFile.ACTIVE, tumors[i]] = TileID.LevelGoal;
-                tumors.RemoveAt(i);
-            }*/
             if (collectables.HasFlag(Collectables.Rings))
             {
                 if (rings.Count < 10) return 8;
@@ -154,8 +140,34 @@ namespace TEiNRandomizer
                 }
             }
 
+            // Remove the color tiles from the level
+            ReplaceColorTiles(ref level);
+
             return 0;
         }
+        public static void BlockDirections(ref LevelFile level, Directions block_directions)
+        {
+            for (int i = 0; i < level.header.width * level.header.height; i++)
+            {
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockU)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.U) ? TileID.SolidOver : TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockD)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.D) ? TileID.SolidOver : TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockL)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.L) ? TileID.SolidOver : TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockR)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.R) ? TileID.SolidOver : TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockUR)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.UR) ? TileID.SolidOver : TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockDR)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.DR) ? TileID.SolidOver : TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockUL)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.UL) ? TileID.SolidOver : TileID.None;
+                if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockDL)
+                    level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.DL) ? TileID.SolidOver : TileID.None;
+            }
+        }
+
         public static void SwapTiles(ref LevelFile level, Dictionary<TileID, TileID> swaps)
         {
             for (int i = 0; i < level.header.layers; i++)
@@ -637,10 +649,6 @@ namespace TEiNRandomizer
 
                     //// SPECIAL RULES (these gotta go first so it all works right)
 
-                    // BLUE Collectables
-
-
-
                     // BLUE CONVEYORS
                     if (tile == 100027 || tile == 100028)
                     {
@@ -677,7 +685,7 @@ namespace TEiNRandomizer
                                 int num = alts[RNG.random.Next(0, alts.Length)];
                                 level.data[LevelFile.ACTIVE, index] = (TileID)num;
                             }
-                            catch (Exception) { Console.WriteLine("Exception on TileID\n"); }
+                            catch (Exception) { Console.WriteLine("Error replacing blue color tile.\n"); }
                         }
                     }
 
@@ -832,7 +840,7 @@ namespace TEiNRandomizer
                             if (adjacents.Remove(contiguous[n]))            // if it can be removed (i.e. hasn't been selected yet)
                             {
                                 level.data[LevelFile.ACTIVE, contiguous[n]] = (TileID)((int)level.data[LevelFile.ACTIVE, contiguous[n]] - YELLOW_OFFSET);  // place the tile
-                                k++;                                                                // increment loop counter
+                                k++;                                        // increment loop counter
                             }
                         }
                         // replace the rest with empty tiles
@@ -844,6 +852,7 @@ namespace TEiNRandomizer
                             level.data[LevelFile.ACTIVE, n] = TileID.None;
                         }
                     }
+
                     // RED
                     else if (tile >= RED_OFFSET + 40000 && tile < RED_OFFSET + 50000)
                     {
@@ -883,6 +892,7 @@ namespace TEiNRandomizer
                             }
                         }
                     }
+
                     // GREEN
                     else if (tile >= GREEN_OFFSET + 40000 && tile < GREEN_OFFSET + 50000)
                     {

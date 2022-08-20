@@ -52,7 +52,7 @@ namespace TEiNRandomizer
         public double ambience_volume;
         public string stop_previous_music;
 
-        public List<string[]> art_alts;
+        public Dictionary<string, string> art_alts;
 
         public string fx_shader;
 
@@ -128,7 +128,7 @@ namespace TEiNRandomizer
             if (gon["stop_previous_music"] != null)
                 stop_previous_music = gon["stop_previous_music"].String();
             if (gon["art_alts"] != null)
-                art_alts = GonObject.Manip.To2DStringArray(gon["art_alts"]).ToList();
+                art_alts = GonObject.Manip.ToDictionary(gon["art_alts"]);
             if (gon["fx_shader"] != null)
                 fx_shader = gon["fx_shader"].String();
             if (gon["fx_shader_mid"] != null)
@@ -189,14 +189,12 @@ namespace TEiNRandomizer
             return tileset;
         }
 
-
-        // OPERATOR OVERLOADS
-        // The tileset + operator overwrites each field in the left operand with the value from the right operand if it is not null.
-        // Art alts are special and get merged, overwriting only conflicting alts
-        public static Tileset operator +(Tileset a, Tileset b)
+        public static Tileset PriorityMerge(Tileset a, Tileset b)
         {
-            if (a == null) return b.Clone();
+            // merges tilesets a and b with priority
             
+            if (a == null) return b.Clone();
+
             // Create new tilset to return
             // Copy all initial values from a
             Tileset tileset = a.Clone();
@@ -275,10 +273,90 @@ namespace TEiNRandomizer
 
             return tileset;
         }
-        public static List<string[]> ArtAltsMerge(in List<string[]> low, in List<string[]> high)
+
+        public static Tileset GetDifference(Tileset a, Tileset b)
         {
-            // Create a new list to return
-            List<string[]> new_list = new List<string[]>();
+            if (a == null) return b.Clone();
+
+            Tileset tileset = new Tileset();
+
+            if (a.area_name != b.area_name)
+                tileset.area_name = b.area_name;
+            if (a.area_label_frame != b.area_label_frame)
+                tileset.area_label_frame = b.area_label_frame;
+            if (a.tile_graphics != b.tile_graphics)
+                tileset.tile_graphics = b.tile_graphics;
+            if (a.overlay_graphics != b.overlay_graphics)
+                tileset.overlay_graphics = b.overlay_graphics;
+            if (a.background_graphics != b.background_graphics)
+                tileset.background_graphics = b.background_graphics;
+            if (a.foreground_graphics != b.foreground_graphics)
+                tileset.foreground_graphics = b.foreground_graphics;
+            if (a.palette != b.palette)
+                tileset.palette = b.palette;
+            if (a.area_type != b.area_type)
+                tileset.area_type = b.area_type;
+            if (a.toxic_timer != b.toxic_timer)
+                tileset.toxic_timer = b.toxic_timer;
+            if (a.platform_physics != b.platform_physics)
+                tileset.platform_physics = b.platform_physics;
+            if (a.water_physics != b.water_physics)
+                tileset.water_physics = b.water_physics;
+            if (a.player_physics != b.player_physics)
+                tileset.player_physics = b.player_physics;
+            if (a.lowgrav_physics != b.lowgrav_physics)
+                tileset.lowgrav_physics = b.lowgrav_physics;
+            if (a.tile_particle_1 != b.tile_particle_1)
+                tileset.tile_particle_1 = b.tile_particle_1;
+            if (a.tile_particle_2 != b.tile_particle_2)
+                tileset.tile_particle_2 = b.tile_particle_2;
+            if (a.tile_particle_3 != b.tile_particle_3)
+                tileset.tile_particle_3 = b.tile_particle_3;
+            if (a.tile_particle_4 != b.tile_particle_4)
+                tileset.tile_particle_4 = b.tile_particle_4;
+            if (a.tile_particle_5 != b.tile_particle_5)
+                tileset.tile_particle_5 = b.tile_particle_5;
+            if (a.global_particle_1 != b.tile_particle_5)
+                tileset.global_particle_1 = b.global_particle_1;
+            if (a.global_particle_2 != b.global_particle_2)
+                tileset.global_particle_2 = b.global_particle_2;
+            if (a.global_particle_3 != b.global_particle_3)
+                tileset.global_particle_3 = b.global_particle_3;
+            if (a.decoration_1 != b.decoration_1)
+                tileset.decoration_1 = b.decoration_1;
+            if (a.decoration_2 != b.decoration_2)
+                tileset.decoration_2 = b.decoration_2;
+            if (a.decoration_3 != b.decoration_3)
+                tileset.decoration_3 = b.decoration_3;
+            if (a.npc_1 != b.npc_1)
+                tileset.npc_1 = b.npc_1;
+            if (a.npc_2 != b.npc_2)
+                tileset.npc_2 = b.npc_2;
+            if (a.npc_3 != b.npc_3)
+                tileset.npc_3 = b.npc_3;
+            if (a.music != b.music)
+                tileset.music = b.music;
+            if (a.ambience != b.ambience)
+                tileset.ambience = b.ambience;
+            if (a.ambience_volume != b.ambience_volume)
+                tileset.ambience_volume = b.ambience_volume;
+            if (a.stop_previous_music != b.stop_previous_music)
+                tileset.stop_previous_music = b.stop_previous_music;
+            if (a.art_alts != b.art_alts)
+                tileset.art_alts = ArtAltsMerge(a.art_alts, b.art_alts);
+            if (a.fx_shader != b.fx_shader)
+                tileset.fx_shader = b.fx_shader;
+            if (a.shaderMid != b.shaderMid)
+                tileset.shaderMid = b.shaderMid;
+            if (a.extras != b.extras)
+                tileset.extras = b.extras;
+
+            return tileset;
+        }
+
+        public static Dictionary<string, string> ArtAltsMerge(in Dictionary<string, string> low, in Dictionary<string, string> high)
+        {
+            Dictionary<string, string> new_list = new Dictionary<string, string>();
 
             // Prevent errors by checking if the lists are null
             if (low == null)
@@ -289,39 +367,14 @@ namespace TEiNRandomizer
             }
             else if (high == null) return low;
 
-            // Iterate over low-priority art alts
-            for (int i = 0; i < low.Count(); i++)
-            {
-                // Set found flag to false
-                bool found = false;
+            // add all high priority items
+            new_list = high;
 
-                // Iterate over high-priority art alts
-                // We will do this again, but our goal in the first run through is only
-                // to match those art alts that already exist in the low-priority list
-                for (int j = 0; j < high.Count(); j++)
-                {
-                    // If a the low and high priority art alts are for the same art, use the higher priority alt
-                    if (low[i][0] == high[j][0])
-                    {
-                        // add the higher priority alt to the new list of art alts
-                        new_list.Add(high[j]);
-                        // remove the alt from the high-priority list
-                        // (we do this so that it does not reappear on the second run-through)
-                        high.Remove(high[j]);
-                        // Set the found flag to true
-                        found = true;
-                        break;
-                    }
-                }
-                // If an alt for the same art was not found, use the low-priority alt
-                if (!found) new_list.Add(low[i]);
-            }
-            // Iterate over high-priroity art alts again
-            // This time we only have those that did not appear in the low-priority list
-            foreach (var high_item in high)
+            // fill in with low priority items
+            foreach (var item in low)
             {
-                // add every entry to the new list
-                new_list.Add(high_item);
+                if (!new_list.ContainsKey(item.Key))
+                    new_list.Add(item.Key, item.Value);
             }
 
             // return the newly created list
@@ -396,8 +449,8 @@ namespace TEiNRandomizer
             if (art_alts != null)
             {
                 sw.Write($"art_alts [");
-                for (int i = 0; i < art_alts.Count(); i++)
-                    sw.Write($"[{art_alts[i][0]},{art_alts[i][1]}]");
+                foreach (var item in art_alts)
+                    sw.Write($"[{item.Key},{item.Value}]");
                 sw.Write("]\n");
             }
             if (fx_shader != null)
