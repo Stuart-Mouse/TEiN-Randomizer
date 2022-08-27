@@ -45,10 +45,6 @@ namespace TEiNRandomizer
 
             // Return codes let the calling function know if minor errors are encountered,
             // which we do not want to throw as exceptions.
-            
-            // WARNING: This function will throw an index out of range exception if the level
-            // contains fewer positions for collectables than the number of collectables to be placed.
-            // This can also occur if a cart level has fewer than 10 rings, and rings are requested.
 
             List<int> tumors = new List<int>(); // indices where tumors, megatumors, and carts may be placed
             List<int> rings  = new List<int>(); // indices where rings may be placed

@@ -50,6 +50,8 @@ namespace TEiNRandomizer
                 Pair min_built = new Pair(area.MaxSize.I, area.MaxSize.J); // Initializes to highest possible value
                 Pair max_built = new Pair(0, 0);                                    // Initializes to lowest possible value
 
+                bool force_backtrack = area.Flags.HasFlag(MapArea._Flags.BackTrack);
+
                 // PLACE FIRST LEVEL
                 {
                     // Initialize Entrance coords
@@ -154,7 +156,7 @@ namespace TEiNRandomizer
                     (Level level, MapConnections mc, Dictionary<TileID, TileID> dict) choice;
                     MapScreen screen;
                     string screen_id;
-                    options = GetOptionsComplex(Directions.None, reqs, nots, area.Levels);
+                    options = GetOptionsComplex(Directions.None, reqs, nots, area.Levels, force_backtrack);
                     options = FilterOptionsOpen(reqs, options);
 
                     if (options.Count != 0)
@@ -239,7 +241,7 @@ namespace TEiNRandomizer
                         string screen_id;
 
                         List<(Level, MapConnections, Dictionary<TileID, TileID>)> options;
-                        options = GetOptionsComplex(area.NoBuild, reqs, nots, area.Levels);
+                        options = GetOptionsComplex(area.NoBuild, reqs, nots, area.Levels, force_backtrack);
                         options = FilterOptionsOpen(reqs, options);
                         Collectables collectables = area.LevelCollectables;
 
@@ -425,9 +427,9 @@ namespace TEiNRandomizer
 
                     List<(Level, MapConnections, Dictionary<TileID, TileID>)> options;
                     if (area.ExitCollectables.HasFlag(Collectables.FriendOrb))
-                        options = GetOptionsComplex(area.NoBuild, reqs, nots, FriendOrb);     // Try to get options from FriendOrb levels
+                        options = GetOptionsComplex(area.NoBuild, reqs, nots, FriendOrb, force_backtrack);     // Try to get options from FriendOrb levels
                     else
-                        options = GetOptionsComplex(area.NoBuild, reqs, nots, Connectors);     // Try to get options from Connectors
+                        options = GetOptionsComplex(area.NoBuild, reqs, nots, Connectors, force_backtrack);     // Try to get options from Connectors
                     options = FilterOptionsClosed(reqs, options);
 
                     // Get random level from the list of options
@@ -439,10 +441,9 @@ namespace TEiNRandomizer
                     {
                         screen_id = $"x{++area.ConnectorCount}";
                         screen = new MapScreen(area.ID, screen_id, ScreenType.Connector, choice.level, choice.mc, choice.dict, area_end.PathTrace, area.ExitCollectables);
+                        Console.WriteLine($"{area.ID}: {area.ExitCollectables}");
+                        Console.WriteLine($"{screen.FullID}: {screen.Collectables}");
                     }
-
-                    // Add the collectables required for the final level
-                    screen.Collectables |= area.ExitCollectables;
 
                     // place new screen
                     PlaceScreen(area_end.Coords.I, area_end.Coords.J, screen);
@@ -1024,8 +1025,6 @@ namespace TEiNRandomizer
                     debug_file.WriteLine(screen.DebugNotes);
                     debug_file.WriteLine();
 
-                    
-
                     if (Settings.DoCorruptions)
                         screen.Level.TSNeed.extras += LevelManip.CorruptLevel(ref level_file);
 
@@ -1316,7 +1315,7 @@ namespace TEiNRandomizer
             return options;
         }
         public static List<(Level, MapConnections, Dictionary<TileID, TileID>)> GetOptionsComplex
-            (Directions no_build, MapConnections reqs, MapConnections nots, List<Level> pool)
+            (Directions no_build, MapConnections reqs, MapConnections nots, List<Level> pool, bool force_backtrack = false)
         {
             List<(Level, MapConnections, Dictionary<TileID, TileID>)> options = new List<(Level, MapConnections, Dictionary<TileID, TileID>)>();
 
@@ -1336,7 +1335,19 @@ namespace TEiNRandomizer
                     if ((no_build.HasFlag(Directions.DL) && umc.DL.HasFlag(ConnectionType.Exit))) continue;
                 }
 
-                // Continue will skip over the base_level without adding it to the return list
+                if (force_backtrack)
+                {
+                    if (base_level.MapConnections.U.HasFlag(ConnectionType.Entrance) != base_level.MapConnections.U.HasFlag(ConnectionType.Exit)) continue;
+                    if (base_level.MapConnections.D.HasFlag(ConnectionType.Entrance) != base_level.MapConnections.D.HasFlag(ConnectionType.Exit)) continue;
+                    if (base_level.MapConnections.L.HasFlag(ConnectionType.Entrance) != base_level.MapConnections.L.HasFlag(ConnectionType.Exit)) continue;
+                    if (base_level.MapConnections.R.HasFlag(ConnectionType.Entrance) != base_level.MapConnections.R.HasFlag(ConnectionType.Exit)) continue;
+                    if (base_level.MapConnections.UR.HasFlag(ConnectionType.Entrance) != base_level.MapConnections.UR.HasFlag(ConnectionType.Exit)) continue;
+                    if (base_level.MapConnections.DR.HasFlag(ConnectionType.Entrance) != base_level.MapConnections.DR.HasFlag(ConnectionType.Exit)) continue;
+                    if (base_level.MapConnections.UL.HasFlag(ConnectionType.Entrance) != base_level.MapConnections.UL.HasFlag(ConnectionType.Exit)) continue;
+                    if (base_level.MapConnections.DL.HasFlag(ConnectionType.Entrance) != base_level.MapConnections.DL.HasFlag(ConnectionType.Exit)) continue;
+                }
+
+                // Check vertical connections first
                 if ((base_level.MapConnections.U & reqs.U) != reqs.U) continue;
                 if ((base_level.MapConnections.D & reqs.D) != reqs.D) continue;
                 if ((base_level.MapConnections.U & nots.U) != ConnectionType.None) continue;

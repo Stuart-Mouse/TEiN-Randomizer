@@ -386,6 +386,7 @@ namespace TEiNRandomizer
 
                             case "cart":
                                 area.AreaType = AreaType.cart;
+                                area.LevelCollectables = Collectables.Rings;
                                 goto case null;
                             case "ironcart":
                                 area.AreaType = AreaType.ironcart;
@@ -402,6 +403,7 @@ namespace TEiNRandomizer
                                 break;
                         }
                     }
+                    else area.LevelCollectables = Collectables.Tumor;
 
                     if (area_def.TryGetChild("tags", out GonObject tags_gon))
                     {
