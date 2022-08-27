@@ -29,7 +29,7 @@ namespace TEiNRandomizer
             {
                 var item = gon[i];
                 int id = item["id"].Int();
-                int[] alts = GonObject.Manip.ToIntArray(item["alts"]);
+                int[] alts = item["alts"].ToIntArray();
 
                 dict.Add(id, alts);
             }
@@ -37,7 +37,7 @@ namespace TEiNRandomizer
         }
 
         // Clean Level and Do Collectables
-        public static int CleanLevel(ref LevelFile level, Collectables collectables, Directions block_directions)
+        public static int CleanLevel(ref this LevelFile level, Collectables collectables, Directions block_directions)
         {
             // This function "cleans" the level file before saving. 
             // This entails placing all of the required collectables,
@@ -69,6 +69,8 @@ namespace TEiNRandomizer
                     level.data[LevelFile.ACTIVE , i] = TileID.None;
                 if (level.data[LevelFile.ACTIVE , i] == TileID.ExitWarp && !collectables.HasFlag(Collectables.ExitWarp))
                     level.data[LevelFile.ACTIVE , i] = TileID.None;
+                if (level.data[LevelFile.ACTIVE , i] == TileID.Key && !collectables.HasFlag(Collectables.Key))
+                    level.data[LevelFile.ACTIVE , i] = TileID.None;
                 if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockU)
                     level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.U) ? TileID.SolidOver : TileID.None;
                 if (level.data[LevelFile.OVERLAY, i] == TileID.EBlockD)
@@ -87,27 +89,8 @@ namespace TEiNRandomizer
                     level.data[LevelFile.OVERLAY, i] = block_directions.HasFlag(Directions.DL) ? TileID.SolidOver : TileID.None;
             }
 
-            if (collectables.HasFlag(Collectables.Tumor))
-            {
-                if (tumors.Count == 0) return 1;
-                int i = RNG.random.Next(0, tumors.Count);
-                level.data[LevelFile.ACTIVE, tumors[i]] = TileID.Tumor;
-                tumors.RemoveAt(i);
-            }
-            if (collectables.HasFlag(Collectables.MegaTumor))
-            {
-                if (tumors.Count == 0) return 2;
-                int i = RNG.random.Next(0, tumors.Count);
-                level.data[LevelFile.ACTIVE, tumors[i]] = TileID.MegaTumor;
-                tumors.RemoveAt(i);
-            }
-            if (collectables.HasFlag(Collectables.Cartridge))
-            {
-                if (tumors.Count == 0) return 3;
-                int i = RNG.random.Next(0, tumors.Count);
-                level.data[LevelFile.ACTIVE, tumors[i]] = TileID.Cartridge;
-                tumors.RemoveAt(i);
-            }
+            // Just in case a level doesn't have enough tumor locations, we place collectables in order of priority.
+            // Friend pieces first
             if (collectables.HasFlag(Collectables.FriendHead))
             {
                 if (tumors.Count == 0) return 4;
@@ -129,6 +112,29 @@ namespace TEiNRandomizer
                 level.data[LevelFile.ACTIVE, tumors[i]] = TileID.FriendPieces3;
                 tumors.RemoveAt(i);
             }
+            // Cartrdiges, then mega tumors
+            if (collectables.HasFlag(Collectables.Cartridge))
+            {
+                if (tumors.Count == 0) return 3;
+                int i = RNG.random.Next(0, tumors.Count);
+                level.data[LevelFile.ACTIVE, tumors[i]] = TileID.Cartridge;
+                tumors.RemoveAt(i);
+            }
+            if (collectables.HasFlag(Collectables.MegaTumor))
+            {
+                if (tumors.Count == 0) return 2;
+                int i = RNG.random.Next(0, tumors.Count);
+                level.data[LevelFile.ACTIVE, tumors[i]] = TileID.MegaTumor;
+                tumors.RemoveAt(i);
+            }
+            // Lastly, tumors and rings
+            if (collectables.HasFlag(Collectables.Tumor))
+            {
+                if (tumors.Count == 0) return 1;
+                int i = RNG.random.Next(0, tumors.Count);
+                level.data[LevelFile.ACTIVE, tumors[i]] = TileID.Tumor;
+                tumors.RemoveAt(i);
+            }
             if (collectables.HasFlag(Collectables.Rings))
             {
                 if (rings.Count < 10) return 8;
@@ -139,9 +145,6 @@ namespace TEiNRandomizer
                     rings.RemoveAt(i);
                 }
             }
-
-            // Remove the color tiles from the level
-            ReplaceColorTiles(ref level);
 
             return 0;
         }
@@ -168,7 +171,7 @@ namespace TEiNRandomizer
             }
         }
 
-        public static void SwapTiles(ref LevelFile level, Dictionary<TileID, TileID> swaps)
+        public static void SwapTiles(ref this LevelFile level, Dictionary<TileID, TileID> swaps)
         {
             for (int i = 0; i < level.header.layers; i++)
             {
@@ -633,7 +636,7 @@ namespace TEiNRandomizer
         }
 
         // Colored tile replacement routine
-        public static void ReplaceColorTiles(ref LevelFile level)
+        public static void ReplaceColorTiles(ref this LevelFile level)
         {
             int lw = level.header.width;
             int lh = level.header.height;

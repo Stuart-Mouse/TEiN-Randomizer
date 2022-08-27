@@ -71,7 +71,7 @@ namespace TEiNRandomizer
                 if (item["midfx_layer"] != null)
                     shader.midfx_layer = item["midfx_layer"].Int();
                 if (item["shader_param"] != null)
-                    shader.shader_param = item["shader_param"].Number();
+                    shader.shader_param = item["shader_param"].String();
 
                 // The set of active shaders is stored as a string array.
                 // When loading, we search for the shader's name in the set of active shaders.

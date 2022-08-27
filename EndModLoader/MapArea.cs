@@ -1,112 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TEiNRandomizer
 {
     public class MapArea
     {
-        // AreaInfo contains all of the instance information for the map generator. This is being used to create a more functional version of the map generator which should make debugging much easier.
+        public string  ID;
+        public string  Name;
+        public Tileset Tileset = new Tileset();
 
-        // Basic map area information
-        public string ID;
-        public string Name;
-        public bool GenStart = false;
-        public bool IsStandalone = false;
-        public Tileset Tileset = null;
-        public string TSRef = null;
+        public AreaType AreaType = AreaType.normal;
+        public GenerationType GenType;
 
-        // Used by composite areas to store sub-area defs until their time arrives
-        public GonObject SubAreaDefs;
+        // Map and Map Markers
+        public GameMap Map;
+        public Dictionary<Pair, OpenEnd> OpenEnds   = new Dictionary<Pair, OpenEnd>();
+        public Dictionary<Pair, OpenEnd> DeadEnds   = new Dictionary<Pair, OpenEnd>();
+        public Dictionary<Pair, OpenEnd> SecretEnds = new Dictionary<Pair, OpenEnd>();
 
-        // The set of levels to be used as the draw pool for gameplay levels in this area
-        // By default this is the list of standard levels, but may be replaced with the cart pool or a custom pool
+        // Generation Variables
         public List<Level> Levels = Randomizer.StandardLevels;
+        public Collectables   LevelCollectables  = Collectables.None;
+        public Collectables   ExitCollectables   = Collectables.None;
+        public Collectables[] SecretCollectables;
 
-        // This is used for areas which are loaded from csv
+        // Loaded Areas
         public string CSVPath;
         public string LevelPath;
-
-        // Used to keep track of how many gameplay and connector levels have been added
+        // Standard Areas
+        public int LevelQuota;
         public int LevelCount;
         public int ConnectorCount;
+        public Pair MaxSize;
+        public Directions Anchor;
+        public Directions NoBuild;
+        public List<MapScreen> ChosenScreens = new List<MapScreen>();
 
-        // The 2D array map of the area
-        public GameMap Map;
-
-        // These are the OpenEnds, DeadEntries, and SecretEnds contained within the area
-        public Dictionary<Pair, OpenEnd> OpenEnds    = new Dictionary<Pair, OpenEnd>();
-        public Dictionary<Pair, OpenEnd> DeadEntries = new Dictionary<Pair, OpenEnd>();
-        public Dictionary<Pair, OpenEnd> SecretEnds  = new Dictionary<Pair, OpenEnd>();
-        
-        // Contains tags which are relevant to generation
-        public string[] tags;
-
-        // These will be used for split and loaded areas which can have multiple exits
-        public string XUp;
-        public string XDown;
-        public string XLeft;
-        public string XRight;
+        // Linking and generation variables
+        public MapArea ChildU;
+        public MapArea ChildD;
+        public MapArea ChildL;
+        public MapArea ChildR;
+        public MapArea Child { get => ChildR; set => ChildR = value; } // To save space, single child areas (GenType standard) will use ChildR to store child reference
+         
+        // Loaded and Split areas
         public Pair XUpCoords;
         public Pair XDownCoords;
         public Pair XLeftCoords;
         public Pair XRightCoords;
-
-        // The number of gameplay levels that need to be generated in the area
-        public int LevelQuota;
-
-        // These are the area IDs of the areas to branch off of this one (that make sense?)
-        // We will need to reserve an OpenEnd for each AreaEnd
-        //public string[] AreaEnds;
-        public string ExitID;
-
-        // These are the maximum dimensions of the area
-        // Will only be computed if not equal to zero or null
-        // Order is height, width
-        public Pair MaxSize;
-
-        // This is used to determine where in the area map to place the entry point
-        public Directions Anchor;
-
-        // Map generation will not be allowed to place exits facing in any directions flagged in NoBuild
-        public Directions NoBuild;
-
-        // This is the type of generation that will be used in creating the area
-        // Some non-standard types will be generated in a separate sub-map that is appended to the main map after the fact
-        public GenerationType Type;
-
-        // These are settings that are unique to the specific area
-        // These will override global settings
-        public SettingsFile AreaSettings;
-
-        // MaxBuilt and MinBuilt area used to track which rows and columns are empty in an area's map.
-        // This is used to crop the map later
-        public Pair MinBuilt;
-        public Pair MaxBuilt;
-
-        // Entrance and exit level coordinates
+        // Standard Areas
         public Pair ECoords;
         public Pair XCoords;
-
-        // Entrance direction and exit direction
         public Directions EDir;
-        public Directions XDir; // only used by standard type areas
+        public Directions XDir;
 
-        // Determines the default collectables to be placed in the area's gameplay levels (usually either "t" or "r")
-        //Collectables DefaultCollectables;
+        // Only used in standard generation atm
+        public _Flags Flags;
 
-        // List of all the map screens in the area, used when creating area data files
-        public List<MapScreen> ChosenScreens = new List<MapScreen>();
-
-        // Generation settings
-        //public bool DoCorruptions;
-
-
+        [Flags]
+        public enum _Flags
+        {
+            None        =      0,
+            Link        = 1 << 0,
+            Concatenate = 1 << 1,
+            BackTrack   = 1 << 2,
+        }
     }
     public enum GenerationType
     {
+        None        = 0,
+
         Standard    = 1,
         Loaded      = 2,
         Split       = 3,
@@ -117,11 +80,14 @@ namespace TEiNRandomizer
         public Pair   Coords;
         public int    NumNeighbors;
         public string PathTrace;
-        public OpenEnd(Pair coords, int num_neighbors = 0, string pathtrace = "")
+        public string PlacedBy;
+        public int Distance => PathTrace.Length;
+        public OpenEnd(Pair coords, string placed_by = "", int num_neighbors = 0, string pathtrace = "")
         {
             Coords       = coords;
             NumNeighbors = num_neighbors;
             PathTrace    = pathtrace;
+            PlacedBy     = placed_by;
         }
     }
 }

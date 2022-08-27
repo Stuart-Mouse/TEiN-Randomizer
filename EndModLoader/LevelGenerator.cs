@@ -30,17 +30,17 @@ namespace TEiNRandomizer
         static Bounds CameraBounds = new Bounds();
 
         // Level Generation Info
-        static Direc EntranceDirection = Direc.None;
-        static Direc ExitDirection = Direc.None;
+        static Directions EntranceDirection = Directions.None;
+        static Directions ExitDirection     = Directions.None;
         static int WidthRemaining;
 
         static void InitGenInfo()
         {
             LastPiece = new LevelPiece();
             NextPiece = new LevelPiece();
-            EntranceDirection = Direc.L;
-            ExitDirection = Direc.R;
-            WidthRemaining = UsableWidth;
+            EntranceDirection = Directions.L;
+            ExitDirection     = Directions.R;
+            WidthRemaining    = UsableWidth;
 
             if (RNG.CoinFlip()) { Canvas.FloorEx = true; Canvas.CeilingEx = true; };
             //CameraBounds = { }
@@ -96,22 +96,22 @@ namespace TEiNRandomizer
                     switch (piece.File.data[LevelFile.TAG, index])
                     {
                         case TileID.GreenTransitionL:
-                            piece.Entrance = Direc.L;
+                            piece.EDir = Directions.L;
                             break;
                         case TileID.GreenTransitionD:
-                            piece.Entrance = Direc.D;
+                            piece.EDir = Directions.D;
                             break;
                         case TileID.YellowTransitionR:
-                            piece.Exit = Direc.R;
+                            piece.XDir = Directions.R;
                             break;
                         case TileID.YellowTransitionU:
-                            piece.Exit = Direc.U;
+                            piece.XDir = Directions.U;
                             break;
                     }
                 }
             }
 
-            if (piece.Entrance != Direc.None && piece.Exit != Direc.None)
+            if (piece.EDir != Directions.None && piece.XDir != Directions.None)
                 return true;
             else
             {
@@ -127,9 +127,9 @@ namespace TEiNRandomizer
             foreach (LevelPiece piece in Pieces)
             {
                 if (piece.Name != LastPiece.Name)
-                    if (EntranceDirection == Direc.Any || piece.Entrance == EntranceDirection) // entrance check
+                    if (piece.EDir == EntranceDirection) // entrance check
                         //if (piece.CeilingEn == Canvas.CeilingEx && piece.FloorEn == Canvas.FloorEx)
-                        if (ExitDirection == Direc.Any || piece.Exit == ExitDirection)         // exit check
+                        if (piece.XDir == ExitDirection)         // exit check
                             if (piece.File.header.height <= maxHeight && piece.File.header.width <= maxWidth) // piece size check
                                 pool.Add(piece);
             }
@@ -177,7 +177,7 @@ namespace TEiNRandomizer
             while (true)
             {
                 LastPiece = NextPiece;                                      // the old new piece becomes the new old piece
-                Direc entranceDir = (Direc)(-(int)LastPiece.Exit);  // get the opposite direction of the exit
+                Directions entranceDir = LastPiece.XDir.Opposite();  // get the opposite direction of the exit
                 WidthRemaining = UsableWidth - Canvas.File.header.width;         // The amount of space left before reaching the usable width limit
 
                 if (!AttemptAddPiece()) break; // try to add a new piece. if this fails, break from the loop
@@ -325,15 +325,15 @@ namespace TEiNRandomizer
         }
         static void GetLevelOrigins(Pair L1ExitCoord, Pair L2EntryCoord, ref Pair L1Origin, ref Pair L2Origin)
         {
-            if (L1ExitCoord.First < L2EntryCoord.First) // if the L1 exit is higher up than the L2 entrance then L2 must be moved up to meet the L1 exit
+            if (L1ExitCoord.I < L2EntryCoord.I) // if the L1 exit is higher up than the L2 entrance then L2 must be moved up to meet the L1 exit
                                                         // L2 will sit higher and thus L1 must start lower
-                L1Origin.First = L2EntryCoord.First - L1ExitCoord.First;    // find vertical offset of L1 (originOffset = L2EntryCoord.height - L1ExitCoord.height)
+                L1Origin.I = L2EntryCoord.I - L1ExitCoord.I;    // find vertical offset of L1 (originOffset = L2EntryCoord.height - L1ExitCoord.height)
 
             else                        // if the above wasn't true, then that means L1 is sitting higher than L2, and so it's vertical orgin can be set to zero.
-                L1Origin.First = 0;     // I had a more complicated formula here before but it turned out to be unnecessary.
+                L1Origin.I = 0;     // I had a more complicated formula here before but it turned out to be unnecessary.
 
             L2Origin = L1Origin + L1ExitCoord - L2EntryCoord;   // L2 origin point = originOffset + L1ExitCoord - L2EntryCoord
-            L2Origin.Second++;  // add 1 so that it is next to the L1 exit but not on top of it
+            L2Origin.J++;  // add 1 so that it is next to the L1 exit but not on top of it
         }
 
         static LevelPiece CheckCeilingFloor(ref LevelPiece left, ref LevelPiece right)
@@ -379,9 +379,9 @@ namespace TEiNRandomizer
         {
             int ceilingHeight = 0;
             int lw = level.header.width;
-            for (ceilingHeight = 1; ceilingHeight < coord.First; ceilingHeight++)
+            for (ceilingHeight = 1; ceilingHeight < coord.I; ceilingHeight++)
             {
-                int index = (coord.First - ceilingHeight) * lw + coord.Second;
+                int index = (coord.I - ceilingHeight) * lw + coord.J;
                 if (level.data[LevelFile.ACTIVE, index] == TileID.Solid) break;
             }
             return ceilingHeight;
@@ -401,17 +401,17 @@ namespace TEiNRandomizer
             GetLevelOrigins(L1ExitCoord, L2EntryCoord, ref L1Origin, ref L2Origin); // set the values in this function
 
             // calculate dimensions for new level
-            int width = L1ExitCoord.Second + right.File.header.width - L2EntryCoord.Second + 1;
-            int height = Math.Max(L1Origin.First + left.File.header.height, L2Origin.First + right.File.header.height);
+            int width = L1ExitCoord.J + right.File.header.width - L2EntryCoord.J + 1;
+            int height = Math.Max(L1Origin.I + left.File.header.height, L2Origin.I + right.File.header.height);
 
             // check for and correct ceiling and floor compatibility
             LevelPiece transition = new LevelPiece(new LevelFile(0,0)); Pair TOrigin = new Pair();
             if (left.CeilingEx != right.CeilingEn || left.FloorEx != right.FloorEn)
             {
                 transition = CheckCeilingFloor(ref left, ref right);
-                TOrigin.First = L1Origin.First + L1ExitCoord.First - transition.File.header.height + 2;
-                TOrigin.Second = L2Origin.Second;
-                width++; L2Origin.Second++;
+                TOrigin.I = L1Origin.I + L1ExitCoord.I - transition.File.header.height + 2;
+                TOrigin.J = L2Origin.J;
+                width++; L2Origin.J++;
             }
 
             // noExcept is used to make sure that the entrances and exits
@@ -426,9 +426,9 @@ namespace TEiNRandomizer
             CopyToCoords(ref right.File, ref TempLevel, L2Origin);  // copy right level into new level
 
             // get rid of old entrances
-            int index = (L1Origin.First + L1ExitCoord.First) * TempLevel.header.width + (L1Origin.Second + L1ExitCoord.Second);
+            int index = (L1Origin.I + L1ExitCoord.I) * TempLevel.header.width + (L1Origin.J + L1ExitCoord.J);
             TempLevel.data[LevelFile.TAG, index] = TileID.None;
-            index = (L2Origin.First + L2EntryCoord.First) * TempLevel.header.width + (L2Origin.Second + L2EntryCoord.Second);
+            index = (L2Origin.I + L2EntryCoord.I) * TempLevel.header.width + (L2Origin.J + L2EntryCoord.J);
             TempLevel.data[LevelFile.TAG, index] = TileID.None;
 
             // set canvas piece info
@@ -453,7 +453,7 @@ namespace TEiNRandomizer
                 for (int j = 0; j < copylw; j++)
                 {
                     copyIndex = i * copylw + j;
-                    pasteIndex = (i + coords.First) * pastelw + (j + coords.Second);
+                    pasteIndex = (i + coords.I) * pastelw + (j + coords.J);
 
                     if (pasteLevel.data[LevelFile.TAG, pasteIndex] != TileID.OOBMarker)
                         throw new LevelCollisionException();

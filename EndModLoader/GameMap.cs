@@ -31,7 +31,7 @@ namespace TEiNRandomizer
                 for (int j = 0; j < source.Width; j++)
                 {
                     // Copy map data to new map at offset
-                    dest.Data[i + coords.First, j + coords.Second] = source.Data[i, j];
+                    dest.Data[i + coords.I, j + coords.J] = source.Data[i, j];
                 }
             }
         }

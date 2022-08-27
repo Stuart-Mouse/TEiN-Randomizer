@@ -50,4 +50,4 @@ C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRand
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRandomizer.pdb
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TextWindow.g.cs
 C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TextWindow.baml
-C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRandomizer.csproj.AssemblyReference.cache
+C:\Users\Noah\Documents\GitHub\TEiN-Randomizer\EndModLoader\obj\Release\TEiNRandomizer.csprojAssemblyReference.cache

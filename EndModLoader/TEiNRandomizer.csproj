@@ -119,9 +119,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
-    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -140,16 +137,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Analysis.cs" />
     <Compile Include="MapArea.cs" />
-    <Compile Include="AreaDef.cs" />
     <Compile Include="AutoDecorator.cs" />
     <Compile Include="MapGenerator.cs" />
     <Compile Include="MapScreen.cs" />
     <Compile Include="GonManip.cs" />
     <Compile Include="GonObject.cs" />
     <Compile Include="LevelCorruptions.cs" />
-    <Compile Include="CSV.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="EXEIconDisplayer.cs" />
@@ -160,7 +154,6 @@
     <Compile Include="LevelPiece.cs" />
     <Compile Include="MainWindowButtons.cs" />
     <Compile Include="MapConnections.cs" />
-    <Compile Include="MarioLevelGenerator.cs" />
     <Compile Include="ModRandomizer.cs" />
     <Compile Include="AppResources.cs" />
     <Compile Include="RNG.cs" />
@@ -176,6 +169,7 @@
     <Compile Include="TextWindow.xaml.cs">
       <DependentUpon>TextWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TileID.cs" />
     <Compile Include="Tileset.cs" />
     <Compile Include="TilesetManip.cs" />
     <Compile Include="Utility.cs" />
@@ -203,7 +197,6 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="AppState.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

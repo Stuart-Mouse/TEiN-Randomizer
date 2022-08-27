@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 namespace TEiNRandomizer
 {
-
     public class SettingsFile
     {
         // Mod Randomization Settings
@@ -43,7 +42,17 @@ namespace TEiNRandomizer
         public bool LevelMerge { get; set; }
         public bool RandomizeAreaType { get; set; }
 
-        // Corruptor Settings
+        [Flags]
+        enum CorruptorSettings
+        {
+            None         = 0,
+            SmartCorrupt = 1 << 0,
+            Overlays     = 1 << 0,
+            SpikeStrips  = 1 << 0,
+            Crumbles     = 1 << 0,
+            Crushers     = 1 << 0,
+        }
+
         public bool CRSmart { get; set; }
         public bool CROverlays { get; set; }
         public bool CRTumors { get; set; }
@@ -59,16 +68,12 @@ namespace TEiNRandomizer
         public string[] ActiveLevelPools { get; set; }
         public string[] ActiveShaders { get; set; }
 
-
         public SettingsFile()
         {
-            // intialize true defaults in case settings file is fucked
             NumLevels = 10;
             NumAreas = 3;
             DoMusic = false;
             DoPalettes = false;
-            //MusicPerLevel = false;
-            //PalettePerLevel = true;
             DoShaders = true;
             DoParticles = true;
             DoOverlays = true;
@@ -145,56 +150,56 @@ namespace TEiNRandomizer
             GonObject gon = new GonObject();
 
             // Save randomization settings
-            gon.InsertChild(nameof(NumLevels), GonObject.Manip.FromInt(NumLevels));
-            gon.InsertChild(nameof(NumAreas), GonObject.Manip.FromInt(NumAreas));
-            gon.InsertChild(nameof(DoMusic), GonObject.Manip.FromBool(DoMusic));
-            gon.InsertChild(nameof(DoPalettes), GonObject.Manip.FromBool(DoPalettes));
-            gon.InsertChild(nameof(MusicPerLevel), GonObject.Manip.FromBool(MusicPerLevel));
-            gon.InsertChild(nameof(DoShaders), GonObject.Manip.FromBool(DoShaders));
-            gon.InsertChild(nameof(DoParticles), GonObject.Manip.FromBool(DoParticles));
-            gon.InsertChild(nameof(DoOverlays), GonObject.Manip.FromBool(DoOverlays));
-            gon.InsertChild(nameof(DoTileGraphics), GonObject.Manip.FromBool(DoTileGraphics));
-            gon.InsertChild(nameof(DoNevermoreTilt), GonObject.Manip.FromBool(DoNevermoreTilt));
-            gon.InsertChild(nameof(DoExodusWobble), GonObject.Manip.FromBool(DoExodusWobble));
-            gon.InsertChild(nameof(DoNPCs), GonObject.Manip.FromBool(DoNPCs));
-            gon.InsertChild(nameof(UseAreaTileset), GonObject.Manip.FromBool(UseAreaTileset));
-            gon.InsertChild(nameof(AreaType), GonObject.Manip.FromString(AreaType));
-            gon.InsertChild(nameof(AltLevel), GonObject.Manip.FromString(AltLevel));
-            gon.InsertChild(nameof(GenerateCustomParticles), GonObject.Manip.FromBool(GenerateCustomParticles));
-            gon.InsertChild(nameof(MaxParticles), GonObject.Manip.FromInt(MaxParticles));
-            gon.InsertChild(nameof(GameDirectory), GonObject.Manip.FromString(GameDirectory));
-            gon.InsertChild(nameof(MaxParticleEffects), GonObject.Manip.FromInt(MaxParticleEffects));
-            gon.InsertChild(nameof(ManualLoad), GonObject.Manip.FromBool(ManualLoad));
-            gon.InsertChild(nameof(DoCorruptions), GonObject.Manip.FromBool(DoCorruptions));
-            gon.InsertChild(nameof(MirrorMode), GonObject.Manip.FromBool(MirrorMode));
-            gon.InsertChild(nameof(DeadRacer), GonObject.Manip.FromBool(DeadRacer));
-            gon.InsertChild(nameof(CartLives), GonObject.Manip.FromInt(CartLives));
-            gon.InsertChild(nameof(DoPhysics), GonObject.Manip.FromBool(DoPhysics));
-            gon.InsertChild(nameof(PlatformPhysics), GonObject.Manip.FromBool(PlatformPhysics));
-            gon.InsertChild(nameof(PlayerPhysics), GonObject.Manip.FromBool(PlayerPhysics));
-            gon.InsertChild(nameof(WaterPhysics), GonObject.Manip.FromBool(WaterPhysics));
-            gon.InsertChild(nameof(LowGravPhysics), GonObject.Manip.FromBool(LowGravPhysics));
-            gon.InsertChild(nameof(LevelMerge), GonObject.Manip.FromBool(LevelMerge));
-            gon.InsertChild(nameof(ToolsInDirectory), GonObject.Manip.FromString(ToolsInDirectory));
-            gon.InsertChild(nameof(ToolsOutDirectory), GonObject.Manip.FromString(ToolsOutDirectory));
-            gon.InsertChild(nameof(RandomizeAreaType), GonObject.Manip.FromBool(RandomizeAreaType));
+            gon.InsertChild(nameof(NumLevels), GonObject.FromInt(NumLevels));
+            gon.InsertChild(nameof(NumAreas), GonObject.FromInt(NumAreas));
+            gon.InsertChild(nameof(DoMusic), GonObject.FromBool(DoMusic));
+            gon.InsertChild(nameof(DoPalettes), GonObject.FromBool(DoPalettes));
+            gon.InsertChild(nameof(MusicPerLevel), GonObject.FromBool(MusicPerLevel));
+            gon.InsertChild(nameof(DoShaders), GonObject.FromBool(DoShaders));
+            gon.InsertChild(nameof(DoParticles), GonObject.FromBool(DoParticles));
+            gon.InsertChild(nameof(DoOverlays), GonObject.FromBool(DoOverlays));
+            gon.InsertChild(nameof(DoTileGraphics), GonObject.FromBool(DoTileGraphics));
+            gon.InsertChild(nameof(DoNevermoreTilt), GonObject.FromBool(DoNevermoreTilt));
+            gon.InsertChild(nameof(DoExodusWobble), GonObject.FromBool(DoExodusWobble));
+            gon.InsertChild(nameof(DoNPCs), GonObject.FromBool(DoNPCs));
+            gon.InsertChild(nameof(UseAreaTileset), GonObject.FromBool(UseAreaTileset));
+            gon.InsertChild(nameof(AreaType), GonObject.FromString(AreaType));
+            gon.InsertChild(nameof(AltLevel), GonObject.FromString(AltLevel));
+            gon.InsertChild(nameof(GenerateCustomParticles), GonObject.FromBool(GenerateCustomParticles));
+            gon.InsertChild(nameof(MaxParticles), GonObject.FromInt(MaxParticles));
+            gon.InsertChild(nameof(GameDirectory), GonObject.FromString(GameDirectory));
+            gon.InsertChild(nameof(MaxParticleEffects), GonObject.FromInt(MaxParticleEffects));
+            gon.InsertChild(nameof(ManualLoad), GonObject.FromBool(ManualLoad));
+            gon.InsertChild(nameof(DoCorruptions), GonObject.FromBool(DoCorruptions));
+            gon.InsertChild(nameof(MirrorMode), GonObject.FromBool(MirrorMode));
+            gon.InsertChild(nameof(DeadRacer), GonObject.FromBool(DeadRacer));
+            gon.InsertChild(nameof(CartLives), GonObject.FromInt(CartLives));
+            gon.InsertChild(nameof(DoPhysics), GonObject.FromBool(DoPhysics));
+            gon.InsertChild(nameof(PlatformPhysics), GonObject.FromBool(PlatformPhysics));
+            gon.InsertChild(nameof(PlayerPhysics), GonObject.FromBool(PlayerPhysics));
+            gon.InsertChild(nameof(WaterPhysics), GonObject.FromBool(WaterPhysics));
+            gon.InsertChild(nameof(LowGravPhysics), GonObject.FromBool(LowGravPhysics));
+            gon.InsertChild(nameof(LevelMerge), GonObject.FromBool(LevelMerge));
+            gon.InsertChild(nameof(ToolsInDirectory), GonObject.FromString(ToolsInDirectory));
+            gon.InsertChild(nameof(ToolsOutDirectory), GonObject.FromString(ToolsOutDirectory));
+            gon.InsertChild(nameof(RandomizeAreaType), GonObject.FromBool(RandomizeAreaType));
 
-            gon.InsertChild(nameof(CRSmart), GonObject.Manip.FromBool(CRSmart));
-            gon.InsertChild(nameof(CROverlays), GonObject.Manip.FromBool(CROverlays));
-            gon.InsertChild(nameof(CRTumors), GonObject.Manip.FromBool(CRTumors));
-            gon.InsertChild(nameof(CRAddTiles), GonObject.Manip.FromInt(CRAddTiles));
-            gon.InsertChild(nameof(CRAddEnemies), GonObject.Manip.FromInt(CRAddEnemies));
-            gon.InsertChild(nameof(CRSpikeStrips), GonObject.Manip.FromBool(CRSpikeStrips));
-            gon.InsertChild(nameof(CRCrumbles), GonObject.Manip.FromBool(CRCrumbles));
-            gon.InsertChild(nameof(CRCrushers), GonObject.Manip.FromBool(CRCrushers));
-            gon.InsertChild(nameof(CRChaos), GonObject.Manip.FromBool(CRChaos));
-            gon.InsertChild(nameof(CRWaterLevels), GonObject.Manip.FromBool(CRWaterLevels));
+            gon.InsertChild(nameof(CRSmart), GonObject.FromBool(CRSmart));
+            gon.InsertChild(nameof(CROverlays), GonObject.FromBool(CROverlays));
+            gon.InsertChild(nameof(CRTumors), GonObject.FromBool(CRTumors));
+            gon.InsertChild(nameof(CRAddTiles), GonObject.FromInt(CRAddTiles));
+            gon.InsertChild(nameof(CRAddEnemies), GonObject.FromInt(CRAddEnemies));
+            gon.InsertChild(nameof(CRSpikeStrips), GonObject.FromBool(CRSpikeStrips));
+            gon.InsertChild(nameof(CRCrumbles), GonObject.FromBool(CRCrumbles));
+            gon.InsertChild(nameof(CRCrushers), GonObject.FromBool(CRCrushers));
+            gon.InsertChild(nameof(CRChaos), GonObject.FromBool(CRChaos));
+            gon.InsertChild(nameof(CRWaterLevels), GonObject.FromBool(CRWaterLevels));
 
-            gon.InsertChild(nameof(UserName), GonObject.Manip.FromString(UserName));
+            gon.InsertChild(nameof(UserName), GonObject.FromString(UserName));
 
             // Save pool settings
-            gon.InsertChild(nameof(ActiveLevelPools), GonObject.Manip.FromStringArray(GetActivePools()));
-            gon.InsertChild(nameof(ActiveShaders), GonObject.Manip.FromStringArray(GetActiveShaders()));
+            gon.InsertChild(nameof(ActiveLevelPools), GonObject.FromStringArray(GetActivePools()));
+            gon.InsertChild(nameof(ActiveShaders), GonObject.FromStringArray(GetActiveShaders()));
 
             gon.Save("data/text/settings.gon");
         }
@@ -278,8 +283,8 @@ namespace TEiNRandomizer
             UserName = gon[nameof(UserName)].String();
 
             // Load pool settings
-            ActiveLevelPools = GonObject.Manip.ToStringArray(gon[nameof(ActiveLevelPools)]);
-            ActiveShaders    = GonObject.Manip.ToStringArray(gon[nameof(ActiveShaders)]);
+            ActiveLevelPools = gon[nameof(ActiveLevelPools)].ToStringArray();
+            ActiveShaders    = gon[nameof(ActiveShaders)   ].ToStringArray();
 
         }
 
@@ -337,10 +342,8 @@ namespace TEiNRandomizer
             UserName = gon[nameof(UserName)].String();
 
             // Load pool settings
-            ActiveLevelPools = GonObject.Manip.ToStringArray(gon[nameof(ActiveLevelPools)]);
-            ActiveShaders = GonObject.Manip.ToStringArray(gon[nameof(ActiveShaders)]);
-
+            ActiveLevelPools = gon[nameof(ActiveLevelPools)].ToStringArray();
+            ActiveShaders    = gon[nameof(ActiveShaders)   ].ToStringArray();
         }
-
     }
 }

@@ -1,35 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Xml.Linq;
-using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace TEiNRandomizer
 {
-    enum FieldType
-    {
-        NULLGON,
-        STRING,
-        NUMBER,
-        OBJECT,
-        ARRAY,
-        BOOL
-    };
-
-    enum MergeMode
-    {
-        DEFAULT,
-        APPEND,
-        MERGE,
-        OVERWRITE,
-
-        //for numbers:
-        ADD,
-        MULTIPLY
-    };
+    
 
     class GonException : Exception
     {
@@ -47,6 +23,29 @@ namespace TEiNRandomizer
 
     public partial class GonObject
     {
+        public enum FieldType
+        {
+            NULLGON,
+            STRING,
+            NUMBER,
+            OBJECT,
+            ARRAY,
+            BOOL
+        };
+
+        enum MergeMode
+        {
+            DEFAULT,
+            APPEND,
+            MERGE,
+            OVERWRITE,
+
+            //for numbers:
+            ADD,
+            MULTIPLY
+        };
+
+
         // DEFAULT CONSTRUCTOR
         public GonObject()
         {
@@ -85,6 +84,7 @@ namespace TEiNRandomizer
         private FieldType Type;
 
         public string GetName() => Name;
+        public FieldType GetFieldType() => Type;
 
         // METHODS
 
@@ -361,21 +361,21 @@ namespace TEiNRandomizer
 
         // options with a default value
         public string String(string _default)
-            {
+        {
             if(Type != FieldType.STRING && Type != FieldType.NUMBER && Type != FieldType.BOOL) return _default;
             return String_Data;
         }
         public int Int(int _default) {
             if(Type != FieldType.NUMBER) return _default;
-        return Int_Data;
+            return Int_Data;
         }
         public double Number(double _default) {
             if(Type != FieldType.NUMBER) return _default;
-        return Float_Data;
+            return Float_Data;
         }
         public bool Bool(bool _default) {
             if(Type != FieldType.BOOL) return _default;
-        return Bool_Data;
+            return Bool_Data;
         }
 
         public bool Contains(string child)

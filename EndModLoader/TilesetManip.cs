@@ -14,11 +14,11 @@ namespace TEiNRandomizer
         {
             // Load Resources
             var gon = GonObject.Load("data/text/tilesets_pools.gon");
-            NumPalettes         = Convert.ToInt32(gon["palettes"].Int());
-            TileGraphicsPool    = GonObject.Manip.ToStringArray(gon["tile_graphics"]);
-            OverlayGraphicsPool = GonObject.Manip.ToStringArray(gon["overlay_graphics"]);
-            ParticlePool        = GonObject.Manip.ToStringArray(gon["particles"]);
-            MusicPool           = GonObject.Manip.ToStringArray(gon["music"]);
+            NumPalettes         = gon["palettes"        ].Int();
+            TileGraphicsPool    = gon["tile_graphics"   ].ToStringArray();
+            OverlayGraphicsPool = gon["overlay_graphics"].ToStringArray();
+            ParticlePool        = gon["particles"       ].ToStringArray();
+            MusicPool           = gon["music"           ].ToStringArray();
             ArtAlts             = GonObject.Load("data/text/art_alts.gon");
         }
 
@@ -57,12 +57,17 @@ namespace TEiNRandomizer
         public static Dictionary<string, string> GetArtAlts()
         {
             Dictionary<string, string> ret = new Dictionary<string, string>();
+
+            switch (AppResources.MainSettings.AltLevel)
+            {
+
+            }
             if (AppResources.MainSettings.AltLevel == "Safe")
             {
                 for (int i = 0; i < ArtAlts["safe"].Size(); i++)
                 {
                     var art = ArtAlts["safe"][i];
-                    var alts = GonObject.Manip.ToStringArray(art);
+                    var alts = art.ToStringArray();
                     ret.Add(art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim());
                 }
             }
@@ -71,7 +76,7 @@ namespace TEiNRandomizer
                 for (int i = 0; i < ArtAlts["extended"].Size(); i++)
                 {
                     var art = ArtAlts["extended"][i];
-                    var alts = GonObject.Manip.ToStringArray(art);
+                    var alts = art.ToStringArray();
                     ret.Add(art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim());
                 }
             }
@@ -80,7 +85,7 @@ namespace TEiNRandomizer
                 for (int i = 0; i < ArtAlts["crazy"].Size(); i++)
                 {
                     var art = ArtAlts["crazy"][i];
-                    var alts = GonObject.Manip.ToStringArray(art);
+                    var alts = art.ToStringArray();
                     ret.Add(art.GetName(), alts[RNG.random.Next(0, alts.Length)].Trim());
                 }
             }
@@ -89,7 +94,7 @@ namespace TEiNRandomizer
                 var art = ArtAlts["insane"];
                 for (int i = 0; i < art.Size(); i++)
                 {
-                    var alts = GonObject.Manip.ToStringArray(ArtAlts["insane"]);
+                    var alts = ArtAlts["insane"].ToStringArray();
                     ret.Add(art[i].String(), alts[RNG.random.Next(0, alts.Length)].Trim());
                 }
             }
@@ -101,11 +106,6 @@ namespace TEiNRandomizer
             // Create new tileset to return
             Tileset tileset = new Tileset();
 
-            // Set area type
-            /*if (AppResources.MainSettings.RandomizeAreaType)
-                tileset.area_type = AreaTypes[RNG.random.Next(0, 5)];
-            else tileset.area_type = AppResources.MainSettings.AreaType;*/
-
             // Set tileset info
             tileset.tile_graphics = GetTile();
             tileset.overlay_graphics = GetOverlay();
@@ -115,12 +115,16 @@ namespace TEiNRandomizer
             // Set fx_shader_mid info
             if (AppResources.MainSettings.DoShaders && ShaderPool.Count() > 0)
             {
-                if (RNG.random.Next(0, 2) == 0)  // set shader
+                if (RNG.random.Next(0, 2) == 0)
                 {
-                    tileset.shaderMid = ShaderPool[RNG.random.Next(0, ShaderPool.Count())];
+                    Shader shader_mid = ShaderPool[RNG.random.Next(0, ShaderPool.Count())];
+                    tileset.fx_shader_mid  = shader_mid.fx_shader_mid;
+                    tileset.midfx_graphics = shader_mid.midfx_graphics;
+                    tileset.midfx_layer    = shader_mid.midfx_layer;
+                    tileset.shader_param   = shader_mid.shader_param;
                 }
-                if (tileset.shaderMid != null)
-                    tileset.shaderMid.shader_param = ((float)RNG.random.Next(10, 101) / 100);
+                if (tileset.fx_shader_mid != null)
+                    tileset.shader_param = $"0.{RNG.random.Next(10, 100)}";
             }
 
             // Select or generate particle effects
@@ -132,7 +136,7 @@ namespace TEiNRandomizer
                     // Select the number of particles to generate, based on the max particles setting
                     int count = RNG.random.Next(0, AppResources.MainSettings.MaxParticleEffects);
 
-                    // Switch case "fallthrough" allows use to generate the proper number particles in descending order
+                    // Switch case "fallthrough" allows use to generate the proper number particles in descending order (This is retarded????)
                     switch (count)
                     {
                         case 2:

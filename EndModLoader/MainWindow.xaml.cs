@@ -44,7 +44,7 @@ namespace TEiNRandomizer
 
         // these collections are basically just used as enums for the possible values for certain settings (dropdown boxes bind to them)
         public ObservableCollection<string> AltLevels { get; private set; } = new ObservableCollection<string>() { "None", "Safe", "Extended", "Crazy", "Insane" };
-        public ObservableCollection<string> AreaTypes { get; private set; } = new ObservableCollection<string>() { "normal", "dark", "cart", "ironcart", "glitch" };
+        public ObservableCollection<AreaType> AreaTypes { get; private set; } = new ObservableCollection<AreaType>() { AreaType.normal, AreaType.dark, AreaType.cart, AreaType.ironcart, AreaType.glitch };
         public ObservableCollection<int> MaxParticleFXList { get; private set; } = new ObservableCollection<int>() { 1, 2, 3 };
 
         // Incorporate property change events
@@ -109,7 +109,7 @@ namespace TEiNRandomizer
             if (AppState == AppState.InGame)
             {
                 var result = MessageBox.Show(
-                    "It's recommended to quit the game before closing the MOD loader. Are you sure you want to quit anyways?",
+                    "It's recommended to quit the game and unload all files before closing the Randomizer. Are you sure you want to quit anyways?",
                     "Warning",
                     MessageBoxButton.YesNoCancel,
                     MessageBoxImage.Warning,

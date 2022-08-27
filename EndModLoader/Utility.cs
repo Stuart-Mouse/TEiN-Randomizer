@@ -9,22 +9,22 @@ namespace TEiNRandomizer
 {
     public struct Pair
     {
-        public Int32 First;
-        public Int32 Second;
+        public Int32 I;
+        public Int32 J;
 
         public Pair(int a, int b)
-        { First = a; Second = b; }
+        { I = a; J = b; }
 
         public static Pair operator +(Pair a) => a;
-        public static Pair operator -(Pair a) => new Pair(-a.First, -a.Second);
-        public static Pair operator +(Pair a, Pair b) => new Pair(a.First + b.First, a.Second + b.Second);
-        public static Pair operator -(Pair a, Pair b) => new Pair(a.First - b.First, a.Second - b.Second);
-        public static Pair operator *(Pair a, int s) => new Pair(a.First * s, a.Second * s);
-        public static Pair operator /(Pair a, int s) => new Pair(a.First / s, a.Second / s);
-        public static Pair operator *(Pair a, Pair b) => new Pair(a.First * b.First, a.Second * b.Second);
-        public static Pair operator /(Pair a, Pair b) => new Pair(a.First / b.First, a.Second / b.Second);
-        public static bool operator ==(Pair a, Pair b) { if (a.First == b.First && a.Second == b.Second) return true; else return false; }
-        public static bool operator !=(Pair a, Pair b) { if (a.First != b.First && a.Second != b.Second) return false; else return true; }
+        public static Pair operator -(Pair a) => new Pair(-a.I, -a.J);
+        public static Pair operator +(Pair a, Pair b) => new Pair(a.I + b.I, a.J + b.J);
+        public static Pair operator -(Pair a, Pair b) => new Pair(a.I - b.I, a.J - b.J);
+        public static Pair operator *(Pair a, int s) => new Pair(a.I * s, a.J * s);
+        public static Pair operator /(Pair a, int s) => new Pair(a.I / s, a.J / s);
+        public static Pair operator *(Pair a, Pair b) => new Pair(a.I * b.I, a.J * b.J);
+        public static Pair operator /(Pair a, Pair b) => new Pair(a.I / b.I, a.J / b.J);
+        public static bool operator ==(Pair a, Pair b) { if (a.I == b.I && a.J == b.J) return true;  else return false; }
+        public static bool operator !=(Pair a, Pair b) { if (a.I != b.I && a.J != b.J) return false; else return true;  }
     }
 
     public struct Bounds
@@ -37,17 +37,122 @@ namespace TEiNRandomizer
 
     public static class Utility
     {
+        public static Collectables ToCollectables(this string[] strs)
+        {
+            Collectables ret = Collectables.None;
+            if (strs.Contains("tumor"    )) ret |= Collectables.Tumor;
+            if (strs.Contains("megatumor")) ret |= Collectables.MegaTumor;
+            if (strs.Contains("cart"     )) ret |= Collectables.Cartridge;
+            if (strs.Contains("key"      )) ret |= Collectables.Key;
+            if (strs.Contains("rings"    )) ret |= Collectables.Rings;
+            if (strs.Contains("head"     )) ret |= Collectables.FriendHead;
+            if (strs.Contains("body"     )) ret |= Collectables.FriendBody;
+            if (strs.Contains("soul"     )) ret |= Collectables.FriendSoul;
+            if (strs.Contains("goal"     )) ret |= Collectables.LevelGoal;
+            if (strs.Contains("exit"     )) ret |= Collectables.ExitWarp;
+            if (strs.Contains("orb"      )) ret |= Collectables.FriendOrb;
+            return ret;
+        }
+        
+        public static Directions Opposite(this Directions dir)
+        {
+            Directions ret = Directions.None;
+
+            if (dir.HasFlag(Directions.R)) ret |= Directions.L;
+            if (dir.HasFlag(Directions.L)) ret |= Directions.R;
+            if (dir.HasFlag(Directions.D)) ret |= Directions.U;
+            if (dir.HasFlag(Directions.U)) ret |= Directions.D;
+
+            if (dir.HasFlag(Directions.UR)) ret |= Directions.DL;
+            if (dir.HasFlag(Directions.DR)) ret |= Directions.UL;
+            if (dir.HasFlag(Directions.UL)) ret |= Directions.DR;
+            if (dir.HasFlag(Directions.DL)) ret |= Directions.UR;
+
+            return ret;
+        }
+        public static Directions ToDirections(this string dir)
+        {
+            switch (dir)
+            {
+                case "u": return Directions.U;
+                case "d": return Directions.D;
+                case "l": return Directions.L;
+                case "r": return Directions.R;
+                case "ur": return Directions.UR;
+                case "dr": return Directions.DR;
+                case "ul": return Directions.UL;
+                case "dl": return Directions.DL;
+            }
+            return Directions.None;
+        }
+        public static Directions ToDirections(this string[] dir)
+        {
+            Directions ret = Directions.None;
+
+            if (dir.Contains("u")) ret |= Directions.U;
+            if (dir.Contains("d")) ret |= Directions.D;
+            if (dir.Contains("l")) ret |= Directions.L;
+            if (dir.Contains("r")) ret |= Directions.R;
+            if (dir.Contains("ur")) ret |= Directions.UR;
+            if (dir.Contains("dr")) ret |= Directions.DR;
+            if (dir.Contains("ul")) ret |= Directions.UL;
+            if (dir.Contains("dl")) ret |= Directions.DL;
+
+            return ret;
+        }
+        public static string SingleToString(this Directions dir)
+        {
+            switch (dir)
+            {
+                case Directions.U: return "up";
+                case Directions.D: return "down";
+                case Directions.L: return "left";
+                case Directions.R: return "right";
+                case Directions.UR: return "upright";
+                case Directions.DR: return "downright";
+                case Directions.UL: return "upleft";
+                case Directions.DL: return "downleft";
+            }
+            return null;
+        }
+        public static void ActOnEach(this Directions dir, Action<Directions> act)
+        {
+            if (dir.HasFlag(Directions.U)) act(Directions.U);
+            if (dir.HasFlag(Directions.D)) act(Directions.D);
+            if (dir.HasFlag(Directions.L)) act(Directions.L);
+            if (dir.HasFlag(Directions.R)) act(Directions.R);
+            if (dir.HasFlag(Directions.UR)) act(Directions.UR);
+            if (dir.HasFlag(Directions.DR)) act(Directions.DR);
+            if (dir.HasFlag(Directions.UL)) act(Directions.UL);
+            if (dir.HasFlag(Directions.DL)) act(Directions.DL);
+        }
+        public static Pair ToVectorPair(this Directions dir)
+        {
+            switch (dir)
+            {
+                case Directions.U: return new Pair(-1, 0);
+                case Directions.D: return new Pair(1, 0);
+                case Directions.L: return new Pair(0, -1);
+                case Directions.R: return new Pair(0, 1);
+                case Directions.UR: return new Pair(-1, 1);
+                case Directions.DR: return new Pair(1, 1);
+                case Directions.UL: return new Pair(-1, -1);
+                case Directions.DL: return new Pair(1, -1);
+            }
+            return new Pair(0, 0);
+        }
+        public static int CountSetBits(int a)
+        {
+            int count = 0;
+            while (a != 0)
+            {
+                count++;
+                a &= a - 1;
+            }
+            return count;
+        }
         public static Collectables CollectablesFromString(string str)
         {
-            // each char represents a collectable type
-            // t = tumor
-            // m = mega tumor
-            // c = cartridge
-            // r = rings
-            // h = friend head
-            // b = friend body
-            // s = friend soul
-
             Collectables ret = Collectables.None;
 
             if (str.Contains("t")) ret |= Collectables.Tumor;
@@ -60,7 +165,6 @@ namespace TEiNRandomizer
 
             return ret;
         }
-
         public static int FindHighestBit(byte bite)
         {
             // gets the highest active bit in the byte.
@@ -68,179 +172,9 @@ namespace TEiNRandomizer
             // if bite == 0 then -1 is returned
 
             int hiBit = -1;
-
             for (int i = 0; i < 8; i++)
-                if ((bite & (1 << i)) != 0) hiBit = i;
-
+                hiBit = ((bite & (1 << i)) != 0) ? i : hiBit;
             return hiBit;
-        }
-        
-        public static Level FindLevelInListByName(List<Level> list, string name)
-        {
-            foreach (var level in list)
-            {
-                if (level.Name == name)
-                    return level;
-            }
-            return null;
-        }
-        public static void TilesetTest()
-        {
-
-            // prevent crashing
-            TilesetManip.MakeShaderPool();
-
-            // create a drawpool for testing
-            var drawPool = new List<Level>();
-            foreach (var cat in AppResources.LevelPoolCategories)
-            {
-                if (cat.Enabled)
-                {
-                    foreach (var pool in cat.Pools) // push levels in all active level pools into drawpool vector
-                    {
-                        if (pool.Enabled)
-                        {
-                            foreach (var level in pool.Levels)
-                            {
-                                drawPool.Add(level);
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Create a few MapAreas for testing purposes
-            /*List<MapGenerator> MapAreasList = new List<MapGenerator>();
-            for (int i = 0; i < 10; i++)
-            {
-                // Create new MapArea
-                // the map area is created with a randmized name and tileset already initialized
-                MapGenerator mapArea = new MapGenerator();
-
-                // select some random levels
-                for (int j = 0; j < 10; j++)
-                {
-                    int selection = RNG.random.Next(0, drawPool.Count());
-                    mapArea.Levels.Add(drawPool[selection]);
-                }
-
-                MapAreasList.Add(mapArea);
-            }
-
-            // Create a StreamWriter object for writing to the tilesets.txt file
-            using (StreamWriter sw = File.CreateText("data/tilesets.txt.append"))
-            {
-                // Loop over map areas
-                for (int i = 0; i < MapAreasList.Count(); i++)
-                {
-                    // Get reference to MapArea #i in list 
-                    MapGenerator mapArea = MapAreasList[i];
-                     
-                    // Set areaTileset to Map Area's tileset
-                    Tileset areaTileset = mapArea.Tileset;
-
-                    // Write the area's tileset to the file
-                    sw.WriteLine($"{mapArea.Name} {{");
-                    areaTileset.WriteTileset(sw);
-
-                    // Loop over levels in area
-                    for (int j = 0; j < mapArea.Levels.Count(); j++)
-                    {
-                        // Get reference to Level #i in area 
-                        Level level = mapArea.Levels[j];
-
-                        // Calculate the final tileset
-                        // The tilesets are added in order of priority, from lowest to highest
-                        Tileset levelTileset = (level.TSDefault + areaTileset) + level.TSNeed;
-                       
-                        // Write level tileset to the file
-                        sw.WriteLine($"{level.Name} {{");
-                        levelTileset.WriteTileset(sw);
-                        sw.WriteLine("}");
-                    }
-
-                    // write closing bracket for area tileset
-                    sw.WriteLine("}\n");
-                }
-            }*/
-        }
-        public static void WriteTilesetFunction()
-        {
-            string outFile = "";
-
-            string[] names = {"area_name", "area_label_frame", "tile_graphics", "overlay_graphics", "background_graphics", "foreground_graphics", "palette", "area_type", "toxic_timer", "tile_particle_1", "tile_particle_2", "tile_particle_3", "tile_particle_4", "tile_particle_5", "global_particle_1", "global_particle_2", "global_particle_3", "decoration_1", "decoration_2", "decoration_3", "npc_1", "npc_2", "npc_3", "music", "ambience", "ambience_volume", "stop_previous_music", "art_alts", "fx_shader", "fx_shader_mid", "midfx_layer", "midfx_graphics", "shader_param" };
-
-            foreach (string str in names)
-            {
-                outFile += $"if (gon[\"{str}\"] != null)\n";
-                outFile += $"\t{str} = gon[\"{str}\"].String();\n\n";
-            }
-
-            outFile += "\n\n\n";
-
-            foreach (string str in names)
-            {
-                outFile += $"if (b.{str} != null)\n";
-                outFile += $"\ta.{str} = b.{str};\n";
-            }
-
-            File.WriteAllText("testout.txt", outFile);
-        }
-
-        public static void FixAltsFile()
-        {
-            var gon = GonObject.Load("data/text/art_alts.gon");
-
-            string outFile = "";
-
-            for (int i = 0; i < gon["safe"].Size(); i++)
-            {
-                var art = gon["safe"][i];
-                outFile += $"{art.GetName()} [ ";
-
-                for (int j = 0; j < art.Size(); j++)
-                {
-                    outFile += $"\"{art[j].String()}\", ";
-                }
-                outFile = outFile.TrimEnd(' ', ',');
-                outFile += "]\n";
-            }
-
-            for (int i = 0; i < gon["extended"].Size(); i++)
-            {
-                var art = gon["extended"][i];
-                outFile += $"{art.GetName()} [ ";
-
-                for (int j = 0; j < art.Size(); j++)
-                {
-                    outFile += $"\"{art[j].GetName()}\", ";
-                }
-                outFile = outFile.TrimEnd(' ', ',');
-                outFile += "]\n";
-            }
-
-            for (int i = 0; i < gon["crazy"].Size(); i++)
-            {
-                var art = gon["crazy"][i];
-                outFile += $"{art.GetName()} [ ";
-
-                for (int j = 0; j < art.Size(); j++)
-                {
-                    outFile += $"\"{art[j].GetName()}\", ";
-                }
-                outFile = outFile.TrimEnd(' ', ',');
-                outFile += "]\n";
-            }
-
-            for (int i = 0; i < gon["insane"].Size(); i++)
-            {
-                string name = gon["insane"][i].GetName();
-                outFile += ($"\"{name}\", ");
-            }
-            outFile = outFile.TrimEnd(' ', ',');
-            outFile += "]\n";
-
-            File.WriteAllText("art_alts.txt", outFile);
         }
         public static void XML2GON(string path)
         {
@@ -333,31 +267,6 @@ namespace TEiNRandomizer
 
             File.WriteAllText($"data/level_pools/The End is Nigh/{fileName}.gon", outFile);
         }
-
-        
-        public static string[] XElementToArray(XElement element)         // converts xml element value to a string array
-        {
-            string t_string = Convert.ToString(element.Value).Trim();
-            var myArray = t_string.Split('\n');
-            for (int i = 0; i < myArray.Count(); i++)
-            {
-                myArray[i] = myArray[i].Trim('\t', ' ');
-            }
-
-            return myArray;
-        }
-        public static Int32[] XElementToArray(XElement element, bool y)  // converts xml element value to a string array
-        {
-            string t_string = Convert.ToString(element.Value).Trim();
-            var myArray = t_string.Split('\n');
-            int[] intArray = new int[myArray.Count()];
-            for (int i = 0; i < myArray.Count(); i++)
-            {
-                intArray[i] = Convert.ToInt32(myArray[i].Trim('\t'), ' ');
-            }
-
-            return intArray;
-        }
         static void FlipCSV(string path)
         {
             var arr = File.ReadAllLines(path);
@@ -400,7 +309,6 @@ namespace TEiNRandomizer
                 list[n] = value;
             }
         }
-
         public static string[][] LoadCSV(string path, out int length)
         {
             // loads a csv file into a jagged 2d string array

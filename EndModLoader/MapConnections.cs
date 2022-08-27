@@ -26,7 +26,7 @@ namespace TEiNRandomizer
         }
 
         // Get ConnectionType by direction
-        public ConnectionType GetDirection(Directions dir)
+        ConnectionType GetDirection(Directions dir)
         {
             // Switch to the correct connection based on direction passed in
             switch (dir)
@@ -51,7 +51,7 @@ namespace TEiNRandomizer
                     throw new Exception("Invalid direction, cannot be used to index ConnectionType.");
             }
         }
-        public void SetDirection(Directions dir, ConnectionType con)
+        void SetDirection(Directions dir, ConnectionType con)
         {
             // Switch to the correct connection based on direction passed in
             switch (dir)

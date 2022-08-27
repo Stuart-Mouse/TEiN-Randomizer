@@ -64,17 +64,11 @@ namespace TEiNRandomizer
         public static LevelPool LoadPool(string path)
         {
             // This function is used to load a level pool from a Gon file into the internal LevelPool type.
-
-            // Create new level pool
             LevelPool pool = new LevelPool();
 
-            // Set pool name
             pool.Name = Path.GetFileNameWithoutExtension(path);
-
-            // Create new list of levels
             pool.Levels = new List<Level>();
 
-            // Read the gon file data for the pool
             // Open LevelPool File
             GonObject gon = GonObject.Load(path);
 
@@ -144,6 +138,7 @@ namespace TEiNRandomizer
                 level.TSDefault = pool_default;
                 level.TSNeed = pool_need;
                 level.Name = gon_level.GetName();
+                //level.TileSwaps = new Dictionary<TileID, TileID>();
 
                 // Set connections
                 if (gon_level.TryGetChild("connections", out GonObject gonConnections))

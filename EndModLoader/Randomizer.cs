@@ -53,22 +53,22 @@ namespace TEiNRandomizer
         static void LoadFunnyNames()
         {
             var gon         = GonObject.Load("data/text/area_names.gon");
-            LINames         = GonObject.Manip.ToStringArray(gon["name"]);
-            LILocations     = GonObject.Manip.ToStringArray(gon["location"]);
-            LIAdjectives    = GonObject.Manip.ToStringArray(gon["adjective"]);
-            LINouns         = GonObject.Manip.ToStringArray(gon["noun"]);
+            LINames         = gon["name"     ].ToStringArray();
+            LILocations     = gon["location" ].ToStringArray();
+            LIAdjectives    = gon["adjective"].ToStringArray();
+            LINouns         = gon["noun"     ].ToStringArray();
         }
         static void LoadNPCs()
         {
             var gon = GonObject.Load($"data/text/npcs.gon");    // open npcs file
-            NPCMovieClips = GonObject.Manip.ToStringArray(gon["movieclips"]);
-            NPCSoundIDs = GonObject.Manip.ToStringArray(gon["movieclips"]);
+            NPCMovieClips = gon["movieclips"].ToStringArray();
+            NPCSoundIDs   = gon["soundids"  ].ToStringArray();
             NPCTexts = new List<string[]>();
 
             var text = gon["text"];
             for (int i = 0; i < text.Size(); i++)
             {
-                NPCTexts.Add(GonObject.Manip.ToStringArray(text[i]));
+                NPCTexts.Add(text[i].ToStringArray());
             }
         }
 
@@ -257,7 +257,7 @@ namespace TEiNRandomizer
                 Level level = pool[i].Clone();
 
                 // Swap left and right entrances
-                ConnectionType temp = level.MapConnections.L;
+                ConnectionType temp    = level.MapConnections.L;
                 level.MapConnections.L = level.MapConnections.R;
                 level.MapConnections.R = temp;
 
@@ -271,14 +271,13 @@ namespace TEiNRandomizer
 
                 // Set FlippedHoriz flag to true
                 // This notifies the randomizer to flip the level file when copying the level to the output folder
-                level.FlippedHoriz = true;
+                level.FlipH = true;
 
                 pool.Add(level);
             }
         }
         public static int Randomize(string args = null)
         {
-
             SaveDir = Settings.GameDirectory;
             if (args == "savemod") SaveDir = SaveRunPrompt();
             if (SaveDir == null)
@@ -287,25 +286,34 @@ namespace TEiNRandomizer
                 return 1;
             }
 
+            // Delete existing debug.md file
+            if (File.Exists("tools/debug.md"))
+                File.Delete("tools/debug.md");
             // Init ErrorNotes to emtpy string
             ErrorNotes = "";
 
             // Set up the shader pool
             TilesetManip.MakeShaderPool();
 
-            MakeDrawPools();    // Make the draw pool based on which level pools are enabled
-            AddFlippedLevels(ref StandardLevels);   // Flip all levels in the drawpool horizontally and add the flipped variants to the pool
-            AddFlippedLevels(ref CartLevels);
+            MakeDrawPools();
+
             Connectors = LevelPool.LoadPool("data/level_pools/.mapgen/NewConnectors.gon").Levels;
-            
+            Secrets    = LevelPool.LoadPool("data/level_pools/Secrets.gon").Levels;
+
+            AddFlippedLevels(ref StandardLevels);
+            AddFlippedLevels(ref CartLevels);
+            AddFlippedLevels(ref Secrets);
+
             //CartLevels = Connectors = StandardLevels = LevelPool.LoadPool("data/level_pools/.mapgen/NewConnectors.gon").Levels;
             try { CreateFolders(); } catch (Exception ex) { Console.WriteLine($"Error creating folders. Exception {ex}"); MessageBox.Show($"Error creating folders. Exception {ex}", "Error", MessageBoxButton.OK, MessageBoxImage.Error); throw; }
 
             WorldMap.Init();    // Init the worldmap.txt file
 
             // Load Area Definitions
-            Dictionary<string, MapArea> map_areas;
+            List<MapArea> head_areas = new List<MapArea>();
+            List<MapArea> cart_areas = new List<MapArea>();
             {
+                // Load Meta Info
                 string path = "data/text/area_defs/standard.gon";
                 GonObject file = GonObject.Load(path);
 
@@ -321,51 +329,176 @@ namespace TEiNRandomizer
                 if (meta.TryGetChild("save_darkspawnlabel", out GonObject darkspawnlabel))
                     WorldMap.save_darkspawnlabel = darkspawnlabel.String();
 
-                map_areas = LoadAreaDefs(file["areas"]);
-            }
+                // Load Map Areas
+                List<GonObject> loaded_gons = new List<GonObject>();
+                if (!file.TryGetChild("areas", out GonObject gon_areas))
+                    throw new Exception("Error: No areas found in area defs file.");
+                if (!meta.TryGetChild("link", out GonObject gon_link))
+                    throw new Exception("Error: No link info found in area defs meta.");
 
-            // Generate All Areas
-            foreach (MapArea area in map_areas.Values)
-            {
-                // Switch on area generation type
-                switch (area.Type)
+                string[] link_ids = gon_link.ToStringArray();
+                for (int i = 0; i < link_ids.Length; i++)
                 {
-                    case GenerationType.Standard:
-                        GenStandardArea(area);
-                        break;
-                    case GenerationType.Loaded:
-                        GenLoadedArea(area);
-                        break;
-                    case GenerationType.Split:
-                        GenSplitArea(area);
-                        break;
-                    case GenerationType.Composite:
+                    if (!gon_areas.TryGetChild(link_ids[i], out GonObject def))
+                        throw new Exception($"Error: Could not find area {link_ids[i]} in areas");
+                    head_areas.Add(LoadAreaDef(def));
+                }
 
-                        break;
+                if (file.TryGetChild("carts", out GonObject gon_carts))
+                    for (int i = 0; i < gon_carts.Size(); i++)
+                    {
+                        GonObject gon_area = gon_carts[i];
+                        string id = gon_area.GetName();
+                        cart_areas.Add(LoadAreaDef(gon_area));
+                        WorldMap.cartworlds += $"{id} ";
+                    }
+
+                MapArea LoadAreaDef(GonObject area_def)
+                {
+                    if (loaded_gons.Contains(area_def)) 
+                        throw new Exception($"Error: Area def {area_def.GetName()} has already been loaded. Areas cannot be multiply referenced.");
+                    loaded_gons.Add(area_def);
+
+                    MapArea area = new MapArea();
+                    area.ID = area_def.GetName();
+
+                    if (area_def.TryGetChild("name", out GonObject name))
+                        area.Name = name.String();
+                    else area.Name = GetFunnyAreaName();
+
+                    if (area_def.TryGetChild("tileset", out GonObject gon_tileset))
+                    {
+                        if (gon_tileset.TryGetChild("default", out GonObject gon_default))
+                            area.Tileset = Tileset.PriorityMerge(area.Tileset, new Tileset(gon_default));
+                        area.Tileset = Tileset.PriorityMerge(area.Tileset, TilesetManip.GetTileset());
+                        if (gon_tileset.TryGetChild("need", out GonObject gon_need))
+                            area.Tileset = Tileset.PriorityMerge(area.Tileset, new Tileset(gon_need));
+                    }
+                    else area.Tileset = TilesetManip.GetTileset();
+
+                    if (area_def.TryGetChild("area_type", out GonObject areatype_gon))
+                    {
+                        switch (areatype_gon.String())
+                        {
+                            case "dark":
+                                area.AreaType = AreaType.dark;
+                                break;
+
+                            case "cart":
+                                area.AreaType = AreaType.cart;
+                                goto case null;
+                            case "ironcart":
+                                area.AreaType = AreaType.ironcart;
+                                goto case null;
+                            case "glitch":
+                                area.AreaType = AreaType.glitch;
+                                goto case null;
+
+                            // This case cannot occur naturally, so we use it for the common attributes of cart cases
+                            case null:
+                                WorldMap.cartworlds += $"{area.ID} ";
+                                area.Flags |= MapArea._Flags.Concatenate;
+                                area.Levels = CartLevels;
+                                break;
+                        }
+                    }
+
+                    if (area_def.TryGetChild("tags", out GonObject tags_gon))
+                    {
+                        string[] tags = tags_gon.ToStringArray();
+
+                        if (tags.Contains("backtrack"))
+                            area.Flags |= MapArea._Flags.BackTrack;
+                        if (tags.Contains("mainworlds"))
+                            WorldMap.mainworlds += $"{area.ID} ";
+                    }
+
+                    if (area_def.Contains("entrance_dir"))
+                        area.EDir = area_def["entrance_dir"].String().ToDirections();
+
+                    // GenType-specific loading below
+                    string gen_type = area_def["gen_type"].String();
+
+                    if (gen_type == "standard")
+                    {
+                        area.GenType = GenerationType.Standard;
+                        area.LevelQuota = area_def["levels"].Int();
+                        area.MaxSize.I = area_def["bounds"][0].Int();
+                        area.MaxSize.J = area_def["bounds"][1].Int();
+                        if (area_def.TryGetChild("exit_dir", out GonObject exit_dir))
+                            area.XDir = exit_dir.String().ToDirections();
+                        if (area_def.TryGetChild("anchor", out GonObject anchor))
+                            area.Anchor = anchor.String().ToDirections();
+                        if (area_def.TryGetChild("no_build", out GonObject no_build))
+                            area.NoBuild = no_build.ToStringArray().ToDirections();
+
+
+                        if (area_def.TryGetChild("exit", out GonObject exit))
+                        {
+                            GonObject.FieldType type = exit.GetFieldType();
+                            if (type == GonObject.FieldType.ARRAY)
+                                area.ExitCollectables = exit.ToStringArray().ToCollectables();
+                            else
+                            {
+                                string child_id = exit.String();
+                                if (child_id == area.ID)
+                                    throw new Exception("Areas cannot list self as next area id.");
+                                if (!gon_areas.TryGetChild(child_id, out GonObject child))
+                                    throw new Exception($"Could not find area definition with matching id {child_id}.");
+                                area.Child = LoadAreaDef(child);
+                            }
+                        }
+
+                        return area;
+                    }
+
+                    if (gen_type == "loaded")
+                    {
+                        area.GenType = GenerationType.Loaded;
+                        area.CSVPath = area_def["csvfile"].String();
+                        area.LevelPath = area_def["levelpath"].String();
+                    }
+                    else if (gen_type == "split")
+                        area.GenType = GenerationType.Split;
+
+                    if (area_def.TryGetChild("exits", out GonObject exits))
+                    {
+                        area.ChildU = AddChild("up");
+                        area.ChildD = AddChild("down");
+                        area.ChildL = AddChild("left");
+                        area.ChildR = AddChild("right");
+
+                        MapArea AddChild(string exit_id)
+                        {
+                            if (exits.TryGetChild(exit_id, out GonObject exit))
+                            {
+                                string child_id = exit.String();
+                                if (child_id == area.ID)
+                                    throw new Exception("Areas cannot list self as next area id.");
+                                if (!gon_areas.TryGetChild(child_id, out GonObject child))
+                                    throw new Exception($"Could not find area definition with matching id {child_id}.");
+                                return LoadAreaDef(child);
+                            }
+                            return null;
+                        }
+                    }
+
+                    return area;
+
+                    
                 }
             }
 
-            // Generate Data Files
-            GenerateDataFiles(map_areas);
-
-            // Link map areas
-            GameMap final_map = new GameMap(0,0);
+            GameMap final_map = new GameMap(0, 0);
+            for (int i = 0; i < head_areas.Count; i++)
             {
-                Pair e_coord;       // We don't actually use this once it's returned, but it needs to be declared
-
-                foreach (var item in map_areas)
-                {
-                    MapArea area = item.Value;
-                    if (area.GenStart)
-                    {
-                        GameMap map = LinkMaps(map_areas, area, out e_coord);
-                        final_map = ConcatenateMaps(final_map, map);
-                    }
-                    if (area.IsStandalone)
-                    {
-                        final_map = ConcatenateMaps(final_map, area.Map);
-                    }
-                }
+                (GameMap map, Pair e_coord) = GenerateAndLink(head_areas[i]);
+                final_map = ConcatenateMaps(final_map, map);
+            }
+            for (int i = 0; i < cart_areas.Count; i++)
+            {
+                (GameMap map, Pair e_coord) = GenerateAndLink(cart_areas[i]);
+                final_map = ConcatenateMaps(final_map, map);
             }
 
             PrintCSV(final_map, $"{SaveDir}/data/map.csv");
@@ -376,7 +509,5 @@ namespace TEiNRandomizer
 
             return 0;
         }
-
-        
     }
 }

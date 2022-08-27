@@ -17,83 +17,49 @@ namespace TEiNRandomizer
         static LevelManip()
         {
             // load flips dictionary in constructor
-            HFlipIndex = new List<Pair> { };
-            VFlipIndex = new List<Pair> { };
             var gon = GonObject.Load("data/text/tile_flips.gon");
             Pair pair;
 
             // load horizontal flips
             var child = gon["horz"];
+            HFlipIndex = new List<Pair>(child.Size());
             for (int i = 0; i < child.Size(); i++)
             {
                 // We can safely index both the first and second item directly since we know they will always be present
-                pair.First = child[i][0].Int();
-                pair.Second = child[i][1].Int();
+                pair.I = child[i][0].Int();
+                pair.J = child[i][1].Int();
                 HFlipIndex.Add(pair);
             }
 
             // load vertical flips
             child = gon["vert"];
+            VFlipIndex = new List<Pair>(child.Size());
             for (int i = 0; i < child.Size(); i++)
             {
-                pair.First = child[i][0].Int();
-                pair.Second = child[i][1].Int();
+                pair.I = child[i][0].Int();
+                pair.J = child[i][1].Int();
                 VFlipIndex.Add(pair);
             }
 
             // load rotations
             gon = GonObject.Load("data/text/tile_rotations.gon");
-            RotationIndex = new List<Pair> { };
             child = gon["rotate"];
+            RotationIndex = new List<Pair>(child.Size());
             for (int i = 0; i < child.Size(); i++)
             {
-                pair.First = child[i][0].Int();
-                pair.Second = child[i][1].Int();
+                pair.I = child[i][0].Int();
+                pair.J = child[i][1].Int();
                 RotationIndex.Add(pair);
             }
 
             // load level corruptors stuff
             gon = GonObject.Load($"data/text/corruptor_tiles.gon");
-            ActiveTiles = GonObject.Manip.ToIntArray(gon["active"]);
-            EntityTiles = GonObject.Manip.ToIntArray(gon["entity"]);
-            OverlayTiles = GonObject.Manip.ToIntArray(gon["overlay"]);
+            ActiveTiles  = gon["active" ].ToIntArray();
+            EntityTiles  = gon["entity" ].ToIntArray();
+            OverlayTiles = gon["overlay"].ToIntArray();
             SmartTiles = LoadDictionary(gon["smart"]);
             ColorTiles = LoadDictionary(gon["color"]);
         }
-        /*static void LoadLayer(ref byte[] filedata, ref TileID[] layer, ref int offset)
-        {
-            try
-            {
-                byte[] tempBytes = new byte[4];
-                for (int i = 0; i < layer.Length; i++)
-                {
-                    Buffer.BlockCopy(filedata, offset, tempBytes, 0, 4);
-                    Array.Reverse(tempBytes);
-                    layer[i] = (TileID)(BitConverter.ToInt32(tempBytes, 0));
-                    offset += 4;
-                }
-            }
-            catch (Exception)
-            {
-                for (int i = 0; i < layer.Length; i++)
-                {
-                    layer[i] = 0;
-                    offset += 4;
-                }
-            }
-        }
-
-        static void SaveLayer(ref byte[] filedata, ref TileID[] layer, ref int offset)
-        {
-            byte[] tempBytes = new byte[4];
-            for (int i = 0; i < layer.Length; i++)
-            {
-                tempBytes = BitConverter.GetBytes((Int32)layer[i]);
-                Array.Reverse(tempBytes);
-                Buffer.BlockCopy(tempBytes, 0, filedata, offset, 4);
-                offset += 4;
-            }
-        }*/
         public static LevelFile Load(string path)
         {
             LevelFile level = new LevelFile() { };
@@ -222,10 +188,10 @@ namespace TEiNRandomizer
             {
                 foreach (var pair in HFlipIndex)
                 {
-                    if (id == (TileID)pair.First)
-                        id = (TileID)pair.Second;
-                    else if (id == (TileID)pair.Second)
-                        id = (TileID)pair.First;
+                    if (id == (TileID)pair.I)
+                        id = (TileID)pair.J;
+                    else if (id == (TileID)pair.J)
+                        id = (TileID)pair.I;
                 }
             }
         }
@@ -254,8 +220,8 @@ namespace TEiNRandomizer
             {
                 foreach (var pair in RotationIndex)
                 {
-                    if (id == (TileID)pair.First)
-                        return (TileID)pair.Second;
+                    if (id == (TileID)pair.I)
+                        return (TileID)pair.J;
                 }
                 return id;
             }
@@ -334,12 +300,12 @@ namespace TEiNRandomizer
             int pastelw = pasteLevel.header.width;
             int pastelh = pasteLevel.header.height;
 
-            for (int i = 0; i < size.First; i++)
+            for (int i = 0; i < size.I; i++)
             {
-                for (int j = 0; j < size.Second; j++)
+                for (int j = 0; j < size.J; j++)
                 {
                     pasteIndex =  i                 * pastelw +  j                 ;
-                    copyIndex  = (i + coords.First) * copylw  + (j + coords.Second);
+                    copyIndex  = (i + coords.I) * copylw  + (j + coords.J);
 
                     for (int layer = 0; layer < pasteLevel.header.layers; layer++)
                         pasteLevel.data[layer, pasteIndex]  = copyLevel.data[layer, copyIndex];

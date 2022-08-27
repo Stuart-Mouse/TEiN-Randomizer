@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
+using System.Diagnostics;
 using TEiNRandomizer.Properties;
 
 namespace TEiNRandomizer
@@ -20,7 +21,7 @@ namespace TEiNRandomizer
         // Tools Buttons
         private void DoLatestThing_Click(object sender, RoutedEventArgs e)
         {
-            // generate all directional connector levels from template (level pool data)
+            /*// generate all directional connector levels from template (level pool data)
             StreamWriter sw = File.CreateText("data/level_pools/.mapgen/NewConnectors.gon");
 
             sw.Write("header {\nenabled true\norder 1\nauthor \"Tyler & Edmund\"\nsource \"The End is Nigh\"\npath \"data/level_pools/.mapgen/tilemaps/\"\ntype connector\n}\n");
@@ -47,11 +48,51 @@ namespace TEiNRandomizer
             }
 
             sw.Write("}\n");
-            sw.Close();
+            sw.Close();*/
+
+
+            // Compare GetOptionsComplex original and new version, make sure output is the same
+
+            /*MapConnections reqs = new MapConnections(), 
+                           nots = new MapConnections();
+
+            List<Level> levels = LevelPool.LoadPool("data/level_pools/.mapgen/NewConnectors.gon").Levels;
+
+            // create stopwatch for both functions
+
+            var f1_sw = new System.Diagnostics.Stopwatch();
+            var f2_sw = new System.Diagnostics.Stopwatch();
+            var f3_sw = new System.Diagnostics.Stopwatch();
+
+            for (int reps = 0; reps < 10; reps++)
+            {
+                for (Directions dir_r = Directions.None; dir_r < Directions.All; dir_r++)
+                {
+                    reqs.SetMultiple(dir_r, ConnectionType.Both);
+
+                    for (Directions dir_n = Directions.None; dir_n < Directions.All; dir_n++)
+                    {
+                        nots.SetMultiple(dir_n, ConnectionType.Both);
+
+                        f1_sw.Start();
+                        List<Level> f1_levels = Randomizer.GetOptionsComplex(Directions.None, reqs, nots, levels);
+                        f1_sw.Stop();
+
+                        f2_sw.Start();
+                        List<Level> f2_levels = Randomizer.GetOptionsComplex2(Directions.None, reqs, nots, levels);
+                        f2_sw.Stop();
+
+                    }
+                }
+            }
+
+            Console.WriteLine($"V1: {f1_sw.ElapsedTicks}");
+            Console.WriteLine($"V2: {f2_sw.ElapsedTicks}");*/
+
         }
         private void TestGon_Click(object sender, RoutedEventArgs e)
         {
-            Utility.TilesetTest();
+            //Utility.TilesetTest();
         }
         private void TestMapGen_Click(object sender, RoutedEventArgs e)
         {
@@ -111,13 +152,13 @@ namespace TEiNRandomizer
                     if (level.data[LevelFile.ACTIVE, lw - 1] == TileID.Solid)          // checks top right tile for solid block
                         piece.SetAttributeValue("ceilingEx", "True");
 
-                    index = (enCoord.First + 1) * lw + enCoord.Second;
+                    index = (enCoord.I + 1) * lw + enCoord.J;
                     if (index < lh * lw)
                     {
                         if (level.data[LevelFile.ACTIVE, index] == TileID.Solid)       // checks tile underneath the entrance for solid block
                             piece.SetAttributeValue("floorEn", "True");
                     }
-                    index = (exCoord.First + 1) * lw + exCoord.Second;
+                    index = (exCoord.I + 1) * lw + exCoord.J;
                     if (index < lh * lw)
                     {
                         if (level.data[LevelFile.ACTIVE, index] == TileID.Solid)       // checks tile underneath the exit for solid block
